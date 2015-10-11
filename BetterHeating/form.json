@@ -6,7 +6,6 @@
 		{ "type": "SelectInstance", "name": "TargetTempShifting", "caption": "Soll Temperatur Aenderung" },
 		{ "type": "SelectInstance", "name": "ControlValue", "caption": "Stellwert" },
 		{ "type": "SelectInstance", "name": "WindowTrigger", "caption": "Fensterkontakt" },
-		{ "type": "SelectInstance", "name": "WindowTrigger", "caption": "Fensterkontakt" },
 		{ "type": "SelectInstance", "name": "PresenceDetection", "caption": "Bewegungsmelder" }
 	],
 	"actions":
