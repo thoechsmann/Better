@@ -1,5 +1,5 @@
 <?
-class IQLFeiertage extends IPSModule {
+class BetterHeating extends IPSModule {
 		
 	public function Create() {
 		//Never delete this line!
