@@ -1,0 +1,16 @@
+{
+	"elements":
+	[
+		{ "type": "SelectInstance", "name": "CurrentTemp", "caption": "Aktuelle Temperatur" },
+		{ "type": "SelectInstance", "name": "TargetTemp", "caption": "Soll Temperatur" }
+		{ "type": "SelectInstance", "name": "TargetTempShifting", "caption": "Soll Temperatur Aenderung" }
+		{ "type": "SelectInstance", "name": "ControlValue", "caption": "Stellwert" }
+		{ "type": "SelectInstance", "name": "WindowTrigger", "caption": "Fensterkontakt" },
+		{ "type": "SelectInstance", "name": "WindowTrigger", "caption": "Fensterkontakt" },
+		{ "type": "SelectInstance", "name": "PresenceDetection", "caption": "Bewegungsmelder" }
+	],
+	"actions":
+	[
+		{ "type": "Button", "label": "Update", "onClick": "BetterHeating_Update($id);" }
+	]	
+}
