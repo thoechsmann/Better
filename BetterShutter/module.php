@@ -13,10 +13,15 @@ class BetterHeating extends IPSModule {
 		//Never delete this line!
 		parent::ApplyChanges();
 		
-		$this->RegisterVariableFloat("CurrentTemp", "Current Temperature");
-        $this->RegisterVariableFloat("TargetTemp", "Target Temperature");
+		// $this->RegisterVariableFloat("CurrentTemp", "Current Temperature");
+        // $this->RegisterVariableFloat("TargetTemp", "Target Temperature");
 		// $this->RegisterVariableString("Holiday", "Holiday");
 		//$this->RegisterEventCyclic("UpdateTimer", "Automatische aktualisierung", 15);
+
+        $link = IPS_CreateLink();
+        IPS_SetName("PositionLink");
+        IPS_SetParent($this->InstanceID);
+        IPS_SetLinkParentID($this->GetIDForIdent("Position"));
 	}
 	
     private function GetFeiertag() {
