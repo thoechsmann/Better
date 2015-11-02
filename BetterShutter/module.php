@@ -1,5 +1,5 @@
 <?
-class BetterHeating extends IPSModule {
+class BetterShutter extends IPSModule {
 		
 	public function Create() {
 		//Never delete this line!
