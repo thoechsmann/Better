@@ -1,9 +1,9 @@
 {
 	"elements":
 	[
-		{ "type": "SelectInstance", "name": "Position", "caption": "Position" },
-		{ "type": "SelectInstance", "name": "UpDown", "caption": "Hoch/Runter Objekt" },
-		{ "type": "SelectInstance", "name": "Stop", "caption": "Stopp" }
+		{ "type": "SelectVariable", "name": "Position", "caption": "Position" },
+		{ "type": "SelectVariable", "name": "UpDown", "caption": "Hoch/Runter Objekt" },
+		{ "type": "SelectVariable", "name": "Stop", "caption": "Stopp" }
 	],
 	"actions":
 	[
