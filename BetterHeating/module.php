@@ -19,9 +19,9 @@ class BetterHeating extends IPSModule {
 		parent::ApplyChanges();
 		
         // Create links.
-        while(IPS_GetInstanceIDByName("currentTempLink", $this) !== false)
+        while(IPS_GetInstanceIDByName("currentTempLink", $this->InstanceID) !== false)
         {
-            IPS_DeleteLink(IPS_GetInstanceIDByName("currentTempLink", $this));
+            IPS_DeleteLink(IPS_GetInstanceIDByName("currentTempLink", $this->InstanceID));
         }
 
         $link = IPS_CreateLink();
