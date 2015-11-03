@@ -9,6 +9,6 @@
 	],
 	"actions":
 	[
-		{ "type": "Button", "label": "Update", "onClick": "BetterHeating_Update($id);" }
+		{ "type": "Button", "label": "Update", "onClick": "BH_Update($id);" }
 	]	
 }
