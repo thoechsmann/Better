@@ -19,22 +19,16 @@ class BetterHeating extends IPSModule {
 		parent::ApplyChanges();
 		
         // Create links.
-        while(IPS_GetInstanceIDByName("currentTempLink", $this->InstanceID) !== false)
+        $link = @IPS_GetInstanceIDByName("currentTempLink", $this->InstanceID);
+        while($link !== false)
         {
-            IPS_DeleteLink(IPS_GetInstanceIDByName("currentTempLink", $this->InstanceID));
+            IPS_DeleteLink($link);
         }
 
         $link = IPS_CreateLink();
         IPS_SetName($link, "currentTempLink");
         IPS_SetParent($link, $this->InstanceID);
         IPS_SetLinkTargetID($link, $this->ReadPropertyInteger("currentTempInstanceID"));
-
-
-
-		// $this->RegisterVariableFloat("CurrentTemp", "Current Temperature");
-  //       $this->RegisterVariableFloat("TargetTemp", "Target Temperature");
-		// $this->RegisterVariableString("Holiday", "Holiday");
-		//$this->RegisterEventCyclic("UpdateTimer", "Automatische aktualisierung", 15);
 	}
 
     public function Update() {
