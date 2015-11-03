@@ -21,6 +21,7 @@ class BetterHeating extends IPSModule {
 
         $link = IPS_CreateLink();
         IPS_SetName($link, "currentTempLink");
+        IPS_SetIdent($link, "currentTempLink");
         IPS_SetParent($link, $this->InstanceID);
         IPS_SetLinkTargetID($link, $this->ReadPropertyInteger("currentTempInstanceID"));
 	}
@@ -29,13 +30,12 @@ class BetterHeating extends IPSModule {
         IPS_LogMessage("BetterHeating", "Update");
 
         // Create links.
-        $link = @IPS_GetInstanceIDByName("currentTempLink", $this->InstanceID);
+        $link = @IPS_GetObjectIDByIdent("currentTempLink", $this->InstanceID);
         IPS_LogMessage("BetterHeating", "InstanceID: ". $this->InstanceID. " link: ". $link);
-        while($link !== false)
+        if($link !== false)
         {
             IPS_LogMessage("BetterHeating", "found link");
             IPS_DeleteLink($link);
-            $link = @IPS_GetInstanceIDByName("currentTempLink", $this->InstanceID);
         }
   //       $holiday = $this->GetFeiertag();
 
