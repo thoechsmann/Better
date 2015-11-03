@@ -18,9 +18,9 @@ class BetterShutter extends IPSModule {
 		// $this->RegisterVariableString("Holiday", "Holiday");
 		//$this->RegisterEventCyclic("UpdateTimer", "Automatische aktualisierung", 15);
 
-        $link = IPS_CreateLink();
-        IPS_SetName($link, "PositionLink");
-        IPS_SetParent($link, $this->InstanceID);
+        // $link = IPS_CreateLink();
+        // IPS_SetName($link, "PositionLink");
+        // IPS_SetParent($link, $this->InstanceID);
 //        IPS_SetLinkTargetID($link, $this->GetIDForIdent("Position"));
 	}
 	
