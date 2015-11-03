@@ -22,7 +22,7 @@ class BetterShutter extends IPSModule {
         $link = IPS_CreateLink();
         IPS_SetName($link, "PositionLink");
         IPS_SetParent($link, $this->InstanceID);
-        IPS_SetLinkTargetID($link, $this->ReadPropertyInteger("position");
+        IPS_SetLinkTargetID($link, $this->ReadPropertyInteger("position"));
 	}
 
     public function Update() {
