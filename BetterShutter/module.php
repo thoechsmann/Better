@@ -4,6 +4,7 @@ class BetterShutter extends IPSModule {
 	public function Create() {
 		//Never delete this line!
 		parent::Create();		
+
 		//These lines are parsed on Symcon Startup or Instance creation
 		//You cannot use variables here. Just static values.
 		$this->RegisterPropertyInteger("position", 0);
@@ -18,10 +19,10 @@ class BetterShutter extends IPSModule {
 		// $this->RegisterVariableString("Holiday", "Holiday");
 		//$this->RegisterEventCyclic("UpdateTimer", "Automatische aktualisierung", 15);
 
-        // $link = IPS_CreateLink();
-        // IPS_SetName($link, "PositionLink");
-        // IPS_SetParent($link, $this->InstanceID);
-//        IPS_SetLinkTargetID($link, $this->GetIDForIdent("Position"));
+        $link = IPS_CreateLink();
+        IPS_SetName($link, "PositionLink");
+        IPS_SetParent($link, $this->InstanceID);
+        IPS_SetLinkTargetID($link, $this->ReadPropertyInteger("position");
 	}
 
     public function Update() {
