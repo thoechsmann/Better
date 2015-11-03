@@ -23,6 +23,7 @@ class BetterHeating extends IPSModule {
         while($link !== false)
         {
             IPS_DeleteLink($link);
+            $link = @IPS_GetInstanceIDByName("currentTempLink", $this->InstanceID);
         }
 
         $link = IPS_CreateLink();
