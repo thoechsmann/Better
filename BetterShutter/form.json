@@ -1,9 +1,9 @@
 {
 	"elements":
 	[
-		{ "type": "SelectVariable", "name": "Position", "caption": "Position" },
-		{ "type": "SelectVariable", "name": "UpDown", "caption": "Hoch/Runter Objekt" },
-		{ "type": "SelectVariable", "name": "Stop", "caption": "Stopp" }
+		{ "type": "SelectVariable", "name": "position", "caption": "Position" },
+		{ "type": "SelectVariable", "name": "upDown", "caption": "Hoch/Runter" },
+		{ "type": "SelectVariable", "name": "stop", "caption": "Stopp" }
 	],
 	"actions":
 	[

@@ -6,7 +6,7 @@ class BetterShutter extends IPSModule {
 		parent::Create();		
 		//These lines are parsed on Symcon Startup or Instance creation
 		//You cannot use variables here. Just static values.
-		// $this->RegisterPropertyString("area", "NI");		
+		$this->RegisterPropertyInteger("position", 0);
 	}
 	
 	public function ApplyChanges() {
