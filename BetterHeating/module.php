@@ -18,37 +18,30 @@ class BetterHeating extends IPSModule {
 		//Never delete this line!
 		parent::ApplyChanges();
 		
-
-        $link = IPS_CreateLink();
-        IPS_SetName($link, "currentTempLink");
-        IPS_SetIdent($link, "currentTempLink");
-        IPS_SetParent($link, $this->InstanceID);
-        IPS_SetLinkTargetID($link, $this->ReadPropertyInteger("currentTempInstanceID"));
+        AddLink("currentTempLink", $this->ReadPropertyInteger("currentTempInstanceID"));
+        AddLink("currentTargetTempLink", $this->ReadPropertyInteger("currentTargetTempInstanceID"));
+        AddLink("controlValue", $this->ReadPropertyInteger("controlValueInstanceID"));
+        AddLink("targetTempComfort", $this->ReadPropertyInteger("targetTempComfortInstanceID"));
+        AddLink("mode", $this->ReadPropertyInteger("modeInstanceID"));
 	}
 
     public function Update() {
         IPS_LogMessage("BetterHeating", "Update");
+    }       
 
-        // Create links.
-        $link = @IPS_GetObjectIDByIdent("currentTempLink", $this->InstanceID);
-        IPS_LogMessage("BetterHeating", "InstanceID: ". $this->InstanceID. " link: ". $link);
+    private function AddLink($name, $targetInstanceID) 
+    {
+        $link = @IPS_GetObjectIDByIdent($name, $this->InstanceID);
         if($link !== false)
         {
-            IPS_LogMessage("BetterHeating", "found link");
             IPS_DeleteLink($link);
         }
-  //       $holiday = $this->GetFeiertag();
 
-  //       IPS_SetHidden($this->GetIDForIdent("IsHoliday"),true);
-
-		// SetValue($this->GetIDForIdent("Holiday"), $holiday);
-
-  //       if($holiday != "Arbeitstag" and $holiday != "Wochenende") {
-  //           SetValue($this->GetIDForIdent("IsHoliday"), true);
-  //       }
-  //       else {
-  //           SetValue($this->GetIDForIdent("IsHoliday"), false);
-  //       }
-    }        
+        $link = IPS_CreateLink();
+        IPS_SetName($link, $name);
+        IPS_SetIdent($link, $name);
+        IPS_SetParent($link, $this->InstanceID);
+        IPS_SetLinkTargetID($link, $targetInstanceID);
+    }
 }
 ?>
