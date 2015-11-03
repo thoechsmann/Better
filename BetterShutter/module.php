@@ -7,7 +7,10 @@ class BetterShutter extends IPSModule {
 
 		//These lines are parsed on Symcon Startup or Instance creation
 		//You cannot use variables here. Just static values.
-		$this->RegisterPropertyInteger("position", 0);
+		$this->RegisterPropertyFloat("currentTemp", 0);
+        $this->RegisterPropertyInteger("currentTemp", 0);
+        $this->RegisterPropertyInteger("currentTemp", 0);
+        $this->RegisterPropertyInteger("currentTemp", 0);
 	}
 	
 	public function ApplyChanges() {
