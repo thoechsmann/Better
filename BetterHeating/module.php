@@ -18,6 +18,15 @@ class BetterHeating extends IPSModule {
 		//Never delete this line!
 		parent::ApplyChanges();
 		
+        // Create links.
+        IPS_DeleteLink($this->GetIDForIdent("currentTempLink"));
+        $link = IPS_CreateLink();
+        IPS_SetName($link, "currentTempLink");
+        IPS_SetParent($link, $this->InstanceID);
+        IPS_SetLinkTargetID($link, $this->ReadPropertyInteger("currentTempInstanceID"));
+
+
+
 		// $this->RegisterVariableFloat("CurrentTemp", "Current Temperature");
   //       $this->RegisterVariableFloat("TargetTemp", "Target Temperature");
 		// $this->RegisterVariableString("Holiday", "Holiday");

@@ -5,7 +5,7 @@
 		{ "type": "SelectInstance", "name": "currentTargetTempInstanceID", "caption": "Aktuelle Soll Temperatur" },
 		{ "type": "SelectInstance", "name": "controlValueInstanceID", "caption": "Aktueller Stellwert" },
 		{ "type": "SelectInstance", "name": "targetTempComfortInstanceID", "caption": "Soll Temperatur Komfort" },
-		{ "type": "SelectInstance", "name": "modeInstanceID", "caption": "Heizmodus" },		
+		{ "type": "SelectInstance", "name": "modeInstanceID", "caption": "Heizmodus" }		
 	],
 	"actions":
 	[
