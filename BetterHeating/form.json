@@ -5,16 +5,16 @@
 		{ "type": "SelectVariable", "name": "currentTempInstanceID", "caption": "Aktuelle Temperatur" },
 		{ "type": "SelectVariable", "name": "currentTargetTempInstanceID", "caption": "Aktuelle Soll Temperatur" },
 		{ "type": "SelectVariable", "name": "targetTempComfortInstanceID", "caption": "Soll Temperatur Komfort" },
-		{ "type": "SelectVariable", "name": "modeInstanceID", "caption": "Heizmodus" }		
+		{ "type": "SelectVariable", "name": "modeInstanceID", "caption": "Heizmodus" },
 
-		{ "type": "Label", "label": "Fenster Kontakte:"}
+		{ "type": "Label", "label": "Fenster Kontakte:"},
 
-		{ "type": "SelectVariable", "name": "window1InstanceID", "caption": "Fenster1" }
-		{ "type": "SelectVariable", "name": "window2InstanceID", "caption": "Fenster2" }
-		{ "type": "SelectVariable", "name": "window3InstanceID", "caption": "Fenster3" }
-		{ "type": "SelectVariable", "name": "window4InstanceID", "caption": "Fenster4" }
-		{ "type": "SelectVariable", "name": "window5InstanceID", "caption": "Fenster5" }
-		{ "type": "SelectVariable", "name": "window6InstanceID", "caption": "Fenster6" }
+		{ "type": "SelectVariable", "name": "window1InstanceID", "caption": "Fenster1" },
+		{ "type": "SelectVariable", "name": "window2InstanceID", "caption": "Fenster2" },
+		{ "type": "SelectVariable", "name": "window3InstanceID", "caption": "Fenster3" },
+		{ "type": "SelectVariable", "name": "window4InstanceID", "caption": "Fenster4" },
+		{ "type": "SelectVariable", "name": "window5InstanceID", "caption": "Fenster5" },
+		{ "type": "SelectVariable", "name": "window6InstanceID", "caption": "Fenster6" },
 		{ "type": "SelectVariable", "name": "window7InstanceID", "caption": "Fenster7" }
 	],
 	"actions":
