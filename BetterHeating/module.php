@@ -12,6 +12,14 @@ class BetterHeating extends IPSModule {
         $this->RegisterPropertyInteger("controlValueInstanceID", 0);
         $this->RegisterPropertyInteger("targetTempComfortInstanceID", 0);
         $this->RegisterPropertyInteger("modeInstanceID", 0);
+
+        $this->RegisterPropertyInteger("window1InstanceID", 0);
+        $this->RegisterPropertyInteger("window2InstanceID", 0);
+        $this->RegisterPropertyInteger("window3InstanceID", 0);
+        $this->RegisterPropertyInteger("window4InstanceID", 0);
+        $this->RegisterPropertyInteger("window5InstanceID", 0);
+        $this->RegisterPropertyInteger("window6InstanceID", 0);
+        $this->RegisterPropertyInteger("window7InstanceID", 0);
 	}
 	
 	public function ApplyChanges() {
