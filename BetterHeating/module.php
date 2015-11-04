@@ -18,11 +18,11 @@ class BetterHeating extends IPSModule {
 		//Never delete this line!
 		parent::ApplyChanges();
 		
-        $this->AddLink("currentTempLink", $this->ReadPropertyInteger("currentTempInstanceID"));
-        $this->AddLink("currentTargetTempLink", $this->ReadPropertyInteger("currentTargetTempInstanceID"));
-        $this->AddLink("controlValue", $this->ReadPropertyInteger("controlValueInstanceID"));
-        $this->AddLink("targetTempComfort", $this->ReadPropertyInteger("targetTempComfortInstanceID"));
-        $this->AddLink("mode", $this->ReadPropertyInteger("modeInstanceID"));
+        $this->AddLink("Aktuelle Temperatur", $this->ReadPropertyInteger("currentTempInstanceID"));
+        $this->AddLink("Aktuelle Soll Temperatur", $this->ReadPropertyInteger("currentTargetTempInstanceID"));
+        $this->AddLink("Stellwert", $this->ReadPropertyInteger("controlValueInstanceID"));
+        $this->AddLink("Soll Temperatur (Komfort)", $this->ReadPropertyInteger("targetTempComfortInstanceID"));
+        $this->AddLink("Modus", $this->ReadPropertyInteger("modeInstanceID"));
 	}
 
     public function Update() {
