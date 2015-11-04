@@ -1,11 +1,11 @@
 {
 	"elements":
 	[
-		{ "type": "SelectInstance", "name": "currentTempInstanceID", "caption": "Aktuelle Temperatur" },
-		{ "type": "SelectInstance", "name": "currentTargetTempInstanceID", "caption": "Aktuelle Soll Temperatur" },
+		{ "type": "SelectVariable", "name": "currentTempInstanceID", "caption": "Aktuelle Temperatur" },
+		{ "type": "SelectVariable", "name": "currentTargetTempInstanceID", "caption": "Aktuelle Soll Temperatur" },
 		{ "type": "SelectInstance", "name": "controlValueInstanceID", "caption": "Aktueller Stellwert" },
-		{ "type": "SelectInstance", "name": "targetTempComfortInstanceID", "caption": "Soll Temperatur Komfort" },
-		{ "type": "SelectInstance", "name": "modeInstanceID", "caption": "Heizmodus" }		
+		{ "type": "SelectVariable", "name": "targetTempComfortInstanceID", "caption": "Soll Temperatur Komfort" },
+		{ "type": "SelectVariable", "name": "modeInstanceID", "caption": "Heizmodus" }		
 	],
 	"actions":
 	[
