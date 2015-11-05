@@ -5,7 +5,7 @@ class BetterHeating extends IPSModule {
 	public function Update() {
         IPS_LogMessage("BetterHeating", "static update2");
 
-        UpdateWindowState();
+        BH_UpdateWindowState($this);
     }
 
 	public function Create() {
