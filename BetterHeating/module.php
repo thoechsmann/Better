@@ -5,15 +5,15 @@ class BetterHeating extends IPSModule {
 
         $maxWindows = 7;
 
-        for($i = 0; $i < $maxWindows; $i++)
+        for($i = 1; $i <= $maxWindows; $i++)
         {
             IPS_LogMessage("BetterHeating", "UpdateWindowState");
             $id = $this->ReadPropertyInteger("window" + $i + "InstanceID");
             if($id!=0 && GetValue($id) === true)
             {
+                IPS_LogMessage("BetterHeating", "UpdateWindowState: window open");
                 $windowOpenId = IPS_GetObjectIDByIdent("WindowOpen", $this->InstanceID);
                 IPS_SetHidden($windowOpenId, false);
-                IPS_LogMessage("BetterHeating", "UpdateWindowState: window open");
                 break;
             }
 
