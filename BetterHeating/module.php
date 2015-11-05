@@ -1,6 +1,9 @@
 <?
 class BetterHeating extends IPSModule {
-		
+	static public Update {
+        IPS_LogMessage("BetterHeating", "static update");
+    }
+
 	public function Create() {
 		//Never delete this line!
 		parent::Create();		
@@ -26,18 +29,16 @@ class BetterHeating extends IPSModule {
 		//Never delete this line!
 		parent::ApplyChanges();
 		
-        $this->AddLink("Aktuelle Temperatur", "CurrentTemp", $this->ReadPropertyInteger("currentTempInstanceID"), 1);
-        $this->AddLink("Aktuelle Soll Temperatur", "CurrentTargetTemp", $this->ReadPropertyInteger("currentTargetTempInstanceID"), 2);
+        $this->AddLink("Temperatur", "CurrentTemp", $this->ReadPropertyInteger("currentTempInstanceID"), 1);
+        $this->AddLink("Soll Temperatur", "CurrentTargetTemp", $this->ReadPropertyInteger("currentTargetTempInstanceID"), 2);
         $this->AddLink("Stellwert", "ControlValue", $this->ReadPropertyInteger("controlValueInstanceID"), 3);
         $this->AddLink("Soll Temperatur (Komfort)", "TargetComfortTemp", $this->ReadPropertyInteger("targetTempComfortInstanceID"), 4);
         $this->AddLink("Modus", "Mode", $this->ReadPropertyInteger("modeInstanceID"), 5);
 
         $this->RegisterVariableString("WindowOpen", "Fenster ist geöffnet -> Heizung aus");
-	}
 
-    public function Update() {
-        IPS_LogMessage("BetterHeating", "Update");
-    }       
+        $this->RegisterTimer("CheckWindows", 2, "BG_Update();");
+	}
 
     private function AddLink($name, $ident, $targetInstanceID, $position) 
     {
@@ -55,6 +56,36 @@ class BetterHeating extends IPSModule {
         IPS_SetPosition($link, $position);
 
         return $link;
+    }
+
+    protected function RegisterTimer($ident, $interval, $script) 
+    { 
+        $id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID); 
+
+        if ($id && IPS_GetEvent($id)['EventType'] <> 1) { 
+            IPS_DeleteEvent($id); 
+            $id = 0; 
+        } 
+
+        if (!$id) { 
+            $id = IPS_CreateEvent(1); 
+            IPS_SetParent($id, $this->InstanceID); 
+            IPS_SetIdent($id, $ident);  
+        } 
+
+        IPS_SetName($id, $ident); 
+        IPS_SetHidden($id, true); 
+        IPS_SetEventScript($id, "$script;"); 
+
+        if (!IPS_EventExists($id)) throw new Exception("Ident with name $ident is used for wrong object type"); 
+
+        if ($interval > 0) { 
+            IPS_SetEventCyclic($id, 0, 0, 0, 0, 1, $interval); 
+            IPS_SetEventActive($id, true); 
+        } else { 
+            IPS_SetEventCyclic($id, 0, 0, 0, 0, 1, 1); 
+            IPS_SetEventActive($id, false); 
+        } 
     }
 }
 ?>
