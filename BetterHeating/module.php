@@ -3,9 +3,23 @@ class BetterHeating extends IPSModule {
     private $maxWindows = 7;
 
 	public function Update() {
-        IPS_LogMessage("BetterHeating", "static update2");
+        IPS_LogMessage("BetterHeating", "update");
 
-        BH_UpdateWindowState($this);
+        for($i = 0; $i < $maxWindows; $i++)
+        {
+            IPS_LogMessage("BetterHeating", "UpdateWindowState");
+            $id = $this->ReadPropertyInteger("window" + $i + "InstanceID");
+            if(GetValue($id) === true)
+            {
+                $windowOpenId = IPS_GetObjectIDByIdent("WindowOpen", $this->InstanceID);
+                IPS_SetHidden($windowOpenId, false);
+                IPS_LogMessage("BetterHeating", "UpdateWindowState: window open");
+                break;
+            }
+
+            IPS_SetHidden($windowOpenId, true);
+            IPS_LogMessage("BetterHeating", "UpdateWindowState: all windows closed");
+        }
     }
 
 	public function Create() {
@@ -91,27 +105,5 @@ class BetterHeating extends IPSModule {
             IPS_SetEventActive($id, false); 
         } 
     }
-
-    private function UpdateWindowState()
-    {
-        for($i = 0; $i < $maxWindows; $i++)
-        {
-            IPS_LogMessage("BetterHeating", "UpdateWindowState");
-            $id = $this->ReadPropertyInteger("window" + $i + "InstanceID");
-            if(GetValue($id) === true)
-            {
-                $windowOpenId = IPS_GetObjectIDByIdent("WindowOpen", $this->InstanceID);
-                IPS_SetHidden($windowOpenId, false);
-                IPS_LogMessage("BetterHeating", "UpdateWindowState: window open");
-                return;
-            }
-
-            IPS_SetHidden($windowOpenId, true);
-            IPS_LogMessage("BetterHeating", "UpdateWindowState: all windows closed");
-        }
-
-    }
-
-
 }
 ?>
