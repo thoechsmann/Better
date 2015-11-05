@@ -9,7 +9,7 @@ class BetterHeating extends IPSModule {
 
         for($i = 1; $i <= $maxWindows; $i++)
         {
-            $id = $this->ReadPropertyInteger("window" + $i + "InstanceID");
+            $id = $this->ReadPropertyInteger("window" . $i . "InstanceID");
             if($id!=0 && GetValue($id) === true)
             {
                 $openWindowCount++;
