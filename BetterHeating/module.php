@@ -1,8 +1,9 @@
 <?
 class BetterHeating extends IPSModule {
 	public function Update() {
-        IPS_LogMessage("BetterHeating", "update");
+        // IPS_LogMessage("BetterHeating", "update");
 
+        // Check window State
         $maxWindows = 7;
         $windowOpenId = IPS_GetObjectIDByIdent("WindowOpen", $this->InstanceID);
         $openWindowCount = 0;
@@ -16,7 +17,16 @@ class BetterHeating extends IPSModule {
             }
         }
 
-        IPS_SetHidden($windowOpenId, $openWindowCount > 0);
+        IPS_SetHidden($windowOpenId, $openWindowCount == 0);
+
+        // Check Heating Mode
+        $modeId = $this->ReadPropertyInteger("modeInstanceID");
+        $mode = GetValue($modeId);
+        $CurrentTargetTempId = IPS_GetObjectIDByIdent("CurrentTargetTemp", $this->InstanceID);
+        $TargetComfortTempId = IPS_GetObjectIDByIdent("TargetComfortTemp", $this->InstanceID);
+
+        IPS_SetHidden($CurrentTargetTempId, $mode == 1);        
+        IPS_SetHidden($TargetComfortTempId, $mode != 1);        
     }
 
 	public function Create() {
