@@ -16,5 +16,9 @@
 		{ "type": "SelectVariable", "name": "window5InstanceID", "caption": "Fenster5" },
 		{ "type": "SelectVariable", "name": "window6InstanceID", "caption": "Fenster6" },
 		{ "type": "SelectVariable", "name": "window7InstanceID", "caption": "Fenster7" }
-	]
+	],
+	"actions":
+	[
+		{ "type": "Button", "label": "Update", "onClick": "BH_Update($id);" }
+	]	
 }
