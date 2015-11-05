@@ -1,6 +1,6 @@
 <?
 class BetterHeating extends IPSModule {
-	static public function Update() {
+	public function Update() {
         IPS_LogMessage("BetterHeating", "static update2");
     }
 
