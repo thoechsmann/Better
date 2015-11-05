@@ -1,7 +1,7 @@
 <?
 class BetterHeating extends IPSModule {
 	static public function Update() {
-        IPS_LogMessage("BetterHeating", "static update");
+        IPS_LogMessage("BetterHeating", "static update2");
     }
 
 	public function Create() {
@@ -37,7 +37,7 @@ class BetterHeating extends IPSModule {
 
         $this->RegisterVariableString("WindowOpen", "Fenster ist geöffnet -> Heizung aus");
 
-        $this->RegisterTimer("CheckWindows", 2, "IPS_LogMessage(\"BetterHeating\", \"static update\");");
+        $this->RegisterTimer("CheckWindows", 2, "BH_Update();");
 	}
 
     private function AddLink($name, $ident, $targetInstanceID, $position) 
