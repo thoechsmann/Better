@@ -26,16 +26,11 @@ class BetterHeating extends IPSModule {
 		//Never delete this line!
 		parent::ApplyChanges();
 		
-        $this->AddLink("Aktuelle Temperatur", "CurrentTemp", $this->ReadPropertyInteger("currentTempInstanceID"));
-        IPS_SetPosition($this->ReadPropertyInteger("currentTempInstanceID"), 1);
-        $this->AddLink("Aktuelle Soll Temperatur", "CurrentTargetTemp", $this->ReadPropertyInteger("currentTargetTempInstanceID"));
-        IPS_SetPosition($this->ReadPropertyInteger("currentTargetTempInstanceID"), 2);
-        $this->AddLink("Stellwert", "ControlValue", $this->ReadPropertyInteger("controlValueInstanceID"));
-        IPS_SetPosition($this->ReadPropertyInteger("controlValueInstanceID"), 3);
-        $this->AddLink("Soll Temperatur (Komfort)", "TargetComfortTemp", $this->ReadPropertyInteger("targetTempComfortInstanceID"));
-        IPS_SetPosition($this->ReadPropertyInteger("targetTempComfortInstanceID"), 4);
-        $this->AddLink("Modus", "Mode", $this->ReadPropertyInteger("modeInstanceID"));
-        IPS_SetPosition($this->ReadPropertyInteger("modeInstanceID"), 5);
+        $this->AddLink("Aktuelle Temperatur", "CurrentTemp", $this->ReadPropertyInteger("currentTempInstanceID"), 1);
+        $this->AddLink("Aktuelle Soll Temperatur", "CurrentTargetTemp", $this->ReadPropertyInteger("currentTargetTempInstanceID"), 2);
+        $this->AddLink("Stellwert", "ControlValue", $this->ReadPropertyInteger("controlValueInstanceID"), 3);
+        $this->AddLink("Soll Temperatur (Komfort)", "TargetComfortTemp", $this->ReadPropertyInteger("targetTempComfortInstanceID"), 4);
+        $this->AddLink("Modus", "Mode", $this->ReadPropertyInteger("modeInstanceID"), 5);
 
         $this->RegisterVariableString("WindowOpen", "Fenster ist geöffnet -> Heizung aus");
 	}
@@ -44,7 +39,7 @@ class BetterHeating extends IPSModule {
         IPS_LogMessage("BetterHeating", "Update");
     }       
 
-    private function AddLink($name, $ident, $targetInstanceID) 
+    private function AddLink($name, $ident, $targetInstanceID, $position) 
     {
         $link = @IPS_GetObjectIDByIdent($ident, $this->InstanceID);
         if($link !== false)
@@ -57,6 +52,9 @@ class BetterHeating extends IPSModule {
         IPS_SetIdent($link, $ident);
         IPS_SetParent($link, $this->InstanceID);
         IPS_SetLinkTargetID($link, $targetInstanceID);
+        IPS_SetPosition($link, $position);
+
+        return $link;
     }
 }
 ?>
