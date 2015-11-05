@@ -56,9 +56,9 @@ class BetterHeating extends IPSModule {
 		
         $this->RegisterLink("CurrentTemp", "Temperatur", $this->ReadPropertyInteger("currentTempInstanceID"), 1);
         $this->RegisterLink("CurrentTargetTemp", "Soll Temperatur", $this->ReadPropertyInteger("currentTargetTempInstanceID"), 2);
-        $this->RegisterLink("ControlValue", "Stellwert", $this->ReadPropertyInteger("controlValueInstanceID"), 3);
-        $this->RegisterLink("TargetComfortTemp", "Soll Temperatur (Komfort)", $this->ReadPropertyInteger("targetTempComfortInstanceID"), 4);
-        $this->RegisterLink("Mode", "Modus", $this->ReadPropertyInteger("modeInstanceID"), 5);
+        $this->RegisterLink("TargetComfortTemp", "Soll Temperatur (Komfort)", $this->ReadPropertyInteger("targetTempComfortInstanceID"), 3);
+        $this->RegisterLink("Mode", "Modus", $this->ReadPropertyInteger("modeInstanceID"), 4);
+        $this->RegisterLink("ControlValue", "Stellwert", $this->ReadPropertyInteger("controlValueInstanceID"), 5);
 
         $this->RegisterVariableString("WindowOpen", "Fenster ist geöffnet -> Heizung aus");
 
