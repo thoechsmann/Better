@@ -1,9 +1,9 @@
 <?
 class BetterHeating extends IPSModule {
-    private $maxWindows = 7;
-
 	public function Update() {
         IPS_LogMessage("BetterHeating", "update");
+
+        $maxWindows = 7;
 
         for($i = 0; $i < $maxWindows; $i++)
         {
