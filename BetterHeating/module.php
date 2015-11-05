@@ -1,7 +1,11 @@
 <?
 class BetterHeating extends IPSModule {
+    private $maxWindows = 7;
+
 	public function Update() {
         IPS_LogMessage("BetterHeating", "static update2");
+
+        UpdateWindowState();
     }
 
 	public function Create() {
@@ -29,18 +33,18 @@ class BetterHeating extends IPSModule {
 		//Never delete this line!
 		parent::ApplyChanges();
 		
-        $this->AddLink("Temperatur", "CurrentTemp", $this->ReadPropertyInteger("currentTempInstanceID"), 1);
-        $this->AddLink("Soll Temperatur", "CurrentTargetTemp", $this->ReadPropertyInteger("currentTargetTempInstanceID"), 2);
-        $this->AddLink("Stellwert", "ControlValue", $this->ReadPropertyInteger("controlValueInstanceID"), 3);
-        $this->AddLink("Soll Temperatur (Komfort)", "TargetComfortTemp", $this->ReadPropertyInteger("targetTempComfortInstanceID"), 4);
-        $this->AddLink("Modus", "Mode", $this->ReadPropertyInteger("modeInstanceID"), 5);
+        $this->RegisterLink("CurrentTemp", "Temperatur", $this->ReadPropertyInteger("currentTempInstanceID"), 1);
+        $this->RegisterLink("CurrentTargetTemp", "Soll Temperatur", $this->ReadPropertyInteger("currentTargetTempInstanceID"), 2);
+        $this->RegisterLink("ControlValue", "Stellwert", $this->ReadPropertyInteger("controlValueInstanceID"), 3);
+        $this->RegisterLink("TargetComfortTemp", "Soll Temperatur (Komfort)", $this->ReadPropertyInteger("targetTempComfortInstanceID"), 4);
+        $this->RegisterLink("Mode", "Modus", $this->ReadPropertyInteger("modeInstanceID"), 5);
 
         $this->RegisterVariableString("WindowOpen", "Fenster ist geöffnet -> Heizung aus");
 
         $this->RegisterTimer("CheckWindows", 2, 'BH_Update($_IPS[\'TARGET\']);');
 	}
 
-    private function AddLink($name, $ident, $targetInstanceID, $position) 
+    private function RegisterLink($ident, $name, $targetInstanceID, $position) 
     {
         $link = @IPS_GetObjectIDByIdent($ident, $this->InstanceID);
         if($link !== false)
@@ -58,7 +62,7 @@ class BetterHeating extends IPSModule {
         return $link;
     }
 
-    protected function RegisterTimer($ident, $interval, $script) 
+    private function RegisterTimer($ident, $interval, $script) 
     { 
         $id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID); 
 
@@ -87,5 +91,27 @@ class BetterHeating extends IPSModule {
             IPS_SetEventActive($id, false); 
         } 
     }
+
+    private function UpdateWindowState()
+    {
+        for($i = 0; $i < $maxWindows; $i++)
+        {
+            IPS_LogMessage("BetterHeating", "UpdateWindowState");
+            $id = $this->ReadPropertyInteger("window" + $i + "InstanceID");
+            if(GetValue($id) === true)
+            {
+                $windowOpenId = IPS_GetObjectIDByIdent("WindowOpen", $this->InstanceID);
+                IPS_SetHidden($windowOpenId, false);
+                IPS_LogMessage("BetterHeating", "UpdateWindowState: window open");
+                return;
+            }
+
+            IPS_SetHidden($windowOpenId, true);
+            IPS_LogMessage("BetterHeating", "UpdateWindowState: all windows closed");
+        }
+
+    }
+
+
 }
 ?>
