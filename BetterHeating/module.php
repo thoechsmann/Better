@@ -81,7 +81,7 @@ class BetterHeating extends IPSModule {
         $id = $this->RegisterVariableInteger("BoostStartTime", "BoostStartTime");
         IPS_SetHidden($id, true);
 
-        $this->RegisterTimer("CheckWindows", 1, 'BH_Update($_IPS[\'TARGET\']);');
+        $this->RegisterTimer("CheckWindows", 1, 'BH_Update($_IPS[\'TARGET\']);'); 
 	}
 
     public function RequestAction($Ident, $Value) 
