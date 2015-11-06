@@ -55,7 +55,6 @@ class BetterHeating extends IPSModule {
 	
 	public function ApplyChanges() 
     {
-        IPS_LogMessage("BetterHeating", "ApplyChanges1");
 		//Never delete this line!
 		parent::ApplyChanges();
 		
@@ -67,20 +66,20 @@ class BetterHeating extends IPSModule {
 
         $this->RegisterVariableString("WindowOpen", "Fenster ist geöffnet -> Heizung aus");
 
-        IPS_LogMessage("BetterHeating", "ApplyChanges2");
         $profileName = "BH_Boost";
         if (@IPS_GetVariableProfile($profileName) === false && IPS_CreateVariableProfile($profileName, 1)) 
         { 
             IPS_SetVariableProfileDigits($profileName, 1); 
             IPS_SetVariableProfileAssociation($profileName, 1, 'AN (%d)', '', -1); 
             IPS_SetVariableProfileAssociation($profileName, 0, 'AUS', '', -1); 
-        } 
+        }
         
-        IPS_LogMessage("BetterHeating", "ApplyChanges3");
         $id = $this->RegisterVariableInteger("Boost", "Boost");
         $this->EnableAction("Boost");
         IPS_SetVariableCustomProfile($id, $profileName);
-        IPS_LogMessage("BetterHeating", "ApplyChanges4");
+
+        $id = $this->RegisterVariableInteger("BoostStartTime", "BoostStartTime");
+        $this->SetHidden("BoostStartTime");
 
         $this->RegisterTimer("CheckWindows", 1, 'BH_Update($_IPS[\'TARGET\']);');
 	}
@@ -91,8 +90,15 @@ class BetterHeating extends IPSModule {
 
         switch($Ident) {
             case "Boost":
-                //Neuen Wert in die Statusvariable schreiben
-                SetValue($this->GetIDForIdent($Ident), $Value);
+                if($Value == 0)
+                {
+                    SetValue($this->GetIDForIdent($Ident), 0);
+                }
+                else
+                {
+                    SetValue($this->GetIDForIdent($Ident), $Value + 30);
+                    SetValue($this->GetIDForIdent(), $Value + 30);
+                }
                 break;
             default:
                 throw new Exception("Invalid Ident");
