@@ -71,7 +71,7 @@ class BetterHeating extends IPSModule {
         { 
             IPS_SetVariableProfileDigits($profileName, 1); 
             IPS_SetVariableProfileAssociation($profileName, 1, 'AN (%d)', '', -1); 
-            IPS_SetVariableProfileAssociation($profileName, 0, 'AUS', '', -1); 
+            IPS_SetVariableProfileAssociation($profileName, -1, 'AUS', '', -1); 
         }
         
         $id = $this->RegisterVariableInteger("Boost", "Boost");
@@ -95,7 +95,7 @@ class BetterHeating extends IPSModule {
                 $boostTimeId = $this->GetIDForIdent("BoostTime");
                 $boostTime = GetValue($boostTimeId);
 
-                if($Value == 0)
+                if($Value == -1)
                 {
                     $boostTime = 0;
                 }
@@ -106,6 +106,9 @@ class BetterHeating extends IPSModule {
 
                 SetValue($boostTimeId, $boostTime);
                 SetValue($this->GetIDForIdent($Ident), $boostTime);
+
+                if($boostTime == 0)
+                    SetValue($this->GetIDForIdent($Ident), -1); // Set to Off
 
                 break;
             default:
