@@ -67,14 +67,12 @@ class BetterHeating extends IPSModule {
         $this->RegisterVariableString("WindowOpen", "Fenster ist geöffnet -> Heizung aus");
 
         $profileName = "BH_Boost";
-        if (@IPS_GetVariableProfile($profileName) === false && IPS_CreateVariableProfile($profileName, 1)) 
-        { 
-            IPS_SetVariableProfileDigits($profileName, 1); 
-            IPS_SetVariableProfileAssociation($profileName, 1, 'AN (%d)', '', -1); 
-            IPS_SetVariableProfileAssociation($profileName, -1, 'AUS', '', -1); 
-        }
+        @IPS_DeleteVariableProfile($profileName);
+        IPS_CreateVariableProfile($profileName, 0)
+        IPS_SetVariableProfileAssociation($profileName, true, 'AN', '', -1); 
+        IPS_SetVariableProfileAssociation($profileName, false, 'AUS', '', -1); 
         
-        $id = $this->RegisterVariableInteger("Boost", "Boost");
+        $id = $this->RegisterVariableBoolean("Boost", "Boost");
         $this->EnableAction("Boost");
         IPS_SetVariableCustomProfile($id, $profileName);
 
@@ -96,7 +94,7 @@ class BetterHeating extends IPSModule {
                 $boostTimeId = $this->GetIDForIdent("BoostTime");
                 $boostTime = GetValue($boostTimeId);
 
-                if($Value == -1)
+                if($Value == false)
                 {
                     $boostTime = 0;
                     IPS_SetName($boostId, "Boost");
