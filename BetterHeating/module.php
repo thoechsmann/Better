@@ -79,9 +79,9 @@ class BetterHeating extends IPSModule {
         IPS_SetVariableCustomProfile($id, $profileName);
 
         $id = $this->RegisterVariableInteger("BoostTime", "BoostTime");
-        $this->SetHidden("BoostTime");
+        $this->SetHidden("BoostTime", true);
         $id = $this->RegisterVariableInteger("BoostStartTime", "BoostStartTime");
-        $this->SetHidden("BoostStartTime");
+        $this->SetHidden("BoostStartTime", true);
 
         $this->RegisterTimer("CheckWindows", 1, 'BH_Update($_IPS[\'TARGET\']);');
 	}
