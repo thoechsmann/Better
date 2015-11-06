@@ -68,7 +68,7 @@ class BetterHeating extends IPSModule {
 
         $profileName = "BH_Boost";
         @IPS_DeleteVariableProfile($profileName);
-        IPS_CreateVariableProfile($profileName, 0)
+        IPS_CreateVariableProfile($profileName, 0);
         IPS_SetVariableProfileAssociation($profileName, true, 'AN', '', -1); 
         IPS_SetVariableProfileAssociation($profileName, false, 'AUS', '', -1); 
         
