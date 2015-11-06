@@ -78,6 +78,8 @@ class BetterHeating extends IPSModule {
         $this->EnableAction("Boost");
         IPS_SetVariableCustomProfile($id, $profileName);
 
+        $id = $this->RegisterVariableInteger("BoostTime", "BoostTime");
+        $this->SetHidden("BoostTime");
         $id = $this->RegisterVariableInteger("BoostStartTime", "BoostStartTime");
         $this->SetHidden("BoostStartTime");
 
@@ -92,13 +94,15 @@ class BetterHeating extends IPSModule {
             case "Boost":
                 if($Value == 0)
                 {
-                    SetValue($this->GetIDForIdent($Ident), 0);
+                    $this->SetValue("BoostTime", 0);
                 }
                 else
                 {
-                    SetValue($this->GetIDForIdent($Ident), $Value + 30);
-                    // SetValue($this->GetIDForIdent(), $Value + 30);
+                    $this->SetValue("BoostTime", $this->GetValue("BoostTime") + 30);
                 }
+
+                $this->SetValue($Ident, $this->GetValue("BoostTime"));
+
                 break;
             default:
                 throw new Exception("Invalid Ident");
