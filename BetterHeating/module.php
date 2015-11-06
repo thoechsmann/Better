@@ -31,6 +31,26 @@ class BetterHeating extends IPSModule {
         IPS_SetHidden($TargetComfortTempId, $mode != 1);        
     }
 
+    public function Update_Boost() 
+    {
+        $boostId = $this->GetIDForIdent("Boost");
+        $boostTimeId = $this->GetIDForIdent("BoostTime");
+        $boostTime = GetValue($boostTimeId);
+
+        $boostTime--;
+        SetValue($boostId, $boostTime);
+
+        $if($boostTime <= 0)
+        {
+            SetValue($boostId, false);
+            IPS_SetName($boostId, "Boost");
+        }
+        else
+        {
+            IPS_SetName($boostId, "Boost ($boostTime Minuten)");
+        }
+    }
+
 	public function Create() 
     {
 		//Never delete this line!
@@ -81,7 +101,7 @@ class BetterHeating extends IPSModule {
         $id = $this->RegisterVariableInteger("BoostStartTime", "BoostStartTime");
         IPS_SetHidden($id, true);
 
-        $this->RegisterTimer("CheckWindows", 1, 'BH_Update($_IPS[\'TARGET\']);'); 
+        $this->RegisterTimer("Update", 1, 'BH_Update($_IPS[\'TARGET\']);'); 
 	}
 
     public function RequestAction($Ident, $Value) 
@@ -92,20 +112,24 @@ class BetterHeating extends IPSModule {
             case "Boost":
                 $boostId = $this->GetIDForIdent("Boost");
                 $boostTimeId = $this->GetIDForIdent("BoostTime");
+                $boostTimeStartedId = $this->GetIDForIdent("BoostTimeStarted");
                 $boostTime = GetValue($boostTimeId);
 
                 if($Value == false)
                 {
                     $boostTime = 0;
                     IPS_SetName($boostId, "Boost");
+                    $this->RegisterTimer("UpdateBoost", 0, 'BH_UpdateBoost($_IPS[\'TARGET\']);'); 
                 }
                 else
                 {
                     $boostTime += 30;
                     IPS_SetName($boostId, "Boost ($boostTime Minuten)");
+                    $this->RegisterTimer("UpdateBoost", 60, 'BH_UpdateBoost($_IPS[\'TARGET\']);'); 
                 }
 
                 SetValue($boostTimeId, $boostTime);                
+                SetValue($boostTimeStartedId, time());                
                 SetValue($this->GetIDForIdent($Ident), $Value);
 
                 break;
