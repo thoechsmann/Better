@@ -38,7 +38,7 @@ class BetterHeating extends IPSModule {
         $boostTime = GetValue($boostTimeId);
 
         $boostTime--;
-        SetValue($boostId, $boostTime);
+        SetValue($boostTime, $boostTime);
 
         if($boostTime <= 0)
         {
