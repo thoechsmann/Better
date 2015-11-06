@@ -105,7 +105,7 @@ class BetterHeating extends IPSModule {
                 }
 
                 SetValue($boostTimeId, $boostTime);
-                SetValue($Ident, $boostTime);
+                SetValue($this->GetIDForIdent($ident), $boostTime);
 
                 break;
             default:
