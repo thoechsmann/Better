@@ -92,23 +92,23 @@ class BetterHeating extends IPSModule {
 
         switch($Ident) {
             case "Boost":
+                $boostId = $this->GetIDForIdent("Boost");
                 $boostTimeId = $this->GetIDForIdent("BoostTime");
                 $boostTime = GetValue($boostTimeId);
 
                 if($Value == -1)
                 {
                     $boostTime = 0;
+                    IPS_SetName($boostId, "Boost");
                 }
                 else
                 {
                     $boostTime += 30;
+                    IPS_SetName($boostId, "Boost ($boostTime Minuten)");
                 }
 
-                SetValue($boostTimeId, $boostTime);
-                SetValue($this->GetIDForIdent($Ident), $boostTime);
-
-                if($boostTime == 0)
-                    SetValue($this->GetIDForIdent($Ident), -1); // Set to Off
+                SetValue($boostTimeId, $boostTime);                
+                SetValue($this->GetIDForIdent($Ident), $Value);
 
                 break;
             default:
