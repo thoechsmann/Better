@@ -31,7 +31,7 @@ class BetterHeating extends IPSModule {
         IPS_SetHidden($TargetComfortTempId, $mode != 1);        
     }
 
-    public function Update_Boost() 
+    public function UpdateBoost() 
     {
         $boostId = $this->GetIDForIdent("Boost");
         $boostTimeId = $this->GetIDForIdent("BoostTime");
