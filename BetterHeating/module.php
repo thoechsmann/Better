@@ -63,7 +63,7 @@ class BetterHeating extends IPSModule {
         $this->RegisterVariableString("WindowOpen", "Fenster ist geöffnet -> Heizung aus");
 
         $profileName = "BH_Boost";
-        if (@IPS_GetVariableProfile($profileName) === false && IPS_CreateVariableProfile($profileName, 2)) 
+        if (@IPS_GetVariableProfile($profileName) === false && IPS_CreateVariableProfile($profileName, 1)) 
         { 
             IPS_SetVariableProfileDigits($profileName, 1); 
             IPS_SetVariableProfileAssociation($profileName, 1, 'AN (%d)', '', -1); 
