@@ -62,7 +62,19 @@ class BetterHeating extends IPSModule {
 
         $this->RegisterVariableString("WindowOpen", "Fenster ist geöffnet -> Heizung aus");
 
-        $this->RegisterTimer("CheckWindows", 2, 'BH_Update($_IPS[\'TARGET\']);');
+        $profileName = "BH_Boost";
+        if (@IPS_GetVariableProfile($profileName) === false && IPS_CreateVariableProfile($profileName, 2)) 
+        { 
+            IPS_SetVariableProfileDigits($profileName, 1); 
+            IPS_SetVariableProfileAssociation($profileName, 1, 'AN (%d)', '', -1); 
+            IPS_SetVariableProfileAssociation($profileName, 0, 'AUS', '', -1); 
+        } 
+        
+        $this->RegisterVariableInteger("Boost", "Boost");
+        $id = IPS_GetObjectIDByIdent("Boost", $this->InstanceID);
+        IPS_SetVariableCustomProfile($id, $profileName);
+
+        $this->RegisterTimer("CheckWindows", 1, 'BH_Update($_IPS[\'TARGET\']);');
 	}
 
     private function RegisterLink($ident, $name, $targetInstanceID, $position) 
