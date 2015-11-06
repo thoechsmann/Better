@@ -87,6 +87,8 @@ class BetterHeating extends IPSModule {
 
     public function RequestAction($Ident, $Value) 
     {    
+        IPS_LogMessage("BetterHeating", "RequestAction for $Ident");
+
         switch($Ident) {
             case "Boost":
                 //Neuen Wert in die Statusvariable schreiben
@@ -95,7 +97,8 @@ class BetterHeating extends IPSModule {
             default:
                 throw new Exception("Invalid Ident");
         }
-     
+
+        IPS_LogMessage("BetterHeating", "RequestAction for $Ident done");
     }
 
     private function RegisterLink($ident, $name, $targetInstanceID, $position) 
