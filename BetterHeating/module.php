@@ -78,8 +78,8 @@ class BetterHeating extends IPSModule {
         
         IPS_LogMessage("BetterHeating", "ApplyChanges3");
         $id = $this->RegisterVariableInteger("Boost", "Boost");
+        $this->EnableAction("Boost");
         IPS_SetVariableCustomProfile($id, $profileName);
-        // $this->EnableAction($id);
         IPS_LogMessage("BetterHeating", "ApplyChanges4");
 
         $this->RegisterTimer("CheckWindows", 1, 'BH_Update($_IPS[\'TARGET\']);');
