@@ -98,8 +98,6 @@ class BetterHeating extends IPSModule {
 
         $id = $this->RegisterVariableInteger("BoostTime", "BoostTime");
         IPS_SetHidden($id, true);
-        $id = $this->RegisterVariableInteger("BoostStartTime", "BoostStartTime");
-        IPS_SetHidden($id, true);
 
         $this->RegisterTimer("Update", 1, 'BH_Update($_IPS[\'TARGET\']);'); 
 	}
@@ -112,7 +110,6 @@ class BetterHeating extends IPSModule {
             case "Boost":
                 $boostId = $this->GetIDForIdent("Boost");
                 $boostTimeId = $this->GetIDForIdent("BoostTime");
-                $boostTimeStartedId = $this->GetIDForIdent("BoostTimeStarted");
                 $boostTime = GetValue($boostTimeId);
 
                 if($Value == false)
@@ -129,7 +126,6 @@ class BetterHeating extends IPSModule {
                 }
 
                 SetValue($boostTimeId, $boostTime);                
-                SetValue($boostTimeStartedId, time());                
                 SetValue($this->GetIDForIdent($Ident), $Value);
 
                 break;
