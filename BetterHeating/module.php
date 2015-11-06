@@ -1,6 +1,8 @@
 <?
 class BetterHeating extends IPSModule {
-	public function Update() {
+
+	public function Update() 
+    {
         // IPS_LogMessage("BetterHeating", "update");
 
         // Check window State
@@ -29,7 +31,8 @@ class BetterHeating extends IPSModule {
         IPS_SetHidden($TargetComfortTempId, $mode != 1);        
     }
 
-	public function Create() {
+	public function Create() 
+    {
 		//Never delete this line!
 		parent::Create();		
 
@@ -50,7 +53,8 @@ class BetterHeating extends IPSModule {
         $this->RegisterPropertyInteger("window7InstanceID", 0);
 	}
 	
-	public function ApplyChanges() {
+	public function ApplyChanges() 
+    {
 		//Never delete this line!
 		parent::ApplyChanges();
 		
@@ -70,12 +74,25 @@ class BetterHeating extends IPSModule {
             IPS_SetVariableProfileAssociation($profileName, 0, 'AUS', '', -1); 
         } 
         
-        $this->RegisterVariableInteger("Boost", "Boost");
-        $id = IPS_GetObjectIDByIdent("Boost", $this->InstanceID);
+        $id = $this->RegisterVariableInteger("Boost", "Boost");
         IPS_SetVariableCustomProfile($id, $profileName);
+        $this->EnableAction($id);
 
         $this->RegisterTimer("CheckWindows", 1, 'BH_Update($_IPS[\'TARGET\']);');
 	}
+
+    public function RequestAction($Ident, $Value) 
+    {    
+        switch($Ident) {
+            case "Boost":
+                //Neuen Wert in die Statusvariable schreiben
+                SetValue($this->GetIDForIdent($Ident), $Value);
+                break;
+            default:
+                throw new Exception("Invalid Ident");
+        }
+     
+    }
 
     private function RegisterLink($ident, $name, $targetInstanceID, $position) 
     {
