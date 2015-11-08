@@ -89,22 +89,22 @@ class BetterHeating extends IPSModule {
         $this->RegisterLink("Mode", "Modus", $this->ReadPropertyInteger("modeInstanceID"), 5);
         $this->RegisterLink("ControlValue", "Stellwert", $this->ReadPropertyInteger("controlValueInstanceID"), 6);
         $boostId = $this->RegisterLink("Boost", "Boost", $this->ReadPropertyInteger("boostInstanceID"), 7);
-        $this->EnableAction("Boost");
+        // $this->EnableAction("Boost");
 
-        $profileName = "BH_Boost";
-        @IPS_DeleteVariableProfile($profileName);
-        IPS_CreateVariableProfile($profileName, 0);
-        IPS_SetVariableProfileAssociation($profileName, true, 'AN', 'Flame', 0xFF0000); 
-        IPS_SetVariableProfileAssociation($profileName, false, 'AUS', '', -1); 
+        // $profileName = "BH_Boost";
+        // @IPS_DeleteVariableProfile($profileName);
+        // IPS_CreateVariableProfile($profileName, 0);
+        // IPS_SetVariableProfileAssociation($profileName, true, 'AN', 'Flame', 0xFF0000); 
+        // IPS_SetVariableProfileAssociation($profileName, false, 'AUS', '', -1); 
 
-        IPS_SetVariableCustomProfile($boostId, $profileName);
+        // IPS_SetVariableCustomProfile($boostId, $profileName);
         
-        // $id = $this->RegisterVariableBoolean("Boost", "Boost");
+        // // $id = $this->RegisterVariableBoolean("Boost", "Boost");
 
-        $id = $this->RegisterVariableInteger("BoostTime", "BoostTime");
-        IPS_SetHidden($id, true);
+        // $id = $this->RegisterVariableInteger("BoostTime", "BoostTime");
+        // IPS_SetHidden($id, true);
 
-        $this->RegisterTimer("Update", 1, 'BH_Update($_IPS[\'TARGET\']);'); 
+        // $this->RegisterTimer("Update", 1, 'BH_Update($_IPS[\'TARGET\']);'); 
 	}
 
     public function RequestAction($Ident, $Value) 
