@@ -26,6 +26,6 @@
 	"actions":
 	[
 		{ "type": "Button", "label": "Update", "onClick": "BH_Update($id);" },
-		{ "type": "Button", "label": "SetMode", "onClick": "BH_SetMode($id, $mode);" }
+		{ "type": "Button", "label": "SetMode", "onClick": "BH_SetMode($id, 3);" }
 	]	
 }
