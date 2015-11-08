@@ -44,12 +44,17 @@ class BetterHeating extends IPSModule {
         {
             SetValue($boostId, false);
             IPS_SetName($boostId, "Boost");
-            EIB_Switch($this->ReadPropertyInteger("boostInstanceID"), false);
+            EIB_Switch(IPS_GetParent($this->ReadPropertyInteger("boostInstanceID")), false);
         }
         else
         {
             IPS_SetName($boostId, "Boost ($boostTime Minuten)");
         }
+    }
+
+    public function SetMode($mode)
+    {
+        EIB_Scale(IPS_GetParent($this->ReadPropertyInteger("modeInstanceID")), $mode);
     }
 
 	public function Create() 
@@ -104,6 +109,13 @@ class BetterHeating extends IPSModule {
         IPS_SetHidden($boostTimeId, true);
 
         $this->RegisterTimer("Update", 1, 'BH_Update($_IPS[\'TARGET\']);'); 
+
+        // Scheduled Event
+        $scheduler = $this->RegisterScheduler("Wochenplan");
+
+        IPS_SetEventScheduleAction($scheduler, 0, "Komfort", 0xFF0000, "BH_SetMode(\$_IPS['TARGET'], 1);");
+        IPS_SetEventScheduleAction($scheduler, 1, "Standby", 0xFFFF00, "BH_SetMode(\$_IPS['TARGET'], 2);");
+        IPS_SetEventScheduleAction($scheduler, 2, "Nacht", 0x0000FF, "BH_SetMode(\$_IPS['TARGET'], 3);");
 	}
 
     public function RequestAction($Ident, $Value) 
@@ -188,6 +200,31 @@ class BetterHeating extends IPSModule {
             IPS_SetEventCyclic($id, 0, 0, 0, 0, 1, 1); 
             IPS_SetEventActive($id, false); 
         } 
+
+        return $id;
     }
+
+    private function RegisterScheduler($ident) 
+    { 
+        $id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID); 
+
+        if ($id && IPS_GetEvent($id)['EventType'] <> 1) { 
+            IPS_DeleteEvent($id); 
+            $id = 0; 
+        } 
+
+        if (!$id) { 
+            $id = IPS_CreateEvent(1); 
+            IPS_SetParent($id, $this->InstanceID); 
+        }
+
+        IPS_SetIdent($id, $ident);  
+        IPS_SetName($id, $ident); 
+    
+        if (!IPS_EventExists($id)) throw new Exception("Event $ident could not be created."); 
+
+        return $id;
+    }
+
 }
 ?>
