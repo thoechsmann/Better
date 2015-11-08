@@ -93,18 +93,21 @@ class BetterHeating extends IPSModule {
         $this->RegisterLink("CurrentTargetTemp", "Soll Temperatur", $this->ReadPropertyInteger("currentTargetTempInstanceID"), 3);
         $this->RegisterLink("ControlValue", "Stellwert", $this->ReadPropertyInteger("controlValueInstanceID"), 10);
 
-        $profileName = "BH_Boost";
-        @IPS_DeleteVariableProfile($profileName);
-        IPS_CreateVariableProfile($profileName, 0);
-        IPS_SetVariableProfileAssociation($profileName, true, 'AN', '', 0xFF0000); 
-        IPS_SetVariableProfileAssociation($profileName, false, 'AUS', '', -1); 
-        
-        $boostId = $this->RegisterVariableBoolean("Boost", "Boost", "$profileName", 4);
-        IPS_SetIcon($boostId, "Flame");
-        $this->EnableAction("Boost");
+        if($this->ReadPropertyInteger("boostInstanceID") != 0)
+        {
+            $profileName = "BH_Boost";
+            @IPS_DeleteVariableProfile($profileName);
+            IPS_CreateVariableProfile($profileName, 0);
+            IPS_SetVariableProfileAssociation($profileName, true, 'AN', '', 0xFF0000); 
+            IPS_SetVariableProfileAssociation($profileName, false, 'AUS', '', -1); 
+            
+            $boostId = $this->RegisterVariableBoolean("Boost", "Boost", $profileName, 4);
+            IPS_SetIcon($boostId, "Flame");
+            $this->EnableAction("Boost");
 
-        $boostTimeId = $this->RegisterVariableInteger("BoostTime", "BoostTime");
-        IPS_SetHidden($boostTimeId, true);
+            $boostTimeId = $this->RegisterVariableInteger("BoostTime", "BoostTime");
+            IPS_SetHidden($boostTimeId, true);
+        }
 
         $this->RegisterTimer("Update", 1, 'BH_Update($_IPS[\'TARGET\']);'); 
 
@@ -147,6 +150,7 @@ class BetterHeating extends IPSModule {
                 EIB_Switch(IPS_GetParent($this->ReadPropertyInteger("boostInstanceID")), $Value);
 
                 break;
+                
             default:
                 throw new Exception("Invalid Ident");
         }
