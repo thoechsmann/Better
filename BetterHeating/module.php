@@ -110,6 +110,7 @@ class BetterHeating extends IPSModule {
         // Scheduled Event
         $scheduler = $this->RegisterScheduler("Wochenplan");
 
+        IPS_SetIcon($scheduler, "Calender");
         IPS_SetEventScheduleGroup($scheduler, 0, 127); //Mo - Fr (1 + 2 + 4 + 8 + 16)
         IPS_SetEventScheduleAction($scheduler, 0, "Komfort", 0xFF0000, "BH_SetMode(\$_IPS['TARGET'], 1);");
         IPS_SetEventScheduleAction($scheduler, 1, "Standby", 0xFFFF00, "BH_SetMode(\$_IPS['TARGET'], 2);");
