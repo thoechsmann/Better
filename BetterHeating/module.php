@@ -142,11 +142,14 @@ class BetterHeating extends IPSModule {
                 }
                 else
                 {
-                    $boostTime += 30;
-                    $boostTime = min($boostTime, 60);
-                    $boostTime = max($boostTime, 0);
+                    $boostIncrease = 30;
+                    $boostIncreaseMax = 60;
+
+                    $boostTime += $boostIncrease;
+                    $boostTime = min($boostTime, $boostIncreaseMax);
+                    $boostTime = max($boostTime, $boostIncrease);
                     IPS_SetName($boostId, "Boost ($boostTime Minuten)");
-                    $this->RegisterTimer("UpdateBoost", 5, 'BH_UpdateBoost($_IPS[\'TARGET\']);'); 
+                    $this->RegisterTimer("UpdateBoost", 60, 'BH_UpdateBoost($_IPS[\'TARGET\']);'); 
                 }
 
                 SetValue($boostTimeId, $boostTime);                
