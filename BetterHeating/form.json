@@ -16,7 +16,7 @@
 		{ "type": "SelectVariable", "name": "window4InstanceID", "caption": "Fenster4" },
 		{ "type": "SelectVariable", "name": "window5InstanceID", "caption": "Fenster5" },
 		{ "type": "SelectVariable", "name": "window6InstanceID", "caption": "Fenster6" },
-		{ "type": "SelectVariable", "name": "window7InstanceID", "caption": "Fenster7" }
+		{ "type": "SelectVariable", "name": "window7InstanceID", "caption": "Fenster7" },
 
 		{ "type": "Label", "label": "Test:"},
 		{ "type": "ValidationTextBox", "name": "mode", "caption": "mode" }
@@ -25,7 +25,7 @@
 	],
 	"actions":
 	[
-		{ "type": "Button", "label": "Update", "onClick": "BH_Update($id);" }
+		{ "type": "Button", "label": "Update", "onClick": "BH_Update($id);" },
 		{ "type": "Button", "label": "SetMode", "onClick": "BH_SetMode($id, $mode);" }
 	]	
 }
