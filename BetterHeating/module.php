@@ -96,10 +96,11 @@ class BetterHeating extends IPSModule {
         $profileName = "BH_Boost";
         @IPS_DeleteVariableProfile($profileName);
         IPS_CreateVariableProfile($profileName, 0);
-        IPS_SetVariableProfileAssociation($profileName, true, 'AN', 'Flame', 0xFF0000); 
+        IPS_SetVariableProfileAssociation($profileName, true, 'AN', '', 0xFF0000); 
         IPS_SetVariableProfileAssociation($profileName, false, 'AUS', '', -1); 
         
         $boostId = $this->RegisterVariableBoolean("Boost", "Boost", "$profileName");
+        IPS_SetIcon($boostId, "Flame");
         $this->EnableAction("Boost");
 
         $boostTimeId = $this->RegisterVariableInteger("BoostTime", "BoostTime");
@@ -109,8 +110,7 @@ class BetterHeating extends IPSModule {
 
         // Scheduled Event
         $scheduler = $this->RegisterScheduler("Wochenplan");
-
-        IPS_SetIcon($scheduler, "Calender");
+        IPS_SetIcon($scheduler, "Calendar");
         IPS_SetEventScheduleGroup($scheduler, 0, 127); //Mo - Fr (1 + 2 + 4 + 8 + 16)
         IPS_SetEventScheduleAction($scheduler, 0, "Komfort", 0xFF0000, "BH_SetMode(\$_IPS['TARGET'], 1);");
         IPS_SetEventScheduleAction($scheduler, 1, "Standby", 0xFFFF00, "BH_SetMode(\$_IPS['TARGET'], 2);");
