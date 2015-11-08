@@ -88,7 +88,9 @@ class BetterHeating extends IPSModule {
         $this->RegisterLink("TargetComfortTemp", "Soll Temperatur (Komfort)", $this->ReadPropertyInteger("targetTempComfortInstanceID"), 4);
         $this->RegisterLink("Mode", "Modus", $this->ReadPropertyInteger("modeInstanceID"), 5);
         $this->RegisterLink("ControlValue", "Stellwert", $this->ReadPropertyInteger("controlValueInstanceID"), 6);
-        $this->RegisterLink("Boost", "Boost", $this->ReadPropertyInteger("boostInstanceID"), 7);
+        $boostId = $this->RegisterLink("Boost", "Boost", $this->ReadPropertyInteger("boostInstanceID"), 7);
+        $this->EnableAction("Boost");
+        IPS_SetVariableCustomProfile($boostId, $profileName);
 
         $profileName = "BH_Boost";
         @IPS_DeleteVariableProfile($profileName);
@@ -97,8 +99,6 @@ class BetterHeating extends IPSModule {
         IPS_SetVariableProfileAssociation($profileName, false, 'AUS', '', -1); 
         
         // $id = $this->RegisterVariableBoolean("Boost", "Boost");
-        $this->EnableAction("Boost");
-        IPS_SetVariableCustomProfile($id, $profileName);
 
         $id = $this->RegisterVariableInteger("BoostTime", "BoostTime");
         IPS_SetHidden($id, true);
