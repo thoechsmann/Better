@@ -42,9 +42,9 @@ class BetterHeating extends IPSModule {
 
         if($boostTime <= 0)
         {
-            // SetValue($boostId, false);
-            EIB_Switch($boostId, false);
+            SetValue($boostId, false);
             IPS_SetName($boostId, "Boost");
+            EIB_Switch($this->ReadPropertyInteger("boostInstanceID"), false);
         }
         else
         {
@@ -88,8 +88,6 @@ class BetterHeating extends IPSModule {
         $this->RegisterLink("TargetComfortTemp", "Soll Temperatur (Komfort)", $this->ReadPropertyInteger("targetTempComfortInstanceID"), 4);
         $this->RegisterLink("Mode", "Modus", $this->ReadPropertyInteger("modeInstanceID"), 5);
         $this->RegisterLink("ControlValue", "Stellwert", $this->ReadPropertyInteger("controlValueInstanceID"), 6);
-        $boostId = $this->RegisterLink("Boost", "Boost", $this->ReadPropertyInteger("boostInstanceID"), 7);
-        $this->EnableAction("Boost");
 
         $profileName = "BH_Boost";
         @IPS_DeleteVariableProfile($profileName);
@@ -97,12 +95,13 @@ class BetterHeating extends IPSModule {
         IPS_SetVariableProfileAssociation($profileName, true, 'AN', 'Flame', 0xFF0000); 
         IPS_SetVariableProfileAssociation($profileName, false, 'AUS', '', -1); 
 
-        IPS_SetVariableCustomProfile($boostId, $profileName);
         
-        // $id = $this->RegisterVariableBoolean("Boost", "Boost");
+        $boostId = $this->RegisterVariableBoolean("Boost", "Boost");
+        $this->EnableAction("Boost");
+        IPS_SetVariableCustomProfile($boostId, $profileName);
 
-        $boostTimeid = $this->RegisterVariableInteger("BoostTime", "BoostTime");
-        IPS_SetHidden($boostTimeid, true);
+        $boostTimeId = $this->RegisterVariableInteger("BoostTime", "BoostTime");
+        IPS_SetHidden($boostTimeId, true);
 
         $this->RegisterTimer("Update", 1, 'BH_Update($_IPS[\'TARGET\']);'); 
 	}
@@ -132,8 +131,8 @@ class BetterHeating extends IPSModule {
                 }
 
                 SetValue($boostTimeId, $boostTime);                
-                //SetValue($this->GetIDForIdent($Ident), $Value);
-                EIB_Switch($this->GetIDForIdent($Ident), $Value);
+                SetValue($this->GetIDForIdent($Ident), $Value);
+                EIB_Switch($this->ReadPropertyInteger("boostInstanceID"), $Value);
 
                 break;
             default:
