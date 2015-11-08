@@ -132,7 +132,7 @@ class BetterHeating extends IPSModule {
 
                 SetValue($boostTimeId, $boostTime);                
                 SetValue($this->GetIDForIdent($Ident), $Value);
-                EIB_Switch($this->ReadPropertyInteger("boostInstanceID"), $Value);
+                EIB_Switch(IPS_GetParent($this->ReadPropertyInteger("boostInstanceID")), $Value);
 
                 break;
             default:
