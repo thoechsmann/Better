@@ -90,13 +90,14 @@ class BetterHeating extends IPSModule {
         $this->RegisterLink("ControlValue", "Stellwert", $this->ReadPropertyInteger("controlValueInstanceID"), 6);
         $boostId = $this->RegisterLink("Boost", "Boost", $this->ReadPropertyInteger("boostInstanceID"), 7);
         $this->EnableAction("Boost");
-        IPS_SetVariableCustomProfile($boostId, $profileName);
 
         $profileName = "BH_Boost";
         @IPS_DeleteVariableProfile($profileName);
         IPS_CreateVariableProfile($profileName, 0);
         IPS_SetVariableProfileAssociation($profileName, true, 'AN', 'Flame', 0xFF0000); 
         IPS_SetVariableProfileAssociation($profileName, false, 'AUS', '', -1); 
+
+        IPS_SetVariableCustomProfile($boostId, $profileName);
         
         // $id = $this->RegisterVariableBoolean("Boost", "Boost");
 
