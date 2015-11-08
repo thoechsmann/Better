@@ -85,25 +85,22 @@ class BetterHeating extends IPSModule {
 		//Never delete this line!
 		parent::ApplyChanges();
 		
-        $this->RegisterVariableString("WindowOpen", "Fenster ist geöffnet -> Heizung aus");
+        $this->RegisterVariableString("WindowOpen", "Fenster ist geöffnet -> Heizung aus", "", -100);
 
-        $this->RegisterLink("ControlValue", "Stellwert", $this->ReadPropertyInteger("controlValueInstanceID"), 1);
-        $this->RegisterLink("CurrentTemp", "Temperatur", $this->ReadPropertyInteger("currentTempInstanceID"), 2);
-        $this->RegisterLink("CurrentTargetTemp", "Soll Temperatur", $this->ReadPropertyInteger("currentTargetTempInstanceID"), 3);
-        $this->RegisterLink("TargetComfortTemp", "Soll Temperatur (Komfort)", $this->ReadPropertyInteger("targetTempComfortInstanceID"), 4);
-        $this->RegisterLink("Mode", "Modus", $this->ReadPropertyInteger("modeInstanceID"), 5);
-        $this->RegisterLink("ControlValue", "Stellwert", $this->ReadPropertyInteger("controlValueInstanceID"), 6);
+        $this->RegisterLink("CurrentTemp", "Temperatur", $this->ReadPropertyInteger("currentTempInstanceID"), -10);
+        $this->RegisterLink("Mode", "Modus", $this->ReadPropertyInteger("modeInstanceID"), -9);
+        $this->RegisterLink("TargetComfortTemp", "Soll Temperatur (Komfort)", $this->ReadPropertyInteger("targetTempComfortInstanceID"), -8);
+        $this->RegisterLink("CurrentTargetTemp", "Soll Temperatur", $this->ReadPropertyInteger("currentTargetTempInstanceID"), -8);
+        $this->RegisterLink("ControlValue", "Stellwert", $this->ReadPropertyInteger("controlValueInstanceID"), 10);
 
         $profileName = "BH_Boost";
         @IPS_DeleteVariableProfile($profileName);
         IPS_CreateVariableProfile($profileName, 0);
         IPS_SetVariableProfileAssociation($profileName, true, 'AN', 'Flame', 0xFF0000); 
         IPS_SetVariableProfileAssociation($profileName, false, 'AUS', '', -1); 
-
         
-        $boostId = $this->RegisterVariableBoolean("Boost", "Boost");
+        $boostId = $this->RegisterVariableBoolean("Boost", "Boost", "$profileName");
         $this->EnableAction("Boost");
-        IPS_SetVariableCustomProfile($boostId, $profileName);
 
         $boostTimeId = $this->RegisterVariableInteger("BoostTime", "BoostTime");
         IPS_SetHidden($boostTimeId, true);
