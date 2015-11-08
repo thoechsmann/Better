@@ -42,7 +42,8 @@ class BetterHeating extends IPSModule {
 
         if($boostTime <= 0)
         {
-            SetValue($boostId, false);
+            // SetValue($boostId, false);
+            EIB_Switch($boostId, false);
             IPS_SetName($boostId, "Boost");
         }
         else
@@ -63,6 +64,7 @@ class BetterHeating extends IPSModule {
         $this->RegisterPropertyInteger("controlValueInstanceID", 0);
         $this->RegisterPropertyInteger("targetTempComfortInstanceID", 0);
         $this->RegisterPropertyInteger("modeInstanceID", 0);
+        $this->RegisterPropertyInteger("boostInstanceID", 0);
 
         $this->RegisterPropertyInteger("window1InstanceID", 0);
         $this->RegisterPropertyInteger("window2InstanceID", 0);
@@ -78,13 +80,15 @@ class BetterHeating extends IPSModule {
 		//Never delete this line!
 		parent::ApplyChanges();
 		
-        $this->RegisterLink("CurrentTemp", "Temperatur", $this->ReadPropertyInteger("currentTempInstanceID"), 1);
-        $this->RegisterLink("CurrentTargetTemp", "Soll Temperatur", $this->ReadPropertyInteger("currentTargetTempInstanceID"), 2);
-        $this->RegisterLink("TargetComfortTemp", "Soll Temperatur (Komfort)", $this->ReadPropertyInteger("targetTempComfortInstanceID"), 3);
-        $this->RegisterLink("Mode", "Modus", $this->ReadPropertyInteger("modeInstanceID"), 4);
-        $this->RegisterLink("ControlValue", "Stellwert", $this->ReadPropertyInteger("controlValueInstanceID"), 5);
-
         $this->RegisterVariableString("WindowOpen", "Fenster ist geöffnet -> Heizung aus");
+
+        $this->RegisterLink("ControlValue", "Stellwert", $this->ReadPropertyInteger("controlValueInstanceID"), 1);
+        $this->RegisterLink("CurrentTemp", "Temperatur", $this->ReadPropertyInteger("currentTempInstanceID"), 2);
+        $this->RegisterLink("CurrentTargetTemp", "Soll Temperatur", $this->ReadPropertyInteger("currentTargetTempInstanceID"), 3);
+        $this->RegisterLink("TargetComfortTemp", "Soll Temperatur (Komfort)", $this->ReadPropertyInteger("targetTempComfortInstanceID"), 4);
+        $this->RegisterLink("Mode", "Modus", $this->ReadPropertyInteger("modeInstanceID"), 5);
+        $this->RegisterLink("ControlValue", "Stellwert", $this->ReadPropertyInteger("controlValueInstanceID"), 6);
+        $this->RegisterLink("Boost", "Boost", $this->ReadPropertyInteger("boostInstanceID"), 7);
 
         $profileName = "BH_Boost";
         @IPS_DeleteVariableProfile($profileName);
@@ -92,7 +96,7 @@ class BetterHeating extends IPSModule {
         IPS_SetVariableProfileAssociation($profileName, true, 'AN', 'Flame', 0xFF0000); 
         IPS_SetVariableProfileAssociation($profileName, false, 'AUS', '', -1); 
         
-        $id = $this->RegisterVariableBoolean("Boost", "Boost");
+        // $id = $this->RegisterVariableBoolean("Boost", "Boost");
         $this->EnableAction("Boost");
         IPS_SetVariableCustomProfile($id, $profileName);
 
@@ -121,12 +125,14 @@ class BetterHeating extends IPSModule {
                 else
                 {
                     $boostTime += 30;
+                    $boostTime = min($boostTime, 60);
                     IPS_SetName($boostId, "Boost ($boostTime Minuten)");
                     $this->RegisterTimer("UpdateBoost", 5, 'BH_UpdateBoost($_IPS[\'TARGET\']);'); 
                 }
 
                 SetValue($boostTimeId, $boostTime);                
-                SetValue($this->GetIDForIdent($Ident), $Value);
+                //SetValue($this->GetIDForIdent($Ident), $Value);
+                EIB_Switch($this->GetIDForIdent($Ident), $Value);
 
                 break;
             default:

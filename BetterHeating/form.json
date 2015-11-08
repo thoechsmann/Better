@@ -6,6 +6,7 @@
 		{ "type": "SelectVariable", "name": "controlValueInstanceID", "caption": "Aktueller Stellwert" },
 		{ "type": "SelectVariable", "name": "targetTempComfortInstanceID", "caption": "Soll Temperatur Komfort" },
 		{ "type": "SelectVariable", "name": "modeInstanceID", "caption": "Heizmodus" },
+		{ "type": "SelectVariable", "name": "boostInstanceID", "caption": "Boost" },
 
 		{ "type": "Label", "label": "Fenster Kontakte:"},
 
