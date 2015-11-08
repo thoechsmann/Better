@@ -45,6 +45,7 @@ class BetterHeating extends IPSModule {
             SetValue($boostId, false);
             IPS_SetName($boostId, "Boost");
             EIB_Switch(IPS_GetParent($this->ReadPropertyInteger("boostInstanceID")), false);
+            $this->RegisterTimer("UpdateBoost", 0, 'BH_UpdateBoost($_IPS[\'TARGET\']);'); 
         }
         else
         {
