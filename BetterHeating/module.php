@@ -208,13 +208,13 @@ class BetterHeating extends IPSModule {
     { 
         $id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID); 
 
-        if ($id && IPS_GetEvent($id)['EventType'] <> 1) { 
+        if ($id && IPS_GetEvent($id)['EventType'] <> 2) { 
             IPS_DeleteEvent($id); 
             $id = 0; 
         } 
 
         if (!$id) { 
-            $id = IPS_CreateEvent(1); 
+            $id = IPS_CreateEvent(2); 
             IPS_SetParent($id, $this->InstanceID); 
         }
 
