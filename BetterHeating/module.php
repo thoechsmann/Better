@@ -85,7 +85,7 @@ class BetterHeating extends IPSModule {
 		//Never delete this line!
 		parent::ApplyChanges();
 		
-        $this->RegisterVariableString("WindowOpen", "Fenster ist geöffnet -> Heizung aus", "", -100);
+        $this->RegisterVariableString("WindowOpen", "Fenster ist geöffnet -> Heizung aus", "", -15);
 
         $this->RegisterLink("CurrentTemp", "Temperatur", $this->ReadPropertyInteger("currentTempInstanceID"), -10);
         $this->RegisterLink("Mode", "Modus", $this->ReadPropertyInteger("modeInstanceID"), -9);
