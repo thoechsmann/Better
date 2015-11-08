@@ -78,6 +78,8 @@ class BetterHeating extends IPSModule {
         $this->RegisterPropertyInteger("window5InstanceID", 0);
         $this->RegisterPropertyInteger("window6InstanceID", 0);
         $this->RegisterPropertyInteger("window7InstanceID", 0);
+
+        $this->RegisterPropertyInteger("mode", 0);
 	}
 	
 	public function ApplyChanges() 
@@ -150,7 +152,7 @@ class BetterHeating extends IPSModule {
                 EIB_Switch(IPS_GetParent($this->ReadPropertyInteger("boostInstanceID")), $Value);
 
                 break;
-                
+
             default:
                 throw new Exception("Invalid Ident");
         }
