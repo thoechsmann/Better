@@ -129,7 +129,7 @@ class BetterHeating extends IPSModule {
             $windowId = $this->ReadPropertyInteger("window" . $i . "InstanceID");
             if($windowId != 0)
             {
-                $this->RegisterTrigger("Window1Trigger", $windowId, 'BH_UpdateWindow($_IPS[\'TARGET\']);');
+                $this->RegisterTrigger("window" . $i . "Trigger", $windowId, 'BH_UpdateWindow($_IPS[\'TARGET\']);');
             }
         }
 
