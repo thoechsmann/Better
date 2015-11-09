@@ -146,7 +146,7 @@ class BetterHeating extends IPSModule {
             }
         }
 
-        $this->RegisterTrigger("HeatingMode", $this->ReadPropertyInteger("modeInstanceID");, 'BH_UpdateHeatingMode($_IPS[\'TARGET\']);');
+        $this->RegisterTrigger("HeatingMode", $this->ReadPropertyInteger("modeInstanceID"), 'BH_UpdateHeatingMode($_IPS[\'TARGET\']);');
 	}
 
     public function RequestAction($Ident, $Value) 
