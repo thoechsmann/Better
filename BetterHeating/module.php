@@ -31,7 +31,7 @@ class BetterHeating extends IPSModule {
         IPS_SetHidden($TargetComfortTempId, $mode != 1);   
 
         // Check presence
-             
+
     }
 
     public function UpdateBoost() 
@@ -115,8 +115,6 @@ class BetterHeating extends IPSModule {
             IPS_SetHidden($boostTimeId, true);
         }
 
-        $this->RegisterTimer("Update", 1, 'BH_Update($_IPS[\'TARGET\']);'); 
-
         // Scheduled Event
         $scheduler = $this->RegisterScheduler("Wochenplan");
         IPS_SetIcon($scheduler, "Calendar");
@@ -125,6 +123,10 @@ class BetterHeating extends IPSModule {
         IPS_SetEventScheduleAction($scheduler, 0, "Komfort", 0xFF0000, "BH_SetMode(\$_IPS['TARGET'], 1);");
         IPS_SetEventScheduleAction($scheduler, 1, "Standby", 0xFFFF00, "BH_SetMode(\$_IPS['TARGET'], 2);");
         IPS_SetEventScheduleAction($scheduler, 2, "Nacht", 0x0000FF, "BH_SetMode(\$_IPS['TARGET'], 3);");
+
+        $this->RegisterTrigger("Window1Trigger", 'BH_Update($_IPS[\'TARGET\']);', $this->ReadPropertyInteger("window1InstanceID"));
+
+        // $this->RegisterTimer("Update", 1, 'BH_Update($_IPS[\'TARGET\']);'); 
 	}
 
     public function RequestAction($Ident, $Value) 
@@ -186,6 +188,31 @@ class BetterHeating extends IPSModule {
         return $link;
     }
 
+    private function RegisterTrigger($ident, $targetId, $script)
+    { 
+        $id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID); 
+
+        if ($id && IPS_GetEvent($id)['EventType'] <> 0) { 
+            IPS_DeleteEvent($id); 
+            $id = 0; 
+        } 
+
+        if (!$id) { 
+            $id = IPS_CreateEvent(0); 
+            IPS_SetParent($id, $this->InstanceID); 
+            IPS_SetIdent($id, $ident);  
+        } 
+
+        if (!IPS_EventExists($id)) throw new Exception("Ident with name $ident is used for wrong object type"); 
+
+        IPS_SetName($id, $ident); 
+        IPS_SetHidden($id, true); 
+        IPS_SetEventScript($id, "$script;"); 
+        IPS_SetEventTrigger($id, 1 /*1=update*/, $target);
+
+        return $id;
+    }
+
     private function RegisterTimer($ident, $interval, $script) 
     { 
         $id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID); 
@@ -201,11 +228,11 @@ class BetterHeating extends IPSModule {
             IPS_SetIdent($id, $ident);  
         } 
 
+        if (!IPS_EventExists($id)) throw new Exception("Ident with name $ident is used for wrong object type"); 
+
         IPS_SetName($id, $ident); 
         IPS_SetHidden($id, true); 
         IPS_SetEventScript($id, "$script;"); 
-
-        if (!IPS_EventExists($id)) throw new Exception("Ident with name $ident is used for wrong object type"); 
 
         if ($interval > 0) { 
             IPS_SetEventCyclic($id, 0, 0, 0, 0, 1, $interval); 
@@ -231,11 +258,11 @@ class BetterHeating extends IPSModule {
             $id = IPS_CreateEvent(2); 
             IPS_SetParent($id, $this->InstanceID); 
         }
+    
+        if (!IPS_EventExists($id)) throw new Exception("Event $ident could not be created."); 
 
         IPS_SetIdent($id, $ident);  
         IPS_SetName($id, $ident); 
-    
-        if (!IPS_EventExists($id)) throw new Exception("Event $ident could not be created."); 
 
         return $id;
     }
