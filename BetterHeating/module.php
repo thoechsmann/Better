@@ -1,12 +1,11 @@
 <?
 class BetterHeating extends IPSModule {
 
-	public function Update() 
+	public function UpdateWindow() 
     {
         // IPS_LogMessage("BetterHeating", "update");
 
         // Check window State
-        $maxWindows = 7;
         $windowOpenId = IPS_GetObjectIDByIdent("WindowOpen", $this->InstanceID);
         $openWindowCount = 0;
 
@@ -21,14 +20,14 @@ class BetterHeating extends IPSModule {
 
         IPS_SetHidden($windowOpenId, $openWindowCount == 0);
 
-        // Check Heating Mode
-        $modeId = $this->ReadPropertyInteger("modeInstanceID");
-        $mode = GetValue($modeId);
-        $CurrentTargetTempId = IPS_GetObjectIDByIdent("CurrentTargetTemp", $this->InstanceID);
-        $TargetComfortTempId = IPS_GetObjectIDByIdent("TargetComfortTemp", $this->InstanceID);
+        // // Check Heating Mode
+        // $modeId = $this->ReadPropertyInteger("modeInstanceID");
+        // $mode = GetValue($modeId);
+        // $CurrentTargetTempId = IPS_GetObjectIDByIdent("CurrentTargetTemp", $this->InstanceID);
+        // $TargetComfortTempId = IPS_GetObjectIDByIdent("TargetComfortTemp", $this->InstanceID);
 
-        IPS_SetHidden($CurrentTargetTempId, $mode == 1);        
-        IPS_SetHidden($TargetComfortTempId, $mode != 1);   
+        // IPS_SetHidden($CurrentTargetTempId, $mode == 1);        
+        // IPS_SetHidden($TargetComfortTempId, $mode != 1);   
 
         // Check presence
 
@@ -124,7 +123,16 @@ class BetterHeating extends IPSModule {
         IPS_SetEventScheduleAction($scheduler, 1, "Standby", 0xFFFF00, "BH_SetMode(\$_IPS['TARGET'], 2);");
         IPS_SetEventScheduleAction($scheduler, 2, "Nacht", 0x0000FF, "BH_SetMode(\$_IPS['TARGET'], 3);");
 
-        $this->RegisterTrigger("Window1Trigger", $this->ReadPropertyInteger("window1InstanceID"), 'BH_Update($_IPS[\'TARGET\']);');
+        $maxWindows = 7;
+        for($i = 1; $i <= $maxWindows; $i++)
+        {
+            $windowId = $this->ReadPropertyInteger("window" . $i . "InstanceID");
+            if($windowId != 0)
+            {
+                $this->RegisterTrigger("Window1Trigger", $windowId, 'BH_UpdateWindow($_IPS[\'TARGET\']);');
+            }
+        }
+
 
         // $this->RegisterTimer("Update", 1, 'BH_Update($_IPS[\'TARGET\']);'); 
 	}
@@ -238,7 +246,7 @@ class BetterHeating extends IPSModule {
             IPS_SetEventCyclic($id, 0, 0, 0, 0, 1, $interval); 
             IPS_SetEventActive($id, true); 
         } else { 
-            IPS_SetEventCyclic($id, 0, 0, 0, 0, 1, 1); 
+            IPS_SetEventCyclic($id, 0, 0, 0, 0, 1, $interval); 
             IPS_SetEventActive($id, false); 
         } 
 
