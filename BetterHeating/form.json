@@ -18,14 +18,10 @@
 		{ "type": "SelectVariable", "name": "window6InstanceID", "caption": "Fenster6" },
 		{ "type": "SelectVariable", "name": "window7InstanceID", "caption": "Fenster7" },
 
-		{ "type": "Label", "label": "Test:"},
-		{ "type": "ValidationTextBox", "name": "mode", "caption": "mode" }
-
-
+		{ "type": "SelectVariable", "name": "presenceInstanceID", "caption": "Anwesenheit" }
 	],
 	"actions":
 	[
 		{ "type": "Button", "label": "Update", "onClick": "BH_Update($id);" },
-		{ "type": "Button", "label": "SetMode", "onClick": "BH_SetMode($id, 3);" }
 	]	
 }

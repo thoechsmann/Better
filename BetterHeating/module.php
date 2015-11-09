@@ -28,7 +28,10 @@ class BetterHeating extends IPSModule {
         $TargetComfortTempId = IPS_GetObjectIDByIdent("TargetComfortTemp", $this->InstanceID);
 
         IPS_SetHidden($CurrentTargetTempId, $mode == 1);        
-        IPS_SetHidden($TargetComfortTempId, $mode != 1);        
+        IPS_SetHidden($TargetComfortTempId, $mode != 1);   
+
+        // Check presence
+
     }
 
     public function UpdateBoost() 
@@ -80,7 +83,7 @@ class BetterHeating extends IPSModule {
         $this->RegisterPropertyInteger("window6InstanceID", 0);
         $this->RegisterPropertyInteger("window7InstanceID", 0);
 
-        $this->RegisterPropertyInteger("mode", 0);
+        $this->RegisterPropertyInteger("presenceInstanceId", 0);
 	}
 	
 	public function ApplyChanges() 
@@ -112,7 +115,7 @@ class BetterHeating extends IPSModule {
             IPS_SetHidden($boostTimeId, true);
         }
 
-        $this->RegisterTimer("Update", 1, 'BH_Update($_IPS[\'TARGET\']);'); 
+        $this->RegisterTimer("Update", 0, 'BH_Update($_IPS[\'TARGET\']);'); 
 
         // Scheduled Event
         $scheduler = $this->RegisterScheduler("Wochenplan");
