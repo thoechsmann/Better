@@ -34,6 +34,18 @@ class BetterHeating extends IPSModule {
 
     }
 
+    public function UpdateHeatingMode() 
+    {
+        // Check Heating Mode
+        $modeId = $this->ReadPropertyInteger("modeInstanceID");
+        $mode = GetValue($modeId);
+        $CurrentTargetTempId = IPS_GetObjectIDByIdent("CurrentTargetTemp", $this->InstanceID);
+        $TargetComfortTempId = IPS_GetObjectIDByIdent("TargetComfortTemp", $this->InstanceID);
+
+        IPS_SetHidden($CurrentTargetTempId, $mode == 1);        
+        IPS_SetHidden($TargetComfortTempId, $mode != 1);   
+    }
+
     public function UpdateBoost() 
     {
         $boostId = $this->GetIDForIdent("Boost");
@@ -134,8 +146,7 @@ class BetterHeating extends IPSModule {
             }
         }
 
-
-        // $this->RegisterTimer("Update", 1, 'BH_Update($_IPS[\'TARGET\']);'); 
+        $this->RegisterTrigger("HeatingMode", $this->ReadPropertyInteger("modeInstanceID");, 'BH_UpdateHeatingMode($_IPS[\'TARGET\']);');
 	}
 
     public function RequestAction($Ident, $Value) 
