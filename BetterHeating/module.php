@@ -217,6 +217,7 @@ class BetterHeating extends IPSModule {
         IPS_SetHidden($id, true); 
         IPS_SetEventScript($id, "$script;"); 
         IPS_SetEventTrigger($id, 1 /*1=update*/, $targetId);
+        IPS_SetEventActive($id, true); 
 
         return $id;
     }
