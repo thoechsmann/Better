@@ -124,7 +124,7 @@ class BetterHeating extends IPSModule {
         IPS_SetEventScheduleAction($scheduler, 1, "Standby", 0xFFFF00, "BH_SetMode(\$_IPS['TARGET'], 2);");
         IPS_SetEventScheduleAction($scheduler, 2, "Nacht", 0x0000FF, "BH_SetMode(\$_IPS['TARGET'], 3);");
 
-        $this->RegisterTrigger("Window1Trigger", 'BH_Update($_IPS[\'TARGET\']);', $this->ReadPropertyInteger("window1InstanceID"));
+        $this->RegisterTrigger("Window1Trigger", $this->ReadPropertyInteger("window1InstanceID"), 'BH_Update($_IPS[\'TARGET\']);');
 
         // $this->RegisterTimer("Update", 1, 'BH_Update($_IPS[\'TARGET\']);'); 
 	}
