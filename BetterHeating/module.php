@@ -31,7 +31,7 @@ class BetterHeating extends IPSModule {
         IPS_SetHidden($TargetComfortTempId, $mode != 1);   
 
         // Check presence
-
+             
     }
 
     public function UpdateBoost() 
@@ -115,7 +115,7 @@ class BetterHeating extends IPSModule {
             IPS_SetHidden($boostTimeId, true);
         }
 
-        $this->RegisterTimer("Update", 0, 'BH_Update($_IPS[\'TARGET\']);'); 
+        $this->RegisterTimer("Update", 1, 'BH_Update($_IPS[\'TARGET\']);'); 
 
         // Scheduled Event
         $scheduler = $this->RegisterScheduler("Wochenplan");
