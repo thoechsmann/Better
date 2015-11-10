@@ -1,12 +1,9 @@
 {
 	"elements":
 	[
-		{ "type": "SelectVariable", "name": "position", "caption": "Position" },
-		{ "type": "SelectVariable", "name": "upDown", "caption": "Hoch/Runter" },
-		{ "type": "SelectVariable", "name": "stop", "caption": "Stopp" }
-	],
-	"actions":
-	[
-		{ "type": "Button", "label": "Update", "onClick": "BetterShutter_Update($id);" }
-	]	
+		{ "type": "SelectVariable", "name": "positionId", "caption": "Position" },
+		{ "type": "SelectVariable", "name": "upDownId", "caption": "Hoch/Runter" },
+		{ "type": "SelectVariable", "name": "stopId", "caption": "Stopp" },
+		{ "type": "SelectVariable", "name": "windowId", "caption": "Fensterkontakt" },
+	]
 }

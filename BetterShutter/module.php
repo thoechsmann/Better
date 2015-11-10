@@ -1,46 +1,45 @@
 <?
-class BetterShutter extends IPSModule {
-		
-	public function Create() {
+require_once(__DIR__ . "/../BetterBase.php");
+
+class BetterShutter extends BetterBase {
+
+	public function Create() 
+    {
 		//Never delete this line!
 		parent::Create();		
 
 		//These lines are parsed on Symcon Startup or Instance creation
 		//You cannot use variables here. Just static values.
-		$this->RegisterPropertyInteger("currentTemp", 0);
-        $this->RegisterPropertyInteger("currentTemp", 0);
-        $this->RegisterPropertyInteger("currentTemp", 0);
-        $this->RegisterPropertyInteger("currentTemp", 0);
+        $this->RegisterPropertyInteger("positionId", 0);
+        $this->RegisterPropertyInteger("upDownId", 0);
+        $this->RegisterPropertyInteger("stopId", 0);
+        $this->RegisterPropertyInteger("windowId", 0);
 	}
 	
-	public function ApplyChanges() {
+	public function ApplyChanges() 
+    {
 		//Never delete this line!
 		parent::ApplyChanges();
 		
-		// $this->RegisterVariableFloat("CurrentTemp", "Current Temperature");
-        // $this->RegisterVariableFloat("TargetTemp", "Target Temperature");
-		// $this->RegisterVariableString("Holiday", "Holiday");
-		//$this->RegisterEventCyclic("UpdateTimer", "Automatische aktualisierung", 15);
+        // Cleanup
+        foreach(IPS_GetChildrenIDs($this->InstanceID) as $childId)
+        {
+            $this->DeleteObject($childId);
+        }
 
-        $link = IPS_CreateLink();
-        IPS_SetName($link, "PositionLink");
-        IPS_SetParent($link, $this->InstanceID);
-        IPS_SetLinkTargetID($link, $this->ReadPropertyInteger("position"));
+        $this->RegisterLink("windowStatus", "Fenster", $this->ReadPropertyInteger("windowId"), 1);
 	}
 
-    public function Update() {
-  //       $holiday = $this->GetFeiertag();
+    public function RequestAction($Ident, $Value) 
+    {    
+        switch($Ident) {
+            case "Boost":
+                break;
 
-  //       IPS_SetHidden($this->GetIDForIdent("IsHoliday"),true);
+            default:
+                throw new Exception("Invalid Ident");
+        }
+    }
 
-		// SetValue($this->GetIDForIdent("Holiday"), $holiday);
-
-  //       if($holiday != "Arbeitstag" and $holiday != "Wochenende") {
-  //           SetValue($this->GetIDForIdent("IsHoliday"), true);
-  //       }
-  //       else {
-  //           SetValue($this->GetIDForIdent("IsHoliday"), false);
-  //       }
-    }        
 }
 ?>

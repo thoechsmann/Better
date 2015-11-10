@@ -157,17 +157,16 @@ class BetterHeating extends BetterBase {
         if($this->ReadPropertyInteger("presenceInstanceID") != 0)
             $this->RegisterTrigger("PresenceTrigger", $this->ReadPropertyInteger("presenceInstanceID"), 'BH_UpdatePresence($_IPS[\'TARGET\']);');
 
-        $this->UpdateBoost();
         $this->UpdatePresence();
         $this->UpdateWindow();
         $this->UpdateHeatingMode();
+        if($this->ReadPropertyInteger("boostInstanceID") != 0)
+            $this->UpdateBoost();
 
 	}
 
     public function RequestAction($Ident, $Value) 
     {    
-        IPS_LogMessage("BetterHeating", "RequestAction for $Ident");
-
         switch($Ident) {
             case "Boost":
                 $boostId = $this->GetIDForIdent("Boost");
@@ -201,9 +200,7 @@ class BetterHeating extends BetterBase {
             default:
                 throw new Exception("Invalid Ident");
         }
-
-        IPS_LogMessage("BetterHeating", "RequestAction for $Ident done");
     }
-    
+
 }
 ?>
