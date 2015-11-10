@@ -88,7 +88,7 @@ class BetterBase extends IPSModule {
         return $id;
     }
 
-    protected function RegisterScheduler($ident, $name) 
+    protected function RegisterScheduler($ident, $name = "") 
     { 
         if(empty($name))
             $name = $ident;
