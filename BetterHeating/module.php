@@ -87,7 +87,7 @@ class BetterHeating extends IPSModule {
         $this->RegisterPropertyInteger("window6InstanceID", 0);
         $this->RegisterPropertyInteger("window7InstanceID", 0);
 
-        $this->RegisterPropertyInteger("presenceInstanceId", 0);
+        $this->RegisterPropertyInteger("presenceInstanceID", 0);
 	}
 	
 	public function ApplyChanges() 
