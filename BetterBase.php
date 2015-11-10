@@ -88,8 +88,11 @@ class BetterBase extends IPSModule {
         return $id;
     }
 
-    protected function RegisterScheduler($ident) 
+    protected function RegisterScheduler($ident, $name) 
     { 
+        if(empty($name))
+            $name = $ident;
+
         $id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID); 
 
         if ($id && IPS_GetEvent($id)['EventType'] <> 2) { 

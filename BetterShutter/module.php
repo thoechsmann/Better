@@ -39,7 +39,7 @@ class BetterShutter extends BetterBase {
         IPS_SetEventScheduleAction($scheduler, 0, "Offen", 0x00FF00, "BH_SetMode(\$_IPS['TARGET'], 1);");
         IPS_SetEventScheduleAction($scheduler, 1, "Geschlossen", 0x0000FF, "BH_SetMode(\$_IPS['TARGET'], 2);");
 
-        $scheduler = $this->RegisterScheduler("Wochenplan (schulfrei)");
+        $scheduler = $this->RegisterScheduler("Wochenplan_schulfrei", "Wochenplan (schulfrei)");
         IPS_SetIcon($scheduler, "Calendar");
         IPS_SetPosition($scheduler, 5);
         IPS_SetEventScheduleGroup($scheduler, 0, 127); //Mo - Fr (1 + 2 + 4 + 8 + 16)
