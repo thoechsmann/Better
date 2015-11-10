@@ -20,18 +20,6 @@ class BetterHeating extends IPSModule {
         }
 
         IPS_SetHidden($windowOpenId, $openWindowCount == 0);
-
-        // // Check Heating Mode
-        // $modeId = $this->ReadPropertyInteger("modeInstanceID");
-        // $mode = GetValue($modeId);
-        // $CurrentTargetTempId = IPS_GetObjectIDByIdent("CurrentTargetTemp", $this->InstanceID);
-        // $TargetComfortTempId = IPS_GetObjectIDByIdent("TargetComfortTemp", $this->InstanceID);
-
-        // IPS_SetHidden($CurrentTargetTempId, $mode == 1);        
-        // IPS_SetHidden($TargetComfortTempId, $mode != 1);   
-
-        // Check presence
-
     }
 
     public function UpdateHeatingMode() 
@@ -66,6 +54,10 @@ class BetterHeating extends IPSModule {
         {
             IPS_SetName($boostId, "Boost ($boostTime Minuten)");
         }
+    }
+
+    public function UpdatePresence() 
+    {
     }
 
     public function SetMode($mode)
@@ -103,6 +95,15 @@ class BetterHeating extends IPSModule {
 		//Never delete this line!
 		parent::ApplyChanges();
 		
+        // Cleanup
+        foreach(IPS_GetChildrenIDs($this->InstanceID) as $childId)
+        {
+            if(IPS_GetObject($childId)["ObjectIdent"] == "Wochenplan")
+                continue;
+
+            $this->DeleteObject($childId);
+        }
+
         $this->RegisterVariableString("WindowOpen", "Fenster ist geöffnet -> Heizung aus", "", 0);
 
         $this->RegisterLink("CurrentTemp", "Temperatur", $this->ReadPropertyInteger("currentTempInstanceID"), 1);
@@ -136,6 +137,7 @@ class BetterHeating extends IPSModule {
         IPS_SetEventScheduleAction($scheduler, 1, "Standby", 0xFFFF00, "BH_SetMode(\$_IPS['TARGET'], 2);");
         IPS_SetEventScheduleAction($scheduler, 2, "Nacht", 0x0000FF, "BH_SetMode(\$_IPS['TARGET'], 3);");
 
+        // Window triggers
         $maxWindows = 7;
         for($i = 1; $i <= $maxWindows; $i++)
         {
@@ -146,7 +148,12 @@ class BetterHeating extends IPSModule {
             }
         }
 
-        $this->RegisterTrigger("HeatingMode", $this->ReadPropertyInteger("modeInstanceID"), 'BH_UpdateHeatingMode($_IPS[\'TARGET\']);');
+        // Mode trigger
+        $this->RegisterTrigger("HeatingModeTrigger", $this->ReadPropertyInteger("modeInstanceID"), 'BH_UpdateHeatingMode($_IPS[\'TARGET\']);');
+
+        // Presence trigger
+        if($this->ReadPropertyInteger("presenceInstanceID") != 0)
+            $this->RegisterTrigger("PresenceTrigger", $this->ReadPropertyInteger("presenceInstanceID"), 'BH_UpdatePresence($_IPS[\'TARGET\']);');
 	}
 
     public function RequestAction($Ident, $Value) 
@@ -288,5 +295,43 @@ class BetterHeating extends IPSModule {
         return $id;
     }
 
+    /** Löschen eines beliebigen Objektes 
+     * 
+     * Die Funktion löscht ein IP-Symcon Object mit der übergebenen ID. 
+     * 
+     * @param integer $objectId ID des Objektes 
+     * 
+     */ 
+    function DeleteObject($ObjectId) { 
+        $Object     = IPS_GetObject($ObjectId); 
+        $ObjectType = $Object['ObjectType']; 
+        switch ($ObjectType) { 
+            case 0: // Category 
+                DeleteCategory($ObjectId); 
+                break; 
+            case 1: // Instance 
+                EmptyCategory($ObjectId); 
+                IPS_DeleteInstance($ObjectId); 
+                break; 
+            case 2: // Variable 
+                IPS_DeleteVariable($ObjectId); 
+                break; 
+            case 3: // Script 
+                IPS_DeleteScript($ObjectId, false); 
+                break; 
+            case 4: // Event 
+                IPS_DeleteEvent($ObjectId); 
+                break; 
+            case 5: // Media 
+                IPS_DeleteMedia($ObjectId, true); 
+                break; 
+            case 6: // Link 
+                IPS_DeleteLink($ObjectId); 
+                break; 
+            default: 
+                Error ("Found unknown ObjectType $ObjectType"); 
+        } 
+    } 
+     
 }
 ?>
