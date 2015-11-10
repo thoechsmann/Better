@@ -69,11 +69,8 @@ class BetterHeating extends BetterBase {
 
 	public function Create() 
     {
-		//Never delete this line!
 		parent::Create();		
 
-		//These lines are parsed on Symcon Startup or Instance creation
-		//You cannot use variables here. Just static values.
         $this->RegisterPropertyInteger("currentTempInstanceID", 0);
         $this->RegisterPropertyInteger("currentTargetTempInstanceID", 0);
         $this->RegisterPropertyInteger("controlValueInstanceID", 0);
@@ -94,7 +91,6 @@ class BetterHeating extends BetterBase {
 	
 	public function ApplyChanges() 
     {
-		//Never delete this line!
 		parent::ApplyChanges();
 		
         // Cleanup
