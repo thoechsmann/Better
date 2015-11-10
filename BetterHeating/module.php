@@ -154,6 +154,12 @@ class BetterHeating extends IPSModule {
         // Presence trigger
         if($this->ReadPropertyInteger("presenceInstanceID") != 0)
             $this->RegisterTrigger("PresenceTrigger", $this->ReadPropertyInteger("presenceInstanceID"), 'BH_UpdatePresence($_IPS[\'TARGET\']);');
+
+        $this->UpdateBoost();
+        $this->UpdatePresence();
+        $this->UpdateWindow();
+        $this->UpdateHeatingMode();
+
 	}
 
     public function RequestAction($Ident, $Value) 
