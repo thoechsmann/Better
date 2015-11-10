@@ -18,6 +18,8 @@
 		{ "type": "SelectVariable", "name": "window6InstanceID", "caption": "Fenster6" },
 		{ "type": "SelectVariable", "name": "window7InstanceID", "caption": "Fenster7" },
 
+		{ "type": "Label", "label": "Sonstiges:"},
+
 		{ "type": "SelectVariable", "name": "presenceInstanceID", "caption": "Anwesenheit" }
 	],
 	"actions":
