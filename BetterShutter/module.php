@@ -66,54 +66,53 @@ class BetterShutter extends BetterBase {
         }
     }
 
-    public function OpenShutter()
+    public function OpenShutter() // called by scheduler
     {
-        $shouldBeDownId = $this->GetIDForIdent("shouldBeDown");
-        $shouldBeDown = SetValue($shouldBeDownId, false);
-
-        // send close to KNX
-        $upDownId = $this->ReadPropertyInteger("upDownId");
-        EIB_Switch(IPS_GetParent($upDownId), false);
+        $this->SetValueForIdent("shouldBeDown", false);
+        $this->MoveShutterToShouldBePosition();
     }
 
-    public function CloseShutter()
+    public function CloseShutter() // called by scheduler
     {   
-        $shouldBeDownId = $this->GetIDForIdent("shouldBeDown");
-        $shouldBeDown = SetValue($shouldBeDownId, true);
-
-        // send close to KNX
-        $upDownId = $this->ReadPropertyInteger("upDownId");
-        EIB_Switch(IPS_GetParent($upDownId), true);
+        $this->SetValueForIdent("shouldBeDown", true);
+        $this->MoveShutterToShouldBePosition();
     }
 
     public function DownEvent()
     {
         $windowId = $this->ReadPropertyInteger("windowId");
-        if(GetValue($id) == false) // window closed
+
+        if(GetValue($id) == true) // window closed
         {
-            return;
+            $this->MoveShutterToLimitedDown();
         }
-
-        IPS_LogMessage("BetterShutter", "Window opened. Limiting shutter movement");
-
-        $positionId = $this->ReadPropertyInteger("positionId");
-        $positionLimit = $this->ReadPropertyInteger("positionLimit");
-        EIB_Scale(IPS_GetParent($positionId), $positionLimit);
     }
 
     public function WindowEvent()
     {
-        $id = $this->ReadPropertyInteger("windowId");
-        if(GetValue($id) == false) // window closed
+        $windowId = $this->ReadPropertyInteger("windowId");
+
+        if(GetValue($id) == true) // window closed
         {
-            return;
+            $this->MoveShutterToLimitedDown();
         }
+        else
+        {
+            $this->MoveShutterToShouldBePosition();
+        }
+    }
 
-        IPS_LogMessage("BetterShutter", "Window opened. Limiting shutter movement");
-
+    private function MoveShutterToLimitedDown()
+    {
         $positionId = $this->ReadPropertyInteger("positionId");
         $positionLimit = $this->ReadPropertyInteger("positionLimit");
-        EIB_Scale(IPS_GetParent($positionId), $positionLimit);
+        EIB_Scale(IPS_GetParent($positionId), $positionLimit);        
+    }
+
+    private function MoveShutterToShouldBePosition()
+    {
+        $upDownId = $this->ReadPropertyInteger("upDownId");
+        EIB_Switch(IPS_GetParent($upDownId), $this->ValueForIdent("shouldBeDown"));
     }
 
 }

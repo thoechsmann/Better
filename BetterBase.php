@@ -12,6 +12,18 @@ class BetterBase extends IPSModule {
 		parent::ApplyChanges();
 	}
 
+    protected function SetValueForIdent($ident, $value)
+    {
+        $id = $this->GetIDForIdent($ident);
+        SetValue($id, $value);
+    }
+
+    protected function ValueForIdent($ident)
+    {
+        $id = $this->GetIDForIdent($ident);
+        return GetValue($id);
+    }
+
     protected function RegisterLink($ident, $name, $targetInstanceID, $position) 
     {
         $link = @IPS_GetObjectIDByIdent($ident, $this->InstanceID);
