@@ -30,7 +30,14 @@ class BetterBase extends IPSModule {
         return $link;
     }
 
-    protected function RegisterTrigger($ident, $targetId, $script)
+    /* Type: 
+        0 - update
+        1 - change
+        2 - bigger
+        3 - smaller
+        4 - value
+    */
+    protected function RegisterTrigger($ident, $targetId, $script, $triggerType = 1)
     { 
         $id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID); 
 
@@ -50,7 +57,7 @@ class BetterBase extends IPSModule {
         IPS_SetName($id, $ident); 
         IPS_SetHidden($id, true); 
         IPS_SetEventScript($id, "$script;"); 
-        IPS_SetEventTrigger($id, 1 /*1=update*/, $targetId);
+        IPS_SetEventTrigger($id, $triggerType, $targetId);
         IPS_SetEventActive($id, true); 
 
         return $id;

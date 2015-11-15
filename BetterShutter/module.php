@@ -35,19 +35,19 @@ class BetterShutter extends BetterBase {
         $scheduler = $this->RegisterScheduler("Wochenplan");
         IPS_SetIcon($scheduler, "Calendar");
         IPS_SetPosition($scheduler, 5);
-        IPS_SetEventScheduleGroup($scheduler, 0, 127); //Mo - Fr (1 + 2 + 4 + 8 + 16)
+        IPS_SetEventScheduleGroup($scheduler, 0, 127); // Mo - Fr (1 + 2 + 4 + 8 + 16)
         IPS_SetEventScheduleAction($scheduler, 0, "Offen", 0x00FF00, "BH_SetMode(\$_IPS['TARGET'], 1);");
         IPS_SetEventScheduleAction($scheduler, 1, "Geschlossen", 0x0000FF, "BH_SetMode(\$_IPS['TARGET'], 2);");
 
         $scheduler = $this->RegisterScheduler("Wochenplan_schulfrei", "Wochenplan (schulfrei)");
         IPS_SetIcon($scheduler, "Calendar");
         IPS_SetPosition($scheduler, 5);
-        IPS_SetEventScheduleGroup($scheduler, 0, 127); //Mo - Fr (1 + 2 + 4 + 8 + 16)
+        IPS_SetEventScheduleGroup($scheduler, 0, 127); // Mo - Fr (1 + 2 + 4 + 8 + 16)
         IPS_SetEventScheduleAction($scheduler, 0, "Offen", 0x00FF00, "BH_SetMode(\$_IPS['TARGET'], 1);");
         IPS_SetEventScheduleAction($scheduler, 1, "Geschlossen", 0x0000FF, "BH_SetMode(\$_IPS['TARGET'], 2);");
 
-        $this->RegisterTrigger("upDownTrigger", $this->ReadPropertyInteger("upDownId"), 'BH_UpdateHeatingMode($_IPS[\'TARGET\']);');
-
+        $downTriggerId = $this->RegisterTrigger("upDownTrigger", $this->ReadPropertyInteger("upDownId"), 'BS_DownEvent($_IPS[\'TARGET\']);', 4);
+        IPS_SetEventTriggerValue($downTriggerId, true);
 	}
 
     public function RequestAction($Ident, $Value) 
@@ -59,6 +59,11 @@ class BetterShutter extends BetterBase {
             default:
                 throw new Exception("Invalid Ident");
         }
+    }
+
+    public function DownEvent()
+    {
+        IPS_LogMessage("BetterShutter", "DownEvent");
     }
 
 }
