@@ -5,5 +5,11 @@
 		{ "type": "SelectVariable", "name": "upDownId", "caption": "Hoch/Runter" },
 		{ "type": "SelectVariable", "name": "stopId", "caption": "Stopp" },
 		{ "type": "SelectVariable", "name": "windowId", "caption": "Fensterkontakt" },
-	]
+	],
+	"actions":
+	[
+		{ "type": "Button", "label": "Open Shutter", "onClick": "BS_OpenShutter($id);" },
+		{ "type": "Button", "label": "Close Shutter", "onClick": "BS_CloseShutter($id);" },
+	]	
+
 }
