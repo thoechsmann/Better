@@ -5,6 +5,7 @@
 		{ "type": "SelectVariable", "name": "upDownId", "caption": "Hoch/Runter" },
 		{ "type": "SelectVariable", "name": "stopId", "caption": "Stopp" },
 		{ "type": "SelectVariable", "name": "windowId", "caption": "Fensterkontakt" },
+		{ "type": "NumberSpinner", "name": "windowId", "caption": "Fensterkontakt" },
 	],
 	"actions":
 	[

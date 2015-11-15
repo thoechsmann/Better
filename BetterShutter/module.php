@@ -11,6 +11,8 @@ class BetterShutter extends BetterBase {
         $this->RegisterPropertyInteger("upDownId", 0);
         $this->RegisterPropertyInteger("stopId", 0);
         $this->RegisterPropertyInteger("windowId", 0);
+
+        $this->RegisterPropertyInteger("positionLimit", 70);
 	}
 	
 	public function ApplyChanges() 
@@ -28,7 +30,6 @@ class BetterShutter extends BetterBase {
         $this->RegisterLink("position", "Position", $this->ReadPropertyInteger("positionId"), 1);
         $this->RegisterLink("stop", "Stopp", $this->ReadPropertyInteger("stopId"), 1);
 
-        $limitId = $this->RegisterVariableInteger("positionLimit", "Limit");
         $twighlightCheckId = $this->RegisterVariableBoolean("twighlightCheck", "Dämmerungsautomatik");
         $this->RegisterVariableBoolean("shouldBeDown", "shouldBeDown");
 
