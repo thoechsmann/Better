@@ -71,7 +71,7 @@ class BetterShutter extends BetterBase {
         $shouldBeDown = IPS_SetValue($shouldBeDownId, false);
 
         // send close to KNX
-        $upDownId = $this->ReadPropertyInteger("upDownId")
+        $upDownId = $this->ReadPropertyInteger("upDownId");
         EIB_Switch(IPS_GetParent($upDownId), false);
     }
 
@@ -81,7 +81,7 @@ class BetterShutter extends BetterBase {
         $shouldBeDown = IPS_SetValue($shouldBeDownId, true);
 
         // send close to KNX
-        $upDownId = $this->ReadPropertyInteger("upDownId")
+        $upDownId = $this->ReadPropertyInteger("upDownId");
         EIB_Switch(IPS_GetParent($upDownId), true);
     }
 
