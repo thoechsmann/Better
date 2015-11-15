@@ -82,7 +82,7 @@ class BetterShutter extends BetterBase {
     {
         $windowId = $this->ReadPropertyInteger("windowId");
 
-        if(GetValue($windowId) == true) // window closed
+        if(GetValue($windowId) == true) // window open
         {
             $this->MoveShutterToLimitedDown();
         }
@@ -92,9 +92,10 @@ class BetterShutter extends BetterBase {
     {
         $windowId = $this->ReadPropertyInteger("windowId");
 
-        if(GetValue($windowId) == true) // window closed
+        if(GetValue($windowId) == true) // window open
         {
-            $this->MoveShutterToLimitedDown();
+            if($this->ValueForIdent("shouldBeDown"))
+                $this->MoveShutterToLimitedDown();
         }
         else
         {
