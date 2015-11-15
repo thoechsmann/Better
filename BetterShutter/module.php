@@ -97,7 +97,7 @@ class BetterShutter extends BetterBase {
 
         $positionId = $this->ReadPropertyInteger("positionId");
         $positionLimit = $this->ReadPropertyInteger("positionLimit");
-        EIB_Scale(IPS_GetParent($positionId, $positionLimit);
+        EIB_Scale(IPS_GetParent($positionId), $positionLimit);
     }
 
     public function WindowEvent()
