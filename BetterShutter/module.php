@@ -68,7 +68,7 @@ class BetterShutter extends BetterBase {
     public function OpenShutter()
     {
         $shouldBeDownId = $this->GetIDForIdent("shouldBeDown");
-        $shouldBeDown = IPS_SetValue($shouldBeDownId, false);
+        $shouldBeDown = SetValue($shouldBeDownId, false);
 
         // send close to KNX
         $upDownId = $this->ReadPropertyInteger("upDownId");
@@ -78,7 +78,7 @@ class BetterShutter extends BetterBase {
     public function CloseShutter()
     {   
         $shouldBeDownId = $this->GetIDForIdent("shouldBeDown");
-        $shouldBeDown = IPS_SetValue($shouldBeDownId, true);
+        $shouldBeDown = SetValue($shouldBeDownId, true);
 
         // send close to KNX
         $upDownId = $this->ReadPropertyInteger("upDownId");
