@@ -95,8 +95,8 @@ class BetterShutter extends BetterBase {
 
         IPS_LogMessage("BetterShutter", "Window opened. Limiting shutter movement");
 
-        $positionId = $this->ReadPropertyInteger("positionId"));
-        $positionLimit = $this->ReadPropertyInteger("positionLimit"));
+        $positionId = $this->ReadPropertyInteger("positionId");
+        $positionLimit = $this->ReadPropertyInteger("positionLimit");
         EIB_Scale(IPS_GetParent($positionId, $positionLimit);
     }
 
