@@ -41,7 +41,7 @@ class BetterHeating extends BetterBase {
         $boostTime = $this->GetValueForIdent("BoostTime");
 
         $boostTime--;
-        $this->SetValueForIdent($"BoostTime", $boostTime);
+        $this->SetValueForIdent("BoostTime", $boostTime);
 
         if($boostTime <= 0)
         {
