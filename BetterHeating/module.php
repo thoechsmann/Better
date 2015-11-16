@@ -163,7 +163,7 @@ class BetterHeating extends BetterBase {
         }
     }
 
-    private DeactivateBoost()
+    private function DeactivateBoost()
     {
         $boostId = $this->GetIDForIdent("Boost");
 
@@ -174,7 +174,7 @@ class BetterHeating extends BetterBase {
         $this->RegisterTimer("UpdateBoost", 0, 'BH_UpdateBoost($_IPS[\'TARGET\']);'); 
     }
 
-    private IncreaseBoost()
+    private function IncreaseBoost()
     {
         $boostId = $this->GetIDForIdent("Boost");
         $boostTime = $this->GetValueForIdent("BoostTime");
