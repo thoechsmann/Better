@@ -10,6 +10,7 @@ class BetterBase extends IPSModule {
 	public function ApplyChanges() 
     {
 		parent::ApplyChanges();
+        $this->RemoveAllButSchedulers();
 	}
 
     protected function SetValueForIdent($ident, $value)
@@ -18,7 +19,7 @@ class BetterBase extends IPSModule {
         SetValue($id, $value);
     }
 
-    protected function ValueForIdent($ident)
+    protected function GetValueForIdent($ident)
     {
         $id = $this->GetIDForIdent($ident);
         return GetValue($id);
@@ -163,5 +164,21 @@ class BetterBase extends IPSModule {
         } 
     } 
      
+    private RemoveAllButSchedulers()
+    {
+        foreach(IPS_GetChildrenIDs($this->InstanceID) as $childId)
+        {
+            $object = IPS_GetObject($childId);
+
+            if($object["ObjectType"] == 4) // Is event.
+            {
+                $event = IPS_GetEvent($childId);
+                if($event["EventType"] == 2) // Is scheduler.
+                    continue;
+            }
+
+            $this->DeleteObject($childId);
+        }
+    }
 }
 ?>

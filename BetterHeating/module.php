@@ -8,7 +8,7 @@ class BetterHeating extends BetterBase {
         // IPS_LogMessage("BetterHeating", "update");
 
         // Check window State
-        $windowOpenId = IPS_GetObjectIDByIdent("WindowOpen", $this->InstanceID);
+        $windowOpenId = $this->GetIDForIdent("WindowOpen");
         $openWindowCount = 0;
 
         $maxWindows = 7;
@@ -27,10 +27,9 @@ class BetterHeating extends BetterBase {
     public function UpdateHeatingMode() 
     {
         // Check Heating Mode
-        $modeId = $this->ReadPropertyInteger("modeInstanceID");
-        $mode = GetValue($modeId);
-        $CurrentTargetTempId = IPS_GetObjectIDByIdent("CurrentTargetTemp", $this->InstanceID);
-        $TargetComfortTempId = IPS_GetObjectIDByIdent("TargetComfortTemp", $this->InstanceID);
+        $mode = $this->GetValueForIdent("modeInstanceID");
+        $CurrentTargetTempId = $this->GetIDForIdent("CurrentTargetTemp");
+        $TargetComfortTempId = $this->GetIDForIdent("TargetComfortTemp");
 
         IPS_SetHidden($CurrentTargetTempId, $mode == 1);        
         IPS_SetHidden($TargetComfortTempId, $mode != 1);   
@@ -39,18 +38,14 @@ class BetterHeating extends BetterBase {
     public function UpdateBoost() 
     {
         $boostId = $this->GetIDForIdent("Boost");
-        $boostTimeId = $this->GetIDForIdent("BoostTime");
-        $boostTime = GetValue($boostTimeId);
+        $boostTime = $this->GetValueForIdent("BoostTime");
 
         $boostTime--;
-        SetValue($boostTimeId, $boostTime);
+        $this->SetValueForIdent($"BoostTime", $boostTime);
 
         if($boostTime <= 0)
         {
-            SetValue($boostId, false);
-            IPS_SetName($boostId, "Boost");
-            EIB_Switch(IPS_GetParent($this->ReadPropertyInteger("boostInstanceID")), false);
-            $this->RegisterTimer("UpdateBoost", 0, 'BH_UpdateBoost($_IPS[\'TARGET\']);'); 
+            $this->DeactivateBoost();
         }
         else
         {
@@ -93,15 +88,6 @@ class BetterHeating extends BetterBase {
     {
 		parent::ApplyChanges();
 		
-        // Cleanup
-        foreach(IPS_GetChildrenIDs($this->InstanceID) as $childId)
-        {
-            if(IPS_GetObject($childId)["ObjectIdent"] == "Wochenplan")
-                continue;
-
-            $this->DeleteObject($childId);
-        }
-
         $this->RegisterVariableString("WindowOpen", "Fenster ist geöffnet -> Heizung aus", "", 0);
 
         $this->RegisterLink("CurrentTemp", "Temperatur", $this->ReadPropertyInteger("currentTempInstanceID"), 1);
@@ -165,37 +151,46 @@ class BetterHeating extends BetterBase {
     {    
         switch($Ident) {
             case "Boost":
-                $boostId = $this->GetIDForIdent("Boost");
-                $boostTimeId = $this->GetIDForIdent("BoostTime");
-                $boostTime = GetValue($boostTimeId);
-
                 if($Value == false)
-                {
-                    $boostTime = 0;
-                    IPS_SetName($boostId, "Boost");
-                    $this->RegisterTimer("UpdateBoost", 0, 'BH_UpdateBoost($_IPS[\'TARGET\']);'); 
-                }
+                    $this->DeactivateBoost();
                 else
-                {
-                    $boostIncrease = 30;
-                    $boostIncreaseMax = 60;
-
-                    $boostTime += $boostIncrease;
-                    $boostTime = min($boostTime, $boostIncreaseMax);
-                    $boostTime = max($boostTime, $boostIncrease);
-                    IPS_SetName($boostId, "Boost ($boostTime Minuten)");
-                    $this->RegisterTimer("UpdateBoost", 60, 'BH_UpdateBoost($_IPS[\'TARGET\']);'); 
-                }
-
-                SetValue($boostTimeId, $boostTime);                
-                SetValue($this->GetIDForIdent($Ident), $Value);
-                EIB_Switch(IPS_GetParent($this->ReadPropertyInteger("boostInstanceID")), $Value);
+                    $this->IncreaseBoost();
 
                 break;
 
             default:
                 throw new Exception("Invalid Ident");
         }
+    }
+
+    private DeactivateBoost()
+    {
+        $boostId = $this->GetIDForIdent("Boost");
+
+        SetValue($boostId, false);
+        $this->SetValueForIdent("BoostTime", 0);
+        IPS_SetName($boostId, "Boost");
+        EIB_Switch(IPS_GetParent($this->ReadPropertyInteger("boostInstanceID")), false);
+        $this->RegisterTimer("UpdateBoost", 0, 'BH_UpdateBoost($_IPS[\'TARGET\']);'); 
+    }
+
+    private IncreaseBoost()
+    {
+        $boostId = $this->GetIDForIdent("Boost");
+        $boostTime = $this->GetValueForIdent("BoostTime");
+
+        $boostIncrease = 30;
+        $boostIncreaseMax = 60;
+
+        $boostTime += $boostIncrease;
+        $boostTime = min($boostTime, $boostIncreaseMax);
+        $boostTime = max($boostTime, $boostIncrease);
+
+        SetValue($boostId, true);
+        IPS_SetName($boostId, "Boost ($boostTime Minuten)");
+        $this->RegisterTimer("UpdateBoost", 60, 'BH_UpdateBoost($_IPS[\'TARGET\']);'); 
+        $this->SetValueForIdent("BoostTime", $boostTime);
+        EIB_Switch(IPS_GetParent($this->ReadPropertyInteger("boostInstanceID")), $Value);
     }
 
 }

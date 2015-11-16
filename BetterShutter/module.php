@@ -19,12 +19,6 @@ class BetterShutter extends BetterBase {
     {
 		parent::ApplyChanges();
 		
-        // Cleanup
-        foreach(IPS_GetChildrenIDs($this->InstanceID) as $childId)
-        {
-            $this->DeleteObject($childId);
-        }
-
         $this->RegisterLink("windowStatus", "Fenster", $this->ReadPropertyInteger("windowId"), 0);
         $this->RegisterLink("upDown", "Hoch/Runter", $this->ReadPropertyInteger("upDownId"), 1);
         $this->RegisterLink("position", "Position", $this->ReadPropertyInteger("positionId"), 1);
@@ -94,7 +88,7 @@ class BetterShutter extends BetterBase {
 
         if(GetValue($windowId) == true) // window open
         {
-            if($this->ValueForIdent("shouldBeDown"))
+            if($this->GetValueForIdent("shouldBeDown"))
                 $this->MoveShutterToLimitedDown();
         }
         else
@@ -113,7 +107,7 @@ class BetterShutter extends BetterBase {
     private function MoveShutterToShouldBePosition()
     {
         $upDownId = $this->ReadPropertyInteger("upDownId");
-        EIB_Switch(IPS_GetParent($upDownId), $this->ValueForIdent("shouldBeDown"));
+        EIB_Switch(IPS_GetParent($upDownId), $this->GetValueForIdent("shouldBeDown"));
     }
 
 }
