@@ -27,7 +27,8 @@ class BetterHeating extends BetterBase {
     public function UpdateHeatingMode() 
     {
         // Check Heating Mode
-        $mode = $this->GetValueForIdent("modeInstanceID");
+        $modeId = $this->ReadPropertyInteger("modeInstanceID");
+        $mode = GetValue($modeId);
         $CurrentTargetTempId = $this->GetIDForIdent("CurrentTargetTemp");
         $TargetComfortTempId = $this->GetIDForIdent("TargetComfortTemp");
 
