@@ -20,7 +20,7 @@ class BetterBase extends IPSModule {
     }
 
     protected function GetValueForIdent($ident)
-    {
+    { 
         $id = $this->GetIDForIdent($ident);
         return GetValue($id);
     }

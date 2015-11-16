@@ -4,13 +4,14 @@
 		{ "type": "SelectVariable", "name": "positionId", "caption": "Position" },
 		{ "type": "SelectVariable", "name": "upDownId", "caption": "Hoch/Runter" },
 		{ "type": "SelectVariable", "name": "stopId", "caption": "Stopp" },
+		{ "type": "SelectVariable", "name": "statusUpId", "caption": "Status Position oben" },
 		{ "type": "SelectVariable", "name": "windowId", "caption": "Fensterkontakt" },
-		{ "type": "NumberSpinner", "name": "positionLimit", "caption": "Positions Limit" },
+		{ "type": "NumberSpinner", "name": "positionLimit", "caption": "Positions Limit" }
 	],
 	"actions":
 	[
 		{ "type": "Button", "label": "Open Shutter", "onClick": "BS_OpenShutter($id);" },
-		{ "type": "Button", "label": "Close Shutter", "onClick": "BS_CloseShutter($id);" },
+		{ "type": "Button", "label": "Close Shutter", "onClick": "BS_CloseShutter($id);" }
 	]	
 
 }

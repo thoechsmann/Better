@@ -10,6 +10,7 @@ class BetterShutter extends BetterBase {
         $this->RegisterPropertyInteger("positionId", 0);
         $this->RegisterPropertyInteger("upDownId", 0);
         $this->RegisterPropertyInteger("stopId", 0);
+        $this->RegisterPropertyInteger("statusUpId", 0);
         $this->RegisterPropertyInteger("windowId", 0);
 
         $this->RegisterPropertyInteger("positionLimit", 70);
@@ -25,7 +26,7 @@ class BetterShutter extends BetterBase {
         $this->RegisterLink("stop", "Stopp", $this->ReadPropertyInteger("stopId"), 1);
 
         $twighlightCheckId = $this->RegisterVariableBoolean("twighlightCheck", "Dämmerungsautomatik");
-        $this->RegisterVariableBoolean("shouldBeDown", "shouldBeDown");
+        $shouldBeDown = $this->RegisterVariableBoolean("shouldBeDown", "shouldBeDown");
 
         // Scheduled Event
         $scheduler = $this->RegisterScheduler("Wochenplan");
@@ -46,6 +47,10 @@ class BetterShutter extends BetterBase {
         IPS_SetEventTriggerValue($downTriggerId, true);
 
         $downTriggerId = $this->RegisterTrigger("openCloseTrigger", $this->ReadPropertyInteger("windowId"), 'BS_WindowEvent($_IPS[\'TARGET\']);', 1);
+
+        // If shutter is up, we assume $shouldBeDown = false at module creation time.
+        $statusUpId = $this->ReadPropertyInteger("statusUpId");
+        $shouldBeDown = !GetValue($statusUpId);
 
 	}
 
