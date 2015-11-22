@@ -86,11 +86,10 @@ class BetterShutter extends BetterBase {
         EIB_Switch(IPS_GetParent($upDownId), true);
     }
 
-    public function UpDownEvent($propertyIdent)
+    public function UpDownEvent($upDownId)
     {
-        IPS_LogMessage("BetterShutter", "DownEvent $$propertyIdent");
+        IPS_LogMessage("BetterShutter", "DownEvent $upDownId");
 
-        $upDownId = $this->ReadPropertyInteger($propertyIdent);
         $shouldBeDown = GetValue($upDownId);
         $windowId = $this->ReadPropertyInteger("windowId");        
         $windowOpen = GetValue($windowId);
