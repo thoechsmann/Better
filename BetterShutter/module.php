@@ -3,7 +3,8 @@ require_once(__DIR__ . "/../BetterBase.php");
 
 class BetterShutter extends BetterBase {
 
-    private $isDayId = 18987;
+    // private $isDayId = 18987;
+    private $isDayId = 52946;
 
 	public function Create() 
     {
@@ -34,7 +35,7 @@ class BetterShutter extends BetterBase {
 
         $this->RegisterVariableBoolean("twighlightCheck", "Dämmerungsautomatik", "~Switch");
         $this->EnableAction("twighlightCheck");
-        $this->RegisterVariableBoolean("twighlightCheck", true);
+        $this->WriteVariableBoolean("twighlightCheck", true);
 
         $openOnDawn = $this->RegisterVariableBoolean("openOnDawn", "Bei Morgendämmerung öffnen");
         IPS_SetHidden($openOnDawn, true);
