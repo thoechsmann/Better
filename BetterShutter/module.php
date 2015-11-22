@@ -63,6 +63,7 @@ class BetterShutter extends BetterBase {
         // If shutter is up, we assume $shouldBeDown = false at module creation time.
         $statusPositionId = $this->ReadPropertyInteger("statusPositionId");
         $shouldBeDown = GetValue($statusPositionId) != 0;
+        $this->SetValueForIdent("shouldBeDown", $shouldBeDown);
 	}
 
     public function RequestAction($Ident, $Value) 
