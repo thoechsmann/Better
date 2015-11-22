@@ -14,7 +14,7 @@ class BetterShutter extends BetterBase {
 
         $this->RegisterPropertyInteger("otherUpDownId1", 0);
         $this->RegisterPropertyInteger("otherUpDownId2", 0);
-        $this->RegisterPropertyInteger("otherUpDownId2", 0);
+        $this->RegisterPropertyInteger("otherUpDownId3", 0);
 
         $this->RegisterPropertyInteger("positionLimit", 70);
 	}
@@ -49,11 +49,11 @@ class BetterShutter extends BetterBase {
         $upDownId = $this->ReadPropertyInteger("upDownId");
         $this->RegisterTrigger("upDownTrigger", $upDownId, 'BS_UpDownEvent($upDownId, $_IPS[\'TARGET\']);', 1);
         $upDownId = $this->ReadPropertyInteger("otherUpDownId1");
-        $this->RegisterTrigger("otherUpDownTrigger1", $upDownId, 'BS_UpDownEvent($upDownId, $_IPS[\'TARGET\']);', 1);
+        if($upDownId != 0) $this->RegisterTrigger("otherUpDownTrigger1", $upDownId, 'BS_UpDownEvent($upDownId, $_IPS[\'TARGET\']);', 1);
         $upDownId = $this->ReadPropertyInteger("otherUpDownId2");
-        $this->RegisterTrigger("otherUpDownTrigger2", $upDownId, 'BS_UpDownEvent($upDownId, $_IPS[\'TARGET\']);', 1);
+        if($upDownId != 0) $this->RegisterTrigger("otherUpDownTrigger2", $upDownId, 'BS_UpDownEvent($upDownId, $_IPS[\'TARGET\']);', 1);
         $upDownId = $this->ReadPropertyInteger("otherUpDownId3");
-        $this->RegisterTrigger("otherUpDownTrigger3", $upDownId, 'BS_UpDownEvent($upDownId, $_IPS[\'TARGET\']);', 1);
+        if($upDownId != 0) $this->RegisterTrigger("otherUpDownTrigger3", $upDownId, 'BS_UpDownEvent($upDownId, $_IPS[\'TARGET\']);', 1);
 
         $this->RegisterTrigger("openCloseTrigger", $this->ReadPropertyInteger("windowId"), 'BS_WindowEvent($_IPS[\'TARGET\']);', 1);
 
