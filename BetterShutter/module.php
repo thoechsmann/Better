@@ -78,10 +78,14 @@ class BetterShutter extends BetterBase {
 
     public function DownEvent()
     {
+        IPS_LogMessage("BetterShutter", "DownEvent");
+
         $upDownId = $this->ReadPropertyInteger("upDownId");
         $shouldBeDown = GetValue($upDownId);
         $windowId = $this->ReadPropertyInteger("windowId");        
         $windowOpen = GetValue($windowId);
+
+        IPS_LogMessage("BetterShutter", "DownEvent2");
 
         $this->SetValueForIdent("shouldBeDown", $shouldBeDown);
 
@@ -89,6 +93,7 @@ class BetterShutter extends BetterBase {
         {
             $this->MoveShutterToLimitedDown();
         }
+        IPS_LogMessage("BetterShutter", "DownEvent3");
     }
 
     public function WindowEvent()
