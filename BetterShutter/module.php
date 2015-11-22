@@ -48,6 +48,9 @@ class BetterShutter extends BetterBase {
 
         $upDownId = $this->ReadPropertyInteger("upDownId");
         $this->RegisterTrigger("upDownTrigger", $upDownId, 'BS_UpDownEvent($_IPS[\'TARGET\'], $upDownId);', 1);
+
+        IPS_LogMessage("BetterShutter", "Registering code " . 'BS_UpDownEvent($_IPS[\'TARGET\'], $upDownId);');
+
         $upDownId = $this->ReadPropertyInteger("otherUpDownId1");
         if($upDownId != 0) $this->RegisterTrigger("otherUpDownTrigger1", $upDownId, 'BS_UpDownEvent($_IPS[\'TARGET\'], $upDownId);', 1);
         $upDownId = $this->ReadPropertyInteger("otherUpDownId2");
