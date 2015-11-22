@@ -189,7 +189,7 @@ class BetterHeating extends BetterBase {
 
         SetValue($boostId, true);
         IPS_SetName($boostId, "Boost ($boostTime Minuten)");
-        $this->RegisterTimer("UpdateBoost", 60, 'BH_UpdateBoost($_IPS[\'TARGET\']);'); 
+        $this->RegisterTimer("UpdateBoost", 60 * $boostTime + 1, 'BH_UpdateBoost($_IPS[\'TARGET\']);'); 
         $this->SetValueForIdent("BoostTime", $boostTime);
         EIB_Switch(IPS_GetParent($this->ReadPropertyInteger("boostInstanceID")), true);
     }
