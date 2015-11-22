@@ -10,8 +10,11 @@ class BetterShutter extends BetterBase {
         $this->RegisterPropertyInteger("positionId", 0);
         $this->RegisterPropertyInteger("upDownId", 0);
         $this->RegisterPropertyInteger("stopId", 0);
-        $this->RegisterPropertyInteger("statusUpId", 0);
         $this->RegisterPropertyInteger("windowId", 0);
+
+        $this->RegisterPropertyInteger("otherUpDownId1", 0);
+        $this->RegisterPropertyInteger("otherUpDownId2", 0);
+        $this->RegisterPropertyInteger("otherUpDownId2", 0);
 
         $this->RegisterPropertyInteger("positionLimit", 70);
 	}
@@ -43,9 +46,16 @@ class BetterShutter extends BetterBase {
         IPS_SetEventScheduleAction($scheduler, 0, "Offen", 0x00FF00, "BH_OpenShutter(\$_IPS['TARGET']);");
         IPS_SetEventScheduleAction($scheduler, 1, "Geschlossen", 0x0000FF, "BH_CloseShutter(\$_IPS['TARGET']);");
 
-        $downTriggerId = $this->RegisterTrigger("upDownTrigger", $this->ReadPropertyInteger("upDownId"), 'BS_DownEvent($_IPS[\'TARGET\']);', 1);
+        $upDownId = $this->ReadPropertyInteger("upDownId");
+        $this->RegisterTrigger("upDownTrigger", $upDownId, 'BS_UpDownEvent($upDownId, $_IPS[\'TARGET\']);', 1);
+        $upDownId = $this->ReadPropertyInteger("otherUpDownId1");
+        $this->RegisterTrigger("otherUpDownTrigger1", $upDownId, 'BS_UpDownEvent($upDownId, $_IPS[\'TARGET\']);', 1);
+        $upDownId = $this->ReadPropertyInteger("otherUpDownId2");
+        $this->RegisterTrigger("otherUpDownTrigger2", $upDownId, 'BS_UpDownEvent($upDownId, $_IPS[\'TARGET\']);', 1);
+        $upDownId = $this->ReadPropertyInteger("otherUpDownId3");
+        $this->RegisterTrigger("otherUpDownTrigger3", $upDownId, 'BS_UpDownEvent($upDownId, $_IPS[\'TARGET\']);', 1);
 
-        $downTriggerId = $this->RegisterTrigger("openCloseTrigger", $this->ReadPropertyInteger("windowId"), 'BS_WindowEvent($_IPS[\'TARGET\']);', 1);
+        $this->RegisterTrigger("openCloseTrigger", $this->ReadPropertyInteger("windowId"), 'BS_WindowEvent($_IPS[\'TARGET\']);', 1);
 
         // If shutter is up, we assume $shouldBeDown = false at module creation time.
         $statusUpId = $this->ReadPropertyInteger("statusUpId");
@@ -76,9 +86,9 @@ class BetterShutter extends BetterBase {
         EIB_Switch(IPS_GetParent($upDownId), true);
     }
 
-    public function DownEvent()
+    public function UpDownEvent($callingUpDownId)
     {
-        IPS_LogMessage("BetterShutter", "DownEvent");
+        IPS_LogMessage("BetterShutter", 'DownEvent $callingUpDownId');
 
         $upDownId = $this->ReadPropertyInteger("upDownId");
         $shouldBeDown = GetValue($upDownId);

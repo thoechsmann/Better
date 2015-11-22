@@ -4,9 +4,13 @@
 		{ "type": "SelectVariable", "name": "positionId", "caption": "Position" },
 		{ "type": "SelectVariable", "name": "upDownId", "caption": "Hoch/Runter" },
 		{ "type": "SelectVariable", "name": "stopId", "caption": "Stopp" },
-		{ "type": "SelectVariable", "name": "statusUpId", "caption": "Status Position oben" },
 		{ "type": "SelectVariable", "name": "windowId", "caption": "Fensterkontakt" },
-		{ "type": "NumberSpinner", "name": "positionLimit", "caption": "Positions Limit" }
+		{ "type": "NumberSpinner", "name": "positionLimit", "caption": "Positions Limit" },
+
+		{ "type": "SelectVariable", "name": "otherUpDownId1", "caption": "Hoch/Runter (weitere)" },
+		{ "type": "SelectVariable", "name": "otherUpDownId2", "caption": "Hoch/Runter (weitere)" },
+		{ "type": "SelectVariable", "name": "otherUpDownId3", "caption": "Hoch/Runter (weitere)" }
+
 	],
 	"actions":
 	[
