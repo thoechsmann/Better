@@ -67,10 +67,10 @@ class BetterShutter extends BetterBase {
 
         $this->RegisterTrigger("openCloseTrigger", $this->ReadPropertyInteger("windowId"), 'BS_WindowEvent($_IPS[\'TARGET\']);', 1);
 
-        $dawnTriggerId = $this->RegisterTrigger("dawnTrigger", $this->$isDayId, 'BS_OnDawn($_IPS[\'TARGET\']);', 4);
+        $dawnTriggerId = $this->RegisterTrigger("dawnTrigger", $this->isDayId, 'BS_OnDawn($_IPS[\'TARGET\']);', 4);
         IPS_SetEventTriggerValue($dawnTriggerId, true);
 
-        $sunsetTriggerId = $this->RegisterTrigger("sunsetTrigger", $this->$isDayId, 'BS_OnSunset($_IPS[\'TARGET\']);', 4);
+        $sunsetTriggerId = $this->RegisterTrigger("sunsetTrigger", $this->isDayId, 'BS_OnSunset($_IPS[\'TARGET\']);', 4);
         IPS_SetEventTriggerValue($dawnTriggerId, false);
 
         // If shutter is up, we assume $shouldBeDown = false at module creation time.
@@ -93,7 +93,7 @@ class BetterShutter extends BetterBase {
     public function OpenShutter() // called by scheduler
     {
         $twighlightCheck = $this->ReadPropertyInteger("twighlightCheck");
-        $isDay = GetValue($this->$isDayId);
+        $isDay = GetValue($this->isDayId);
 
         if($twighlightCheck && !$isDay)
         {
