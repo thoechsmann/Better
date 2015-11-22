@@ -12,6 +12,8 @@ class BetterShutter extends BetterBase {
         $this->RegisterPropertyInteger("stopId", 0);
         $this->RegisterPropertyInteger("windowId", 0);
 
+        $this->RegisterPropertyInteger("statusPositionId", 0);
+
         $this->RegisterPropertyInteger("otherUpDownId1", 0);
         $this->RegisterPropertyInteger("otherUpDownId2", 0);
         $this->RegisterPropertyInteger("otherUpDownId3", 0);
@@ -58,10 +60,9 @@ class BetterShutter extends BetterBase {
 
         $this->RegisterTrigger("openCloseTrigger", $this->ReadPropertyInteger("windowId"), 'BS_WindowEvent($_IPS[\'TARGET\']);', 1);
 
-        // // If shutter is up, we assume $shouldBeDown = false at module creation time.
-        // $statusUpId = $this->ReadPropertyInteger("statusUpId");
-        // $shouldBeDown = !GetValue($statusUpId);
-
+        // If shutter is up, we assume $shouldBeDown = false at module creation time.
+        $statusPositionId = $this->ReadPropertyInteger("statusPositionId");
+        $shouldBeDown = GetValue($statusPositionId) != 0;
 	}
 
     public function RequestAction($Ident, $Value) 
