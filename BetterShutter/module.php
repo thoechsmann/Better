@@ -3,8 +3,8 @@ require_once(__DIR__ . "/../BetterBase.php");
 
 class BetterShutter extends BetterBase {
 
-    // private $isDayId = 18987;
-    private $isDayId = 52946;
+    private $isDayId = 18987;
+    // private $isDayId = 52946;
 
 	public function Create() 
     {
