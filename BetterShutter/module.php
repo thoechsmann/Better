@@ -44,7 +44,6 @@ class BetterShutter extends BetterBase {
         IPS_SetEventScheduleAction($scheduler, 1, "Geschlossen", 0x0000FF, "BH_CloseShutter(\$_IPS['TARGET']);");
 
         $downTriggerId = $this->RegisterTrigger("upDownTrigger", $this->ReadPropertyInteger("upDownId"), 'BS_DownEvent($_IPS[\'TARGET\']);', 4);
-        IPS_SetEventTriggerValue($downTriggerId, true);
 
         $downTriggerId = $this->RegisterTrigger("openCloseTrigger", $this->ReadPropertyInteger("windowId"), 'BS_WindowEvent($_IPS[\'TARGET\']);', 1);
 
@@ -67,21 +66,26 @@ class BetterShutter extends BetterBase {
 
     public function OpenShutter() // called by scheduler
     {
-        $this->SetValueForIdent("shouldBeDown", false);
-        $this->MoveShutterToShouldBePosition();
+        $upDownId = $this->ReadPropertyInteger("upDownId");
+        EIB_Switch(IPS_GetParent($upDownId), false);
     }
 
     public function CloseShutter() // called by scheduler
     {   
-        $this->SetValueForIdent("shouldBeDown", true);
-        $this->MoveShutterToShouldBePosition();
+        $upDownId = $this->ReadPropertyInteger("upDownId");
+        EIB_Switch(IPS_GetParent($upDownId), true);
     }
 
     public function DownEvent()
     {
-        $windowId = $this->ReadPropertyInteger("windowId");
+        $upDownId = $this->ReadPropertyInteger("upDownId");
+        $shouldBeDown = GetValue($upDownId);
+        $windowId = $this->ReadPropertyInteger("windowId");        
+        $windowOpen = GetValue($windowId);
 
-        if(GetValue($windowId) == true) // window open
+        $this->SetValueForIdent("shouldBeDown", $shouldBeDown);
+
+        if($shouldBeDown && $windowOpen) // window open
         {
             $this->MoveShutterToLimitedDown();
         }
