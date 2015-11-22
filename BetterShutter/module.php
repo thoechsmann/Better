@@ -43,7 +43,7 @@ class BetterShutter extends BetterBase {
         IPS_SetEventScheduleAction($scheduler, 0, "Offen", 0x00FF00, "BH_OpenShutter(\$_IPS['TARGET']);");
         IPS_SetEventScheduleAction($scheduler, 1, "Geschlossen", 0x0000FF, "BH_CloseShutter(\$_IPS['TARGET']);");
 
-        $downTriggerId = $this->RegisterTrigger("upDownTrigger", $this->ReadPropertyInteger("upDownId"), 'BS_DownEvent($_IPS[\'TARGET\']);', 4);
+        $downTriggerId = $this->RegisterTrigger("upDownTrigger", $this->ReadPropertyInteger("upDownId"), 'BS_DownEvent($_IPS[\'TARGET\']);', 1);
 
         $downTriggerId = $this->RegisterTrigger("openCloseTrigger", $this->ReadPropertyInteger("windowId"), 'BS_WindowEvent($_IPS[\'TARGET\']);', 1);
 
