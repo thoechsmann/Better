@@ -35,7 +35,7 @@ class BetterShutter extends BetterBase {
 
         $this->RegisterVariableBoolean("twighlightCheck", "Dämmerungsautomatik", "~Switch");
         $this->EnableAction("twighlightCheck");
-        $this->WritePropertyBoolean("twighlightCheck", true);
+        $this->SetValueForIdent("twighlightCheck", true);
 
         $openOnDawn = $this->RegisterVariableBoolean("openOnDawn", "Bei Morgendämmerung öffnen");
         IPS_SetHidden($openOnDawn, true);
@@ -95,13 +95,13 @@ class BetterShutter extends BetterBase {
 
     public function OpenShutter() // called by scheduler
     {
-        $twighlightCheck = $this->ReadPropertyInteger("twighlightCheck");
+        $twighlightCheck = $this->GetValueForIdent("twighlightCheck");
         $isDay = GetValue($this->isDayId);
 
         if($twighlightCheck && !$isDay)
         {
             // Do not open, but wait for dawn.
-            $this->WritePropertyInteger("openOnDawn", true);
+            $this->SetValueForIdent("openOnDawn", true);
             return;
         }
 
@@ -117,8 +117,8 @@ class BetterShutter extends BetterBase {
 
     public function OnDawn()
     {
-        $twighlightCheck = $this->ReadPropertyInteger("twighlightCheck");
-        $openOnDawn = $this->ReadPropertyInteger("openOnDawn");
+        $twighlightCheck = $this->GetValueForIdent("twighlightCheck");
+        $openOnDawn = $this->GetValueForIdent("openOnDawn");
 
         if($twighlightCheck && $openOnDawn)
         {
@@ -126,7 +126,7 @@ class BetterShutter extends BetterBase {
             EIB_Switch(IPS_GetParent($upDownId), false);
         }
 
-        $this->WritePropertyInteger("openOnDawn", false);
+        $this->SetValueForIdent("openOnDawn", false);
     }
 
     public function OnSunset()
