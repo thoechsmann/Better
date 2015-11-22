@@ -57,9 +57,9 @@ class BetterShutter extends BetterBase {
 
         $this->RegisterTrigger("openCloseTrigger", $this->ReadPropertyInteger("windowId"), 'BS_WindowEvent($_IPS[\'TARGET\']);', 1);
 
-        // If shutter is up, we assume $shouldBeDown = false at module creation time.
-        $statusUpId = $this->ReadPropertyInteger("statusUpId");
-        $shouldBeDown = !GetValue($statusUpId);
+        // // If shutter is up, we assume $shouldBeDown = false at module creation time.
+        // $statusUpId = $this->ReadPropertyInteger("statusUpId");
+        // $shouldBeDown = !GetValue($statusUpId);
 
 	}
 
