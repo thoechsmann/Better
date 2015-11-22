@@ -3,6 +3,8 @@ require_once(__DIR__ . "/../BetterBase.php");
 
 class BetterShutter extends BetterBase {
 
+    private $isDayId = 18987;
+
 	public function Create() 
     {
 		parent::Create();		
@@ -30,7 +32,12 @@ class BetterShutter extends BetterBase {
         $this->RegisterLink("position", "Position", $this->ReadPropertyInteger("positionId"), 1);
         $this->RegisterLink("stop", "Stopp", $this->ReadPropertyInteger("stopId"), 1);
 
-        $twighlightCheckId = $this->RegisterVariableBoolean("twighlightCheck", "Dämmerungsautomatik");
+        $this->RegisterVariableBoolean("twighlightCheck", "Dämmerungsautomatik");
+        $this->EnableAction("twighlightCheck");
+
+        $openOnDawn = $this->RegisterVariableBoolean("openOnDawn", "Bei Morgendämmerung öffnen");
+        IPS_SetHidden($openOnDawn, true);
+
         $shouldBeDown = $this->RegisterVariableBoolean("shouldBeDown", "shouldBeDown");
 
         // Scheduled Event
@@ -60,6 +67,12 @@ class BetterShutter extends BetterBase {
 
         $this->RegisterTrigger("openCloseTrigger", $this->ReadPropertyInteger("windowId"), 'BS_WindowEvent($_IPS[\'TARGET\']);', 1);
 
+        $dawnTriggerId = $this->RegisterTrigger("dawnTrigger", $this->$isDayId, 'BS_OnDawn($_IPS[\'TARGET\']);', 4);
+        IPS_SetEventTriggerValue($dawnTriggerId, true);
+
+        $sunsetTriggerId = $this->RegisterTrigger("sunsetTrigger", $this->$isDayId, 'BS_OnSunset($_IPS[\'TARGET\']);', 4);
+        IPS_SetEventTriggerValue($dawnTriggerId, false);
+
         // If shutter is up, we assume $shouldBeDown = false at module creation time.
         $statusPositionId = $this->ReadPropertyInteger("statusPositionId");
         $shouldBeDown = GetValue($statusPositionId) != 0;
@@ -79,12 +92,42 @@ class BetterShutter extends BetterBase {
 
     public function OpenShutter() // called by scheduler
     {
+        $twighlightCheck = $this->ReadPropertyInteger("twighlightCheck");
+        $isDay = GetValue($this->$isDayId);
+
+        if($twighlightCheck && !$isDay)
+        {
+            // Do not open, but wait for dawn.
+            $this->WritePropertyInteger("openOnDawn", true);
+            return;
+        }
+
         $upDownId = $this->ReadPropertyInteger("upDownId");
         EIB_Switch(IPS_GetParent($upDownId), false);
     }
 
     public function CloseShutter() // called by scheduler
     {   
+        $upDownId = $this->ReadPropertyInteger("upDownId");
+        EIB_Switch(IPS_GetParent($upDownId), true);
+    }
+
+    public function OnDawn()
+    {
+        $twighlightCheck = $this->ReadPropertyInteger("twighlightCheck");
+        $openOnDawn = $this->ReadPropertyInteger("openOnDawn");
+
+        if($twighlightCheck && $openOnDawn)
+        {
+            $upDownId = $this->ReadPropertyInteger("upDownId");
+            EIB_Switch(IPS_GetParent($upDownId), false);
+        }
+
+        $this->WritePropertyInteger("openOnDawn", false);
+    }
+
+    public function OnSunset()
+    {
         $upDownId = $this->ReadPropertyInteger("upDownId");
         EIB_Switch(IPS_GetParent($upDownId), true);
     }
