@@ -47,9 +47,14 @@ class BetterShutter extends BetterBase {
         IPS_SetEventScheduleAction($scheduler, 1, "Geschlossen", 0x0000FF, "BH_CloseShutter(\$_IPS['TARGET']);");
 
         $upDownId = $this->ReadPropertyInteger("upDownId");
-        $this->RegisterTrigger("upDownTrigger", $upDownId, 'BS_UpDownEvent($_IPS[\'TARGET\'], '. "$upDownId);", 1);
+        $this->RegisterTrigger("upDownTrigger", $upDownId, 'BS_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'INSTANCE\']);', 1);
 
-        IPS_LogMessage("BetterShutter", "Registering code " . 'BS_UpDownEvent($_IPS[\'TARGET\'], ' . "$upDownId);");
+        IPS_LogMessage("BetterShutter", "Registering code " . 'BS_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'INSTANCE\']);');
+
+        // $this->RegisterTrigger("upDownTrigger", $upDownId, 'BS_UpDownEvent($_IPS[\'TARGET\'], '. "$upDownId);", 1);
+
+        // IPS_LogMessage("BetterShutter", "Registering code " . 'BS_UpDownEvent($_IPS[\'TARGET\'], ' . "$upDownId);");
+
 
         $upDownId = $this->ReadPropertyInteger("otherUpDownId1");
         if($upDownId != 0) $this->RegisterTrigger("otherUpDownTrigger1", $upDownId, "BS_UpDownEvent(\$_IPS[\'TARGET\'], $upDownId);", 1);
