@@ -35,7 +35,7 @@ class BetterShutter extends BetterBase {
 
         $this->RegisterVariableBoolean("twighlightCheck", "Dämmerungsautomatik", "~Switch");
         $this->EnableAction("twighlightCheck");
-        $this->WriteVariableBoolean("twighlightCheck", true);
+        $this->WritePropertyBoolean("twighlightCheck", true);
 
         $openOnDawn = $this->RegisterVariableBoolean("openOnDawn", "Bei Morgendämmerung öffnen");
         IPS_SetHidden($openOnDawn, true);
