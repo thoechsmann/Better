@@ -85,7 +85,8 @@ class BetterShutter extends BetterBase {
     public function RequestAction($Ident, $Value) 
     {    
         switch($Ident) {
-            case "Boost":
+            case "twighlightCheck":
+                $this->SetValueForIdent($Ident, $Value);
                 break;
 
             default:
