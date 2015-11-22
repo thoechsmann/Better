@@ -32,13 +32,14 @@ class BetterShutter extends BetterBase {
         $this->RegisterLink("position", "Position", $this->ReadPropertyInteger("positionId"), 1);
         $this->RegisterLink("stop", "Stopp", $this->ReadPropertyInteger("stopId"), 1);
 
-        $this->RegisterVariableBoolean("twighlightCheck", "Dämmerungsautomatik");
+        $this->RegisterVariableBoolean("twighlightCheck", "Dämmerungsautomatik", "~Switch");
         $this->EnableAction("twighlightCheck");
 
         $openOnDawn = $this->RegisterVariableBoolean("openOnDawn", "Bei Morgendämmerung öffnen");
         IPS_SetHidden($openOnDawn, true);
 
         $shouldBeDown = $this->RegisterVariableBoolean("shouldBeDown", "shouldBeDown");
+        IPS_SetHidden($shouldBeDown, true);
 
         // Scheduled Event
         $scheduler = $this->RegisterScheduler("Wochenplan");
