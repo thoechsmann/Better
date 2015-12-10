@@ -37,11 +37,19 @@ class BetterShutter extends BetterBase {
         $this->EnableAction("twighlightCheck");
         $this->SetValueForIdent("twighlightCheck", true);
 
-        $openOnDawn = $this->RegisterVariableBoolean("openOnDawn", "Bei Morgendämmerung öffnen");
-        IPS_SetHidden($openOnDawn, true);
+        $openOnDawnId = $this->RegisterVariableBoolean("openOnDawn", "Bei Morgendämmerung öffnen");
+        IPS_SetHidden($openOnDawnId, true);
 
-        $shouldBeDown = $this->RegisterVariableBoolean("shouldBeDown", "shouldBeDown");
-        IPS_SetHidden($shouldBeDown, true);
+        $shouldBeDownId = $this->RegisterVariableBoolean("shouldBeDown", "shouldBeDown");
+        IPS_SetHidden($shouldBeDownId, true);
+
+        $upLimitId = $this->RegisterVariableInteger("upLimit", "Frühstes öffnen");
+        $upLimitDate = new DateTime("9:00");
+        SetValue($upLimitId, $upLimitDate->getTimestamp());
+
+        $this->RegisterVariableInteger("upLimitHoliday", "Frühstes öffnen (schulfrei)");
+
+        $this->RegisterVariableInteger("downLimit", "Spätestes schliessen");
 
         // Scheduled Event
         $scheduler = $this->RegisterScheduler("Wochenplan");
