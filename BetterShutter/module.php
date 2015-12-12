@@ -115,8 +115,12 @@ class BetterShutter extends BetterBase {
 
     public function ScheduledOpen($isHolidayCheck) // called by scheduler
     {
+        IPS_LogMessage("BetterShutter", "ScheduledOpen");
+   
         if($this->IsTodayHoliday() != $isHolidayCheck)
             return;
+
+        IPS_LogMessage("BetterShutter", "ScheduledOpen2");
 
         $twighlightCheck = $this->GetValueForIdent("twighlightCheck");
         $isDay = GetValue($this->isDayId);
