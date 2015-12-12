@@ -43,28 +43,22 @@ class BetterShutter extends BetterBase {
         $shouldBeDownId = $this->RegisterVariableBoolean("shouldBeDown", "shouldBeDown");
         IPS_SetHidden($shouldBeDownId, true);
 
-        $upLimitId = $this->RegisterVariableInteger("upLimit", "Frühstes öffnen");
-        $upLimitDate = new DateTime("9:00");
-        SetValue($upLimitId, $upLimitDate->getTimestamp());
+        $upLimitId = $this->RegisterVariableString("upLimit", "Frühstes öffnen");
+        SetValue($upLimitId, "9:00");
 
-        $this->RegisterVariableInteger("upLimitHoliday", "Frühstes öffnen (schulfrei)");
+        $this->RegisterVariableString("upLimitHoliday", "Frühstes öffnen (schulfrei)");
 
-        $this->RegisterVariableInteger("downLimit", "Spätestes schliessen");
+        $downLimit = $this->RegisterVariableString("downLimit", "Spätestes schliessen");
+        SetValue($downLimit, "22:00");
 
-        // Scheduled Event
+        // Create Scheduler
         $scheduler = $this->RegisterScheduler("Wochenplan");
         IPS_SetIcon($scheduler, "Calendar");
         IPS_SetPosition($scheduler, 5);
         IPS_SetEventScheduleGroup($scheduler, 0, 127); // Mo - Fr (1 + 2 + 4 + 8 + 16)
         IPS_SetEventScheduleAction($scheduler, 0, "Offen", 0x00FF00, "BH_SetMode(\$_IPS['TARGET'], 1);");
         IPS_SetEventScheduleAction($scheduler, 1, "Geschlossen", 0x0000FF, "BH_SetMode(\$_IPS['TARGET'], 2);");
-
-        $scheduler = $this->RegisterScheduler("Wochenplan_schulfrei", "Wochenplan (schulfrei)");
-        IPS_SetIcon($scheduler, "Calendar");
-        IPS_SetPosition($scheduler, 5);
-        IPS_SetEventScheduleGroup($scheduler, 0, 127); // Mo - Fr (1 + 2 + 4 + 8 + 16)
-        IPS_SetEventScheduleAction($scheduler, 0, "Offen", 0x00FF00, "BH_OpenShutter(\$_IPS['TARGET']);");
-        IPS_SetEventScheduleAction($scheduler, 1, "Geschlossen", 0x0000FF, "BH_CloseShutter(\$_IPS['TARGET']);");
+        $this->UpdateSchedulers();
 
         $upDownId = $this->ReadPropertyInteger("upDownId");
         $this->RegisterTrigger("upDownTrigger", $upDownId, 'BS_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', 1);
@@ -88,6 +82,8 @@ class BetterShutter extends BetterBase {
         $statusPositionId = $this->ReadPropertyInteger("statusPositionId");
         $shouldBeDown = GetValue($statusPositionId) != 0;
         $this->SetValueForIdent("shouldBeDown", $shouldBeDown);
+
+        $this->UpdateSchedulers();
 	}
 
     public function RequestAction($Ident, $Value) 
@@ -170,6 +166,18 @@ class BetterShutter extends BetterBase {
         {
             $this->MoveShutterToShouldBePosition();
         }
+    }
+
+    private function UpdateSchedulers()
+    {
+        $upLimit = $this->GetValueForIdent("upLimit");
+        $upLimitDate = new DataTime($upLimit);
+
+        $downLimit = $this->GetValueForIdent("downLimit");
+        $downLimitDate = new DataTime($downLimit);
+
+        IPS_SetEventScheduleGroupPoint($id, 0, 0, $upLimitDate->format("h"), $upLimitDate->format("m"), 0, 0);
+        IPS_SetEventScheduleGroupPoint($id, 0, 1, $downLimitDate->format("h"), $downLimitDate->format("m"), 0, 1);
     }
 
     private function MoveShutterToLimitedDown()
