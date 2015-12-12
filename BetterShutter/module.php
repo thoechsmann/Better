@@ -47,11 +47,13 @@ class BetterShutter extends BetterBase {
 
         $upLimitId = $this->RegisterVariableString("upLimit", "Frühstes öffnen");
         SetValue($upLimitId, "9:00");
+        $this->EnableAction("upLimit");
 
         $this->RegisterVariableString("upLimitHoliday", "Frühstes öffnen (schulfrei)");
 
         $downLimit = $this->RegisterVariableString("downLimit", "Spätestes schliessen");
         SetValue($downLimit, "22:00");
+        $this->EnableAction("downLimit");
 
         // Create Scheduler
         $scheduler = $this->RegisterScheduler("Wochenplan");
@@ -93,6 +95,12 @@ class BetterShutter extends BetterBase {
         switch($Ident) {
             case "twighlightCheck":
                 $this->SetValueForIdent($Ident, $Value);
+                break;
+
+            case "upLimit":
+            case "downLimit":
+                $this->SetValueForIdent($Ident, $Value);
+                $this->UpdateSchedulers();
                 break;
 
             default:
@@ -180,8 +188,8 @@ class BetterShutter extends BetterBase {
 
         $scheduler = $this->GetIDForIdent("Wochenplan");
 
-        IPS_SetEventScheduleGroupPoint($scheduler, 0, 0, $upLimitDate->format("h"), $upLimitDate->format("m"), 0, 0);
-        IPS_SetEventScheduleGroupPoint($scheduler, 0, 1, $downLimitDate->format("h"), $downLimitDate->format("m"), 0, 1);
+        IPS_SetEventScheduleGroupPoint($scheduler, 0, 0, $upLimitDate->format("h"), $upLimitDate->format("i"), 0, 0);
+        IPS_SetEventScheduleGroupPoint($scheduler, 0, 1, $downLimitDate->format("h"), $downLimitDate->format("i"), 0, 1);
     }
 
     private function MoveShutterToLimitedDown()
