@@ -180,5 +180,14 @@ class BetterBase extends IPSModule {
             $this->DeleteObject($childId);
         }
     }
+
+    private function RemoveAll()
+    {
+        foreach(IPS_GetChildrenIDs($this->InstanceID) as $childId)
+        {
+            $this->DeleteObject($childId);
+        }
+    }
+
 }
 ?>

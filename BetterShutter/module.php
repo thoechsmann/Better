@@ -28,6 +28,8 @@ class BetterShutter extends BetterBase {
     {
 		parent::ApplyChanges();
 		
+        $this->RemoveAll();
+        
         $this->RegisterLink("windowStatus", "Fenster", $this->ReadPropertyInteger("windowId"), 0);
         $this->RegisterLink("upDown", "Hoch/Runter", $this->ReadPropertyInteger("upDownId"), 1);
         $this->RegisterLink("position", "Position", $this->ReadPropertyInteger("positionId"), 1);
