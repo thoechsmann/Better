@@ -164,7 +164,7 @@ class BetterBase extends IPSModule {
         } 
     } 
      
-    private function RemoveAllButSchedulers()
+    protected function RemoveAllButSchedulers()
     {
         foreach(IPS_GetChildrenIDs($this->InstanceID) as $childId)
         {
@@ -181,7 +181,7 @@ class BetterBase extends IPSModule {
         }
     }
 
-    private function RemoveAll()
+    protected function RemoveAll()
     {
         foreach(IPS_GetChildrenIDs($this->InstanceID) as $childId)
         {
