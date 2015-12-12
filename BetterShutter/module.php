@@ -62,8 +62,9 @@ class BetterShutter extends BetterBase {
         IPS_SetIcon($scheduler, "Calendar");
         IPS_SetPosition($scheduler, 5);
         IPS_SetEventScheduleGroup($scheduler, 0, 127); // Mo - Fr (1 + 2 + 4 + 8 + 16)
-        IPS_SetEventScheduleAction($scheduler, 0, "Offen", 0x00FF00, "BH_SetMode(\$_IPS['TARGET'], 1);");
-        IPS_SetEventScheduleAction($scheduler, 1, "Geschlossen", 0x0000FF, "BH_SetMode(\$_IPS['TARGET'], 2);");
+        IPS_SetEventScheduleAction($scheduler, 0, "Offen", 0x00FF00, "BS_ScheduledOpen(\$_IPS['TARGET'], false);");
+        IPS_SetEventScheduleAction($scheduler, 1, "Offen (Feiertag)", 0x00FF00, "BS_ScheduledOpen(\$_IPS['TARGET'], true);");
+        IPS_SetEventScheduleAction($scheduler, 2, "Geschlossen", 0x0000FF, "BS_ScheduledClose(\$_IPS['TARGET']);");
         IPS_SetHidden($scheduler, true);
         $this->UpdateSchedulers();
 
@@ -190,6 +191,9 @@ class BetterShutter extends BetterBase {
         $upLimit = $this->GetValueForIdent("upLimit");
         $upLimitDate = new DateTime($upLimit);
 
+        $upLimitHoliday = $this->GetValueForIdent("upLimitHoliday");
+        $upLimitHolidayDate = new DateTime($upLimitHoliday);
+
         $downLimit = $this->GetValueForIdent("downLimit");
         $downLimitDate = new DateTime($downLimit);
 
@@ -197,7 +201,8 @@ class BetterShutter extends BetterBase {
 
         IPS_SetEventActive($scheduler, true);
         IPS_SetEventScheduleGroupPoint($scheduler, 0, 0, $upLimitDate->format("H"), $upLimitDate->format("i"), 0, 0);
-        IPS_SetEventScheduleGroupPoint($scheduler, 0, 1, $downLimitDate->format("H"), $downLimitDate->format("i"), 0, 1);
+        IPS_SetEventScheduleGroupPoint($scheduler, 0, 1, $upLimitHolidayDate->format("H"), $upLimitHolidayDate->format("i"), 0, 1);
+        IPS_SetEventScheduleGroupPoint($scheduler, 0, 2, $downLimitDate->format("H"), $downLimitDate->format("i"), 0, 2);
     }
 
     private function MoveShutterToLimitedDown()
