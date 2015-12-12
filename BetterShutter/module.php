@@ -178,8 +178,10 @@ class BetterShutter extends BetterBase {
         $downLimit = $this->GetValueForIdent("downLimit");
         $downLimitDate = new DateTime($downLimit);
 
-        IPS_SetEventScheduleGroupPoint($id, 0, 0, $upLimitDate->format("h"), $upLimitDate->format("m"), 0, 0);
-        IPS_SetEventScheduleGroupPoint($id, 0, 1, $downLimitDate->format("h"), $downLimitDate->format("m"), 0, 1);
+        $scheduler = $this->GetValueForIdent("Wochenplan");
+
+        IPS_SetEventScheduleGroupPoint($scheduler, 0, 0, $upLimitDate->format("h"), $upLimitDate->format("m"), 0, 0);
+        IPS_SetEventScheduleGroupPoint($scheduler, 0, 1, $downLimitDate->format("h"), $downLimitDate->format("m"), 0, 1);
     }
 
     private function MoveShutterToLimitedDown()
