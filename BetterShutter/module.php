@@ -63,7 +63,7 @@ class BetterShutter extends BetterBase {
         IPS_SetPosition($scheduler, 5);
         IPS_SetEventScheduleGroup($scheduler, 0, 127); // Mo - Fr (1 + 2 + 4 + 8 + 16)
         IPS_SetEventScheduleAction($scheduler, 0, "Offen", 0x00FF00, "BS_ScheduledOpen(\$_IPS['TARGET'], false);");
-        IPS_SetEventScheduleAction($scheduler, 1, "Offen (Feiertag)", 0x00FF00, "BS_ScheduledOpen(\$_IPS['TARGET'], true);");
+        IPS_SetEventScheduleAction($scheduler, 1, "Offen (Feiertag)", 0xFFFF00, "BS_ScheduledOpen(\$_IPS['TARGET'], true);");
         IPS_SetEventScheduleAction($scheduler, 2, "Geschlossen", 0x0000FF, "BS_ScheduledClose(\$_IPS['TARGET']);");
         IPS_SetHidden($scheduler, true);
         $this->UpdateSchedulers();
