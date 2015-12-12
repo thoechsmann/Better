@@ -189,5 +189,16 @@ class BetterBase extends IPSModule {
         }
     }
 
+    protected function IsTodayWeekend()
+    {
+        $currentDate = new DateTime("now");
+        return $currentDate->format('N') >= 6;
+    }
+
+    protected function IsTodayHoliday()
+    {
+        return $this->IsTodayWeekend();
+    }
+
 }
 ?>

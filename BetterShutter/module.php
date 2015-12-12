@@ -46,10 +46,12 @@ class BetterShutter extends BetterBase {
         IPS_SetHidden($shouldBeDownId, true);
 
         $upLimitId = $this->RegisterVariableString("upLimit", "Frühstes öffnen");
-        SetValue($upLimitId, "9:00");
+        SetValue($upLimitId, "7:30");
         $this->EnableAction("upLimit");
 
-        $this->RegisterVariableString("upLimitHoliday", "Frühstes öffnen (schulfrei)");
+        $upLimitHoliday = $this->RegisterVariableString("upLimitHoliday", "Frühstes öffnen (schulfrei)");
+        SetValue($upLimitHoliday, "9:00");
+        $this->EnableAction("upLimitHoliday");
 
         $downLimit = $this->RegisterVariableString("downLimit", "Spätestes schliessen");
         SetValue($downLimit, "22:00");
@@ -62,6 +64,7 @@ class BetterShutter extends BetterBase {
         IPS_SetEventScheduleGroup($scheduler, 0, 127); // Mo - Fr (1 + 2 + 4 + 8 + 16)
         IPS_SetEventScheduleAction($scheduler, 0, "Offen", 0x00FF00, "BH_SetMode(\$_IPS['TARGET'], 1);");
         IPS_SetEventScheduleAction($scheduler, 1, "Geschlossen", 0x0000FF, "BH_SetMode(\$_IPS['TARGET'], 2);");
+        IPS_SetHidden($scheduler, true);
         $this->UpdateSchedulers();
 
         $upDownId = $this->ReadPropertyInteger("upDownId");
@@ -98,6 +101,7 @@ class BetterShutter extends BetterBase {
                 break;
 
             case "upLimit":
+            case "upLimitHoliday":
             case "downLimit":
                 $this->SetValueForIdent($Ident, $Value);
                 $this->UpdateSchedulers();
@@ -108,8 +112,11 @@ class BetterShutter extends BetterBase {
         }
     }
 
-    public function OpenShutter() // called by scheduler
+    public function ScheduledOpen($isHolidayCheck) // called by scheduler
     {
+        if($this->IsTodayHoliday() != $isHolidayCheck)
+            return;
+
         $twighlightCheck = $this->GetValueForIdent("twighlightCheck");
         $isDay = GetValue($this->isDayId);
 
@@ -124,7 +131,7 @@ class BetterShutter extends BetterBase {
         EIB_Switch(IPS_GetParent($upDownId), false);
     }
 
-    public function CloseShutter() // called by scheduler
+    public function ScheduledClose() // called by scheduler
     {   
         $upDownId = $this->ReadPropertyInteger("upDownId");
         EIB_Switch(IPS_GetParent($upDownId), true);
@@ -188,6 +195,7 @@ class BetterShutter extends BetterBase {
 
         $scheduler = $this->GetIDForIdent("Wochenplan");
 
+        IPS_SetEventActive($scheduler, true);
         IPS_SetEventScheduleGroupPoint($scheduler, 0, 0, $upLimitDate->format("H"), $upLimitDate->format("i"), 0, 0);
         IPS_SetEventScheduleGroupPoint($scheduler, 0, 1, $downLimitDate->format("H"), $downLimitDate->format("i"), 0, 1);
     }

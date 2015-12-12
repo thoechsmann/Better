@@ -16,8 +16,9 @@
 	],
 	"actions":
 	[
-		{ "type": "Button", "label": "Open Shutter", "onClick": "BS_OpenShutter($id);" },
-		{ "type": "Button", "label": "Close Shutter", "onClick": "BS_CloseShutter($id);" }
+		{ "type": "Button", "label": "Scheduled Open", "onClick": "BS_ScheduledOpen($id, false);" },
+		{ "type": "Button", "label": "Scheduled Open (Holiday)", "onClick": "BS_ScheduledOpen($id, true);" },
+		{ "type": "Button", "label": "Scheduled Close", "onClick": "BS_ScheduledClose($id);" }
 	]	
 
 }
