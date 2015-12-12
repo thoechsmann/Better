@@ -29,7 +29,7 @@ class BetterShutter extends BetterBase {
 		parent::ApplyChanges();
 		
         $this->RemoveAll();
-        
+
         $this->RegisterLink("windowStatus", "Fenster", $this->ReadPropertyInteger("windowId"), 0);
         $this->RegisterLink("upDown", "Hoch/Runter", $this->ReadPropertyInteger("upDownId"), 1);
         $this->RegisterLink("position", "Position", $this->ReadPropertyInteger("positionId"), 1);
@@ -173,10 +173,10 @@ class BetterShutter extends BetterBase {
     private function UpdateSchedulers()
     {
         $upLimit = $this->GetValueForIdent("upLimit");
-        $upLimitDate = new DataTime($upLimit);
+        $upLimitDate = new DateTime($upLimit);
 
         $downLimit = $this->GetValueForIdent("downLimit");
-        $downLimitDate = new DataTime($downLimit);
+        $downLimitDate = new DateTime($downLimit);
 
         IPS_SetEventScheduleGroupPoint($id, 0, 0, $upLimitDate->format("h"), $upLimitDate->format("m"), 0, 0);
         IPS_SetEventScheduleGroupPoint($id, 0, 1, $downLimitDate->format("h"), $downLimitDate->format("m"), 0, 1);
