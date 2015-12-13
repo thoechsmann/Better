@@ -15,8 +15,6 @@ class BetterShutter extends BetterBase {
         $this->RegisterPropertyInteger("stopId", 0);
         $this->RegisterPropertyInteger("windowId", 0);
 
-        $this->RegisterPropertyInteger("statusPositionId", 0);
-
         $this->RegisterPropertyInteger("otherUpDownId1", 0);
         $this->RegisterPropertyInteger("otherUpDownId2", 0);
         $this->RegisterPropertyInteger("otherUpDownId3", 0);
@@ -85,11 +83,6 @@ class BetterShutter extends BetterBase {
 
         $sunsetTriggerId = $this->RegisterTrigger("sunsetTrigger", $this->isDayId, 'BS_OnSunset($_IPS[\'TARGET\']);', 4);
         IPS_SetEventTriggerValue($sunsetTriggerId, false);
-
-        // If shutter is up, we assume $shouldBeDown = false at module creation time.
-        $statusPositionId = $this->ReadPropertyInteger("statusPositionId");
-        $shouldBeDown = GetValue($statusPositionId) != 0;
-        $this->SetValueForIdent("shouldBeDown", $shouldBeDown);
 
         $this->UpdateSchedulers();
 	}
