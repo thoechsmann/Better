@@ -3,8 +3,8 @@ require_once(__DIR__ . "/../BetterBase.php");
 
 class BetterShutter extends BetterBase {
 
-    // private $isDayId = 18987;
-    private $isDayId = 52946;
+    private $isDayId = 18987;
+    // private $isDayId = 52946;
 
 	public function Create() 
     {
@@ -65,7 +65,7 @@ class BetterShutter extends BetterBase {
         IPS_SetEventScheduleAction($scheduler, 0, "Offen", 0x00FF00, "BS_ScheduledOpen(\$_IPS['TARGET'], false);");
         IPS_SetEventScheduleAction($scheduler, 1, "Offen (Feiertag)", 0xFFFF00, "BS_ScheduledOpen(\$_IPS['TARGET'], true);");
         IPS_SetEventScheduleAction($scheduler, 2, "Geschlossen", 0x0000FF, "BS_ScheduledClose(\$_IPS['TARGET']);");
-        // IPS_SetHidden($scheduler, true);
+        IPS_SetHidden($scheduler, true);
         $this->UpdateSchedulers();
 
         $upDownId = $this->ReadPropertyInteger("upDownId");
