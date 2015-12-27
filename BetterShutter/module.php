@@ -167,6 +167,8 @@ class BetterShutter extends BetterBase {
             $upDownId = $this->ReadPropertyInteger("upDownId");
             EIB_Switch(IPS_GetParent($upDownId), true);
         }
+
+        $this->SetValueForIdent("shouldBeDown", true);
     }
 
     public function UpDownEvent($moveDown)
