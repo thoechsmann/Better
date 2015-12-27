@@ -153,12 +153,15 @@ class BetterShutter extends BetterBase {
 
     public function OnSunset()
     {
+        IPS_LogMessage("BetterShutter", "OnSunset event");
+
         $upDownId = $this->ReadPropertyInteger("upDownId");
         EIB_Switch(IPS_GetParent($upDownId), true);
     }
 
     public function UpDownEvent($moveDown)
     {
+        IPS_LogMessage("BetterShutter", "UpDownEvent event");
         $windowId = $this->ReadPropertyInteger("windowId");        
         $windowOpen = GetValue($windowId);
 
@@ -172,6 +175,7 @@ class BetterShutter extends BetterBase {
 
     public function WindowEvent()
     {
+        IPS_LogMessage("BetterShutter", "WindowEvent event");
         $windowId = $this->ReadPropertyInteger("windowId");
 
         if(GetValue($windowId) == true) // window open
@@ -206,6 +210,8 @@ class BetterShutter extends BetterBase {
 
     private function MoveShutterToLimitedDown()
     {
+        IPS_LogMessage("BetterShutter", "MoveShutterToLimitedDown");
+
         $positionId = $this->ReadPropertyInteger("positionId");
         $positionLimit = $this->ReadPropertyInteger("positionLimit");
         EIB_Scale(IPS_GetParent($positionId), $positionLimit);        
@@ -213,6 +219,8 @@ class BetterShutter extends BetterBase {
 
     private function MoveShutterToShouldBePosition()
     {
+        IPS_LogMessage("BetterShutter", "MoveShutterToShouldBePosition");
+
         $upDownId = $this->ReadPropertyInteger("upDownId");
         EIB_Switch(IPS_GetParent($upDownId), $this->GetValueForIdent("shouldBeDown"));
     }
