@@ -155,8 +155,18 @@ class BetterShutter extends BetterBase {
     {
         IPS_LogMessage("BetterShutter", "OnSunset event");
 
-        $upDownId = $this->ReadPropertyInteger("upDownId");
-        EIB_Switch(IPS_GetParent($upDownId), true);
+        $windowId = $this->ReadPropertyInteger("windowId");        
+        $windowOpen = GetValue($windowId);
+
+        if($windowOpen)
+        {
+            $this->MoveShutterToLimitedDown();
+        }
+        else
+        {
+            $upDownId = $this->ReadPropertyInteger("upDownId");
+            EIB_Switch(IPS_GetParent($upDownId), true);
+        }
     }
 
     public function UpDownEvent($moveDown)
