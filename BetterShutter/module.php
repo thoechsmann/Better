@@ -67,7 +67,7 @@ class BetterShutter extends BetterBase {
         $this->UpdateSchedulers();
 
         $upDownId = $this->ReadPropertyInteger("upDownId");
-        $this->RegisterTrigger("upDownTrigger", $upDownId, 'BS_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', 1);
+        $this->RegisterTrigger("upDownTrigger", $upDownId, 'BS_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', 0);
 
         $upDownId = $this->ReadPropertyInteger("otherUpDownId1");
         if($upDownId != 0) $this->RegisterTrigger("otherUpDownTrigger1", $upDownId, 'BS_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', 1);
