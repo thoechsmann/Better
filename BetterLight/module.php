@@ -23,9 +23,13 @@ class BetterLight extends BetterBase {
 
         $this->RegisterVariableBoolean("LightOne_DayValue", "Licht1 Tag");
         $this->RegisterVariableBoolean("LightTwo_DayValue", "Licht2 Tag");
-
         $this->RegisterVariableBoolean("LightOne_NightValue", "Licht1 Nacht");
         $this->RegisterVariableBoolean("LightTwo_NightValue", "Licht2 Nacht");
+
+        $this->EnableAction("LightOne_DayValue");
+        $this->EnableAction("LightTwo_DayValue");
+        $this->EnableAction("LightOne_NightValue");
+        $this->EnableAction("LightTwo_NightValue");
 
         $this->RegisterTrigger("BSMainSwitchTrigger", $this->ReadPropertyInteger("masterBS_MainSwitchId"), 'BL_BSMainSwitchEvent($_IPS[\'TARGET\']);', 1);
 
@@ -34,15 +38,11 @@ class BetterLight extends BetterBase {
     public function RequestAction($Ident, $Value) 
     {    
         switch($Ident) {
-            case "twighlightCheck":
+            case "LightOne_DayValue":
+            case "LightTwo_DayValue":
+            case "LightOne_NightValue":
+            case "LightTwo_NightValue":
                 $this->SetValueForIdent($Ident, $Value);
-                break;
-
-            case "upLimit":
-            case "upLimitHoliday":
-            case "downLimit":
-                $this->SetValueForIdent($Ident, $Value);
-                $this->UpdateSchedulers();
                 break;
 
             default:
