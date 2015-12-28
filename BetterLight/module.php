@@ -57,7 +57,7 @@ class BetterLight extends BetterBase {
         $turnOn = GetValue($msId);
 
         $lightOneId = $this->ReadPropertyInteger("light1_SwitchId");
-        $lightTwoId = $this->ReadPropertyInteger("light1_SwitchId");
+        $lightTwoId = $this->ReadPropertyInteger("light2_SwitchId");
         $lightOneDayValue = $this->GetValueForIdent("LightOne_DayValue");
         $lightTwoDayValue = $this->GetValueForIdent("LightTwo_DayValue");
 
