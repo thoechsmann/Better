@@ -21,10 +21,10 @@ class BetterLight extends BetterBase {
 		
         $this->RemoveAll();
 
-        $this->RegisterVariableBoolean("LightOne_DayValue", "Licht1 Tag");
-        $this->RegisterVariableBoolean("LightTwo_DayValue", "Licht2 Tag");
-        $this->RegisterVariableBoolean("LightOne_NightValue", "Licht1 Nacht");
-        $this->RegisterVariableBoolean("LightTwo_NightValue", "Licht2 Nacht");
+        $this->RegisterVariableBoolean("LightOne_DayValue", "Licht1 Tag", "~Switch");
+        $this->RegisterVariableBoolean("LightTwo_DayValue", "Licht2 Tag", "~Switch");
+        $this->RegisterVariableBoolean("LightOne_NightValue", "Licht1 Nacht", "~Switch");
+        $this->RegisterVariableBoolean("LightTwo_NightValue", "Licht2 Nacht", "~Switch");
 
         $this->EnableAction("LightOne_DayValue");
         $this->EnableAction("LightTwo_DayValue");
