@@ -31,7 +31,7 @@ class BetterLight extends BetterBase {
         $this->EnableAction("LightOne_NightValue");
         $this->EnableAction("LightTwo_NightValue");
 
-        $this->RegisterTrigger("BSMainSwitchTrigger", $this->ReadPropertyInteger("masterBS_MainSwitchId"), 'BL_BSMainSwitchEvent($_IPS[\'TARGET\']);', 1);
+        $this->RegisterTrigger("MSMainSwitchTrigger", $this->ReadPropertyInteger("masterMS_MainSwitchId"), 'BL_MSMainSwitchEvent($_IPS[\'TARGET\']);', 1);
 
 	}
 
@@ -50,9 +50,12 @@ class BetterLight extends BetterBase {
         }
     }
 
-    public function BSMainSwitchEvent($turnOn)
+    public function MSMainSwitchEvent()
     {
         IPS_LogMessage("BetterLight", "BSMainSwitchEvent");
+        $msId = $this->ReadPropertyInteger("masterMS_MainSwitchId");
+        $turnOn = GetValue($msId);
+
         $lightOneId = $this->ReadPropertyInteger("light1_SwitchId");
         $lightTwoId = $this->ReadPropertyInteger("light1_SwitchId");
         $lightOneDayValue = $this->GetValueForIdent("LightOne_DayValue");
