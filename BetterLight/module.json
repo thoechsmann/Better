@@ -1,0 +1,14 @@
+{
+    "id": "{18097266-68ff-4f1a-8ca5-e6f2fc6ffed5}",
+    "name": "BetterLight",
+    "type": 3,
+    "vendor": "Thomas",
+    "aliases": 
+    [
+        "BetterLight"
+    ],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "BL"
+}
