@@ -10,7 +10,7 @@ class BetterLight extends BetterBase {
     {
 		parent::Create();		
 
-        $this->RegisterPropertyInteger("masterBS_MainSwitchId", 0);
+        $this->RegisterPropertyInteger("masterMS_MainSwitchId", 0);
         $this->RegisterPropertyInteger("light1_SwitchId", 0);
         $this->RegisterPropertyInteger("light2_SwitchId", 0);
 	}
