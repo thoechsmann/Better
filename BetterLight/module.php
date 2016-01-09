@@ -62,8 +62,10 @@ class BetterLight extends BetterBase {
     private function CreateSceneProfile()
     {
         $profileName = "BL_scenes_" . $this->GetName();
+        IPS_LogMessage("BetterLight", "CreateSceneProfile " . $profileName);
+
         IPS_DeleteVariableProfile($profileName);
-        IPS_CreateVariableProfile($profileName, 3);
+        IPS_CreateVariableProfile($profileName, 1);
 
         //Anlegen für Wert 1 in der Farbe weiß
         IPS_SetVariableProfileAssociation($profileName, 0, "Default");
