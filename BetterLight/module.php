@@ -45,12 +45,8 @@ class BetterLight extends BetterBase {
         $this->RegisterPropertyInteger("light1_SwitchId", 0);
         $this->RegisterPropertyInteger("light2_SwitchId", 0);
 
-        $this->RegisterPropertyString("scene1Name", "");
-        $this->RegisterPropertyString("scene2Name", "");
-        $this->RegisterPropertyString("scene3Name", "");
-
-        // for($i = 0; $i < $maxScenes; $i++)
-        //     $this->RegisterPropertyString($this->SceneString($i), "");
+        for($i = 0; $i < $this->$maxScenes; $i++)
+            $this->RegisterPropertyString($this->SceneString($i), "");
 	}
 	
 	public function ApplyChanges() 
@@ -79,7 +75,7 @@ class BetterLight extends BetterBase {
     {
         $this->CreateSceneVars("default");
 
-        for($i = 0; $i < $maxScenes; $i++)
+        for($i = 0; $i < $this->$maxScenes; $i++)
             $this->CreateSceneVars($this->SceneName($i));
     }
 
@@ -103,7 +99,7 @@ class BetterLight extends BetterBase {
         
         IPS_SetVariableProfileAssociation($this->ProfileString(), 0, "Default");
 
-        for($i = 0; $i < $maxScenes; $i++)
+        for($i = 0; $i < $this->$maxScenes; $i++)
         {
             if($this->SceneName($i) !== "")
                 IPS_SetVariableProfileAssociation($this->ProfileString(), $i, $this->SceneName($i));
