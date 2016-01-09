@@ -25,6 +25,11 @@ class BetterBase extends IPSModule {
         return GetValue($id);
     }
 
+    protected function GetName()
+    {
+        IPS_GetName($this->InstanceID);
+    }
+
     protected function RegisterLink($ident, $name, $targetInstanceID, $position) 
     {
         $link = @IPS_GetObjectIDByIdent($ident, $this->InstanceID);

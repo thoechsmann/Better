@@ -5,21 +5,12 @@ class BetterLight extends BetterBase {
 
     // private $isDayId = 18987;
     private $isDayId = 52946;
+    private $sceneCount = 3;
 
     // getters
-    private function Scene1Name()
+    private function SceneName($i)
     {
-        return $this->ReadPropertyString("scene1Name");
-    }
-
-    private function Scene2Name()
-    {
-        return $this->ReadPropertyString("scene2Name");
-    }
-
-    private function Scene3Name()
-    {
-        return $this->ReadPropertyString("scene3Name");
+        return $this->ReadPropertyString("scene".$i."Name");
     }
 
 	public function Create() 
@@ -30,9 +21,8 @@ class BetterLight extends BetterBase {
         $this->RegisterPropertyInteger("light1_SwitchId", 0);
         $this->RegisterPropertyInteger("light2_SwitchId", 0);
 
-        $this->RegisterPropertyString("scene1Name", "");
-        $this->RegisterPropertyString("scene2Name", "");
-        $this->RegisterPropertyString("scene3Name", "");
+        for($i = 0; $i < $sceneCount; $i++)
+            $this->RegisterPropertyString($this->SceneName($i), "");
 	}
 	
 	public function ApplyChanges() 
@@ -40,16 +30,23 @@ class BetterLight extends BetterBase {
 		parent::ApplyChanges();
 		
         $this->RemoveAll();
+        $this->CreateMotionTrigger();
+        $this->CreateScenes();
+        $this->CreateSceneProfile();
+	}
 
+    private function CreateMotionTrigger()
+    {
         $this->RegisterTrigger("MSMainSwitchTrigger", $this->ReadPropertyInteger("masterMS_MainSwitchId"), 'BL_MSMainSwitchEvent($_IPS[\'TARGET\']);', 1);
+    }
 
-        // Scene settings for each light
+    private function CreateScenes()
+    {
         $this->CreateSceneVars("default");
 
-        $this->CreateSceneVars($this->Scene1Name());
-        $this->CreateSceneVars($this->Scene2Name());
-        $this->CreateSceneVars($this->Scene3Name());
-	}
+        for($i = 0; $i < $sceneCount; $i++)
+            $this->CreateSceneVars($this->SceneName($i));
+    }
 
     private function CreateSceneVars($sceneName)
     {
@@ -60,6 +57,22 @@ class BetterLight extends BetterBase {
 
         $this->RegisterVariableBoolean("Light1Value_" . $sceneName, "Licht1 (" . $sceneName . ")", "~Switch");
         $this->RegisterVariableBoolean("Light2Value_" . $sceneName, "Licht2 (" . $sceneName . ")", "~Switch");
+    }
+
+    private function CreateSceneProfile()
+    {
+        $profileName = "BL_scenes_" . $this->GetName();
+        IPS_DeleteVariableProfile($profileName);
+        IPS_CreateVariableProfile($profileName, 3);
+
+        //Anlegen für Wert 1 in der Farbe weiß
+        IPS_SetVariableProfileAssociation($profileName, 0, "Default");
+
+        for($i = 1; $i <= $sceneCount; $i++)
+        {
+            if($this->SceneName($i) !== "")
+                IPS_SetVariableProfileAssociation($profileName, $i, $this->SceneName($i));
+        }
     }
 
     public function RequestAction($Ident, $Value) 
