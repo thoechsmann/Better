@@ -6,7 +6,7 @@ class BetterLight extends BetterBase {
     // private $isDayId = 18987;
     private $isDayId = 52946;
     private $maxLights = 3;
-    private $maxScenes = 3;
+    private $maxScenes = 4;
 
     private $idendStr_currentScene = "CurrentScene";
 
@@ -38,12 +38,15 @@ class BetterLight extends BetterBase {
 
     private function SceneName($i)
     {
+        if($i === 0)
+            return "default";
+
         return $this->ReadPropertyString($this->SceneString($i));
     }
 
     private function SceneString($i)
     {
-        return "scene". ($i + 1) ."Name";
+        return "scene". $i ."Name";
     }
 
     private function SceneCount()
@@ -81,7 +84,7 @@ class BetterLight extends BetterBase {
             $this->RegisterPropertyInteger($this->LightDimIDString($i), 0);
         }
 
-        for($i = 0; $i < $this->maxScenes; $i++)
+        for($i = 1; $i < $this->maxScenes; $i++)
         {
             $this->RegisterPropertyString($this->SceneString($i), "");
         }
@@ -105,8 +108,6 @@ class BetterLight extends BetterBase {
 
     private function CreateScenes()
     {
-        $this->CreateSceneVars("default");
-
         for($i = 0; $i < $this->maxScenes; $i++)
         {
             $this->CreateSceneVars($i);
@@ -122,24 +123,30 @@ class BetterLight extends BetterBase {
 
         for($i=0; $i<$this->maxLights; $i++)
         {
-            $switchId = $this->LightSwitchID($i);
-            $dimId = $this->LightDimID($i);
+            $this->CreateLight($sceneNumber, $i);
+        }
+    }
 
-            if($switchId === 0)
-            {
-                continue;
-            }
+    private function CreateLight($sceneNumber, $lightNumber)
+    {
+        $switchId = $this->LightSwitchID($lightNumber);
 
-            $ident = $this->LightVar($i, $sceneNumber);
+        if($switchId === 0)
+        {
+            continue;
+        }
 
-            if($dimId === 0)
-            {
-                $this->RegisterVariableBoolean($ident, "Licht1 (" . $sceneName . ")", "~Switch");
-            }
-            else
-            {
-                $this->RegisterVariableInteger($ident, "Licht1 (" . $sceneName . ")", "~Intensity.100");
-            }
+        $ident = $this->LightVar($lightNumber, $sceneNumber);
+        $sceneName = $this->SceneName($sceneNumber);
+        $dimId = $this->LightDimID($lightNumber);
+
+        if($dimId === 0)
+        {
+            $this->RegisterVariableBoolean($ident, "Licht1 (" . $sceneName . ")", "~Switch");
+        }
+        else
+        {
+            $this->RegisterVariableInteger($ident, "Licht1 (" . $sceneName . ")", "~Intensity.100");
         }
     }
 
