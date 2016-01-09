@@ -142,11 +142,11 @@ class BetterLight extends BetterBase {
 
         if($dimId === 0)
         {
-            $this->RegisterVariableBoolean($ident, "Licht1 (" . $sceneName . ")", "~Switch");
+            $this->RegisterVariableBoolean($ident, "Licht" . $lightNumber + 1 ." (" . $sceneName . ")", "~Switch");
         }
         else
         {
-            $this->RegisterVariableInteger($ident, "Licht1 (" . $sceneName . ")", "~Intensity.100");
+            $this->RegisterVariableBoolean($ident, "Licht" . $lightNumber + 1 ." (" . $sceneName . ")", "~Intensity.100");
         }
     }
 
@@ -166,7 +166,10 @@ class BetterLight extends BetterBase {
 
     private function CreateSceneSelectionVar() 
     {
-        $this->RegisterVariableInteger($this->idendStr_currentScene, "Szene", $this->ProfileString());
+        $ident = $this->idendStr_currentScene;
+
+        $this->RegisterVariableInteger($ident, "Szene", $this->ProfileString());
+        $this->EnableAction($ident);
     }
 
     private function ShowCurrentSceneVars()
@@ -180,14 +183,12 @@ class BetterLight extends BetterBase {
     public function RequestAction($Ident, $Value) 
     {    
         switch($Ident) {
-            case "LightOne_DayValue":
-            case "LightTwo_DayValue":
-            case "LightOne_NightValue":
-            case "LightTwo_NightValue":
-                $this->SetValueForIdent($Ident, $Value);
+            case $this->idendStr_currentScene:
+                IPS_LogMessage("BetterLight", "RequestAction");
                 break;
 
             default:
+                $this->SetValueForIdent($Ident, $Value);
                 throw new Exception("Invalid Ident");
         }
     }
