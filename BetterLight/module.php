@@ -133,7 +133,7 @@ class BetterLight extends BetterBase {
 
         if($switchId === 0)
         {
-            continue;
+            return;
         }
 
         $ident = $this->LightVar($lightNumber, $sceneNumber);
