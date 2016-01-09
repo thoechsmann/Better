@@ -5,7 +5,36 @@ class BetterLight extends BetterBase {
 
     // private $isDayId = 18987;
     private $isDayId = 52946;
+    private $maxLights = 3;
     private $maxScenes = 3;
+
+    private $idendStr_currentScene = "CurrentScene";
+
+    private function LightSwitchIDString($i)
+    {
+        return "light" . ($i+1) ."_SwitchId";
+    }
+
+    private function LightSwitchID($i)
+    {
+        return $this->ReadPropertyInteger($this->LightSwitchIDString($i));
+    }
+
+    private function LightDimIDString($i)
+    {
+        return "light" . ($i+1) ."_DimId";
+    }
+
+    private function LightDimID($i)
+    {
+        return $this->ReadPropertyInteger($this->LightDimIDString($i));
+    }
+
+    private function LightSwitchValue($lightNumber, $sceneNumber)
+    {
+        $sceneName = $this->SceneName($sceneNumber);
+        return "Light" . $lightNumber . "Switch_" . $sceneName;
+    }
 
     private function SceneName($i)
     {
@@ -30,6 +59,11 @@ class BetterLight extends BetterBase {
         return $count;
     }
 
+    private function CurrentScene()
+    {
+        $this->GetValueForIdent($idendStr_currentScene);
+    }
+
     private function ProfileString()
     {
         return "BL_scenes_" . $this->GetName(). $this->InstanceID;
@@ -39,31 +73,29 @@ class BetterLight extends BetterBase {
     {
 		parent::Create();		
 
-        IPS_LogMessage("BetterLight", "Create");
-
         $this->RegisterPropertyInteger("masterMS_MainSwitchId", 0);
-        $this->RegisterPropertyInteger("light1_SwitchId", 0);
-        $this->RegisterPropertyInteger("light2_SwitchId", 0);
+        
+        for($i = 0; $i < $this->maxLights; $i++)
+        {
+            $this->RegisterPropertyInteger($this->LightSwitchIDString($i), 0);
+            $this->RegisterPropertyInteger($this->LightDimIDString($i), 0);
+        }
 
         for($i = 0; $i < $this->maxScenes; $i++)
+        {
             $this->RegisterPropertyString($this->SceneString($i), "");
+        }
 	}
 	
 	public function ApplyChanges() 
     {
 		parent::ApplyChanges();
 		
-                IPS_LogMessage("BetterLight", "ApplyChanges1");
-
         $this->RemoveAll();
         $this->CreateMotionTrigger();
-                IPS_LogMessage("BetterLight", "ApplyChanges2");
         $this->CreateScenes();
-                IPS_LogMessage("BetterLight", "ApplyChanges3");
         $this->CreateSceneProfile();
-                IPS_LogMessage("BetterLight", "ApplyChanges4");
         $this->CreateSceneSelectionVar();
-                IPS_LogMessage("BetterLight", "ApplyChanges5");
 	}
 
     private function CreateMotionTrigger()
@@ -76,28 +108,45 @@ class BetterLight extends BetterBase {
         $this->CreateSceneVars("default");
 
         for($i = 0; $i < $this->maxScenes; $i++)
-            $this->CreateSceneVars($this->SceneName($i));
+        {
+            if($sceneName !== "")
+                $this->CreateSceneVars($i);
+        }
     }
 
-    private function CreateSceneVars($sceneName)
+    private function CreateSceneVars($sceneNumber)
     {
-        if($sceneName === "")
-            return;
+        $sceneName = $this->SceneName($sceneNumber);
 
-        IPS_LogMessage("BetterLight", "CreateSceneVars " . $sceneName);
+        for($i=0; $i<$this->maxLights; $i++)
+        {
+            $switchId = $this->LightSwitchID($i);
+            $dimId = $this->LightDimID($i);
 
-        $this->RegisterVariableBoolean("Light1Value_" . $sceneName, "Licht1 (" . $sceneName . ")", "~Switch");
-        $this->RegisterVariableBoolean("Light2Value_" . $sceneName, "Licht2 (" . $sceneName . ")", "~Switch");
+            if($switchId === 0)
+            {
+                continue;
+            }
+
+            if($dimId === 0)
+            {
+                $ident = $this->LightSwitchValue($i, $sceneNumber);
+                $this->RegisterVariableBoolean($ident, "Licht1 (" . $sceneName . ")", "~Switch");
+            }
+            else
+            {
+                $ident = $this->LightDimValue($i, $sceneNumber);
+                $this->RegisterVariableInteger($ident, "Licht1 (" . $sceneName . ")", "~Intensity");
+            }
+        }
     }
 
     private function CreateSceneProfile()
     {        
-        IPS_LogMessage("BetterLight", "CreateSceneProfile " . $this->ProfileString());
-
         @IPS_DeleteVariableProfile($this->ProfileString());
         IPS_CreateVariableProfile($this->ProfileString(), 1);
         
-        IPS_SetVariableProfileAssociation($this->ProfileString(), 0, "Default", "", 0xFFFFFF);
+        IPS_SetVariableProfileAssociation($this->ProfileString(), -1, "Default", "", 0xFFFFFF);
 
         for($i = 0; $i < $this->maxScenes; $i++)
         {
@@ -106,9 +155,17 @@ class BetterLight extends BetterBase {
         }
     }
 
-    public function CreateSceneSelectionVar() 
+    private function CreateSceneSelectionVar() 
     {
-        $this->RegisterVariableInteger("SceneSelection", "Szene", $this->ProfileString());
+        $this->RegisterVariableInteger($this->idendStr_currentScene, "Szene", $this->ProfileString());
+    }
+
+    private function ShowCurrentSceneVars()
+    {
+        // CurrentScene();
+
+        // IPS_SetHidden($this->GetIDForIdent("Light1Value_" . $sceneName), true);
+
     }
 
     public function RequestAction($Ident, $Value) 
@@ -136,7 +193,6 @@ class BetterLight extends BetterBase {
         $lightTwoId = $this->ReadPropertyInteger("light2_SwitchId");
         $lightOneDayValue = $this->GetValueForIdent("LightOne_DayValue");
         $lightTwoDayValue = $this->GetValueForIdent("LightTwo_DayValue");
-
 
         if($turnOn)
         {
