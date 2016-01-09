@@ -9,7 +9,7 @@ class BetterLight extends BetterBase {
 
     private function SceneName($i)
     {
-        return $this->ReadPropertyString(SceneString($i));
+        return $this->ReadPropertyString($this->SceneString($i));
     }
 
     private function SceneString($i)
@@ -23,7 +23,7 @@ class BetterLight extends BetterBase {
 
         for($i = 0; $i < $this->maxScenes; $i++)
         {
-            if(SceneName($i) !== "")
+            if($this->SceneName($i) !== "")
                 $count++;
         }   
 
