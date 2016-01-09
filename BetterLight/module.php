@@ -94,15 +94,15 @@ class BetterLight extends BetterBase {
     {        
         IPS_LogMessage("BetterLight", "CreateSceneProfile " . $this->ProfileString());
 
-        IPS_DeleteVariableProfile($this->ProfileString());
+        @IPS_DeleteVariableProfile($this->ProfileString());
         IPS_CreateVariableProfile($this->ProfileString(), 1);
         
-        IPS_SetVariableProfileAssociation($this->ProfileString(), 0, "Default");
+        IPS_SetVariableProfileAssociation($this->ProfileString(), 0, "Default", "", 0xFFFFFF);
 
         for($i = 0; $i < $this->maxScenes; $i++)
         {
             if($this->SceneName($i) !== "")
-                IPS_SetVariableProfileAssociation($this->ProfileString(), $i, $this->SceneName($i));
+                IPS_SetVariableProfileAssociation($this->ProfileString(), $i, $this->SceneName($i), "Speaker", 0xFFFFFF);
         }
     }
 
