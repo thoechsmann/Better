@@ -30,10 +30,10 @@ class BetterLight extends BetterBase {
         return $this->ReadPropertyInteger($this->LightDimIDString($i));
     }
 
-    private function LightSwitchValue($lightNumber, $sceneNumber)
+    private function LightValue($lightNumber, $sceneNumber)
     {
         $sceneName = $this->SceneName($sceneNumber);
-        return "Light" . $lightNumber . "Switch_" . $sceneName;
+        return "Light" . $lightNumber . $sceneName;
     }
 
     private function SceneName($i)
@@ -128,14 +128,14 @@ class BetterLight extends BetterBase {
                 continue;
             }
 
+            $ident = $this->LightSwitchValue($i, $sceneNumber);
+
             if($dimId === 0)
             {
-                $ident = $this->LightSwitchValue($i, $sceneNumber);
                 $this->RegisterVariableBoolean($ident, "Licht1 (" . $sceneName . ")", "~Switch");
             }
             else
             {
-                $ident = $this->LightDimValue($i, $sceneNumber);
                 $this->RegisterVariableInteger($ident, "Licht1 (" . $sceneName . ")", "~Intensity");
             }
         }
