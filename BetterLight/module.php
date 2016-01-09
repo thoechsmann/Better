@@ -6,6 +6,22 @@ class BetterLight extends BetterBase {
     // private $isDayId = 18987;
     private $isDayId = 52946;
 
+    // getters
+    private function Scene1Name()
+    {
+        return $this->ReadPropertyString("scene1Name");
+    }
+
+    private function Scene2Name()
+    {
+        return $this->ReadPropertyString("scene2Name");
+    }
+
+    private function Scene3Name()
+    {
+        return $this->ReadPropertyString("scene3Name");
+    }
+
 	public function Create() 
     {
 		parent::Create();		
@@ -13,6 +29,10 @@ class BetterLight extends BetterBase {
         $this->RegisterPropertyInteger("masterMS_MainSwitchId", 0);
         $this->RegisterPropertyInteger("light1_SwitchId", 0);
         $this->RegisterPropertyInteger("light2_SwitchId", 0);
+
+        $this->RegisterPropertyString("scene1Name", "");
+        $this->RegisterPropertyString("scene2Name", "");
+        $this->RegisterPropertyString("scene3Name", "");
 	}
 	
 	public function ApplyChanges() 
@@ -21,19 +41,31 @@ class BetterLight extends BetterBase {
 		
         $this->RemoveAll();
 
-        $this->RegisterVariableBoolean("LightOne_DayValue", "Licht1 Tag", "~Switch");
-        $this->RegisterVariableBoolean("LightTwo_DayValue", "Licht2 Tag", "~Switch");
-        $this->RegisterVariableBoolean("LightOne_NightValue", "Licht1 Nacht", "~Switch");
-        $this->RegisterVariableBoolean("LightTwo_NightValue", "Licht2 Nacht", "~Switch");
-
-        $this->EnableAction("LightOne_DayValue");
-        $this->EnableAction("LightTwo_DayValue");
-        $this->EnableAction("LightOne_NightValue");
-        $this->EnableAction("LightTwo_NightValue");
-
         $this->RegisterTrigger("MSMainSwitchTrigger", $this->ReadPropertyInteger("masterMS_MainSwitchId"), 'BL_MSMainSwitchEvent($_IPS[\'TARGET\']);', 1);
 
+        // Scene settings for each light
+        CreateSceneVars("default");
+
+        if(Scene1Name() !== "")
+        {
+            CreateSceneVars(Scene1Name());
+        }
+        if(Scene2Name() !== "")
+        {
+            CreateSceneVars(Scene2Name());
+        }
+        if(Scene3Name() !== "")
+        {
+            CreateSceneVars(Scene3Name());
+        }
+
 	}
+
+    private function CreateSceneVars($sceneName)
+    {
+        $this->RegisterVariableBoolean("Light1Value_" + $sceneName, "Licht1 ("+ $sceneName + ")", "~Switch");
+        $this->RegisterVariableBoolean("Light2Value_" + $sceneName, "Licht2 ("+ $sceneName + ")", "~Switch");
+    }
 
     public function RequestAction($Ident, $Value) 
     {    

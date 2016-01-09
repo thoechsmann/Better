@@ -3,7 +3,10 @@
 	[
 		{ "type": "SelectVariable", "name": "masterMS_MainSwitchId", "caption": "Master BM (Ausgang Schalten)" },
 		{ "type": "SelectVariable", "name": "light1_SwitchId", "caption": "Licht1 (Schalten)" },
-		{ "type": "SelectVariable", "name": "light2_SwitchId", "caption": "Licht2 (Schalten)" }
+		{ "type": "SelectVariable", "name": "light2_SwitchId", "caption": "Licht2 (Schalten)" },
+		{ "type": "ValidationTextBox", "name": "scene1Name", "caption": "Name Szene 1" },
+		{ "type": "ValidationTextBox", "name": "scene2Name", "caption": "Name Szene 2" },
+		{ "type": "ValidationTextBox", "name": "scene3Name", "caption": "Name Szene 3" }
 	],
 	"actions":
 	[
