@@ -142,11 +142,11 @@ class BetterLight extends BetterBase {
 
         if($dimId === 0)
         {
-            $this->RegisterVariableBoolean($ident, "Licht" . $lightNumber + 1 ." (" . $sceneName . ")", "~Switch");
+            $this->RegisterVariableBoolean($ident, "Licht" . ($lightNumber + 1) ." (" . $sceneName . ")", "~Switch");
         }
         else
         {
-            $this->RegisterVariableBoolean($ident, "Licht" . $lightNumber + 1 ." (" . $sceneName . ")", "~Intensity.100");
+            $this->RegisterVariableInteger($ident, "Licht" . ($lightNumber + 1) ." (" . $sceneName . ")", "~Intensity.100");
         }
     }
 
