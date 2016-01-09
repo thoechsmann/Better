@@ -43,8 +43,12 @@ class BetterLight extends BetterBase {
         $this->RegisterPropertyInteger("light1_SwitchId", 0);
         $this->RegisterPropertyInteger("light2_SwitchId", 0);
 
-        for($i = 0; $i < $maxScenes; $i++)
-            $this->RegisterPropertyString($this->SceneString($i), "");
+        $this->RegisterPropertyString("scene1Name", "");
+        $this->RegisterPropertyString("scene2Name", "");
+        $this->RegisterPropertyString("scene3Name", "");
+
+        // for($i = 0; $i < $maxScenes; $i++)
+        //     $this->RegisterPropertyString($this->SceneString($i), "");
 	}
 	
 	public function ApplyChanges() 
