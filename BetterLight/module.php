@@ -39,6 +39,8 @@ class BetterLight extends BetterBase {
     {
 		parent::Create();		
 
+        IPS_LogMessage("BetterLight", "Create");
+
         $this->RegisterPropertyInteger("masterMS_MainSwitchId", 0);
         $this->RegisterPropertyInteger("light1_SwitchId", 0);
         $this->RegisterPropertyInteger("light2_SwitchId", 0);
@@ -55,11 +57,17 @@ class BetterLight extends BetterBase {
     {
 		parent::ApplyChanges();
 		
+                IPS_LogMessage("BetterLight", "ApplyChanges1");
+
         $this->RemoveAll();
         $this->CreateMotionTrigger();
+                IPS_LogMessage("BetterLight", "ApplyChanges2");
         $this->CreateScenes();
+                IPS_LogMessage("BetterLight", "ApplyChanges3");
         $this->CreateSceneProfile();
+                IPS_LogMessage("BetterLight", "ApplyChanges4");
         $this->CreateSceneSelectionVar();
+                IPS_LogMessage("BetterLight", "ApplyChanges5");
 	}
 
     private function CreateMotionTrigger()
@@ -92,8 +100,7 @@ class BetterLight extends BetterBase {
 
         IPS_DeleteVariableProfile($this->ProfileString());
         IPS_CreateVariableProfile($this->ProfileString(), 1);
-
-        //Anlegen für Wert 1 in der Farbe weiß
+        
         IPS_SetVariableProfileAssociation($this->ProfileString(), 0, "Default");
 
         for($i = 0; $i < $maxScenes; $i++)
