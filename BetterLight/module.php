@@ -174,10 +174,18 @@ class BetterLight extends BetterBase {
 
     private function ShowCurrentSceneVars()
     {
-        // CurrentScene();
+        $currentScene = $this->CurrentScene();
 
-        // IPS_SetHidden($this->GetIDForIdent("Light1Value_" . $sceneName), true);
+        for($i = 0; $i < $this->maxScenes; $i++)
+        {
+            $ident = $this->LightVar($lightNumber, $sceneNumber);
+            $id = @$this->GetIDForIdent($ident);
 
+            if($id)
+            {
+                $IPS_SetHidden($id, $i !== $currentScene);
+            }
+        }
     }
 
     public function RequestAction($Ident, $Value) 
@@ -185,6 +193,8 @@ class BetterLight extends BetterBase {
         switch($Ident) {
             case $this->idendStr_currentScene:
                 IPS_LogMessage("BetterLight", "RequestAction");
+                $this->SetValueForIdent($Ident, $Value);
+                $this->ShowCurrentSceneVars();
                 break;
 
             default:
