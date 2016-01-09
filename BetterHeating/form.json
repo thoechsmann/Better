@@ -24,6 +24,6 @@
 	],
 	"actions":
 	[
-		{ "type": "Button", "label": "Update", "onClick": "BH_Update($id);" },
+		{ "type": "Button", "label": "Update", "onClick": "BH_Update($id);" }
 	]	
 }

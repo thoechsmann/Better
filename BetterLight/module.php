@@ -56,6 +56,8 @@ class BetterLight extends BetterBase {
         if($sceneName === "")
             return;
 
+        IPS_LogMessage("BetterLight", "CreateSceneVars " + $sceneName);
+
         $this->RegisterVariableBoolean("Light1Value_" + $sceneName, "Licht1 ("+ $sceneName + ")", "~Switch");
         $this->RegisterVariableBoolean("Light2Value_" + $sceneName, "Licht2 ("+ $sceneName + ")", "~Switch");
     }
