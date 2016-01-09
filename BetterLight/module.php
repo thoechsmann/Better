@@ -5,7 +5,7 @@ class BetterLight extends BetterBase {
 
     // private $isDayId = 18987;
     private $isDayId = 52946;
-    private $sceneCount = 3;
+    private $maxScenes = 3;
 
     private function SceneName($i)
     {
@@ -14,7 +14,20 @@ class BetterLight extends BetterBase {
 
     private function SceneString($i)
     {
-        return "scene".$i."Name";
+        return "scene". ($i + 1) ."Name";
+    }
+
+    private function SceneCount()
+    {
+        $count = 0;
+
+        for($i = 0; $i < $maxScenes; $i++)
+        {
+            if(SceneName($i) !== "")
+                $count++;
+        }   
+
+        return $count;
     }
 
     private function ProfileString()
@@ -30,7 +43,7 @@ class BetterLight extends BetterBase {
         $this->RegisterPropertyInteger("light1_SwitchId", 0);
         $this->RegisterPropertyInteger("light2_SwitchId", 0);
 
-        for($i = 1; $i <= $sceneCount; $i++)
+        for($i = 0; $i < $maxScenes; $i++)
             $this->RegisterPropertyString($this->SceneString($i), "");
 	}
 	
@@ -54,7 +67,7 @@ class BetterLight extends BetterBase {
     {
         $this->CreateSceneVars("default");
 
-        for($i = 0; $i < $sceneCount; $i++)
+        for($i = 0; $i < $maxScenes; $i++)
             $this->CreateSceneVars($this->SceneName($i));
     }
 
@@ -79,7 +92,7 @@ class BetterLight extends BetterBase {
         //Anlegen für Wert 1 in der Farbe weiß
         IPS_SetVariableProfileAssociation($this->ProfileString(), 0, "Default");
 
-        for($i = 1; $i <= $sceneCount; $i++)
+        for($i = 0; $i < $maxScenes; $i++)
         {
             if($this->SceneName($i) !== "")
                 IPS_SetVariableProfileAssociation($this->ProfileString(), $i, $this->SceneName($i));
