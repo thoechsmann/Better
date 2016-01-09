@@ -44,25 +44,18 @@ class BetterLight extends BetterBase {
         $this->RegisterTrigger("MSMainSwitchTrigger", $this->ReadPropertyInteger("masterMS_MainSwitchId"), 'BL_MSMainSwitchEvent($_IPS[\'TARGET\']);', 1);
 
         // Scene settings for each light
-        CreateSceneVars("default");
+        $this->CreateSceneVars("default");
 
-        if(Scene1Name() !== "")
-        {
-            CreateSceneVars(Scene1Name());
-        }
-        if(Scene2Name() !== "")
-        {
-            CreateSceneVars(Scene2Name());
-        }
-        if(Scene3Name() !== "")
-        {
-            CreateSceneVars(Scene3Name());
-        }
-
+        $this->CreateSceneVars($this->Scene1Name());
+        $this->CreateSceneVars($this->Scene2Name());
+        $this->CreateSceneVars($this->Scene3Name());
 	}
 
     private function CreateSceneVars($sceneName)
     {
+        if($sceneName === "")
+            return;
+
         $this->RegisterVariableBoolean("Light1Value_" + $sceneName, "Licht1 ("+ $sceneName + ")", "~Switch");
         $this->RegisterVariableBoolean("Light2Value_" + $sceneName, "Licht2 ("+ $sceneName + ")", "~Switch");
     }
