@@ -21,7 +21,7 @@ class BetterLight extends BetterBase {
     {
         $count = 0;
 
-        for($i = 0; $i < $maxScenes; $i++)
+        for($i = 0; $i < $this->maxScenes; $i++)
         {
             if(SceneName($i) !== "")
                 $count++;
@@ -45,7 +45,7 @@ class BetterLight extends BetterBase {
         $this->RegisterPropertyInteger("light1_SwitchId", 0);
         $this->RegisterPropertyInteger("light2_SwitchId", 0);
 
-        for($i = 0; $i < $this->$maxScenes; $i++)
+        for($i = 0; $i < $this->maxScenes; $i++)
             $this->RegisterPropertyString($this->SceneString($i), "");
 	}
 	
@@ -75,7 +75,7 @@ class BetterLight extends BetterBase {
     {
         $this->CreateSceneVars("default");
 
-        for($i = 0; $i < $this->$maxScenes; $i++)
+        for($i = 0; $i < $this->maxScenes; $i++)
             $this->CreateSceneVars($this->SceneName($i));
     }
 
@@ -99,7 +99,7 @@ class BetterLight extends BetterBase {
         
         IPS_SetVariableProfileAssociation($this->ProfileString(), 0, "Default");
 
-        for($i = 0; $i < $this->$maxScenes; $i++)
+        for($i = 0; $i < $this->maxScenes; $i++)
         {
             if($this->SceneName($i) !== "")
                 IPS_SetVariableProfileAssociation($this->ProfileString(), $i, $this->SceneName($i));
