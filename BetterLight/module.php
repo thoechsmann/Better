@@ -7,10 +7,14 @@ class BetterLight extends BetterBase {
     private $isDayId = 52946;
     private $sceneCount = 3;
 
-    // getters
     private function SceneName($i)
     {
-        return $this->ReadPropertyString("scene".$i."Name");
+        return $this->ReadPropertyString(SceneString($i));
+    }
+
+    private function SceneString($i)
+    {
+        return "scene".$i."Name";
     }
 
 	public function Create() 
@@ -22,7 +26,7 @@ class BetterLight extends BetterBase {
         $this->RegisterPropertyInteger("light2_SwitchId", 0);
 
         for($i = 1; $i <= $sceneCount; $i++)
-            $this->RegisterPropertyString($this->SceneName($i), "");
+            $this->RegisterPropertyString($this->SceneString($i), "");
 	}
 	
 	public function ApplyChanges() 
