@@ -178,12 +178,15 @@ class BetterLight extends BetterBase {
 
         for($i = 0; $i < $this->maxScenes; $i++)
         {
-            $ident = $this->LightVar($lightNumber, $sceneNumber);
-            $id = @$this->GetIDForIdent($ident);
-
-            if($id)
+            for($j = 0; $j < $this->maxLights; $j++)
             {
-                $IPS_SetHidden($id, $i !== $currentScene);
+                $ident = $this->LightVar($j, $i);
+                $id = @$this->GetIDForIdent($ident);
+
+                if($id)
+                {
+                    $IPS_SetHidden($id, $i !== $currentScene);
+                }
             }
         }
     }
