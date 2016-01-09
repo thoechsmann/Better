@@ -109,14 +109,16 @@ class BetterLight extends BetterBase {
 
         for($i = 0; $i < $this->maxScenes; $i++)
         {
-            if($sceneName !== "")
-                $this->CreateSceneVars($i);
+            $this->CreateSceneVars($i);
         }
     }
 
     private function CreateSceneVars($sceneNumber)
     {
         $sceneName = $this->SceneName($sceneNumber);
+        
+        if($sceneName === "")
+            return;
 
         for($i=0; $i<$this->maxLights; $i++)
         {
