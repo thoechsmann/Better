@@ -136,7 +136,7 @@ class BetterLight extends BetterBase {
             }
             else
             {
-                $this->RegisterVariableInteger($ident, "Licht1 (" . $sceneName . ")", "~Intensity");
+                $this->RegisterVariableInteger($ident, "Licht1 (" . $sceneName . ")", "~Intensity.100");
             }
         }
     }
