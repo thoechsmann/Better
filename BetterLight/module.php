@@ -64,7 +64,7 @@ class BetterLight extends BetterBase {
 
     private function CurrentScene()
     {
-        $this->GetValueForIdent($this->idendStr_currentScene);
+        return $this->GetValueForIdent($this->idendStr_currentScene);
     }
 
     private function ProfileString()
