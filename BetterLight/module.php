@@ -17,6 +17,11 @@ class BetterLight extends BetterBase {
         return "scene".$i."Name";
     }
 
+    private function ProfileString()
+    {
+        return "BL_scenes_" . $this->GetName(). $this->InstanceID;
+    }
+
 	public function Create() 
     {
 		parent::Create();		
@@ -37,6 +42,7 @@ class BetterLight extends BetterBase {
         $this->CreateMotionTrigger();
         $this->CreateScenes();
         $this->CreateSceneProfile();
+        $this->CreateSceneSelectionVar();
 	}
 
     private function CreateMotionTrigger()
@@ -64,21 +70,25 @@ class BetterLight extends BetterBase {
     }
 
     private function CreateSceneProfile()
-    {
-        $profileName = "BL_scenes_" . $this->GetName();
-        IPS_LogMessage("BetterLight", "CreateSceneProfile " . $profileName);
+    {        
+        IPS_LogMessage("BetterLight", "CreateSceneProfile " . $this->ProfileString());
 
-        IPS_DeleteVariableProfile($profileName);
-        IPS_CreateVariableProfile($profileName, 1);
+        IPS_DeleteVariableProfile($this->ProfileString());
+        IPS_CreateVariableProfile($this->ProfileString(), 1);
 
         //Anlegen für Wert 1 in der Farbe weiß
-        IPS_SetVariableProfileAssociation($profileName, 0, "Default");
+        IPS_SetVariableProfileAssociation($this->ProfileString(), 0, "Default");
 
         for($i = 1; $i <= $sceneCount; $i++)
         {
             if($this->SceneName($i) !== "")
-                IPS_SetVariableProfileAssociation($profileName, $i, $this->SceneName($i));
+                IPS_SetVariableProfileAssociation($this->ProfileString(), $i, $this->SceneName($i));
         }
+    }
+
+    public function CreateSceneSelectionVar() 
+    {
+        $this->RegisterVariableInteger("SceneSelection", "Szene", $this->ProfileString());
     }
 
     public function RequestAction($Ident, $Value) 
