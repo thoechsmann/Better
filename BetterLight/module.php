@@ -185,7 +185,7 @@ class BetterLight extends BetterBase {
 
                 if($id)
                 {
-                    $IPS_SetHidden($id, $i !== $currentScene);
+                    IPS_SetHidden($id, $i !== $currentScene);
                 }
             }
         }
