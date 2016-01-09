@@ -155,12 +155,10 @@ class BetterLight extends BetterBase {
         @IPS_DeleteVariableProfile($this->ProfileString());
         IPS_CreateVariableProfile($this->ProfileString(), 1);
         
-        IPS_SetVariableProfileAssociation($this->ProfileString(), -1, "Default", "", 0xFFFFFF);
-
         for($i = 0; $i < $this->maxScenes; $i++)
         {
             if($this->SceneName($i) !== "")
-                IPS_SetVariableProfileAssociation($this->ProfileString(), $i, $this->SceneName($i), "Speaker", 0xFFFFFF);
+                IPS_SetVariableProfileAssociation($this->ProfileString(), $i, $this->SceneName($i), "", 0xFFFFFF);
         }
     }
 
@@ -175,6 +173,7 @@ class BetterLight extends BetterBase {
     private function ShowCurrentSceneVars()
     {
         $currentScene = $this->CurrentScene();
+        IPS_LogMessage("BetterLight", "ShowCurrentSceneVars currentScene " . $currentScene);
 
         for($i = 0; $i < $this->maxScenes; $i++)
         {
@@ -185,7 +184,7 @@ class BetterLight extends BetterBase {
 
                 if($id)
                 {
-                    IPS_SetHidden($id, $i !== $currentScene);
+                    IPS_SetHidden($id, $i != $currentScene);
                 }
             }
         }
