@@ -39,12 +39,12 @@ class BetterLight extends BetterBase {
 
     private function LightNumberForLightVar($lightVar)
     {
-        $prefix = substr($lightVar, 0 , $strlen($this->str_light));
+        $prefix = substr($lightVar, 0 , strlen($this->str_light));
 
         if($prefix !== $this->str_light)
             return false;
 
-        $lightNumber = substr($lightVar, $strlen($prefix) , 1);
+        $lightNumber = substr($lightVar, strlen($prefix) , 1);
 
         if(!is_numeric($lightNumber))
             return false;
