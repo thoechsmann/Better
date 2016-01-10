@@ -9,10 +9,11 @@ class BetterLight extends BetterBase {
     private $maxScenes = 4;
 
     private $idendStr_currentScene = "CurrentScene";
+    private $str_light = "light";
 
     private function LightSwitchIDString($i)
     {
-        return "light" . ($i+1) ."_SwitchId";
+        return $this->str_light . ($i+1) ."_SwitchId";
     }
 
     private function LightSwitchID($i)
@@ -22,7 +23,7 @@ class BetterLight extends BetterBase {
 
     private function LightDimIDString($i)
     {
-        return "light" . ($i+1) ."_DimId";
+        return $this->str_light . ($i+1) ."_DimId";
     }
 
     private function LightDimID($i)
@@ -33,7 +34,22 @@ class BetterLight extends BetterBase {
     private function LightVar($lightNumber, $sceneNumber)
     {
         $sceneName = $this->SceneName($sceneNumber);
-        return "Light" . $lightNumber . $sceneName;
+        return $this->str_light . $lightNumber . $sceneName;
+    }
+
+    private function LightNumberForLightVar($lightVar)
+    {
+        $prefix = substr($lightVar, 0 , $strlen($this->str_light));
+
+        if($prefix !== $this->str_light)
+            return false;
+
+        $lightNumber = substr($lightVar, $strlen($prefix) , 1);
+
+        if(!is_numeric($lightNumber))
+            return false;
+
+        return $lightNumber;
     }
 
     private function SceneName($i)
@@ -148,6 +164,8 @@ class BetterLight extends BetterBase {
         {
             $this->RegisterVariableInteger($ident, "Licht" . ($lightNumber + 1) ." (" . $sceneName . ")", "~Intensity.100");
         }
+
+        $this->EnableAction($ident);
     }
 
     private function CreateSceneProfile()
@@ -173,7 +191,6 @@ class BetterLight extends BetterBase {
     private function ShowCurrentSceneVars()
     {
         $currentScene = $this->CurrentScene();
-        IPS_LogMessage("BetterLight", "ShowCurrentSceneVars currentScene " . $currentScene);
 
         for($i = 0; $i < $this->maxScenes; $i++)
         {
@@ -191,17 +208,27 @@ class BetterLight extends BetterBase {
     }
 
     public function RequestAction($Ident, $Value) 
-    {    
-        switch($Ident) {
-            case $this->idendStr_currentScene:
-                IPS_LogMessage("BetterLight", "RequestAction");
-                $this->SetValueForIdent($Ident, $Value);
-                $this->ShowCurrentSceneVars();
-                break;
+    {
+        $lightNumber = LightNumberForLightVar($ident);
+        
+        if($lightNumber !== false)
+        {
+            $lightID = LightSwitchID($lightNumber);
+            EIB_Switch(IPS_GetParent($lightID), $Value);
+            $this->SetValueForIdent($Ident, $Value);
+        }
+        else
+        {
+            switch($Ident) {
+                case $this->idendStr_currentScene:
+                    $this->SetValueForIdent($Ident, $Value);
+                    $this->ShowCurrentSceneVars();
+                    break;
 
-            default:
-                $this->SetValueForIdent($Ident, $Value);
-                throw new Exception("Invalid Ident");
+                default:
+                    $this->SetValueForIdent($Ident, $Value);
+                    throw new Exception("Invalid Ident");
+            }
         }
     }
 
