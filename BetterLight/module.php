@@ -10,6 +10,7 @@ class BetterLight extends BetterBase {
 
     private $idendStr_currentScene = "CurrentScene";
     private $str_light = "light";
+    private $str_scene = "scene";
 
     private function LightSwitchIDString($i)
     {
@@ -33,8 +34,7 @@ class BetterLight extends BetterBase {
 
     private function LightVar($lightNumber, $sceneNumber)
     {
-        $sceneName = $this->SceneName($sceneNumber);
-        return $this->str_light . $lightNumber . $sceneName;
+        return $this->str_light . $lightNumber . $this->str_scene . $sceneNumber;
     }
 
     private function LightNumberForLightVar($lightVar)
@@ -50,6 +50,21 @@ class BetterLight extends BetterBase {
             return false;
 
         return $lightNumber;
+    }
+
+    private function SceneNumberForLightVar($lightVar)
+    {
+        $substr = substr($lightVar, strlen($this->str_light) + 1 , strlen($this->str_scene));
+
+        if($substr !== $this->str_scene)
+            return false;
+
+        $sceneNumber = substr($lightVar, strlen($this->str_light) + 1 + strlen($this->str_scene) , 1);
+
+        if(!is_numeric($sceneNumber))
+            return false;
+
+        return $sceneNumber;
     }
 
     private function SceneName($i)
@@ -78,7 +93,7 @@ class BetterLight extends BetterBase {
         return $count;
     }
 
-    private function CurrentScene()
+    private function CurrentSceneNumber()
     {
         return $this->GetValueForIdent($this->idendStr_currentScene);
     }
@@ -115,6 +130,7 @@ class BetterLight extends BetterBase {
         $this->CreateScenes();
         $this->CreateSceneProfile();
         $this->CreateSceneSelectionVar();
+        $this->UseCurrentSceneVars();
 	}
 
     private function CreateMotionTrigger()
@@ -188,20 +204,37 @@ class BetterLight extends BetterBase {
         $this->EnableAction($ident);
     }
 
-    private function ShowCurrentSceneVars()
+    private function UseCurrentSceneVars()
     {
-        $currentScene = $this->CurrentScene();
-
-        for($i = 0; $i < $this->maxScenes; $i++)
+        for($sceneNumber = 0; $sceneNumber < $this->maxScenes; $sceneNumber++)
         {
-            for($j = 0; $j < $this->maxLights; $j++)
+            for($lightNumber = 0; $lightNumber < $this->maxLights; $lightNumber++)
             {
-                $ident = $this->LightVar($j, $i);
+                $ident = $this->LightVar($lightNumber, $sceneNumber);
                 $id = @$this->GetIDForIdent($ident);
 
                 if($id)
                 {
-                    IPS_SetHidden($id, $i != $currentScene);
+                    $isCurrentScene = ($sceneNumber != $this->CurrentSceneNumber());
+                    
+                    IPS_SetHidden($id, !$isCurrentScene);
+
+                    if($isCurrentScene)
+                    {
+                        $switchId = $this->LightSwitchID($lightNumber);
+                        $dimId = $this->LightDimID($lightNumber);
+
+                        if($dimID == 0)
+                        {
+                            // No dim id, so it is a switch.
+                            EIB_Switch($switchId->parent, $this->GetValueForIdent($ident));
+                        }
+                        else
+                        {
+                            $dimValue = $this->GetValueForIdent($ident);
+                            EIB_Switch($dimId->parent, $this->GetValueForIdent($ident));
+                        }
+                    }
                 }
             }
         }
@@ -210,19 +243,24 @@ class BetterLight extends BetterBase {
     public function RequestAction($Ident, $Value) 
     {
         $lightNumber = $this->LightNumberForLightVar($Ident);
+        $sceneNumber = $this->SceneNumberForLightVar($Ident);
         
-        if($lightNumber !== false)
+        if($lightNumber !== false && $sceneNumber !== false)
         {
-            $lightID = $this->LightSwitchID($lightNumber);
-            EIB_Switch(IPS_GetParent($lightID), $Value);
+            // $lightID = $this->LightSwitchID($lightNumber);
+            // $this->SetValueForIdent($Ident, $Value);
+
+            // if($sceneNumber == $this->CurrentSceneNumber())
+            //     EIB_Switch(IPS_GetParent($lightID), $Value);
             $this->SetValueForIdent($Ident, $Value);
+            $this->UseCurrentSceneVars();
         }
         else
         {
             switch($Ident) {
                 case $this->idendStr_currentScene:
                     $this->SetValueForIdent($Ident, $Value);
-                    $this->ShowCurrentSceneVars();
+                    $this->UseCurrentSceneVars();
                     break;
 
                 default:
