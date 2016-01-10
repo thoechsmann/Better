@@ -227,11 +227,11 @@ class BetterLight extends BetterBase {
                         if($dimId == 0)
                         {
                             // No dim id, so it is a switch.
-                            EIB_Switch($switchId->parent, $this->GetValueForIdent($ident));
+                            EIB_Switch(IPS_GetParent($switchId), $this->GetValueForIdent($ident));
                         }
                         else
                         {
-                            EIB_Switch($dimId->parent, $this->GetValueForIdent($ident));
+                            EIB_Switch(IPS_GetParent($dimId), $this->GetValueForIdent($ident));
                         }
                     }
                 }
