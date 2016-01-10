@@ -209,11 +209,11 @@ class BetterLight extends BetterBase {
 
     public function RequestAction($Ident, $Value) 
     {
-        $lightNumber = LightNumberForLightVar($ident);
+        $lightNumber = $this->LightNumberForLightVar($ident);
         
         if($lightNumber !== false)
         {
-            $lightID = LightSwitchID($lightNumber);
+            $lightID = $this->LightSwitchID($lightNumber);
             EIB_Switch(IPS_GetParent($lightID), $Value);
             $this->SetValueForIdent($Ident, $Value);
         }
