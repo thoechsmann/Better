@@ -209,7 +209,7 @@ class BetterLight extends BetterBase {
 
     public function RequestAction($Ident, $Value) 
     {
-        $lightNumber = $this->LightNumberForLightVar($ident);
+        $lightNumber = $this->LightNumberForLightVar($Ident);
         
         if($lightNumber !== false)
         {
