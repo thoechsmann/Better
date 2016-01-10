@@ -213,7 +213,7 @@ class BetterLight extends BetterBase {
                 $ident = $this->LightVar($lightNumber, $sceneNumber);
                 $id = @$this->GetIDForIdent($ident);
 
-                if($id)
+                if($id != 0)
                 {
                     $isCurrentScene = ($sceneNumber != $this->CurrentSceneNumber());
                     
@@ -221,8 +221,8 @@ class BetterLight extends BetterBase {
 
                     if($isCurrentScene)
                     {
-                        $switchId = $this->LightSwitchID($lightNumber);
-                        $dimId = $this->LightDimID($lightNumber);
+                        $switchId = @$this->LightSwitchID($lightNumber);
+                        $dimId = @$this->LightDimID($lightNumber);
 
                         if($dimId == 0)
                         {
