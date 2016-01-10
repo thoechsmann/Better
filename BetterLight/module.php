@@ -19,7 +19,7 @@ class BetterLight extends BetterBase {
 
     private function LightSwitchID($i)
     {
-        return $this->ReadPropertyInteger($this->LightSwitchIDString($i));
+        return @$this->ReadPropertyInteger($this->LightSwitchIDString($i));
     }
 
     private function LightDimIDString($i)
@@ -29,7 +29,7 @@ class BetterLight extends BetterBase {
 
     private function LightDimID($i)
     {
-        return $this->ReadPropertyInteger($this->LightDimIDString($i));
+        return @$this->ReadPropertyInteger($this->LightDimIDString($i));
     }
 
     private function LightVar($lightNumber, $sceneNumber)
