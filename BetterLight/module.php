@@ -235,8 +235,6 @@ class BetterLight extends BetterBase {
 
     private function CreateLight($sceneNumber, $lightNumber)
     {
-        $switchId = $this->LightSwitchId($lightNumber);
-
         // if($switchId === 0)
         // {
         //     return;
@@ -244,13 +242,15 @@ class BetterLight extends BetterBase {
 
         $ident = $this->LightIdent($lightNumber, $sceneNumber);
         $sceneName = $this->SceneName($sceneNumber);
+
+        $switchId = $this->LightSwitchId($lightNumber);
         $dimId = $this->LightDimID($lightNumber);
 
-        if($dimId === 0)
+        if($switchId !== 0)
         {
             $this->RegisterVariableBoolean($ident, "Licht" . ($lightNumber + 1) ." (" . $sceneName . ")", "~Switch");
         }
-        else
+        else if($dimId !== 0)
         {
             $this->RegisterVariableInteger($ident, "Licht" . ($lightNumber + 1) ." (" . $sceneName . ")", "~Intensity.100");
         }
