@@ -247,6 +247,7 @@ class BetterLight extends BetterBase {
         $ident = $this->MSDeactivateIdent($sceneNumber);
         $sceneName = $this->SceneName($sceneNumber);
         $this->RegisterVariableBoolean($ident, "MS Sperren (" . $sceneName . ")", "~Switch");
+        $this->EnableAction($ident);
     }
 
     private function CreateSceneProfile()
