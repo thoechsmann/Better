@@ -271,12 +271,12 @@ class BetterLight extends BetterBase {
 
         for($sceneNumber = 0; $sceneNumber < $this->maxScenes; $sceneNumber++)
         {
-            $isCurrentScene = ($sceneNumber != $currentSceneNumber);
+            $isCurrentScene = ($sceneNumber == $currentSceneNumber);
 
             $msIdent = $this->MSDeactivateIdent($sceneNumber);
             $msId = @$this->GetIDForIdent($msIdent);
 
-            if($msId != 0)
+            if($msId !== false)
             {                    
                 IPS_SetHidden($msId, !$isCurrentScene);
 
@@ -291,7 +291,7 @@ class BetterLight extends BetterBase {
                 $ident = $this->LightIdent($lightNumber, $sceneNumber);
                 $id = @$this->GetIDForIdent($ident);
 
-                if($id != 0)
+                if($id !== false)
                 {                    
                     IPS_SetHidden($id, !$isCurrentScene);
 
@@ -329,7 +329,7 @@ class BetterLight extends BetterBase {
 
                 default:
                     $this->SetValueForIdent($Ident, $Value);
-                    throw new Exception("Invalid Ident");
+                    throw new Exception("Invalid Ident: " . $ident);
             }
         }
     }
