@@ -74,6 +74,14 @@ class BetterLight extends BetterBase {
         return $this->PERSISTENT_IDENT_PREFIX . "scene". $sceneNumber ."MSDeactivate";
     }
 
+    private function IsMSDeactivateIdent($ident)
+    {
+        $start = strlen($this->PERSISTENT_IDENT_PREFIX) + strlen("scene") + 1;
+        $string = substr($ident, $start, strlen("MSDeactivate"));
+
+        return $string === "MSDeactivate";
+    }
+
     private function LightNumberForLightIdent($lightIdent)
     {
         $startLen = strlen($this->PERSISTENT_IDENT_PREFIX);
@@ -106,6 +114,14 @@ class BetterLight extends BetterBase {
             return false;
 
         return $sceneNumber;
+    }
+
+    private function IsLightIdent($ident)
+    {
+        $lightNumber = $this->LightNumberForLightIdent($ident);
+        $sceneNumber = $this->SceneNumberForLightIdent($ident);
+        
+        return $lightNumber !== false && $sceneNumber !== false;
     }
 
     private function SceneCount()
@@ -311,12 +327,14 @@ class BetterLight extends BetterBase {
 
     public function RequestAction($ident, $value) 
     {
-        $lightNumber = $this->LightNumberForLightIdent($ident);
-        $sceneNumber = $this->SceneNumberForLightIdent($ident);
-        
-        if($lightNumber !== false && $sceneNumber !== false)
+        if(IsLightIdent($ident))
         {
             $this->SetValueForIdent($ident, $value);
+            $this->UseCurrentSceneVars();
+        }
+        else if(IsMSDeactivateIdent($ident))
+        {
+            $IPS_SetValue($this->MSDeactivateId(), $value);
             $this->UseCurrentSceneVars();
         }
         else
