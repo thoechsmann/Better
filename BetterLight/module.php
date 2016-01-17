@@ -332,14 +332,9 @@ class BetterLight extends BetterBase {
 
     public function RequestAction($ident, $value) 
     {
-        if($this->IsLightIdent($ident))
+        if($this->IsLightIdent($ident) || $this->IsMSDeactivateIdent($ident))
         {
             $this->SetValueForIdent($ident, $value);
-            $this->UseCurrentSceneVars();
-        }
-        else if($this->IsMSDeactivateIdent($ident))
-        {
-            SetValue($this->MSDeactivateId(), $value);
             $this->UseCurrentSceneVars();
         }
         else
