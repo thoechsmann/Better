@@ -76,12 +76,12 @@ class BetterLight extends BetterBase {
 
     private function LightNumberForLightIdent($lightIdent)
     {
-        $prefix = substr($lightIdent, 0 , strlen($this->str_light));
+        $string = substr($lightIdent, $this->PERSISTENT_IDENT_PREFIX , strlen($this->str_light));
 
-        if($prefix !== $this->str_light)
+        if($string !== $this->str_light)
             return false;
 
-        $lightNumber = substr($lightIdent, strlen($prefix) , 1);
+        $lightNumber = substr($lightIdent, strlen($string) + strlen($this->PERSISTENT_IDENT_PREFIX) , 1);
 
         if(!is_numeric($lightNumber))
             return false;
@@ -91,12 +91,12 @@ class BetterLight extends BetterBase {
 
     private function SceneNumberForLightIdent($lightIdent)
     {
-        $substr = substr($lightIdent, strlen($this->str_light) + 1 , strlen($this->str_scene));
+        $string = substr($lightIdent, strlen($this->PERSISTENT_IDENT_PREFIX) + strlen($this->str_light) + 1 , strlen($this->str_scene));
 
-        if($substr !== $this->str_scene)
+        if($string !== $this->str_scene)
             return false;
 
-        $sceneNumber = substr($lightIdent, strlen($this->str_light) + 1 + strlen($this->str_scene) , 1);
+        $sceneNumber = substr($lightIdent, strlen($this->PERSISTENT_IDENT_PREFIX) + strlen($this->str_light) + 1 + strlen($this->str_scene) , 1);
 
         if(!is_numeric($sceneNumber))
             return false;
