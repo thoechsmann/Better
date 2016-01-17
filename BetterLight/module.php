@@ -276,7 +276,7 @@ class BetterLight extends BetterBase {
             $msIdent = $this->MSDeactivateIdent($sceneNumber);
             $msId = @$this->GetIDForIdent($msIdent);
 
-            if($id != 0)
+            if($msId != 0)
             {                    
                 IPS_SetHidden($msId, !$isCurrentScene);
 
