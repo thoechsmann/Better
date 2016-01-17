@@ -327,12 +327,12 @@ class BetterLight extends BetterBase {
 
     public function RequestAction($ident, $value) 
     {
-        if(IsLightIdent($ident))
+        if($this->IsLightIdent($ident))
         {
             $this->SetValueForIdent($ident, $value);
             $this->UseCurrentSceneVars();
         }
-        else if(IsMSDeactivateIdent($ident))
+        else if($this->IsMSDeactivateIdent($ident))
         {
             $IPS_SetValue($this->MSDeactivateId(), $value);
             $this->UseCurrentSceneVars();
