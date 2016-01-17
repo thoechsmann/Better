@@ -237,10 +237,10 @@ class BetterLight extends BetterBase {
     {
         $switchId = $this->LightSwitchId($lightNumber);
 
-        if($switchId === 0)
-        {
-            return;
-        }
+        // if($switchId === 0)
+        // {
+        //     return;
+        // }
 
         $ident = $this->LightIdent($lightNumber, $sceneNumber);
         $sceneName = $this->SceneName($sceneNumber);
