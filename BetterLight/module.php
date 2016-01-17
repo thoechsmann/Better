@@ -152,13 +152,13 @@ class BetterLight extends BetterBase {
         $switchId = $this->LightSwitchId($lightNumber);
         $dimId = $this->LightDimId($lightNumber);
 
-        if($switchId !== 0)
-        {
-            EIB_Switch(IPS_GetParent($switchId), $value);
-        }
-        else if ($dimId !== 0)
+        if($dimId !== 0 && $value > 0)
         {
             EIB_Scale(IPS_GetParent($dimId), $value);
+        }
+        else if($switchId !== 0)
+        {
+            EIB_Switch(IPS_GetParent($switchId), $value);
         }
     }
 
