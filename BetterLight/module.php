@@ -34,7 +34,7 @@ class BetterLight extends BetterBase {
 
     private function LightIdent($lightNumber, $sceneNumber)
     {
-        return $this->str_light . $lightNumber . $this->str_scene . $sceneNumber;
+        return $this->PERSISTENT_IDENT_PREFIX . $this->str_light . $lightNumber . $this->str_scene . $sceneNumber;
     }
 
     private function LightNumberForLightIdent($lightIdent)
@@ -126,6 +126,7 @@ class BetterLight extends BetterBase {
 		parent::ApplyChanges();
 		
         $this->RemoveAll();
+
         $this->CreateMotionTrigger();
         $this->CreateScenes();
         $this->CreateSceneProfile();

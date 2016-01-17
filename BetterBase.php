@@ -1,6 +1,9 @@
 <?
 class BetterBase extends IPSModule {
 
+    // Idents with this prefix will not be removed when updating instance.
+    protected $PERSISTENT_IDENT_PREFIX = "persistent_";
+
 	public function Create() 
     {
 		//Never delete this line!
@@ -174,7 +177,10 @@ class BetterBase extends IPSModule {
     {
         foreach(IPS_GetChildrenIDs($this->InstanceID) as $childId)
         {
-            $object = IPS_GetObject($childId);
+            $object = IPS_GetObject($childId);            
+
+            if(substr($object["ObjectIdent"], 0, strlen($this->PERSISTENT_IDENT_PREFIX)) == $this->PERSISTENT_IDENT_PREFIX) // persistent
+                continue;
 
             if($object["ObjectType"] == 4) // Is event.
             {
