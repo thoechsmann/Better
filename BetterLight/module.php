@@ -149,14 +149,14 @@ class BetterLight extends BetterBase {
 
     private function SetLight($lightNumber, $value)
     {
-        $switchId = @$this->LightSwitchId($lightNumber);
-        $dimId = @$this->LightDimId($lightNumber);
+        $switchId = $this->LightSwitchId($lightNumber);
+        $dimId = $this->LightDimId($lightNumber);
 
-        if($dimId == 0)
+        if($switchId !== 0)
         {
             EIB_Switch(IPS_GetParent($switchId), $value);
         }
-        else
+        else if ($dimId !== 0)
         {
             EIB_Scale(IPS_GetParent($dimId), $value);
         }
@@ -372,13 +372,7 @@ class BetterLight extends BetterBase {
     {
         for($lightNumber = 0; $lightNumber < $this->maxLights; $lightNumber++)
         {
-            $ident = $this->LightIdent($lightNumber, $sceneNumber);
-            $id = @$this->GetIDForIdent($ident);
-
-            if($id != 0)
-            {
-                $this->SetLight($ident, 0);
-            }   
+            $this->SetLight($lightNumber, 0);
         }
     }
 
