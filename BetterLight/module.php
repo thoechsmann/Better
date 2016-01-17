@@ -199,6 +199,7 @@ class BetterLight extends BetterBase {
 
         $this->RegisterPropertyInteger($this->MSMainSwitchIdPropertyName, 0);
         $this->RegisterPropertyInteger($this->MSDeactivateIdPropertyName, 0);
+        $this->RegisterPropertyInteger($this->MSExternMovementIdPropertyName, 0);
         
         for($i = 0; $i < $this->maxLights; $i++)
         {
@@ -309,7 +310,7 @@ class BetterLight extends BetterBase {
     private function UseCurrentSceneVars()
     {
         $this->SetMSExternMovement();
-        
+
         $currentSceneNumber = $this->CurrentSceneNumber();
 
         for($sceneNumber = 0; $sceneNumber < $this->maxScenes; $sceneNumber++)
