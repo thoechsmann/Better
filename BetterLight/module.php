@@ -309,31 +309,26 @@ class BetterLight extends BetterBase {
         }
     }
 
-    public function RequestAction($Ident, $Value) 
+    public function RequestAction($ident, $value) 
     {
-        $lightNumber = $this->LightNumberForLightIdent($Ident);
-        $sceneNumber = $this->SceneNumberForLightIdent($Ident);
+        $lightNumber = $this->LightNumberForLightIdent($ident);
+        $sceneNumber = $this->SceneNumberForLightIdent($ident);
         
         if($lightNumber !== false && $sceneNumber !== false)
         {
-            // $lightID = $this->LightSwitchID($lightNumber);
-            // $this->SetValueForIdent($Ident, $Value);
-
-            // if($sceneNumber == $this->CurrentSceneNumber())
-            //     EIB_Switch(IPS_GetParent($lightID), $Value);
-            $this->SetValueForIdent($Ident, $Value);
+            $this->SetValueForIdent($ident, $value);
             $this->UseCurrentSceneVars();
         }
         else
         {
             switch($Ident) {
                 case $this->idendStr_currentScene:
-                    $this->SetValueForIdent($Ident, $Value);
+                    $this->SetValueForIdent($ident, $value);
                     $this->UseCurrentSceneVars();
                     break;
 
                 default:
-                    $this->SetValueForIdent($Ident, $Value);
+                    $this->SetValueForIdent($ident, $value);
                     throw new Exception("Invalid Ident: " . $ident);
             }
         }
