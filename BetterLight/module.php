@@ -294,7 +294,7 @@ class BetterLight extends BetterBase {
 
     public function TurnOffAll()
     {
-        for($i = 0; $i < $this->maxLights; $i++)
+        for($lightNumber = 0; $lightNumber < $this->maxLights; $lightNumber++)
         {
             $ident = $this->LightIdent($lightNumber, $sceneNumber);
             $id = @$this->GetIDForIdent($ident);
