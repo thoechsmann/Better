@@ -32,19 +32,19 @@ class BetterLight extends BetterBase {
         return @$this->ReadPropertyInteger($this->LightDimIDString($i));
     }
 
-    private function LightVar($lightNumber, $sceneNumber)
+    private function LightIdent($lightNumber, $sceneNumber)
     {
         return $this->str_light . $lightNumber . $this->str_scene . $sceneNumber;
     }
 
-    private function LightNumberForLightVar($lightVar)
+    private function LightNumberForLightIdent($lightIdent)
     {
-        $prefix = substr($lightVar, 0 , strlen($this->str_light));
+        $prefix = substr($lightIdent, 0 , strlen($this->str_light));
 
         if($prefix !== $this->str_light)
             return false;
 
-        $lightNumber = substr($lightVar, strlen($prefix) , 1);
+        $lightNumber = substr($lightIdent, strlen($prefix) , 1);
 
         if(!is_numeric($lightNumber))
             return false;
@@ -52,14 +52,14 @@ class BetterLight extends BetterBase {
         return $lightNumber;
     }
 
-    private function SceneNumberForLightVar($lightVar)
+    private function SceneNumberForLightIdent($lightIdent)
     {
-        $substr = substr($lightVar, strlen($this->str_light) + 1 , strlen($this->str_scene));
+        $substr = substr($lightIdent, strlen($this->str_light) + 1 , strlen($this->str_scene));
 
         if($substr !== $this->str_scene)
             return false;
 
-        $sceneNumber = substr($lightVar, strlen($this->str_light) + 1 + strlen($this->str_scene) , 1);
+        $sceneNumber = substr($lightIdent, strlen($this->str_light) + 1 + strlen($this->str_scene) , 1);
 
         if(!is_numeric($sceneNumber))
             return false;
@@ -168,7 +168,7 @@ class BetterLight extends BetterBase {
             return;
         }
 
-        $ident = $this->LightVar($lightNumber, $sceneNumber);
+        $ident = $this->LightIdent($lightNumber, $sceneNumber);
         $sceneName = $this->SceneName($sceneNumber);
         $dimId = $this->LightDimID($lightNumber);
 
@@ -206,43 +206,50 @@ class BetterLight extends BetterBase {
 
     private function UseCurrentSceneVars()
     {
+        $currentSceneNumber = $this->CurrentSceneNumber();
+
         for($sceneNumber = 0; $sceneNumber < $this->maxScenes; $sceneNumber++)
         {
+            $isCurrentScene = ($sceneNumber != $currentSceneNumber);
+
             for($lightNumber = 0; $lightNumber < $this->maxLights; $lightNumber++)
             {
-                $ident = $this->LightVar($lightNumber, $sceneNumber);
+                $ident = $this->LightIdent($lightNumber, $sceneNumber);
                 $id = @$this->GetIDForIdent($ident);
 
                 if($id != 0)
-                {
-                    $isCurrentScene = ($sceneNumber != $this->CurrentSceneNumber());
-                    
+                {                    
                     IPS_SetHidden($id, !$isCurrentScene);
 
                     if($isCurrentScene)
                     {
-                        $switchId = @$this->LightSwitchID($lightNumber);
-                        $dimId = @$this->LightDimID($lightNumber);
-
-                        if($dimId == 0)
-                        {
-                            // No dim id, so it is a switch.
-                            EIB_Switch(IPS_GetParent($switchId), $this->GetValueForIdent($ident));
-                        }
-                        else
-                        {
-                            EIB_Switch(IPS_GetParent($dimId), $this->GetValueForIdent($ident));
-                        }
+                        $this->SetLight($lightNumber, $this->GetValueForIdent($ident));
                     }
                 }
             }
         }
     }
 
+    private function SetLight($lightNumber, $value)
+    {
+        $switchId = @$this->LightSwitchID($lightNumber);
+        $dimId = @$this->LightDimID($lightNumber);
+
+        if($dimId == 0)
+        {
+            EIB_Switch(IPS_GetParent($switchId), $value);
+        }
+        else
+        {
+            EIB_Scale(IPS_GetParent($dimId), $value);
+        }
+
+    }
+
     public function RequestAction($Ident, $Value) 
     {
-        $lightNumber = $this->LightNumberForLightVar($Ident);
-        $sceneNumber = $this->SceneNumberForLightVar($Ident);
+        $lightNumber = $this->LightNumberForLightIdent($Ident);
+        $sceneNumber = $this->SceneNumberForLightIdent($Ident);
         
         if($lightNumber !== false && $sceneNumber !== false)
         {
@@ -275,20 +282,27 @@ class BetterLight extends BetterBase {
         $msId = $this->ReadPropertyInteger("masterMS_MainSwitchId");
         $turnOn = GetValue($msId);
 
-        $lightOneId = $this->ReadPropertyInteger("light1_SwitchId");
-        $lightTwoId = $this->ReadPropertyInteger("light2_SwitchId");
-        $lightOneDayValue = $this->GetValueForIdent("LightOne_DayValue");
-        $lightTwoDayValue = $this->GetValueForIdent("LightTwo_DayValue");
-
         if($turnOn)
         {
-            EIB_Switch(IPS_GetParent($lightOneId), $lightOneDayValue);        
-            EIB_Switch(IPS_GetParent($lightTwoId), $lightTwoDayValue);        
+            $this->UseCurrentSceneVars();
         }
         else
         {
-            EIB_Switch(IPS_GetParent($lightOneId), false);        
-            EIB_Switch(IPS_GetParent($lightTwoId), false);                    
+            $this->TurnOffAll();
+        }
+    }
+
+    public function TurnOffAll()
+    {
+        for($i = 0; $i < $this->maxLights; $i++)
+        {
+            $ident = $this->LightIdent($lightNumber, $sceneNumber);
+            $id = @$this->GetIDForIdent($ident);
+
+            if($id != 0)
+            {
+                $this->SetLight($ident, 0);
+            }   
         }
     }
 
