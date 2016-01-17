@@ -3,6 +3,7 @@
 	[
 		{ "type": "SelectVariable", "name": "ms_MainSwitchId", "caption": "BM (Ausgang Schalten)" },
 		{ "type": "SelectVariable", "name": "ms_DeactivateId", "caption": "BM (Sperren)" },
+		{ "type": "SelectVariable", "name": "ms_ExtenMovementId", "caption": "BM (Externe Bewegung)" },
 		{ "type": "SelectVariable", "name": "light1_SwitchId", "caption": "Licht1 (Schalten)" },
 		{ "type": "SelectVariable", "name": "light1_DimId", "caption": "Licht1 (Dimmen)" },
 		{ "type": "SelectVariable", "name": "light2_SwitchId", "caption": "Licht2 (Schalten)" },

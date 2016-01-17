@@ -16,6 +16,7 @@ class BetterLight extends BetterBase {
 
     private $MSMainSwitchIdPropertyName = "ms_MainSwitchId";
     private $MSDeactivateIdPropertyName = "ms_DeactivateId";
+    private $MSExternMovementIdPropertyName = "ms_ExternMovementId";
 
     private function LightSwitchIdString($lightNumber)
     {
@@ -60,6 +61,11 @@ class BetterLight extends BetterBase {
     private function MSDeactivateId()
     {
         return $this->ReadPropertyString($this->MSDeactivateIdPropertyName);
+    }
+
+    private function MSExternMovementId()
+    {
+        return $this->ReadPropertyString($this->MSExternMovementIdPropertyName);
     }
 
     // 
@@ -166,13 +172,22 @@ class BetterLight extends BetterBase {
     {
         $msId = $this->MSDeactivateId();
 
-        IPS_LogMessage("BetterLight", "SetMSDeactivate id: " . $msId);
-
         if($msId !== 0)
         {
             EIB_Switch(IPS_GetParent($msId), $value);
         }
     }
+
+    private function SetMSExternMovement()
+    {
+        $msId = $this->MSExternMovementId();
+
+        if($msId !== 0)
+        {
+            EIB_Switch(IPS_GetParent($msId), true);
+        }
+    }
+
 
     //
     //
@@ -293,6 +308,8 @@ class BetterLight extends BetterBase {
 
     private function UseCurrentSceneVars()
     {
+        $this->SetMSExternMovement();
+        
         $currentSceneNumber = $this->CurrentSceneNumber();
 
         for($sceneNumber = 0; $sceneNumber < $this->maxScenes; $sceneNumber++)
