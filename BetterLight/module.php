@@ -241,6 +241,7 @@ class BetterLight extends BetterBase {
     private function CreateMSDeactivate($sceneNumber)
     {
         $ident = $this->MSDeactivateIdent($sceneNumber);
+        $sceneName = $this->SceneName($sceneNumber);
         $this->RegisterVariableBoolean($ident, "MS Sperren (" . $sceneName . ")", "~Switch");
     }
 
@@ -302,8 +303,6 @@ class BetterLight extends BetterBase {
             }            
         }
     }
-
-
 
     public function RequestAction($Ident, $Value) 
     {
