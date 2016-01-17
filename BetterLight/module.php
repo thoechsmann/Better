@@ -12,29 +12,66 @@ class BetterLight extends BetterBase {
     private $str_light = "light";
     private $str_scene = "scene";
 
-    private function LightSwitchIDString($i)
+    // Property strings
+
+    private $MSMainSwitchIdPropertyName = "ms_MainSwitchId";
+    private $MSDeactivateIdPropertyName = "ms_DeactivateId";
+
+    private function LightSwitchIdString($lightNumber)
     {
-        return $this->str_light . ($i+1) ."_SwitchId";
+        return $this->str_light . ($lightNumber+1) ."_SwitchId";
     }
 
-    private function LightSwitchID($i)
+    private function LightDimIdString($lightNumber)
     {
-        return @$this->ReadPropertyInteger($this->LightSwitchIDString($i));
+        return $this->str_light . ($lightNumber+1) ."_DimId";
     }
 
-    private function LightDimIDString($i)
+    private function SceneString($sceneNumber)
     {
-        return $this->str_light . ($i+1) ."_DimId";
+        return "scene". $sceneNumber ."Name";
     }
 
-    private function LightDimID($i)
+    // property values
+
+    private function LightSwitchId($lightNumber)
     {
-        return @$this->ReadPropertyInteger($this->LightDimIDString($i));
+        return @$this->ReadPropertyInteger($this->LightSwitchIdString($lightNumber));
     }
+
+    private function LightDimId($lightNumber)
+    {
+        return @$this->ReadPropertyInteger($this->LightDimIdString($lightNumber));
+    }
+
+    private function SceneName($sceneNumber)
+    {
+        if($sceneNumber === 0)
+            return "default";
+
+        return $this->ReadPropertyString($this->SceneString($sceneNumber));
+    }
+
+    private function MSMainSwitchId()
+    {
+        return $this->ReadPropertyString($this->MSMainSwitchIdPropertyName);
+    }
+
+    private function MSDeactivateId()
+    {
+        return $this->ReadPropertyString($this->MSDeactivateIdPropertyName);
+    }
+
+    // 
 
     private function LightIdent($lightNumber, $sceneNumber)
     {
         return $this->PERSISTENT_IDENT_PREFIX . $this->str_light . $lightNumber . $this->str_scene . $sceneNumber;
+    }
+
+    private function MSDeactivateIdent($sceneNumber)
+    {
+        return $this->PERSISTENT_IDENT_PREFIX . "scene". $sceneNumber ."MSDeactivate";
     }
 
     private function LightNumberForLightIdent($lightIdent)
@@ -67,19 +104,6 @@ class BetterLight extends BetterBase {
         return $sceneNumber;
     }
 
-    private function SceneName($i)
-    {
-        if($i === 0)
-            return "default";
-
-        return $this->ReadPropertyString($this->SceneString($i));
-    }
-
-    private function SceneString($i)
-    {
-        return "scene". $i ."Name";
-    }
-
     private function SceneCount()
     {
         $count = 0;
@@ -103,16 +127,43 @@ class BetterLight extends BetterBase {
         return "BL_scenes_" . $this->GetName(). $this->InstanceID;
     }
 
+    private function SetLight($lightNumber, $value)
+    {
+        $switchId = @$this->LightSwitchId($lightNumber);
+        $dimId = @$this->LightDimId($lightNumber);
+
+        if($dimId == 0)
+        {
+            EIB_Switch(IPS_GetParent($switchId), $value);
+        }
+        else
+        {
+            EIB_Scale(IPS_GetParent($dimId), $value);
+        }
+    }
+
+    private function SetMSDeactivate($value)
+    {
+        $id = @$this->MSDeactivateId();;
+
+        EIB_Switch(IPS_GetParent($id), $value);
+    }
+
+    //
+    //
+    //
+
 	public function Create() 
     {
 		parent::Create();		
 
-        $this->RegisterPropertyInteger("masterMS_MainSwitchId", 0);
+        $this->RegisterPropertyInteger($this->MSMainSwitchIdPropertyName, 0);
+        $this->RegisterPropertyInteger($this->MSDeactivateIdPropertyName, 0);
         
         for($i = 0; $i < $this->maxLights; $i++)
         {
-            $this->RegisterPropertyInteger($this->LightSwitchIDString($i), 0);
-            $this->RegisterPropertyInteger($this->LightDimIDString($i), 0);
+            $this->RegisterPropertyInteger($this->LightSwitchIdString($i), 0);
+            $this->RegisterPropertyInteger($this->LightDimIdString($i), 0);
         }
 
         for($i = 1; $i < $this->maxScenes; $i++)
@@ -136,7 +187,7 @@ class BetterLight extends BetterBase {
 
     private function CreateMotionTrigger()
     {
-        $this->RegisterTrigger("MSMainSwitchTrigger", $this->ReadPropertyInteger("masterMS_MainSwitchId"), 'BL_MSMainSwitchEvent($_IPS[\'TARGET\']);', 1);
+        $this->RegisterTrigger("MSMainSwitchTrigger", $this->MSMainSwitchId(), 'BL_MSMainSwitchEvent($_IPS[\'TARGET\']);', 1);
     }
 
     private function CreateScenes()
@@ -158,11 +209,13 @@ class BetterLight extends BetterBase {
         {
             $this->CreateLight($sceneNumber, $i);
         }
+
+        $this->CreateMSDeactivate($sceneNumber);
     }
 
     private function CreateLight($sceneNumber, $lightNumber)
     {
-        $switchId = $this->LightSwitchID($lightNumber);
+        $switchId = $this->LightSwitchId($lightNumber);
 
         if($switchId === 0)
         {
@@ -183,6 +236,12 @@ class BetterLight extends BetterBase {
         }
 
         $this->EnableAction($ident);
+    }
+
+    private function CreateMSDeactivate($sceneNumber)
+    {
+        $ident = MSDeactivateIdent($sceneNumber);
+        $this->RegisterVariableBoolean($ident, "MS Sperren (" . $sceneName . ")", "~Switch");
     }
 
     private function CreateSceneProfile()
@@ -213,6 +272,19 @@ class BetterLight extends BetterBase {
         {
             $isCurrentScene = ($sceneNumber != $currentSceneNumber);
 
+            $msIdent = $this->MSDeactivateIdent($sceneNumber);
+            $msId = @$this->GetIDForIdent($msIdent);
+
+            if($id != 0)
+            {                    
+                IPS_SetHidden($msId, !$isCurrentScene);
+
+                if($isCurrentScene)
+                {
+                    $this->SetMSDeactivate($this->GetValueForIdent($msIdent));
+                }
+            }
+
             for($lightNumber = 0; $lightNumber < $this->maxLights; $lightNumber++)
             {
                 $ident = $this->LightIdent($lightNumber, $sceneNumber);
@@ -227,25 +299,11 @@ class BetterLight extends BetterBase {
                         $this->SetLight($lightNumber, $this->GetValueForIdent($ident));
                     }
                 }
-            }
+            }            
         }
     }
 
-    private function SetLight($lightNumber, $value)
-    {
-        $switchId = @$this->LightSwitchID($lightNumber);
-        $dimId = @$this->LightDimID($lightNumber);
 
-        if($dimId == 0)
-        {
-            EIB_Switch(IPS_GetParent($switchId), $value);
-        }
-        else
-        {
-            EIB_Scale(IPS_GetParent($dimId), $value);
-        }
-
-    }
 
     public function RequestAction($Ident, $Value) 
     {
@@ -280,7 +338,7 @@ class BetterLight extends BetterBase {
     public function MSMainSwitchEvent()
     {
         IPS_LogMessage("BetterLight", "BSMainSwitchEvent");
-        $msId = $this->ReadPropertyInteger("masterMS_MainSwitchId");
+        $msId = $this->MSMainSwitchId();
         $turnOn = GetValue($msId);
 
         if($turnOn)
