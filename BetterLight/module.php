@@ -164,9 +164,14 @@ class BetterLight extends BetterBase {
 
     private function SetMSDeactivate($value)
     {
-        $id = @$this->MSDeactivateId();;
+        $msId = $this->MSDeactivateId();
 
-        EIB_Switch(IPS_GetParent($id), $value);
+        IPS_LogMessage("BetterLight", "SetMSDeactivate id: " . $msId);
+
+        if($msId !== 0)
+        {
+            EIB_Switch(IPS_GetParent($msId), $value);
+        }
     }
 
     //
