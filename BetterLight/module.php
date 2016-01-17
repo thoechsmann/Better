@@ -321,7 +321,7 @@ class BetterLight extends BetterBase {
         }
         else
         {
-            switch($Ident) {
+            switch($ident) {
                 case $this->idendStr_currentScene:
                     $this->SetValueForIdent($ident, $value);
                     $this->UseCurrentSceneVars();

@@ -179,7 +179,8 @@ class BetterBase extends IPSModule {
         {
             $object = IPS_GetObject($childId);            
 
-            if(substr($object["ObjectIdent"], 0, strlen($this->PERSISTENT_IDENT_PREFIX)) == $this->PERSISTENT_IDENT_PREFIX) // persistent
+            $prefix = substr($object["ObjectIdent"], 0, strlen($this->PERSISTENT_IDENT_PREFIX));
+            if($prefix === $this->PERSISTENT_IDENT_PREFIX) // persistent
                 continue;
 
             if($object["ObjectType"] == 4) // Is event.
