@@ -27,7 +27,7 @@ class PropertyInteger extends Property  {
 
 class PropertyString extends Property  {
 
-    public function Register($value = "empty")
+    public function Register($value = "")
     {
         IPS_LogMessage("PropertyString", "Registering property: " . $this->name . " = " . $value);
         $this->module->RegisterPropertyString($this->name, $value);
@@ -70,11 +70,11 @@ class PropertyArray {
         $this->count = $count; 
     }
 
-    public function RegisterAll($value = 0)
+    public function RegisterAll($value)
     {
         for($i = 0; $i<$this->count; $i++)
         {
-            $this->properties[0]->Register($value);
+            $this->properties[$i]->Register($value);
         }       
     }
 
