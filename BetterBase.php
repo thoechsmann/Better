@@ -5,24 +5,24 @@ class BetterBase extends IPSModule {
     protected $PERSISTENT_IDENT_PREFIX = "persistent_";
 
     // Make same stuff public. Required by property class.
-    public function RegisterPropertyInteger()
+    public function RegisterPropertyInteger($name, $value)
     {
-        $this->RegisterPropertyInteger(func_get_args());
+        $this->RegisterPropertyInteger($name, $value);
     }
 
-    public function RegisterPropertyString()
+    public function RegisterPropertyString($name, $value)
     {
-        $this->RegisterPropertyString(func_get_args());
+        $this->RegisterPropertyString($name, $value);
     }
 
-    public function ReadPropertyInteger()
+    public function ReadPropertyInteger($name)
     {
-        $this->ReadPropertyInteger(func_get_args());
+        $this->ReadPropertyInteger($name);
     }
 
     public function ReadPropertyString()
     {
-        $this->ReadPropertyString(func_get_args());
+        $this->ReadPropertyString($name);
     }
 
 	public function Create() 
