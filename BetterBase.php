@@ -7,22 +7,22 @@ class BetterBase extends IPSModule {
     // Make same stuff public. Required by property class.
     public function RegisterPropertyInteger($name, $value)
     {
-        $this->RegisterPropertyInteger($name, $value);
+        parent::RegisterPropertyInteger($name, $value);
     }
 
     public function RegisterPropertyString($name, $value)
     {
-        $this->RegisterPropertyString($name, $value);
+        parent::RegisterPropertyString($name, $value);
     }
 
     public function ReadPropertyInteger($name)
     {
-        $this->ReadPropertyInteger($name);
+        parent::ReadPropertyInteger($name);
     }
 
-    public function ReadPropertyString()
+    public function ReadPropertyString($name)
     {
-        $this->ReadPropertyString($name);
+        parent::ReadPropertyString($name);
     }
 
 	public function Create() 
