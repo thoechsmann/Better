@@ -186,13 +186,13 @@ class BetterLight extends BetterBase {
     {
 		parent::ApplyChanges();
 		
-        $this->RemoveAll();
+        // $this->RemoveAll();
 
-        $this->CreateMotionTrigger();
-        $this->CreateScenes();
-        $this->CreateSceneProfile();
-        $this->CreateSceneSelectionVar();
-        $this->UseCurrentSceneVars();
+        // $this->CreateMotionTrigger();
+        // $this->CreateScenes();
+        // $this->CreateSceneProfile();
+        // $this->CreateSceneSelectionVar();
+        // $this->UseCurrentSceneVars();
 	}
 
     private function CreateMotionTrigger()
