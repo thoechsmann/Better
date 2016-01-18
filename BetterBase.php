@@ -17,12 +17,12 @@ class BetterBase extends IPSModule {
 
     public function ReadPropertyInteger($name)
     {
-        parent::ReadPropertyInteger($name);
+        return parent::ReadPropertyInteger($name);
     }
 
     public function ReadPropertyString($name)
     {
-        parent::ReadPropertyString($name);
+        return parent::ReadPropertyString($name);
     }
 
 	public function Create() 
