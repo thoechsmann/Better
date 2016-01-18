@@ -223,11 +223,6 @@ class BetterLight extends BetterBase {
 
     private function CreateLight($sceneNumber, $lightNumber)
     {
-        // if($switchId === 0)
-        // {
-        //     return;
-        // }
-
         $ident = $this->LightIdent($lightNumber, $sceneNumber);
         $sceneName = $this->SceneNamePropertyArray()->ValueAt($sceneNumber);
 
@@ -249,7 +244,7 @@ class BetterLight extends BetterBase {
         }
 
         $this->MaintainVariable($ident, $name, $type, $profile, 0, $exists);
-        $this->MaintainAction($ident, $exists);
+        $this->EnableAction($ident);
     }
 
     private function CreateMSDeactivate($sceneNumber)
