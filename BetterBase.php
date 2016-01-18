@@ -4,6 +4,27 @@ class BetterBase extends IPSModule {
     // Idents with this prefix will not be removed when updating instance.
     protected $PERSISTENT_IDENT_PREFIX = "persistent_";
 
+    // Make same stuff public. Required by property class.
+    public function RegisterPropertyInteger()
+    {
+        $this->RegisterPropertyInteger(func_get_args());
+    }
+
+    public function RegisterPropertyString()
+    {
+        $this->RegisterPropertyString(func_get_args());
+    }
+
+    public function ReadPropertyInteger()
+    {
+        $this->ReadPropertyInteger(func_get_args());
+    }
+
+    public function ReadPropertyString()
+    {
+        $this->ReadPropertyString(func_get_args());
+    }
+
 	public function Create() 
     {
 		//Never delete this line!
