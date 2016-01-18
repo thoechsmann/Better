@@ -240,12 +240,12 @@ class BetterLight extends BetterBase {
 
         if($switchId !== 0)
         {
-            $this->MaintainVariable ($ident, $name, "Boolean", "~Switch", 0, true);
+            $this->MaintainVariable ($ident, $name, 0, "~Switch", 0, true); // type 0 = bool
             // $this->RegisterVariableBoolean($ident, $name, "~Switch");
         }
         else if($dimId !== 0)
         {
-            $this->MaintainVariable ($ident, $name, "Integer", "~Intensity.100", 0, true);
+            $this->MaintainVariable ($ident, $name, 1, "~Intensity.100", 0, true); // type 1 = integer
             // $this->RegisterVariableInteger($ident, $name, "~Intensity.100");
         }
 
