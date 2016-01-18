@@ -186,8 +186,6 @@ class BetterLight extends BetterBase {
     {
 		parent::ApplyChanges();
 		
-        $this->RemoveAll();
-
         $this->CreateMotionTrigger();
         $this->CreateScenes();
         $this->CreateSceneProfile();
@@ -240,12 +238,12 @@ class BetterLight extends BetterBase {
 
         if($switchId !== 0)
         {
-            $this->MaintainVariable ($ident, $name, 0, "~Switch", 0, true); // type 0 = bool
+            $this->MaintainVariable($ident, $name, 0, "~Switch", 0, true); // type 0 = bool
             // $this->RegisterVariableBoolean($ident, $name, "~Switch");
         }
         else if($dimId !== 0)
         {
-            $this->MaintainVariable ($ident, $name, 1, "~Intensity.100", 0, true); // type 1 = integer
+            $this->MaintainVariable($ident, $name, 1, "~Intensity.100", 0, true); // type 1 = integer
             // $this->RegisterVariableInteger($ident, $name, "~Intensity.100");
         }
 
