@@ -156,7 +156,7 @@ class BetterLight extends BetterBase {
 
     private function SetMSExternMovement()
     {
-        $msId = $this->MSExternMovementIdProperty()->Value;
+        $msId = $this->MSExternMovementIdProperty()->Value();
 
         if($msId !== 0)
         {
