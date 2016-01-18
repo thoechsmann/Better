@@ -64,7 +64,7 @@ class PropertyArray {
     protected $properties = array();
 
     public function __construct($module, $name, $indexName, $count) {
-        $this->$module = $module;
+        $this->module = $module;
         $this->name = $name;
         $this->indexName = $indexName;
         $this->count = $count; 
