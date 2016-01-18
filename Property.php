@@ -13,12 +13,12 @@ class PropertyInteger extends Property  {
 
     public function Register($value = 0)
     {
-        $this->$module->RegisterPropertyInteger($this->name, $value);
+        $this->module->RegisterPropertyInteger($this->name, $value);
     }
 
     public function Value()
     {
-        return $this->$module->ReadPropertyInteger($this->name);
+        return $this->module->ReadPropertyInteger($this->name);
     }
 
 }
@@ -27,12 +27,12 @@ class PropertyString extends Property  {
 
     public function Register($value = "")
     {
-        $this->RegisterPropertyString($this->name, $value);
+        $this->module->RegisterPropertyString($this->name, $value);
     }
 
     public function Value()
     {
-        return $this->ReadPropertyString($this->name);
+        return $this->module->ReadPropertyString($this->name);
     }
 
 }
@@ -96,7 +96,7 @@ class PropertyArrayInteger extends PropertyArray  {
 
         for($i = 0; $i<$count; $i++)
         {
-            $this->$properties[0] = new PropertyIntegerIndexed($this->$module, $name, $indexName, $i);
+            $this->$properties[0] = new PropertyIntegerIndexed($this->module, $name, $indexName, $i);
         }       
     }
 
@@ -109,7 +109,7 @@ class PropertyArrayString extends PropertyArray  {
 
         for($i = 0; $i<$count; $i++)
         {
-            $this->$properties[0] = new PropertyStringIndexed($this->$module, $name, $indexName, $i);
+            $this->$properties[0] = new PropertyStringIndexed($this->module, $name, $indexName, $i);
         }       
     }
 
