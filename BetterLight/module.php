@@ -6,7 +6,7 @@ class BetterLight extends BetterBase {
 
     // private $isDayId = 18987;
     private $isDayId = 52946;
-    private $maxLights = 3;
+    private $maxLights = 8;
     private $maxScenes = 4;
 
     private $idendStr_currentScene = "CurrentScene";
@@ -253,7 +253,7 @@ class BetterLight extends BetterBase {
     {
         $ident = $this->MSDeactivateIdent($sceneNumber);
         $sceneName = $this->SceneNamePropertyArray()->ValueAt($sceneNumber);
-        $this->RegisterVariableBoolean($ident, "MS Sperren (" . $sceneName . ")", "~Switch");
+        $this->RegisterVariableBoolean($ident, "BM Sperren (" . $sceneName . ")", "~Switch");
         $this->EnableAction($ident);
     }
 
