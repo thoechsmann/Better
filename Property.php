@@ -41,8 +41,7 @@ class PropertyString extends Property  {
 class PropertyIntegerIndexed extends PropertyInteger  {
 
     public function __construct($module, $name, $indexName, $index) {
-        parent::__construct($module);
-        $this->name = $indexName . $index . $name;
+        parent::__construct($module, $indexName . $index . $name);
     }
 
 }
@@ -50,8 +49,7 @@ class PropertyIntegerIndexed extends PropertyInteger  {
 class PropertyStringIndexed extends PropertyString  {
 
     public function __construct($module, $name, $indexName, $index) {
-        parent::__construct($module);
-        $this->name = $indexName . $index . $name;
+        parent::__construct($module, $indexName . $index . $name);
     }
 
 }
