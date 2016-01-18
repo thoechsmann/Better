@@ -235,20 +235,21 @@ class BetterLight extends BetterBase {
         $dimId = $this->LightDimIdPropertyArray()->ValueAt($lightNumber);
 
         $name = "Licht" . ($lightNumber + 1) ." (" . $sceneName . ")";
+        $profile = "~Switch";
+        $type = 0;
+        $exists = $switchId !== 0;
 
-        if($switchId !== 0)
+        if($dimId !== 0)
         {
-            $this->MaintainVariable($ident, $name, 0, "~Switch", 0, true); // type 0 = bool
-            // $this->RegisterVariableBoolean($ident, $name, "~Switch");
-            $this->EnableAction($ident);
-        }
-        else if($dimId !== 0)
-        {
-            $this->MaintainVariable($ident, $name, 1, "~Intensity.100", 0, true); // type 1 = integer
-            // $this->RegisterVariableInteger($ident, $name, "~Intensity.100");
-            $this->EnableAction($ident);
+            if($switchId == 0)
+                throw new Exception("DimId without switch id for light number " . $lightNumber. "!");
+
+            $profile = "~Intensity.100";
+            $type = 1;
         }
 
+        $this->MaintainVariable($ident, $name, $type, $profile, 0, $exists);
+        $this->MaintainAction($ident, $exists);
     }
 
     private function CreateMSDeactivate($sceneNumber)
