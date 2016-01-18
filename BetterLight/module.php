@@ -16,32 +16,32 @@ class BetterLight extends BetterBase {
     // Properties
     private function MSMainSwitchIdProperty()
     {
-        return new PropertyInteger("ms_MainSwitchId");
+        return new PropertyInteger($this, "ms_MainSwitchId");
     }
 
     private function MSDeactivateIdProperty()
     {
-        return new PropertyInteger("ms_DeactivateId");
+        return new PropertyInteger($this, "ms_DeactivateId");
     }
 
     private function MSExternMovementIdProperty()
     {
-        return new PropertyInteger("ms_ExternMovementId");
+        return new PropertyInteger($this, "ms_ExternMovementId");
     }
 
     private function LightSwitchIdPropertyArray()
     {        
-        return new PropertyArrayInteger("SwitchId", $this->str_light, $this->maxLights);
+        return new PropertyArrayInteger($this, "SwitchId", $this->str_light, $this->maxLights);
     }
 
     private function LightDimIdPropertyArray()
     {        
-        return new PropertyArrayInteger("DimId", $this->str_light, $this->maxLights);
+        return new PropertyArrayInteger($this, "DimId", $this->str_light, $this->maxLights);
     }
 
     private function SceneNamePropertyArray()
     {        
-        return new PropertyArrayInteger("Name", $this->str_scene, $this->maxScenes);
+        return new PropertyArrayInteger($this, "Name", $this->str_scene, $this->maxScenes);
     }
 
     // 
