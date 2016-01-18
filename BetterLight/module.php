@@ -41,7 +41,7 @@ class BetterLight extends BetterBase {
 
     private function SceneNamePropertyArray()
     {        
-        return new PropertyArrayInteger($this, "Name", $this->str_scene, $this->maxScenes);
+        return new PropertyArrayString($this, "Name", $this->str_scene, $this->maxScenes);
     }
 
     // 
