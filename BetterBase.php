@@ -202,15 +202,22 @@ class BetterBase extends IPSModule {
 
             $prefix = substr($object["ObjectIdent"], 0, strlen($this->PERSISTENT_IDENT_PREFIX));
             if($prefix === $this->PERSISTENT_IDENT_PREFIX) // persistent
+            {
+                IPS_LogMessage("BetterBase", "RemoveAllButSchedulers: Persistet:" . $object["ObjectIdent"]);
                 continue;
+            }
 
             if($object["ObjectType"] == 4) // Is event.
             {
                 $event = IPS_GetEvent($childId);
                 if($event["EventType"] == 2) // Is scheduler.
+                {
+                    IPS_LogMessage("BetterBase", "RemoveAllButSchedulers: Persistet:" . $object["ObjectIdent"]);
                     continue;
+                }
             }
 
+            IPS_LogMessage("BetterBase", "RemoveAllButSchedulers: Removed:" . $object["ObjectIdent"]);
             $this->DeleteObject($childId);
         }
     }

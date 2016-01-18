@@ -126,7 +126,7 @@ class BetterLight extends BetterBase {
 
     private function ProfileString()
     {
-        return "BL_scenes_" . $this->GetName(). $this->InstanceID;
+        return "BL_scenes_" . $this->GetName() . $this->InstanceID;
     }
 
     private function SetLight($lightNumber, $value)
