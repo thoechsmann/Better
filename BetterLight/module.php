@@ -236,13 +236,18 @@ class BetterLight extends BetterBase {
         $switchId = $this->LightSwitchIdPropertyArray()->ValueAt($lightNumber);
         $dimId = $this->LightDimIdPropertyArray()->ValueAt($lightNumber);
 
+        $name = "Licht" . ($lightNumber + 1) ." (" . $sceneName . ")";
+        MaintainVariable ($ident, $name, "Boolean", "~Switch", 0, true);
+
         if($switchId !== 0)
         {
-            $this->RegisterVariableBoolean($ident, "Licht" . ($lightNumber + 1) ." (" . $sceneName . ")", "~Switch");
+            $this->MaintainVariable ($ident, $name, "Boolean", "~Switch", 0, true);
+            // $this->RegisterVariableBoolean($ident, $name, "~Switch");
         }
         else if($dimId !== 0)
         {
-            $this->RegisterVariableInteger($ident, "Licht" . ($lightNumber + 1) ." (" . $sceneName . ")", "~Intensity.100");
+            $this->MaintainVariable ($ident, $name, "Integer", "~Switch", 0, true);
+            // $this->RegisterVariableInteger($ident, $name, "~Intensity.100");
         }
 
         $this->EnableAction($ident);
