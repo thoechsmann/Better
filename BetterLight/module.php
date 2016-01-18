@@ -240,14 +240,15 @@ class BetterLight extends BetterBase {
         {
             $this->MaintainVariable($ident, $name, 0, "~Switch", 0, true); // type 0 = bool
             // $this->RegisterVariableBoolean($ident, $name, "~Switch");
+            $this->EnableAction($ident);
         }
         else if($dimId !== 0)
         {
             $this->MaintainVariable($ident, $name, 1, "~Intensity.100", 0, true); // type 1 = integer
             // $this->RegisterVariableInteger($ident, $name, "~Intensity.100");
+            $this->EnableAction($ident);
         }
 
-        $this->EnableAction($ident);
     }
 
     private function CreateMSDeactivate($sceneNumber)
