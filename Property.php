@@ -4,7 +4,7 @@ class Property  {
     protected $name;
     protected $module;
 
-    public function __construct($modul, $name) {
+    public function __construct($module, $name) {
         $this->name = $name;
     }
 }
