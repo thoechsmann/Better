@@ -2,8 +2,9 @@
 class Property  {
 
     protected $name;
+    protected $module;
 
-    public function __construct($name) {
+    public function __construct($modul, $name) {
         $this->name = $name;
     }
 }
@@ -12,12 +13,12 @@ class PropertyInteger extends Property  {
 
     public function Register($value = 0)
     {
-        $this->RegisterPropertyInteger($this->name, $value);
+        $module->RegisterPropertyInteger($this->name, $value);
     }
 
     public function Value()
     {
-        return $this->ReadPropertyInteger($this->name);
+        return $module->ReadPropertyInteger($this->name);
     }
 
 }
@@ -38,8 +39,8 @@ class PropertyString extends Property  {
 
 class PropertyIntegerIndexed extends PropertyInteger  {
 
-    public function __construct($name, $indexName, $index) {
-        parent::__construct();
+    public function __construct($module, $name, $indexName, $index) {
+        parent::__construct($module);
         $this->name = $indexName . $index . $name;
     }
 
@@ -47,8 +48,8 @@ class PropertyIntegerIndexed extends PropertyInteger  {
 
 class PropertyStringIndexed extends PropertyString  {
 
-    public function __construct($name, $indexName, $index) {
-        parent::__construct();
+    public function __construct($module, $name, $indexName, $index) {
+        parent::__construct($module);
         $this->name = $indexName . $index . $name;
     }
 
@@ -56,12 +57,13 @@ class PropertyStringIndexed extends PropertyString  {
 
 class PropertyArray {
 
+    protected $module;
     protected $indexName;
     protected $count;
     protected $properties = array();
 
-    public function __construct($name, $indexName, $count) {
-        parent::__construct();
+    public function __construct($module, $name, $indexName, $count) {
+        $this->$module = $module;
         $this->name = $name;
         $this->indexName = $indexName;
         $this->count = $count; 
@@ -89,12 +91,12 @@ class PropertyArray {
 
 class PropertyArrayInteger extends PropertyArray  {
 
-    public function __construct($name, $indexName, $count) {
-        parent::__construct($name, $indexName, $count);
+    public function __construct($module, $name, $indexName, $count) {
+        parent::__construct($module, $name, $indexName, $count);
 
         for($i = 0; $i<$count; $i++)
         {
-            $this->$properties[0] = new PropertyIntegerIndexed($name, $indexName, $i);
+            $this->$properties[0] = new PropertyIntegerIndexed($module, $name, $indexName, $i);
         }       
     }
 
@@ -102,12 +104,12 @@ class PropertyArrayInteger extends PropertyArray  {
 
 class PropertyArrayString extends PropertyArray  {
 
-    public function __construct($name, $indexName, $count) {
-        parent::__construct($name, $indexName, $count);
+    public function __construct($module, $name, $indexName, $count) {
+        parent::__construct($module, $name, $indexName, $count);
 
         for($i = 0; $i<$count; $i++)
         {
-            $this->$properties[0] = new PropertyStringIndexed($name, $indexName, $i);
+            $this->$properties[0] = new PropertyStringIndexed($module, $name, $indexName, $i);
         }       
     }
 
