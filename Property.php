@@ -5,6 +5,7 @@ class Property  {
     protected $module;
 
     public function __construct($module, $name) {
+        $this->module = $module;
         $this->name = $name;
     }
 }
