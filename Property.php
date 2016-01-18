@@ -72,18 +72,18 @@ class PropertyArray {
     {
         for($i = 0; $i<$this->count; $i++)
         {
-            $this->$properties[0]->Register($value);
+            $this->properties[0]->Register($value);
         }       
     }
 
     public function At($index)
     {
-        return $this->$properties[$index];
+        return $this->properties[$index];
     }
 
     public function ValueAt($index)
     {
-        return $this->$properties[$index]->Value();
+        return $this->properties[$index]->Value();
     }
 
 }
