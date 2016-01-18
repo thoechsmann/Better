@@ -70,7 +70,7 @@ class PropertyArray {
 
     public function RegisterAll($value = 0)
     {
-        for($i = 0; $i<$count; $i++)
+        for($i = 0; $i<$this->count; $i++)
         {
             $this->$properties[0]->Register($value);
         }       
