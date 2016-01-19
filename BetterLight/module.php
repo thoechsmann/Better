@@ -262,7 +262,7 @@ class BetterLight extends BetterBase {
             $type = 1;
         }
 
-        $this->MaintainVariable($ident, $name, $type, $profile, -1, $exists);
+        $this->MaintainVariable($ident, $name, $type, $profile, 10, $exists);
         $id = $this->GetIDForIdent($ident);
         IPS_SetName($id, $name);
 
