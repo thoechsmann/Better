@@ -4,15 +4,13 @@ require_once(__DIR__ . "/../Property.php");
 
 class BetterLight extends BetterBase {
 
-    // private $isDayId = 18987;
-    private $isDayId = 52946;
-    private $maxLights = 8;
-    private $maxScenes = 4;
-    private $maxSwitches = 4;
+    const MaxLights = 8;
+    const MaxScenes = 4;
+    const MaxSwitches = 4;
 
-    private $idendStr_currentScene = "CurrentScene";
-    private $str_light = "light";
-    private $str_scene = "scene";
+    const identCurrentScene = "CurrentScene";
+    const strLight = "light";
+    const strScene = "scene";
     const StrSwitch = "switch";
 
     const PosSceneSelection = 1;
@@ -38,39 +36,39 @@ class BetterLight extends BetterBase {
 
     private function LightNamePropertyArray()
     {        
-        return new PropertyArrayString($this, "Name", $this->str_light, $this->maxLights);
+        return new PropertyArrayString($this, "Name", self::StrLight, self::MaxLights);
     }
 
     private function LightSwitchIdPropertyArray()
     {        
-        return new PropertyArrayInteger($this, "SwitchId", $this->str_light, $this->maxLights);
+        return new PropertyArrayInteger($this, "SwitchId", self::StrLight, self::MaxLights);
     }
 
     private function LightDimIdPropertyArray()
     {        
-        return new PropertyArrayInteger($this, "DimId", $this->str_light, $this->maxLights);
+        return new PropertyArrayInteger($this, "DimId", self::StrLight, self::MaxLights);
     }
 
     private function SceneNamePropertyArray()
     {        
-        return new PropertyArrayString($this, "Name", $this->str_scene, $this->maxScenes);
+        return new PropertyArrayString($this, "Name", self::StrScene, self::MaxScenes);
     }
 
     private function SwitchIdPropertyArray()
     {        
-        return new PropertyArrayString($this, "Id", self::StrSwitch, $this->maxSwitches);
+        return new PropertyArrayString($this, "Id", self::StrSwitch, self::MaxSwitches);
     }
 
     private function SwitchScenePropertyArray()
     {        
-        return new PropertyArrayString($this, "Scene", self::StrSwitch, $this->maxSwitches);
+        return new PropertyArrayString($this, "Scene", self::StrSwitch, self::MaxSwitches);
     }
 
     // 
 
     private function LightIdent($lightNumber, $sceneNumber)
     {
-        return $this->PERSISTENT_IDENT_PREFIX . $this->str_light . $lightNumber . $this->str_scene . $sceneNumber;
+        return $this->PERSISTENT_IDENT_PREFIX . self::StrLight . $lightNumber . self::StrScene . $sceneNumber;
     }
 
     private function MSDeactivateIdent($sceneNumber)
@@ -89,9 +87,9 @@ class BetterLight extends BetterBase {
     private function LightNumberForLightIdent($lightIdent)
     {
         $startLen = strlen($this->PERSISTENT_IDENT_PREFIX);
-        $string = substr($lightIdent, $startLen , strlen($this->str_light));
+        $string = substr($lightIdent, $startLen , strlen(self::StrLight));
 
-        if($string !== $this->str_light)
+        if($string !== self::StrLight)
             return false;
 
         $startLen += strlen($string);
@@ -105,10 +103,10 @@ class BetterLight extends BetterBase {
 
     private function SceneNumberForLightIdent($lightIdent)
     {
-        $startLen = strlen($this->PERSISTENT_IDENT_PREFIX) + strlen($this->str_light) + 1;
-        $string = substr($lightIdent, $startLen , strlen($this->str_scene));
+        $startLen = strlen($this->PERSISTENT_IDENT_PREFIX) + strlen(self::StrLight) + 1;
+        $string = substr($lightIdent, $startLen , strlen(self::StrScene));
 
-        if($string !== $this->str_scene)
+        if($string !== self::StrScene)
             return false;
 
         $startLen += strlen($string);
@@ -132,7 +130,7 @@ class BetterLight extends BetterBase {
     {
         $count = 0;
 
-        for($i = 0; $i < $this->maxScenes; $i++)
+        for($i = 0; $i < self::MaxScenes; $i++)
         {
             if($this->SceneNamePropertyArray()->ValueAt($i) !== "")
                 $count++;
@@ -143,7 +141,7 @@ class BetterLight extends BetterBase {
 
     private function CurrentSceneNumber()
     {
-        return $this->GetValueForIdent($this->idendStr_currentScene);
+        return $this->GetValueForIdent(self::IdentCurrentScene);
     }
 
     private function ProfileString()
@@ -224,7 +222,7 @@ class BetterLight extends BetterBase {
 
     private function CreateScenes()
     {
-        for($i = 0; $i < $this->maxScenes; $i++)
+        for($i = 0; $i < self::MaxScenes; $i++)
         {
             $this->CreateSceneVars($i);
         }
@@ -237,7 +235,7 @@ class BetterLight extends BetterBase {
         if($sceneName === "")
             return;
 
-        for($i=0; $i<$this->maxLights; $i++)
+        for($i=0; $i<self::MaxLights; $i++)
         {
             $this->CreateLight($sceneNumber, $i);
         }
@@ -284,8 +282,9 @@ class BetterLight extends BetterBase {
     {
         $ident = $this->MSDeactivateIdent($sceneNumber);
         $sceneName = $this->SceneNamePropertyArray()->ValueAt($sceneNumber);
-        $this->RegisterVariableBoolean($ident, "BM Sperren (" . $sceneName . ")", "~Switch");
+        $id = $this->RegisterVariableBoolean($ident, "BM Sperren (" . $sceneName . ")", "~Switch");
         $this->EnableAction($ident);
+        IPS_SetPosition($id, self::PosMSDisabled);
     }
 
     private function CreateSceneProfile()
@@ -293,7 +292,7 @@ class BetterLight extends BetterBase {
         @IPS_DeleteVariableProfile($this->ProfileString());
         IPS_CreateVariableProfile($this->ProfileString(), 1);
         
-        for($i = 0; $i < $this->maxScenes; $i++)
+        for($i = 0; $i < self::MaxScenes; $i++)
         {
             if($this->SceneNamePropertyArray()->ValueAt($i) !== "")
                 IPS_SetVariableProfileAssociation($this->ProfileString(), $i, $this->SceneNamePropertyArray()->ValueAt($i), "", 0xFFFFFF);
@@ -302,10 +301,11 @@ class BetterLight extends BetterBase {
 
     private function CreateSceneSelectionVar() 
     {
-        $ident = $this->idendStr_currentScene;
+        $ident = self::IdentCurrentScene;
 
-        $this->RegisterVariableInteger($ident, "Szene", $this->ProfileString());
+        $id = $this->RegisterVariableInteger($ident, "Szene", $this->ProfileString());
         $this->EnableAction($ident);
+        IPS_SetPosition($id, self::PosSceneSelection);
     }
 
     private function UseCurrentSceneVars()
@@ -314,7 +314,7 @@ class BetterLight extends BetterBase {
 
         $currentSceneNumber = $this->CurrentSceneNumber();
 
-        for($sceneNumber = 0; $sceneNumber < $this->maxScenes; $sceneNumber++)
+        for($sceneNumber = 0; $sceneNumber < self::MaxScenes; $sceneNumber++)
         {
             $isCurrentScene = ($sceneNumber == $currentSceneNumber);
 
@@ -331,7 +331,7 @@ class BetterLight extends BetterBase {
                 }
             }
 
-            for($lightNumber = 0; $lightNumber < $this->maxLights; $lightNumber++)
+            for($lightNumber = 0; $lightNumber < self::MaxLights; $lightNumber++)
             {
                 $ident = $this->LightIdent($lightNumber, $sceneNumber);
                 $id = @$this->GetIDForIdent($ident);
@@ -365,7 +365,7 @@ class BetterLight extends BetterBase {
         else
         {
             switch($ident) {
-                case $this->idendStr_currentScene:
+                case self::IdentCurrentScene:
                     $this->SetValueForIdent($ident, $value);
                     $this->UseCurrentSceneVars();
                     break;
@@ -394,7 +394,7 @@ class BetterLight extends BetterBase {
 
     public function TurnOffAll()
     {
-        for($lightNumber = 0; $lightNumber < $this->maxLights; $lightNumber++)
+        for($lightNumber = 0; $lightNumber < self::MaxLights; $lightNumber++)
         {
             $this->SetLight($lightNumber, 0);
         }
