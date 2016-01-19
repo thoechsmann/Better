@@ -8,12 +8,12 @@ class BetterLight extends BetterBase {
     private $isDayId = 52946;
     private $maxLights = 8;
     private $maxScenes = 4;
-    const MaxSwitches = 4;
+    private $maxSwitches = 4;
 
     private $idendStr_currentScene = "CurrentScene";
     private $str_light = "light";
     private $str_scene = "scene";
-    const StrSwitch = "switch";
+    private $strSwitch = "switch";
 
     // Properties
     private function MSMainSwitchIdProperty()
@@ -53,12 +53,12 @@ class BetterLight extends BetterBase {
 
     private function SwitchIdPropertyArray()
     {        
-        return new PropertyArrayString($this, "Id", self::StrSwitch, self::MaxSwitches);
+        return new PropertyArrayString($this, "Id", $this->strSwitch, $this->maxSwitches);
     }
 
     private function SwitchScenePropertyArray()
     {        
-        return new PropertyArrayString($this, "Scene", self::StrSwitch, self::MaxSwitches);
+        return new PropertyArrayString($this, "Scene", $this->strSwitch, $this->maxSwitches);
     }
 
     // 
