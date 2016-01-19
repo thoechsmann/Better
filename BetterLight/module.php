@@ -29,6 +29,11 @@ class BetterLight extends BetterBase {
         return new PropertyInteger($this, "msExternMovementId");
     }
 
+    private function LightNamePropertyArray()
+    {        
+        return new PropertyArrayString($this, "Name", $this->str_light, $this->maxLights);
+    }
+
     private function LightSwitchIdPropertyArray()
     {        
         return new PropertyArrayInteger($this, "SwitchId", $this->str_light, $this->maxLights);
@@ -177,6 +182,7 @@ class BetterLight extends BetterBase {
         $this->MSDeactivateIdProperty()->Register();
         $this->MSExternMovementIdProperty()->Register();
 
+        $this->LightNamePropertyArray()->RegisterAll();
         $this->LightSwitchIdPropertyArray()->RegisterAll();
         $this->LightDimIdPropertyArray()->RegisterAll();
         $this->SceneNamePropertyArray()->RegisterAll();
@@ -229,10 +235,10 @@ class BetterLight extends BetterBase {
         $switchId = $this->LightSwitchIdPropertyArray()->ValueAt($lightNumber);
         $dimId = $this->LightDimIdPropertyArray()->ValueAt($lightNumber);
 
-        $name = "Licht" . ($lightNumber + 1) ." (" . $sceneName . ")";
+        $name = $this->LightNamePropertyArray()->ValueAt($lightNumber);
+        $exists = $switchId !== 0;
         $profile = "~Switch";
         $type = 0;
-        $exists = $switchId !== 0;
 
         if($dimId !== 0)
         {
@@ -320,10 +326,16 @@ class BetterLight extends BetterBase {
 
     public function RequestAction($ident, $value) 
     {
-        if($this->IsLightIdent($ident) || $this->IsMSDeactivateIdent($ident))
+        if($this->IsLightIdent($ident))
         {
             $this->SetValueForIdent($ident, $value);
-            $this->UseCurrentSceneVars();
+            $lightNumber = $this->LightNumberForLightIdent($ident);
+            $this->SetLight($lightNumber, $value);
+        }
+        else if($this->IsMSDeactivateIdent($ident))
+        {
+            $this->SetValueForIdent($ident, $value);
+            $this->SetMSDeactivate($value);
         }
         else
         {
