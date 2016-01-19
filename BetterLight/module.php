@@ -219,6 +219,7 @@ class BetterLight extends BetterBase {
 		parent::ApplyChanges();
 		
         $this->CreateMotionTrigger();
+        $this->CreateLinks();
         $this->CreateScenes();
         $this->CreateSceneProfile();
         $this->CreateSceneSelectionVar();
@@ -228,6 +229,36 @@ class BetterLight extends BetterBase {
     private function CreateMotionTrigger()
     {
         $this->RegisterTrigger("MSMainSwitchTrigger", $this->MSMainSwitchIdProperty()->Value(), 'BL_MSMainSwitchEvent($_IPS[\'TARGET\']);', 1);
+    }
+
+    private function CreateLinks()
+    {
+        for($i=0; $i<self::MaxLights; $i++)
+        {
+            $this->CreateLightLink($i);
+        }
+    }
+
+    private function CreateLightLink($lightNumber)
+    {
+        $ident = $this->LightIdent($lightNumber, $sceneNumber);
+
+        $switchId = $this->LightSwitchIdPropertyArray()->ValueAt($lightNumber);
+        $dimId = $this->LightDimIdPropertyArray()->ValueAt($lightNumber);
+        $name = $this->LightNamePropertyArray()->ValueAt($lightNumber);
+
+        if($switchId == 0 && $dimId != 0)
+            throw new Exception("DimId without switch id for light number " . $lightNumber. "!");
+
+        if($dimId != 0)
+        {
+            $this->RegisterLink($this->LightSwitchLinkIdent($lightNumber), $name, $switchId, self::PosLightSwitch);
+        }
+
+        if($dimId != 0)
+        {
+            $this->RegisterLink($this->LightDimLinkIdent($lightNumber), $name, $dimId, self::PosLightDim);
+        }
     }
 
     private function CreateScenes()
@@ -261,6 +292,9 @@ class BetterLight extends BetterBase {
         $switchId = $this->LightSwitchIdPropertyArray()->ValueAt($lightNumber);
         $dimId = $this->LightDimIdPropertyArray()->ValueAt($lightNumber);
 
+        if($switchId == 0 && $dimId != 0)
+            throw new Exception("DimId without switch id for light number " . $lightNumber. "!");
+
         $name = $this->LightNamePropertyArray()->ValueAt($lightNumber);
         $exists = $switchId !== 0;
         $profile = "~Switch";
@@ -268,13 +302,8 @@ class BetterLight extends BetterBase {
 
         if($dimId !== 0)
         {
-            if($switchId == 0)
-                throw new Exception("DimId without switch id for light number " . $lightNumber. "!");
-
             $profile = "~Intensity.100";
             $type = 1;
-
-            $this->RegisterLink($this->LightDimLinkIdent($lightNumber), $name, $dimId, self::PosLightDim);
         }
 
         $this->MaintainVariable($ident, $name, $type, $profile, 0, $exists);
@@ -283,8 +312,6 @@ class BetterLight extends BetterBase {
         {
             $id = $this->GetIDForIdent($ident);
             IPS_SetHidden($id, true);
-
-            $this->RegisterLink($this->LightSwitchLinkIdent($lightNumber), $name, $dimId, self::PosLightSwitch);
         }
     }
 
