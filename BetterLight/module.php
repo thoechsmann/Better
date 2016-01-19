@@ -263,11 +263,13 @@ class BetterLight extends BetterBase {
         }
 
         $this->MaintainVariable($ident, $name, $type, $profile, 10, $exists);
-        $id = $this->GetIDForIdent($ident);
-        IPS_SetName($id, $name);
 
         if($exists)
+        {
             $this->EnableAction($ident);
+            $id = $this->GetIDForIdent($ident);
+            IPS_SetName($id, $name);
+        }
     }
 
     private function CreateMSDeactivate($sceneNumber)
