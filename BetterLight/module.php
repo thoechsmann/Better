@@ -8,9 +8,9 @@ class BetterLight extends BetterBase {
     const MaxScenes = 4;
     const MaxSwitches = 4;
 
-    const identCurrentScene = "CurrentScene";
-    const strLight = "light";
-    const strScene = "scene";
+    const IdentCurrentScene = "CurrentScene";
+    const StrLight = "light";
+    const StrScene = "scene";
     const StrSwitch = "switch";
 
     const PosSceneSelection = 1;
