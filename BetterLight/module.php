@@ -14,9 +14,9 @@ class BetterLight extends BetterBase {
     const StrSwitch = "switch";
 
     const PosSceneSelection = 1;
-    const PosMSDisabled = 1;
-    const PosLightDim = 2;
-    const PosLightSwitch = 3;
+    const PosMSDisabled = 2;
+    const PosLightDim = 3;
+    const PosLightSwitch = 4;
 
     // Properties
     private function MSMainSwitchIdProperty()
@@ -69,6 +69,16 @@ class BetterLight extends BetterBase {
     private function LightIdent($lightNumber, $sceneNumber)
     {
         return $this->PERSISTENT_IDENT_PREFIX . self::StrLight . $lightNumber . self::StrScene . $sceneNumber;
+    }
+
+    private function LightSwitchLinkIdent($lightNumber)
+    {
+        return self::StrLight . $lightNumber . "Switch";
+    }
+
+    private function LightDimLinkIdent($lightNumber)
+    {
+        return self::StrLight . $lightNumber . "Dim";
     }
 
     private function MSDeactivateIdent($sceneNumber)
@@ -255,7 +265,6 @@ class BetterLight extends BetterBase {
         $exists = $switchId !== 0;
         $profile = "~Switch";
         $type = 0;
-        $pos = self::PosLightSwitch;
 
         if($dimId !== 0)
         {
@@ -264,17 +273,15 @@ class BetterLight extends BetterBase {
 
             $profile = "~Intensity.100";
             $type = 1;
-            $pos = self::PosLightDim;
+
+            $this->RegisterLink($this->LightDimLinkIdent($lightNumber), $name, $dimId, self::PosLightDim);
         }
 
         $this->MaintainVariable($ident, $name, $type, $profile, 0, $exists);
 
         if($exists)
         {
-            $this->EnableAction($ident);
-            $id = $this->GetIDForIdent($ident);
-            IPS_SetName($id, $name);
-            IPS_SetPosition($id, $pos);
+            $this->RegisterLink($this->LightSwitchLinkIdent($lightNumber), $name, $dimId, self::PosLightSwitch);
         }
     }
 
@@ -360,7 +367,8 @@ class BetterLight extends BetterBase {
         else if($this->IsMSDeactivateIdent($ident))
         {
             $this->SetValueForIdent($ident, $value);
-            $this->SetMSDeactivate($value);
+            // $this->SetMSDeactivate($value);
+            $this->UseCurrentSceneVars();
         }
         else
         {
