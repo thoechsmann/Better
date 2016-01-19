@@ -281,6 +281,9 @@ class BetterLight extends BetterBase {
 
         if($exists)
         {
+            $id = $this->GetIDForIdent($ident);
+            IPS_SetHidden($id, true);
+
             $this->RegisterLink($this->LightSwitchLinkIdent($lightNumber), $name, $dimId, self::PosLightSwitch);
         }
     }
