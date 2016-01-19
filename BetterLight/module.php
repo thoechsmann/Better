@@ -257,6 +257,7 @@ class BetterLight extends BetterBase {
         $exists = $switchId !== 0;
         $profile = "~Switch";
         $type = 0;
+        $pos = self::PosLightSwitch;
 
         if($dimId !== 0)
         {
@@ -265,6 +266,7 @@ class BetterLight extends BetterBase {
 
             $profile = "~Intensity.100";
             $type = 1;
+            $pos = self::PosLightDim;
         }
 
         $this->MaintainVariable($ident, $name, $type, $profile, 0, $exists);
@@ -274,7 +276,7 @@ class BetterLight extends BetterBase {
             $this->EnableAction($ident);
             $id = $this->GetIDForIdent($ident);
             IPS_SetName($id, $name);
-            IPS_SetPosition($id, $name);
+            IPS_SetPosition($id, $pos);
         }
     }
 
