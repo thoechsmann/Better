@@ -4,28 +4,36 @@
 		{ "type": "SelectVariable", "name": "msMainSwitchId", "caption": "BM (Ausgang Schalten)" },
 		{ "type": "SelectVariable", "name": "msDeactivateId", "caption": "BM (Sperren)" },
 		{ "type": "SelectVariable", "name": "msExternMovementId", "caption": "BM (Externe Bewegung)" },
-		{ "type": "SelectVariable", "name": "light0Name", "caption": "Licht1" },
+		
+		{ "type": "ValidationTextBox", "name": "light0Name", "caption": "Licht1" },
 		{ "type": "SelectVariable", "name": "light0SwitchId", "caption": "Licht1 (Schalten)" },
 		{ "type": "SelectVariable", "name": "light0DimId", "caption": "Licht1 (Dimmen)" },
-		{ "type": "SelectVariable", "name": "light0Name", "caption": "Licht2" },
+		
+		{ "type": "ValidationTextBox", "name": "light0Name", "caption": "Licht2" },
 		{ "type": "SelectVariable", "name": "light1SwitchId", "caption": "Licht2 (Schalten)" },
 		{ "type": "SelectVariable", "name": "light1DimId", "caption": "Licht2 (Dimmen)" },
-		{ "type": "SelectVariable", "name": "light0Name", "caption": "Licht3" },
+		
+		{ "type": "ValidationTextBox", "name": "light0Name", "caption": "Licht3" },
 		{ "type": "SelectVariable", "name": "light2SwitchId", "caption": "Licht3 (Schalten)" },
 		{ "type": "SelectVariable", "name": "light2DimId", "caption": "Licht3 (Dimmen)" },
-		{ "type": "SelectVariable", "name": "light0Name", "caption": "Licht4" },
+		
+		{ "type": "ValidationTextBox", "name": "light0Name", "caption": "Licht4" },
 		{ "type": "SelectVariable", "name": "light3SwitchId", "caption": "Licht4 (Schalten)" },
 		{ "type": "SelectVariable", "name": "light3DimId", "caption": "Licht4 (Dimmen)" },
-		{ "type": "SelectVariable", "name": "light0Name", "caption": "Licht5" },
+		
+		{ "type": "ValidationTextBox", "name": "light0Name", "caption": "Licht5" },
 		{ "type": "SelectVariable", "name": "light4SwitchId", "caption": "Licht5 (Schalten)" },
 		{ "type": "SelectVariable", "name": "light4DimId", "caption": "Licht5 (Dimmen)" },
-		{ "type": "SelectVariable", "name": "light0Name", "caption": "Licht6" },
+		
+		{ "type": "ValidationTextBox", "name": "light0Name", "caption": "Licht6" },
 		{ "type": "SelectVariable", "name": "light5SwitchId", "caption": "Licht6 (Schalten)" },
 		{ "type": "SelectVariable", "name": "light5DimId", "caption": "Licht6 (Dimmen)" },
-		{ "type": "SelectVariable", "name": "light0Name", "caption": "Licht7" },
+		
+		{ "type": "ValidationTextBox", "name": "light0Name", "caption": "Licht7" },
 		{ "type": "SelectVariable", "name": "light6SwitchId", "caption": "Licht7 (Schalten)" },
 		{ "type": "SelectVariable", "name": "light6DimId", "caption": "Licht7 (Dimmen)" },
-		{ "type": "SelectVariable", "name": "light0Name", "caption": "Licht8" },
+		
+		{ "type": "ValidationTextBox", "name": "light0Name", "caption": "Licht8" },
 		{ "type": "SelectVariable", "name": "light7SwitchId", "caption": "Licht8 (Schalten)" },
 		{ "type": "SelectVariable", "name": "light7DimId", "caption": "Licht8 (Dimmen)" },
 		
