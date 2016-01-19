@@ -32,7 +32,7 @@
 		{ "type": "ValidationTextBox", "name": "scene0Name", "caption": "Name Szene 1" },
 		{ "type": "ValidationTextBox", "name": "scene1Name", "caption": "Name Szene 2" },
 		{ "type": "ValidationTextBox", "name": "scene2Name", "caption": "Name Szene 3" },
-		{ "type": "ValidationTextBox", "name": "scene3Name", "caption": "Name Szene 4" }
+		{ "type": "ValidationTextBox", "name": "scene3Name", "caption": "Name Szene 4" },
 
 		{ "type": "SelectVariable", "name": "switch0Id", "caption": "Schalter1 Id" },
 		{ "type": "NumberSpinner", "name": "switch0Scene", "caption": "Schalter1 Szenen Id" },
@@ -41,7 +41,7 @@
 		{ "type": "SelectVariable", "name": "switch2Id", "caption": "Schalter3 Id" },
 		{ "type": "NumberSpinner", "name": "switch2Scene", "caption": "Schalter3 Szenen Id" },
 		{ "type": "SelectVariable", "name": "switch3Id", "caption": "Schalter4 Id" },
-		{ "type": "NumberSpinner", "name": "switch3Scene", "caption": "Schalter4 Szenen Id" },
+		{ "type": "NumberSpinner", "name": "switch3Scene", "caption": "Schalter4 Szenen Id" }
 
 
 	],
