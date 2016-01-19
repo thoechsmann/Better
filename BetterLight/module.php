@@ -8,10 +8,12 @@ class BetterLight extends BetterBase {
     private $isDayId = 52946;
     private $maxLights = 8;
     private $maxScenes = 4;
+    const MaxSwitches = 4;
 
     private $idendStr_currentScene = "CurrentScene";
     private $str_light = "light";
     private $str_scene = "scene";
+    const StrSwitch = "switch";
 
     // Properties
     private function MSMainSwitchIdProperty()
@@ -47,6 +49,16 @@ class BetterLight extends BetterBase {
     private function SceneNamePropertyArray()
     {        
         return new PropertyArrayString($this, "Name", $this->str_scene, $this->maxScenes);
+    }
+
+    private function SwitchIdPropertyArray()
+    {        
+        return new PropertyArrayString($this, "Id", self::StrSwitch, self::MaxSwitches);
+    }
+
+    private function SwitchScenePropertyArray()
+    {        
+        return new PropertyArrayString($this, "Scene", self::StrSwitch, self::MaxSwitches);
     }
 
     // 
@@ -181,11 +193,12 @@ class BetterLight extends BetterBase {
         $this->MSMainSwitchIdProperty()->Register();
         $this->MSDeactivateIdProperty()->Register();
         $this->MSExternMovementIdProperty()->Register();
-
         $this->LightNamePropertyArray()->RegisterAll();
         $this->LightSwitchIdPropertyArray()->RegisterAll();
         $this->LightDimIdPropertyArray()->RegisterAll();
         $this->SceneNamePropertyArray()->RegisterAll();
+        $this->SwitchIdPropertyArray()->RegisterAll();
+        $this->SwitchScenePropertyArray()->RegisterAll();
 	}
 	
 	public function ApplyChanges() 
