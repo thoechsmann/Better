@@ -13,7 +13,12 @@ class BetterLight extends BetterBase {
     private $idendStr_currentScene = "CurrentScene";
     private $str_light = "light";
     private $str_scene = "scene";
-    private $strSwitch = "switch";
+    const StrSwitch = "switch";
+
+    const PosSceneSelection = 1;
+    const PosMSDisabled = 1;
+    const PosLightDim = 2;
+    const PosLightSwitch = 3;
 
     // Properties
     private function MSMainSwitchIdProperty()
@@ -53,12 +58,12 @@ class BetterLight extends BetterBase {
 
     private function SwitchIdPropertyArray()
     {        
-        return new PropertyArrayString($this, "Id", $this->strSwitch, $this->maxSwitches);
+        return new PropertyArrayString($this, "Id", self::StrSwitch, $this->maxSwitches);
     }
 
     private function SwitchScenePropertyArray()
     {        
-        return new PropertyArrayString($this, "Scene", $this->strSwitch, $this->maxSwitches);
+        return new PropertyArrayString($this, "Scene", self::StrSwitch, $this->maxSwitches);
     }
 
     // 
@@ -262,13 +267,14 @@ class BetterLight extends BetterBase {
             $type = 1;
         }
 
-        $this->MaintainVariable($ident, $name, $type, $profile, 10, $exists);
+        $this->MaintainVariable($ident, $name, $type, $profile, 0, $exists);
 
         if($exists)
         {
             $this->EnableAction($ident);
             $id = $this->GetIDForIdent($ident);
             IPS_SetName($id, $name);
+            IPS_SetPosition($id, $name);
         }
     }
 
