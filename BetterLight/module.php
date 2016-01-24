@@ -268,10 +268,10 @@ class BetterLight extends BetterBase {
         if($switchId == 0 && ($dimId != 0 || $statusSwitchId != 0 || $statusDimId != 0))
             throw new Exception("Switch id not set, but other ids for light number " . $lightNumber . "!");
 
-        if($switchId != $statusSwitchId)
+        if(($switchId == 0) != ($statusSwitchId == 0))
             throw new Exception("Switch id requires status id for light number " . $lightNumber . "!");
 
-        if($dimId != $statusDimId)
+        if(($dimId == 0) != ($statusDimId == 0))
             throw new Exception("Dim id requires status id for light number " . $lightNumber . "!");
 
         if($statusSwitchId != 0)
