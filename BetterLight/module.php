@@ -88,9 +88,14 @@ class BetterLight extends BetterBase {
         return self::StrLight . self::StrDim . $lightNumber;
     }
 
-    private function SceneLightIdent($lightNumber, $sceneNumber)
+    private function SceneLightSwitchIdent($lightNumber, $sceneNumber)
     {
-        return $this->PERSISTENT_IDENT_PREFIX . self::StrLight . $lightNumber . self::StrScene . $sceneNumber;
+        return $this->PERSISTENT_IDENT_PREFIX . self::StrLight . $lightNumber . self::StrScene . $sceneNumber . self::StrSwitch;
+    }
+
+    private function SceneLightDimIdent($lightNumber, $sceneNumber)
+    {
+        return $this->PERSISTENT_IDENT_PREFIX . self::StrLight . $lightNumber . self::StrScene . $sceneNumber . self::StrDim;
     }
 
     private function LightSwitchLinkIdent($lightNumber)
@@ -343,33 +348,15 @@ class BetterLight extends BetterBase {
 
     private function CreateSceneLight($sceneNumber, $lightNumber)
     {
-        $ident = $this->SceneLightIdent($lightNumber, $sceneNumber);
-        $sceneName = $this->SceneNamePropertyArray()->ValueAt($sceneNumber);
+        $name = $this->LightNamePropertyArray()->ValueAt($lightNumber);
 
         $switchId = $this->LightSwitchIdPropertyArray()->ValueAt($lightNumber);
+        $ident = $this->SceneLightSwitchIdent($lightNumber, $sceneNumber);
+        $this->MaintainVariable($ident, $name . "Switch", self::TypeBool, "~Switch", 0, $switchId !== 0);
+
         $dimId = $this->LightDimIdPropertyArray()->ValueAt($lightNumber);
-
-        if($switchId == 0 && $dimId != 0)
-            throw new Exception("DimId without switch id for light number " . $lightNumber. "!");
-
-        $name = $this->LightNamePropertyArray()->ValueAt($lightNumber);
-        $exists = $switchId !== 0;
-        $profile = "~Switch";
-        $type = self::TypeBool;
-
-        if($dimId !== 0)
-        {
-            $profile = "~Intensity.100";
-            $type = self::TypeInteger;
-        }
-
+        $ident = $this->SceneLightDimIdent($lightNumber, $sceneNumber);
         $this->MaintainVariable($ident, $name, $type, $profile, 0, $exists);
-
-        if($exists)
-        {
-            $id = $this->GetIDForIdent($ident);
-            IPS_SetHidden($id, true);
-        }
     }
 
     private function CreateMSDeactivate($sceneNumber)
