@@ -360,7 +360,7 @@ class BetterLight extends BetterBase {
 
             $triggerIdent = $ident . "Trigger";
             $script = 'SetValue(' . $id . ', $_IPS[\'VALUE\']); BL_CancelSave($_IPS[\'TARGET\']);';
-            $this->RegisterTrigger($triggerIdent, $statusSwitchId, $script);
+            $this->RegisterTrigger($triggerIdent, $statusSwitchId, $script, self::TriggerTypeUpdate);
         }
 
         if($dimId != 0)
@@ -371,7 +371,7 @@ class BetterLight extends BetterBase {
 
             $triggerIdent = $ident . "Trigger";
             $script = 'SetValue(' . $id . ', $_IPS[\'VALUE\']); BL_CancelSave($_IPS[\'TARGET\']);';
-            $this->RegisterTrigger($triggerIdent, $statusDimId, $script);
+            $this->RegisterTrigger($triggerIdent, $statusDimId, $script, self::TriggerTypeUpdate);
         }
 
     }
@@ -483,12 +483,14 @@ class BetterLight extends BetterBase {
         IPS_SetHidden($id, true);        
     }
 
-    private function Save()
+    private function SaveToScene($sceneNumber)
     {
         for($lightNumber = 0; $lightNumber < self::MaxLights; $lightNumber++)
         {
             $this->SaveLightToScene($lightNumber, $currentSceneNumber);
-        }            
+        }
+
+        $this->CancelSave();
     }
 
     public function CancelSave()
@@ -542,6 +544,7 @@ class BetterLight extends BetterBase {
                     break;
 
                 case self::SaveToSceneIdent:
+                    $this->SaveToScene($value);
                     break;
 
                 default:
