@@ -507,7 +507,9 @@ class BetterLight extends BetterBase {
                     break;
 
                 case self::SaveSceneIdent:
-                    $this->StartSave();
+                    IPS_LogMessage("BetterLight", "RequestAction: self::SaveSceneIdent");
+
+                    $this->StartSave($this->InstanceID);
                     break;
 
                 case self::SaveToSceneIdent:
