@@ -357,6 +357,7 @@ class BetterLight extends BetterBase {
             $ident = $this->LightSwitchIdent($lightNumber);
             $id = $this->RegisterVariableBoolean($ident, $name, "~Switch", self::PosLightSwitch);
             $this->EnableAction($ident);
+            SetValue($id, GetValue($statusSwitchId));
 
             $triggerIdent = $ident . "Trigger";
             $script = 'SetValue(' . $id . ', $_IPS[\'VALUE\']); BL_CancelSave($_IPS[\'TARGET\']);';
@@ -368,6 +369,7 @@ class BetterLight extends BetterBase {
             $ident = $this->LightDimIdent($lightNumber);
             $id = $this->RegisterVariableInteger($ident, $name, "~Intensity.100", self::PosLightSwitch);
             $this->EnableAction($ident);
+            SetValue($id, GetValue($statusDimId));
 
             $triggerIdent = $ident . "Trigger";
             $script = 'SetValue(' . $id . ', $_IPS[\'VALUE\']); BL_CancelSave($_IPS[\'TARGET\']);';
