@@ -582,6 +582,8 @@ class BetterLight extends BetterBase {
         $msId = $this->MSMainSwitchIdProperty()->Value();
         $turnOn = GetValue($msId);
 
+        IPS_LogMessage("BetterLight", "MSMainSwitchEvent TurnOn: $turnOn MSDeactivated: " . $this->IsMSDeactivated());
+
         if($turnOn || $this->IsMSDeactivated())
         {
             $this->LoadFromScene($this->CurrentSceneNumber());
