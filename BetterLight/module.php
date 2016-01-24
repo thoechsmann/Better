@@ -285,7 +285,7 @@ class BetterLight extends BetterBase {
             $ident = $this->LightSwitchIdent($lightNumber);
             $id = $this->RegisterVariableBoolean($ident, $name, "~Switch", self::PosLightSwitch);
 
-            $triggerIdent = $ident + "Trigger";
+            $triggerIdent = $ident . "Trigger";
             $this->RegisterTrigger($triggerIdent, $switchId, 'SetValue(' . $id . ', $_IPS[\'VALUE\']);');
         }
 
@@ -294,7 +294,7 @@ class BetterLight extends BetterBase {
             $ident = $this->LightDimIdent($lightNumber);
             $id = $this->RegisterVariableInteger($ident, $name, "~Switch", self::PosLightSwitch);
 
-            $triggerIdent = $ident + "Trigger";
+            $triggerIdent = $ident . "Trigger";
             $this->RegisterTrigger($triggerIdent, $dimId, 'SetValue(' . $id . ', $_IPS[\'VALUE\']);');
         }
 
