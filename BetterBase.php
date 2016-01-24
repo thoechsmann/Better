@@ -84,24 +84,6 @@ class BetterBase extends IPSModule {
         return $link;
     }
 
-   protected function RegisterScript($ident, $name, $code, $position) 
-    {
-        $id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID);
-        if($id !== false)
-        {
-            IPS_DeleteLink($id);
-        }
-
-        $script = IPS_CreateScript();
-        IPS_SetName($link, $name);
-        IPS_SetIdent($link, $ident);
-        IPS_SetParent($link, $this->InstanceID);
-        IPS_SetScriptContent($link, "<?" . $code . "?>");
-        IPS_SetPosition($link, $position);
-
-        return $link;
-    }
-
     protected function RegisterTrigger($ident, $targetId, $script, $triggerType = self::TriggerTypeChange)
     { 
          IPS_LogMessage("BetterBase", "RegisterTrigger(". 
