@@ -425,16 +425,16 @@ class BetterLight extends BetterBase {
             if($dimId == 0)
             {
                 $ident = $this->SceneLightSwitchIdent($lightNumber, $sceneNumber);
-                $this->RegisterVariableBoolean($ident, $name . $sceneNumber . "Switch", "~Switch", 0);
+                $id = $this->RegisterVariableBoolean($ident, $name . $sceneNumber . "Switch", "~Switch", 0);
                 $this->EnableAction($ident);
-                IPS_SetHidden($ident, true);
+                IPS_SetHidden($id, true);
             }
             else
             {
                 $ident = $this->SceneLightDimIdent($lightNumber, $sceneNumber);
-                $this->RegisterVariableInteger($ident, $name . $sceneNumber . "Dim", "~Intensity.100", 0);
+                $id = $this->RegisterVariableInteger($ident, $name . $sceneNumber . "Dim", "~Intensity.100", 0);
                 $this->EnableAction($ident);
-                IPS_SetHidden($ident, true);
+                IPS_SetHidden($id, true);
             }
         }
     }
@@ -443,7 +443,7 @@ class BetterLight extends BetterBase {
     {
         $ident = $this->MSDeactivateIdent($sceneNumber);
         $id = $this->RegisterVariableBoolean($ident, "BMSperren" . $sceneNumber, "~Switch");
-        IPS_SetHidden($ident, true);
+        IPS_SetHidden($id, true);
     }
 
     private function CreateSceneProfile()
