@@ -277,11 +277,13 @@ class BetterLight extends BetterBase {
         if($switchId != 0)
         {
             $this->RegisterLink($statusSwitchIdName, $name, $statusSwitchId, self::PosLightSwitch);
+            $this->EnableAction($statusSwitchIdName);
         }
 
         if($dimId != 0)
         {
             $this->RegisterLink($statusDimIdName, $name, $statusDimId, self::PosLightDim);
+            $this->EnableAction($statusDimIdName);
         }
     }
 
