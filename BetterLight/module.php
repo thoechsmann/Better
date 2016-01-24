@@ -195,7 +195,7 @@ class BetterLight extends BetterBase {
     {
         $switchId = $this->LightSwitchIdPropertyArray()->ValueAt($lightNumber);
 
-        if($switch == 0)
+        if($switchId == 0)
             throw new Exception("Switch id not set, but trying to set it (SetLightSwitch) for light number " . $lightNumber . "!");
 
         EIB_Switch(IPS_GetParent($switchId), $value);
