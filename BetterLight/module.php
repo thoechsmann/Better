@@ -480,13 +480,15 @@ class BetterLight extends BetterBase {
         IPS_SetPosition($id, self::PosSceneSelection);
     }
 
-    private function LoadFromScene($sceneNumber)
+    private function LoadFromScene($sceneNumber, $reloadDueToMSChange = false)
     {
         for($lightNumber = 0; $lightNumber < self::MaxLights; $lightNumber++)
         {
             $this->LoadLightFromScene($lightNumber, $sceneNumber);
         }            
-        $this->LoadMSDeactivateFromScene($sceneNumber);
+
+        if(!$reloadDueToMSChange)
+            $this->LoadMSDeactivateFromScene($sceneNumber);
     }
 
     private function AddSaveButton() 
@@ -586,7 +588,7 @@ class BetterLight extends BetterBase {
 
         if($turnOn || $this->IsMSDeactivated())
         {
-            $this->LoadFromScene($this->CurrentSceneNumber());
+            $this->LoadFromScene($this->CurrentSceneNumber(), true);
         }
         else
         {
