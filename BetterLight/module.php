@@ -413,7 +413,7 @@ class BetterLight extends BetterBase {
         for($i = 0; $i < self::MaxScenes; $i++)
         {
             if($this->SceneNamePropertyArray()->ValueAt($i) !== "")
-                IPS_SetVariableProfileAssociation($this->ProfileString(), $i, $this->SceneNamePropertyArray()->ValueAt($i), "", 0xFFFFFF);
+                IPS_SetVariableProfileAssociation($this->SceneProfileString(), $i, $this->SceneNamePropertyArray()->ValueAt($i), "", 0xFFFFFF);
         }
     }
 
