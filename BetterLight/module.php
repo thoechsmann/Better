@@ -81,7 +81,7 @@ class BetterLight extends BetterBase {
     const SaveSceneIdent = "SaveScene";
     const CurrentSceneIdent = "CurrentScene";
     const SaveToSceneIdent = "SaveToScene";
-    const MSMainSwitchIdent = "MSMainSwitch";
+    const MSDeactivateIdent = "MSMainSwitch";
     const MSMainSwitchTriggerIdent = "MSMainSwitchTrigger";
 
     private function LightSwitchIdent($lightNumber)
@@ -333,7 +333,7 @@ class BetterLight extends BetterBase {
 
     private function CreateMotionTrigger()
     {
-        $this->RegisterLink(self::MSMainSwitchIdent, "BM sperren", $this->MSMainSwitchIdProperty()->Value(), self::PosMSDisabled);
+        $this->RegisterLink(self::MSDeactivateIdent, "BM sperren", $this->MSDeactivateIdProperty()->Value(), self::PosMSDisabled);
 
         $this->RegisterTrigger(self::MSMainSwitchTriggerIdent, $this->MSMainSwitchIdProperty()->Value(), 'BL_MSMainSwitchEvent($_IPS[\'TARGET\']);', 1);
     }
@@ -535,7 +535,7 @@ class BetterLight extends BetterBase {
         }
 
         switch($ident) {
-            case self::MSMainSwitchIdent:
+            case self::MSDeactivateIdent:
                 $this->SetMSDeactivate($value);
                 $this->CancelSave();
                 break;
