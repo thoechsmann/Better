@@ -254,8 +254,6 @@ class BetterLight extends BetterBase {
 
     private function CreateLightLink($lightNumber)
     {
-        $ident = $this->LightIdent($lightNumber, $sceneNumber);
-
         $switchId = $this->LightSwitchIdPropertyArray()->ValueAt($lightNumber);
         $switchIdName = $this->LightSwitchIdPropertyArray()->NameAt($lightNumber);
         $dimId = $this->LightDimIdPropertyArray()->ValueAt($lightNumber);

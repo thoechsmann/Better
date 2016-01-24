@@ -11,7 +11,7 @@ class Property  {
 
     public function Name()
     {
-        return $name;
+        return $this->name;
     }
 }
 
