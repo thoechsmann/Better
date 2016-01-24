@@ -440,20 +440,19 @@ class BetterLight extends BetterBase {
         $this->EnableAction(self::SaveToSceneIdent);
 
         $this->RegisterScript(self::SaveSceneIdent, "Szene speichern", 
-            "<? BL_StartSave(\"\"," . $this->InstanceID . ");?>",
+            "<? BL_StartSave(" . $this->InstanceID . ");?>",
             self::PosSaveSceneButton);
         //$this->EnableAction(self::SaveSceneIdent);
 
         $this->CancelSave();
     }
 
-    // Called by Script. Thats why it cannot access $this.
-    public function StartSave($instanceID)
+    public function StartSave()
     {
-        $id = IPS_GetObjectIDByIdent(self::SaveToSceneIdent, $instanceID);
+        $id = IPS_GetObjectIDByIdent(self::SaveToSceneIdent, $this->InstanceID);
         IPS_SetHidden($id, false);
 
-        $id = IPS_GetObjectIDByIdent(self::SaveSceneIdent, $instanceID);
+        $id = IPS_GetObjectIDByIdent(self::SaveSceneIdent, $this->InstanceID);
         IPS_SetHidden($id, true);        
     }
 
@@ -509,7 +508,7 @@ class BetterLight extends BetterBase {
                 case self::SaveSceneIdent:
                     IPS_LogMessage("BetterLight", "RequestAction: self::SaveSceneIdent");
 
-                    $this->StartSave($this->InstanceID);
+                    $this->StartSave();
                     break;
 
                 case self::SaveToSceneIdent:
