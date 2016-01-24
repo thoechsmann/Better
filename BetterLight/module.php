@@ -81,6 +81,8 @@ class BetterLight extends BetterBase {
     const SaveSceneIdent = "SaveScene";
     const CurrentSceneIdent = "CurrentScene";
     const SaveToSceneIdent = "SaveToScene";
+    const MSMainSwitchIdent = "MSMainSwitchTrigger";
+    const MSMainSwitchTriggerIdent = "MSMainSwitchTrigger";
 
     private function LightSwitchIdent($lightNumber)
     {
@@ -115,14 +117,6 @@ class BetterLight extends BetterBase {
     private function MSDeactivateIdent($sceneNumber)
     {
         return $this->PERSISTENT_IDENT_PREFIX . "scene". $sceneNumber ."MSDeactivate";
-    }
-
-    private function IsMSDeactivateIdent($ident)
-    {
-        $start = strlen($this->PERSISTENT_IDENT_PREFIX) + strlen("scene") + 1;
-        $string = substr($ident, $start, strlen("MSDeactivate"));
-
-        return $string === "MSDeactivate";
     }
 
     private function LightNumberForLightSwitchIdent($lightIdent)
@@ -245,7 +239,6 @@ class BetterLight extends BetterBase {
         }
     }
 
-
     private function SetLightSwitch($lightNumber, $value)
     {
         $switchId = $this->LightSwitchIdPropertyArray()->ValueAt($lightNumber);
@@ -274,6 +267,24 @@ class BetterLight extends BetterBase {
         {
             EIB_Switch(IPS_GetParent($msId), $value);
         }
+    }
+
+    private function LoadMSDeactivateFromScene($sceneNumber)
+    {
+        $msId = $this->MSExternMovementIdProperty()->Value();
+
+        $msSceneIdent = $this->MSDeactivateIdent($sceneNumber);
+        $msSceneValue = $this->GetValueForIdent($msSceneIdent);
+
+        EIB_Switch(IPS_GetParent($msId), $msSceneValue);
+    }
+
+    private function SaveMSDeactivateToScene($sceneNumber)
+    {
+        $msId = $this->MSExternMovementIdProperty()->Value();
+
+        $msSceneIdent = $this->MSDeactivateIdent($sceneNumber);
+        $this->SetValueForIdent(msSceneIdent, GetValue($msId));        
     }
 
     private function SetMSExternMovement()
@@ -317,13 +328,14 @@ class BetterLight extends BetterBase {
         $this->CreateScenes();
         $this->CreateSceneProfile();
         $this->CreateSceneSelectionVar();
-        $this->UseCurrentSceneVars();
         $this->AddSaveButton();        
 	}
 
     private function CreateMotionTrigger()
     {
-        $this->RegisterTrigger("MSMainSwitchTrigger", $this->MSMainSwitchIdProperty()->Value(), 'BL_MSMainSwitchEvent($_IPS[\'TARGET\']);', 1);
+        $this->RegisterLink(self::MSMainSwitchIdent, "BM sperren", $this->MSMainSwitchIdProperty()->Value(), self::PosMSDisabled);
+
+        $this->RegisterTrigger(self::MSMainSwitchTriggerIdent, $this->MSMainSwitchIdProperty()->Value(), 'BL_MSMainSwitchEvent($_IPS[\'TARGET\']);', 1);
     }
 
     private function CreateLinks()
@@ -430,10 +442,8 @@ class BetterLight extends BetterBase {
     private function CreateMSDeactivate($sceneNumber)
     {
         $ident = $this->MSDeactivateIdent($sceneNumber);
-        $sceneName = $this->SceneNamePropertyArray()->ValueAt($sceneNumber);
-        $id = $this->RegisterVariableBoolean($ident, "BM Sperren (" . $sceneName . ")", "~Switch");
-        $this->EnableAction($ident);
-        IPS_SetPosition($id, self::PosMSDisabled);
+        $id = $this->RegisterVariableBoolean($ident, "BMSperren" . $sceneNumber, "~Switch");
+        IPS_SetHidden($ident, true);
     }
 
     private function CreateSceneProfile()
@@ -455,14 +465,13 @@ class BetterLight extends BetterBase {
         IPS_SetPosition($id, self::PosSceneSelection);
     }
 
-    private function UseCurrentSceneVars()
+    private function LoadFromScene($sceneNumber)
     {
-        $currentSceneNumber = $this->CurrentSceneNumber();
-
         for($lightNumber = 0; $lightNumber < self::MaxLights; $lightNumber++)
         {
-            $this->LoadLightFromScene($lightNumber, $currentSceneNumber);
+            $this->LoadLightFromScene($lightNumber, $sceneNumber);
         }            
+        $this->LoadMSDeactivateFromScene($sceneNumber);
     }
 
     private function AddSaveButton() 
@@ -493,6 +502,7 @@ class BetterLight extends BetterBase {
         {
             $this->SaveLightToScene($lightNumber, $sceneNumber);
         }
+        $this->SaveMSDeactivateToScene($sceneNumber);
 
         $this->CancelSave();
     }
@@ -524,37 +534,31 @@ class BetterLight extends BetterBase {
             return;
         }
 
+        switch($ident) {
+            case self::MSMainSwitchIdent:
+                $this->SetMSDeactivate($value);
+                $this->CancelSave();
+                break;
 
-        else if($this->IsMSDeactivateIdent($ident))
-        {
-            $this->SetValueForIdent($ident, $value);
-            // $this->SetMSDeactivate($value);
-            $this->UseCurrentSceneVars();
-            $this->CancelSave();
-        }
-        else
-        {
-            switch($ident) {
-                case self::CurrentSceneIdent:
-                    $this->SetValueForIdent($ident, $value);
-                    $this->UseCurrentSceneVars();
-                    $this->CancelSave();
-                    break;
+            case self::CurrentSceneIdent:
+                $this->SetValueForIdent($ident, $value);
+                $this->LoadFromScene($value);
+                $this->CancelSave();
+                break;
 
-                case self::SaveSceneIdent:
-                    IPS_LogMessage("BetterLight", "RequestAction: self::SaveSceneIdent");
+            case self::SaveSceneIdent:
+                IPS_LogMessage("BetterLight", "RequestAction: self::SaveSceneIdent");
 
-                    $this->StartSave();
-                    break;
+                $this->StartSave();
+                break;
 
-                case self::SaveToSceneIdent:
-                    $this->SaveToScene($value);
-                    break;
+            case self::SaveToSceneIdent:
+                $this->SaveToScene($value);
+                break;
 
-                default:
-                    $this->SetValueForIdent($ident, $value);
-                    $this->CancelSave();
-            }
+            default:
+                $this->SetValueForIdent($ident, $value);
+                $this->CancelSave();
         }
     }
 
@@ -565,7 +569,7 @@ class BetterLight extends BetterBase {
 
         if($turnOn)
         {
-            $this->UseCurrentSceneVars();
+            $this->LoadFromScene($this->CurrentSceneNumber());
         }
         else
         {
