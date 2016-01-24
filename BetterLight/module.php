@@ -374,6 +374,11 @@ class BetterLight extends BetterBase {
             $triggerIdent = $ident . "Trigger";
             $script = 'SetValue(' . $id . ', $_IPS[\'VALUE\']); BL_CancelSave($_IPS[\'TARGET\']);';
             $this->RegisterTrigger($triggerIdent, $statusSwitchId, $script, self::TriggerTypeUpdate);
+
+            if($dimId != 0)
+            {
+                IPS_SetHidden($id, true);
+            }
         }
 
         if($dimId != 0)
@@ -581,7 +586,7 @@ class BetterLight extends BetterBase {
     {
         for($lightNumber = 0; $lightNumber < self::MaxLights; $lightNumber++)
         {
-            $this->SetLight($lightNumber, 0);
+            $this->SetLightSwitch($lightNumber, false);
         }
     }
 
