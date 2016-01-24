@@ -84,15 +84,14 @@ class BetterBase extends IPSModule {
         return $link;
     }
 
-    /* Type: 
-        0 - update
-        1 - change
-        2 - bigger
-        3 - smaller
-        4 - value
-    */
     protected function RegisterTrigger($ident, $targetId, $script, $triggerType = self::TriggerTypeChange)
     { 
+         IPS_LogMessage("BetterBase", "RegisterTrigger(". 
+            $ident . ", " . 
+            $targetId . ", " . 
+            $script . ", " . 
+            $triggerType);
+
         $id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID); 
 
         if ($id && IPS_GetEvent($id)['EventType'] <> 0) { 
