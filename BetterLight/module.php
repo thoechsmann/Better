@@ -515,8 +515,7 @@ class BetterLight extends BetterBase {
 
     private function LoadFromScene($sceneNumber)
     {
-        if(!$reloadDueToMSChange)
-            $this->LoadMSDeactivateFromScene($sceneNumber);
+        $this->LoadMSDeactivateFromScene($sceneNumber);
 
         for($lightNumber = 0; $lightNumber < self::MaxLights; $lightNumber++)
         {
