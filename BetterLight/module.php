@@ -284,7 +284,7 @@ class BetterLight extends BetterBase {
         $msId = $this->MSExternMovementIdProperty()->Value();
 
         $msSceneIdent = $this->MSDeactivateIdent($sceneNumber);
-        $this->SetValueForIdent(msSceneIdent, GetValue($msId));        
+        $this->SetValueForIdent($msSceneIdent, GetValue($msId));        
     }
 
     private function SetMSExternMovement()
