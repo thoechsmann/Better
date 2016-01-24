@@ -11,7 +11,8 @@ class BetterLight extends BetterBase {
     const IdentCurrentScene = "CurrentScene";
     const StrLight = "light";
     const StrScene = "scene";
-    const StrSwitch = "switch";
+    const StrSwitch = "Switch";
+    const StrDim = "Dim";
     const StrLink = "Link";
 
     const PosSceneSelection = 1;
@@ -79,12 +80,12 @@ class BetterLight extends BetterBase {
 
     private function LightSwitchIdent($lightNumber)
     {
-        return self::StrLight . "Switch" . $lightNumber;
+        return self::StrLight . self::StrSwitch . $lightNumber;
     }
 
     private function LightDimIdent($lightNumber)
     {
-        return self::StrLight . "Dim" . $lightNumber;
+        return self::StrLight . self.StrDim . $lightNumber;
     }
 
     private function SceneLightIdent($lightNumber, $sceneNumber)
@@ -115,16 +116,19 @@ class BetterLight extends BetterBase {
         return $string === "MSDeactivate";
     }
 
-    private function LightNumberForLightIdent($lightIdent)
+    private function LightNumberForLightSwitchIdent($lightIdent)
     {
-        $startLen = strlen($this->PERSISTENT_IDENT_PREFIX);
-        $string = substr($lightIdent, $startLen , strlen(self::StrLight));
+        $lightNumber = substr($lightIdent, strlen(self::StrLight . self::StrSwitch), 1);
 
-        if($string !== self::StrLight)
+        if(!is_numeric($lightNumber))
             return false;
 
-        $startLen += strlen($string);
-        $lightNumber = substr($lightIdent, $startLen , 1);
+        return $lightNumber;
+    }
+
+    private function LightNumberForLightDimIdent($lightIdent)
+    {
+        $lightNumber = substr($lightIdent, strlen(self::StrLight . self::StrDim), 1);
 
         if(!is_numeric($lightNumber))
             return false;
@@ -147,14 +151,6 @@ class BetterLight extends BetterBase {
             return false;
 
         return $sceneNumber;
-    }
-
-    private function IsLightIdent($ident)
-    {
-        $lightNumber = $this->LightNumberForLightIdent($ident);
-        $sceneNumber = $this->SceneNumberForLightIdent($ident);
-        
-        return $lightNumber !== false && $sceneNumber !== false;
     }
 
     private function SceneCount()
@@ -193,6 +189,26 @@ class BetterLight extends BetterBase {
         {
             EIB_Switch(IPS_GetParent($switchId), $value);
         }
+    }
+
+    private function SetLightSwitch($lightNumber, $value)
+    {
+        $switchId = $this->LightSwitchIdPropertyArray()->ValueAt($lightNumber);
+
+        if($switch == 0)
+            throw new Exception("Switch id not set, but trying to set it (SetLightSwitch) for light number " . $lightNumber . "!");
+
+        EIB_Switch(IPS_GetParent($switchId), $value);
+    }
+
+    private function SetLightDim($lightNumber, $value)
+    {
+        $dimId = $this->LightDimIdPropertyArray()->ValueAt($lightNumber);
+
+        if($dimId == 0)
+            throw new Exception("Dim id not set, but trying to set it (SetLightDim) for light number " . $lightNumber . "!");
+
+        EIB_Scale(IPS_GetParent($dimId), $value);
     }
 
     private function SetMSDeactivate($value)
@@ -287,7 +303,7 @@ class BetterLight extends BetterBase {
             $this->EnableAction($ident);
 
             $triggerIdent = $ident . "Trigger";
-            $this->RegisterTrigger($triggerIdent, $switchId, 'SetValue(' . $id . ', $_IPS[\'VALUE\']);');
+            $this->RegisterTrigger($triggerIdent, $statusSwitchId, 'SetValue(' . $id . ', $_IPS[\'VALUE\']);');
         }
 
         if($dimId != 0)
@@ -297,7 +313,7 @@ class BetterLight extends BetterBase {
             $this->EnableAction($ident);
 
             $triggerIdent = $ident . "Trigger";
-            $this->RegisterTrigger($triggerIdent, $dimId, 'SetValue(' . $id . ', $_IPS[\'VALUE\']);');
+            $this->RegisterTrigger($triggerIdent, $statusDimId, 'SetValue(' . $id . ', $_IPS[\'VALUE\']);');
         }
 
     }
@@ -429,12 +445,21 @@ class BetterLight extends BetterBase {
 
     public function RequestAction($ident, $value) 
     {
-        if($this->IsLightIdent($ident))
+        $lightNumber = $this->LightNumberForLightSwitchIdent($ident);
+        if($lightNumber !== false)
         {
-            $this->SetValueForIdent($ident, $value);
-            $lightNumber = $this->LightNumberForLightIdent($ident);
-            $this->SetLight($lightNumber, $value);
+            $this->SetLightSwitch($lightNumber, $value);
+            return;
         }
+
+        $lightNumber = $this->LightNumberForLightDimIdent($ident);
+        if($lightNumber !== false)
+        {
+            $this->SetLightDim($lightNumber, $value);
+            return;
+        }
+
+
         else if($this->IsMSDeactivateIdent($ident))
         {
             $this->SetValueForIdent($ident, $value);
