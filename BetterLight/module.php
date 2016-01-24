@@ -274,12 +274,12 @@ class BetterLight extends BetterBase {
         if(($dimId == 0) != ($statusDimId == 0))
             throw new Exception("Dim id requires status id for light number " . $lightNumber . "!");
 
-        if($statusSwitchId != 0)
+        if($switchId != 0)
         {
             $this->RegisterLink($statusSwitchIdName, $name, $statusSwitchId, self::PosLightSwitch);
         }
 
-        if($dimSwitchId != 0)
+        if($dimId != 0)
         {
             $this->RegisterLink($statusDimIdName, $name, $statusDimId, self::PosLightDim);
         }
