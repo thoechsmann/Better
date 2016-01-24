@@ -185,7 +185,7 @@ class BetterLight extends BetterBase {
         return "BL_scenes_" . $this->GetName() . $this->InstanceID;
     }
 
-    private function SetLightToScene($lightNumber, $sceneNumber)
+    private function LoadLightFromScene($lightNumber, $sceneNumber)
     {
         $switchId = $this->LightSwitchIdPropertyArray()->ValueAt($lightNumber);
         $dimId = $this->LightDimIdPropertyArray()->ValueAt($lightNumber);
@@ -218,6 +218,33 @@ class BetterLight extends BetterBase {
             }
         }
     }
+
+    private function SaveLightToScene($lightNumber, $sceneNumber)
+    {
+        $switchId = $this->LightSwitchIdPropertyArray()->ValueAt($lightNumber);
+        $dimId = $this->LightDimIdPropertyArray()->ValueAt($lightNumber);
+
+        if($switchId == 0)
+            return;
+
+        if($dimId == 0)
+        {
+            $sceneSwitchIdent = $this->SceneLightSwitchIdent($lightNumber, $sceneNumber);
+            $statusSwitchId = $this->LightStatusSwitchIdPropertyArray()->ValueAt($lightNumber);
+            $statusSwitchValue = GetValue($statusSwitchId);
+
+            $this->SetValueForIdent($sceneSwitchIdent, $statusSwitchValue);
+        }
+        else
+        {
+            $sceneDimIdent = $this->SceneLightDimIdent($lightNumber, $sceneNumber);
+            $statusDimId = $this->LightStatusDimIdPropertyArray()->ValueAt($lightNumber);
+            $statusDimValue = GetValue($statusDimId);
+
+            $this->SetValueForIdent($sceneDimIdent, $statusDimValue);
+        }
+    }
+
 
     private function SetLightSwitch($lightNumber, $value)
     {
@@ -430,7 +457,7 @@ class BetterLight extends BetterBase {
 
         for($lightNumber = 0; $lightNumber < self::MaxLights; $lightNumber++)
         {
-            $this->SetLightToScene($lightNumber, $currentSceneNumber);
+            $this->LoadLightFromScene($lightNumber, $currentSceneNumber);
         }            
     }
 
@@ -458,7 +485,10 @@ class BetterLight extends BetterBase {
 
     private function Save()
     {
-        
+        for($lightNumber = 0; $lightNumber < self::MaxLights; $lightNumber++)
+        {
+            $this->SaveLightToScene($lightNumber, $currentSceneNumber);
+        }            
     }
 
     public function CancelSave()
