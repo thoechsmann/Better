@@ -85,7 +85,7 @@ class BetterLight extends BetterBase {
 
     private function LightDimIdent($lightNumber)
     {
-        return self::StrLight . self.StrDim . $lightNumber;
+        return self::StrLight . self::StrDim . $lightNumber;
     }
 
     private function SceneLightIdent($lightNumber, $sceneNumber)
