@@ -415,12 +415,14 @@ class BetterLight extends BetterBase {
                 $ident = $this->SceneLightSwitchIdent($lightNumber, $sceneNumber);
                 $this->RegisterVariableBoolean($ident, $name . $sceneNumber . "Switch", "~Switch", 0);
                 $this->EnableAction($ident);
+                IPS_SetHidden($ident, true);
             }
             else
             {
                 $ident = $this->SceneLightDimIdent($lightNumber, $sceneNumber);
                 $this->RegisterVariableInteger($ident, $name . $sceneNumber . "Dim", "~Intensity.100", 0);
                 $this->EnableAction($ident);
+                IPS_SetHidden($ident, true);
             }
         }
     }
