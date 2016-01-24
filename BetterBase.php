@@ -1,6 +1,11 @@
 <?
 class BetterBase extends IPSModule {
 
+    const TypeBool = 0;
+    const TypeInteger = 1;
+    const TypeFloat = 2;
+    const TypeString = 3;
+
     // Idents with this prefix will not be removed when updating instance.
     protected $PERSISTENT_IDENT_PREFIX = "persistent_";
 
