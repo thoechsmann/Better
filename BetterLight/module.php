@@ -244,17 +244,17 @@ class BetterLight extends BetterBase {
         $switchId = $this->LightSwitchIdPropertyArray()->ValueAt($lightNumber);
 
         if($switchId == 0)
-            throw new Exception("Switch id not set, but trying to set it (SetLightSwitch) for light number " . $lightNumber . "!");
+            return;
 
         EIB_Switch(IPS_GetParent($switchId), $value);
     }
 
     private function SetLightDim($lightNumber, $value)
-    {
+    {        
         $dimId = $this->LightDimIdPropertyArray()->ValueAt($lightNumber);
 
         if($dimId == 0)
-            throw new Exception("Dim id not set, but trying to set it (SetLightDim) for light number " . $lightNumber . "!");
+            return;
 
         EIB_Scale(IPS_GetParent($dimId), $value);
     }
