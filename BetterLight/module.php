@@ -332,7 +332,7 @@ class BetterLight extends BetterBase {
             $this->EnableAction($ident);
 
             $triggerIdent = $ident . "Trigger";
-            $script = 'SetValue(' . $id . ', $_IPS[\'VALUE\']); BL_CancelSave(\$_IPS[\'TARGET\']);';
+            $script = 'SetValue(' . $id . ', $_IPS[\'VALUE\']); BL_CancelSave($_IPS[\'TARGET\']);';
             $this->RegisterTrigger($triggerIdent, $statusSwitchId, $script);
         }
 
