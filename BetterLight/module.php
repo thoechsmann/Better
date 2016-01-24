@@ -440,7 +440,7 @@ class BetterLight extends BetterBase {
         $this->EnableAction(self::SaveToSceneIdent);
 
         $this->RegisterScript(self::SaveSceneIdent, "Szene speichern", 
-            "<? BL_StartSave(" . $this->InstanceID . ");?>",
+            "<? BL_StartSave(\"\"," . $this->InstanceID . ");?>",
             self::PosSaveSceneButton);
         //$this->EnableAction(self::SaveSceneIdent);
 
