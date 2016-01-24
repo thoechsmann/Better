@@ -259,6 +259,16 @@ class BetterLight extends BetterBase {
         EIB_Scale(IPS_GetParent($dimId), $value);
     }
 
+    private function IsMSDeactivated()
+    {
+        $msId = $this->MSDeactivateIdProperty()->Value();
+
+        if($msId == 0)
+            return false;
+
+        return GetValue($msId);
+    }
+
     private function SetMSDeactivate($value)
     {
         $msId = $this->MSDeactivateIdProperty()->Value();
@@ -572,7 +582,7 @@ class BetterLight extends BetterBase {
         $msId = $this->MSMainSwitchIdProperty()->Value();
         $turnOn = GetValue($msId);
 
-        if($turnOn)
+        if($turnOn || $this->IsMSDeactivated())
         {
             $this->LoadFromScene($this->CurrentSceneNumber());
         }
