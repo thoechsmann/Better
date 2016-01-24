@@ -343,7 +343,7 @@ class BetterLight extends BetterBase {
             $this->EnableAction($ident);
 
             $triggerIdent = $ident . "Trigger";
-            $script = 'SetValue(' . $id . ', $_IPS[\'VALUE\']); BL_CancelSave(\$_IPS[\'TARGET\']);';
+            $script = 'SetValue(' . $id . ', $_IPS[\'VALUE\']); BL_CancelSave($_IPS[\'TARGET\']);';
             $this->RegisterTrigger($triggerIdent, $statusDimId, $script);
         }
 
@@ -440,7 +440,7 @@ class BetterLight extends BetterBase {
         $this->EnableAction(self::SaveToSceneIdent);
 
         $this->RegisterScript(self::SaveSceneIdent, "Szene speichern", "", self::PosSaveSceneButton);
-        $this->EnableAction(self::SaveSceneIdent);
+        //$this->EnableAction(self::SaveSceneIdent);
 
         $this->CancelSave();
     }
