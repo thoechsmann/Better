@@ -480,17 +480,6 @@ class BetterLight extends BetterBase {
         IPS_SetPosition($id, self::PosSceneSelection);
     }
 
-    private function LoadFromScene($sceneNumber, $reloadDueToMSChange = false)
-    {
-        for($lightNumber = 0; $lightNumber < self::MaxLights; $lightNumber++)
-        {
-            $this->LoadLightFromScene($lightNumber, $sceneNumber);
-        }            
-
-        if(!$reloadDueToMSChange)
-            $this->LoadMSDeactivateFromScene($sceneNumber);
-    }
-
     private function AddSaveButton() 
     {
         $id = $this->RegisterVariableInteger(self::SaveToSceneIdent, "Speichern unter:", $this->SceneProfileString(), self::PosSaveSceneButton);
@@ -522,6 +511,17 @@ class BetterLight extends BetterBase {
         $this->SaveMSDeactivateToScene($sceneNumber);
 
         $this->CancelSave();
+    }
+
+    private function LoadFromScene($sceneNumber)
+    {
+        if(!$reloadDueToMSChange)
+            $this->LoadMSDeactivateFromScene($sceneNumber);
+
+        for($lightNumber = 0; $lightNumber < self::MaxLights; $lightNumber++)
+        {
+            $this->LoadLightFromScene($lightNumber, $sceneNumber);
+        }            
     }
 
     public function CancelSave()
@@ -586,9 +586,9 @@ class BetterLight extends BetterBase {
 
         IPS_LogMessage("BetterLight", "MSMainSwitchEvent TurnOn: $turnOn MSDeactivated: " . $this->IsMSDeactivated());
 
-        if($turnOn || $this->IsMSDeactivated())
+        if($turnOn)
         {
-            $this->LoadFromScene($this->CurrentSceneNumber(), true);
+            $this->LoadFromScene($this->CurrentSceneNumber());
         }
         else
         {
