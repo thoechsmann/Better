@@ -12,6 +12,7 @@ class BetterLight extends BetterBase {
     const StrLight = "light";
     const StrScene = "scene";
     const StrSwitch = "switch";
+    const StrLink = "Link";
 
     const PosSceneSelection = 1;
     const PosMSDisabled = 2;
@@ -47,6 +48,16 @@ class BetterLight extends BetterBase {
     private function LightDimIdPropertyArray()
     {        
         return new PropertyArrayInteger($this, "DimId", self::StrLight, self::MaxLights);
+    }
+
+    private function LightStatusSwitchIdPropertyArray()
+    {        
+        return new PropertyArrayInteger($this, "StatusSwitchId", self::StrLight, self::MaxLights);
+    }
+
+    private function LightStatusDimIdPropertyArray()
+    {        
+        return new PropertyArrayInteger($this, "StatusDimId", self::StrLight, self::MaxLights);
     }
 
     private function SceneNamePropertyArray()
@@ -209,6 +220,8 @@ class BetterLight extends BetterBase {
         $this->LightNamePropertyArray()->RegisterAll();
         $this->LightSwitchIdPropertyArray()->RegisterAll();
         $this->LightDimIdPropertyArray()->RegisterAll();
+        $this->LightStatusSwitchIdPropertyArray()->RegisterAll();
+        $this->LightStatusDimIdPropertyArray()->RegisterAll();
         $this->SceneNamePropertyArray()->RegisterAll();
         $this->SwitchIdPropertyArray()->RegisterAll();
         $this->SwitchScenePropertyArray()->RegisterAll();
@@ -244,20 +257,33 @@ class BetterLight extends BetterBase {
         $ident = $this->LightIdent($lightNumber, $sceneNumber);
 
         $switchId = $this->LightSwitchIdPropertyArray()->ValueAt($lightNumber);
+        $switchIdName = $this->LightSwitchIdPropertyArray()->NameAt($lightNumber);
         $dimId = $this->LightDimIdPropertyArray()->ValueAt($lightNumber);
-        $name = $this->LightNamePropertyArray()->ValueAt($lightNumber);
+        $dimIdName = $this->LightDimIdPropertyArray()->NameAt($lightNumber);
+        $statusSwitchId = $this->LightStatusSwitchIdPropertyArray()->ValueAt($lightNumber);
+        $statusSwitchIdName = $this->LightStatusSwitchIdPropertyArray()->NameAt($lightNumber);
+        $statusDimId = $this->LightStatusDimIdPropertyArray()->ValueAt($lightNumber);
+        $statusDimIdName = $this->LightStatusDimIdPropertyArray()->NameAt($lightNumber);
 
-        if($switchId == 0 && $dimId != 0)
-            throw new Exception("DimId without switch id for light number " . $lightNumber. "!");
+        $name = $this->LightNamePropertyArray()->ValueAt($lightNumber);        
 
-        if($dimId != 0)
+        if($switchId == 0 && ($dimId != 0 || $statusSwitchId != 0 || $statusDimId != 0))
+            throw new Exception("Switch id not set, but other ids for light number " . $lightNumber . "!");
+
+        if($switchId != $statusSwitchId)
+            throw new Exception("Switch id requires status id for light number " . $lightNumber . "!");
+
+        if($dimId != $statusDimId)
+            throw new Exception("Dim id requires status id for light number " . $lightNumber . "!");
+
+        if($statusSwitchId != 0)
         {
-            $this->RegisterLink($this->LightSwitchLinkIdent($lightNumber), $name, $switchId, self::PosLightSwitch);
+            $this->RegisterLink($statusSwitchIdName, $name, $statusSwitchId, self::PosLightSwitch);
         }
 
-        if($dimId != 0)
+        if($dimSwitchId != 0)
         {
-            $this->RegisterLink($this->LightDimLinkIdent($lightNumber), $name, $dimId, self::PosLightDim);
+            $this->RegisterLink($statusDimIdName, $name, $statusDimId, self::PosLightDim);
         }
     }
 

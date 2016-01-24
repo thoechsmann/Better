@@ -8,6 +8,11 @@ class Property  {
         $this->module = $module;
         $this->name = $name;
     }
+
+    public function Name()
+    {
+        return $name;
+    }
 }
 
 class PropertyInteger extends Property  {
@@ -88,6 +93,10 @@ class PropertyArray {
         return $this->properties[$index]->Value();
     }
 
+    public function NameAt($index)
+    {
+        return $this->properties[$index]->Name();
+    }
 }
 
 class PropertyArrayInteger extends PropertyArray  {

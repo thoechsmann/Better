@@ -24,6 +24,7 @@ class BetterBase extends IPSModule {
     {
         return parent::ReadPropertyString($name);
     }
+    //
 
 	public function Create() 
     {
