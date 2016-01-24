@@ -6,6 +6,12 @@ class BetterBase extends IPSModule {
     const TypeFloat = 2;
     const TypeString = 3;
 
+    const TriggerTypeUpdate = 0;
+    const TriggerTypeChange = 1;
+    const TriggerTypeBigger = 2;
+    const TriggerTypeSmaller = 3;
+    const TriggerTypeValue = 4;
+
     // Idents with this prefix will not be removed when updating instance.
     protected $PERSISTENT_IDENT_PREFIX = "persistent_";
 
@@ -85,7 +91,7 @@ class BetterBase extends IPSModule {
         3 - smaller
         4 - value
     */
-    protected function RegisterTrigger($ident, $targetId, $script, $triggerType = 1)
+    protected function RegisterTrigger($ident, $targetId, $script, $triggerType = self::TriggerTypeChange)
     { 
         $id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID); 
 

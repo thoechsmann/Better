@@ -280,8 +280,24 @@ class BetterLight extends BetterBase {
         if(($dimId == 0) != ($statusDimId == 0))
             throw new Exception("Dim id requires status id for light number " . $lightNumber . "!");
 
-        $this->MaintainVariable($this->LightSwitchIdent($lightNumber), $name, self::TypeBool, "~Switch", self::PosLightSwitch, $switchId != 0);
-        $this->MaintainVariable($this->LightDimIdent($lightNumber), $name, self::TypeInteger, "~Intensity.100", self::PosLightDim, $dimId != 0);
+        if($switchId != 0)
+        {
+            $ident = $this->LightSwitchIdent($lightNumber);
+            $id = $this->RegisterVariableBoolean($ident, $name, "~Switch", self::PosLightSwitch);
+
+            $triggerIdent = $ident + "Trigger";
+            $this->RegisterTrigger($triggerIdent, $switchId, 'SetValue(' . $id . ', $_IPS[\'VALUE\']);');
+        }
+
+        if($dimId != 0)
+        {
+            $ident = $this->LightDimIdent($lightNumber);
+            $id = $this->RegisterVariableInteger($ident, $name, "~Switch", self::PosLightSwitch);
+
+            $triggerIdent = $ident + "Trigger";
+            $this->RegisterTrigger($triggerIdent, $dimId, 'SetValue(' . $id . ', $_IPS[\'VALUE\']);');
+        }
+
     }
 
     private function CreateScenes()
