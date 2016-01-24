@@ -439,13 +439,13 @@ class BetterLight extends BetterBase {
         $id = $this->RegisterVariableInteger(self::SaveToSceneIdent, "Speichern unter:", $this->SceneProfileString(), self::PosSaveSceneButton);
         $this->EnableAction(self::SaveToSceneIdent);
 
-        $this->RegisterScript(self::SaveSceneIdent, "Szene speichern", "", self::PosSaveSceneButton);
+        $this->RegisterScript(self::SaveSceneIdent, "Szene speichern", '<? BL_StartSave($_IPS[\'TARGET\'])?>', self::PosSaveSceneButton);
         //$this->EnableAction(self::SaveSceneIdent);
 
         $this->CancelSave();
     }
 
-    private function StartSave()
+    public function StartSave()
     {
         $id = IPS_GetObjectIDByIdent(self::SaveToSceneIdent, $this->InstanceID);
         IPS_SetHidden($id, false);
