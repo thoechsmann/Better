@@ -81,7 +81,7 @@ class BetterLight extends BetterBase {
     const SaveSceneIdent = "SaveScene";
     const CurrentSceneIdent = "CurrentScene";
     const SaveToSceneIdent = "SaveToScene";
-    const MSMainSwitchIdent = "MSMainSwitchTrigger";
+    const MSMainSwitchIdent = "MSMainSwitch";
     const MSMainSwitchTriggerIdent = "MSMainSwitchTrigger";
 
     private function LightSwitchIdent($lightNumber)
