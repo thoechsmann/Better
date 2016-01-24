@@ -356,7 +356,7 @@ class BetterLight extends BetterBase {
 
         $dimId = $this->LightDimIdPropertyArray()->ValueAt($lightNumber);
         $ident = $this->SceneLightDimIdent($lightNumber, $sceneNumber);
-        $this->MaintainVariable($ident, $name . "Dim", self::TypeInteger, "~Intensity.100", 0, $dimId !== 0);
+        $this->MaintainVariable($ident, $name . $sceneNumber . "Dim", self::TypeInteger, "~Intensity.100", 0, $dimId !== 0);
     }
 
     private function CreateMSDeactivate($sceneNumber)
