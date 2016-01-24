@@ -367,12 +367,14 @@ class BetterLight extends BetterBase {
         $switchId = $this->LightSwitchIdPropertyArray()->ValueAt($lightNumber);
         $ident = $this->SceneLightSwitchIdent($lightNumber, $sceneNumber);
         $this->MaintainVariable($ident, $name . $sceneNumber . "Switch", self::TypeBool, "~Switch", 0, $switchId !== 0);
-        $this->EnableAction($ident);
+        if($switchId != 0)
+            $this->EnableAction($ident);
 
         $dimId = $this->LightDimIdPropertyArray()->ValueAt($lightNumber);
         $ident = $this->SceneLightDimIdent($lightNumber, $sceneNumber);
         $this->MaintainVariable($ident, $name . $sceneNumber . "Dim", self::TypeInteger, "~Intensity.100", 0, $dimId !== 0);
-        $this->EnableAction($ident);
+        if($dimId != 0)
+            $this->EnableAction($ident);
     }
 
     private function CreateMSDeactivate($sceneNumber)
