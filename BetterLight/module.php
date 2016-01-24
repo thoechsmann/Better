@@ -487,7 +487,7 @@ class BetterLight extends BetterBase {
     {
         for($lightNumber = 0; $lightNumber < self::MaxLights; $lightNumber++)
         {
-            $this->SaveLightToScene($lightNumber, $currentSceneNumber);
+            $this->SaveLightToScene($lightNumber, $sceneNumber);
         }
 
         $this->CancelSave();
