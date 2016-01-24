@@ -194,10 +194,10 @@ class BetterLight extends BetterBase {
             $statusSwitchId = $this->LightStatusSwitchIdPropertyArray()->ValueAt($lightNumber);
             $statusSwitchValue = GetValue($statusSwitchId);
 
-            if($sceneSwitchValue != $statusSwitchValue)
-            {
+            // if($sceneSwitchValue != $statusSwitchValue)
+            // {
                 EIB_Switch(IPS_GetParent($switchId), $sceneSwitchValue);
-            }
+            // }
         }
         else
         {
@@ -206,10 +206,10 @@ class BetterLight extends BetterBase {
             $statusDimId = $this->LightStatusDimIdPropertyArray()->ValueAt($lightNumber);
             $statusDimValue = GetValue($statusDimId);
 
-            if($sceneDimValue != $statusDimValue)
-            {
+            // if($sceneDimValue != $statusDimValue)
+            // {
                 EIB_Scale(IPS_GetParent($dimId), $sceneDimValue);
-            }
+            // }
         }
     }
 
