@@ -325,9 +325,6 @@ class BetterLight extends BetterBase {
         if(($dimId == 0) != ($statusDimId == 0))
             throw new Exception("Dim id requires status id for light number " . $lightNumber . "!");
 
-        $script = 'SetValue(' . $id . ', $_IPS[\'VALUE\']); BL_CancelSave(\$_IPS[\'TARGET\']);';
-
-
         if($switchId != 0)
         {
             $ident = $this->LightSwitchIdent($lightNumber);
@@ -335,6 +332,7 @@ class BetterLight extends BetterBase {
             $this->EnableAction($ident);
 
             $triggerIdent = $ident . "Trigger";
+            $script = 'SetValue(' . $id . ', $_IPS[\'VALUE\']); BL_CancelSave(\$_IPS[\'TARGET\']);';
             $this->RegisterTrigger($triggerIdent, $statusSwitchId, $script);
         }
 
@@ -345,6 +343,7 @@ class BetterLight extends BetterBase {
             $this->EnableAction($ident);
 
             $triggerIdent = $ident . "Trigger";
+            $script = 'SetValue(' . $id . ', $_IPS[\'VALUE\']); BL_CancelSave(\$_IPS[\'TARGET\']);';
             $this->RegisterTrigger($triggerIdent, $statusDimId, $script);
         }
 
