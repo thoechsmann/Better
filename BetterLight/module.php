@@ -181,18 +181,32 @@ class BetterLight extends BetterBase {
         return "BL_scenes_" . $this->GetName() . $this->InstanceID;
     }
 
-    private function SetLight($lightNumber, $value)
+    private function SetLightToScene($lightNumber, $sceneNumber)
     {
         $switchId = $this->LightSwitchIdPropertyArray()->ValueAt($lightNumber);
         $dimId = $this->LightDimIdPropertyArray()->ValueAt($lightNumber);
 
-        if($dimId !== 0 && $value > 0)
+        if($switchId == 0)
+            return;
+
+        $sceneSwitchIdent = $this->SceneLightSwitchIdent($lightNumber, $sceneNumber);
+        $sceneSwitchValue = $this->GetValueForIdent($sceneSwitchIdent);
+        $statusSwitchId = $this->LightStatusSwitchIdPropertyArray()->ValueAt($lightNumber);
+        $statusSwitchValue = GetValue($statusSwitchId);
+
+        if($sceneSwitchValue != $statusSwitchValue)
         {
-            EIB_Scale(IPS_GetParent($dimId), $value);
+            EIB_Switch(IPS_GetParent($switchId), $sceneSwitchValue);
         }
-        else if($switchId !== 0)
+
+        $sceneDimIdent = $this->SceneLightDimIdent($lightNumber, $sceneNumber);
+        $sceneDimValue = $this->GetValueForIdent($sceneDimIdent);
+        $statusDimId = $this->LightStatusDimIdPropertyArray()->ValueAt($lightNumber);
+        $statusDimValue = GetValue($statusDimId);
+
+        if($sceneDimValue != $statusDimValue)
         {
-            EIB_Switch(IPS_GetParent($switchId), $value);
+            EIB_Scale(IPS_GetParent($dimId), $sceneDimValue);
         }
     }
 
@@ -352,11 +366,13 @@ class BetterLight extends BetterBase {
 
         $switchId = $this->LightSwitchIdPropertyArray()->ValueAt($lightNumber);
         $ident = $this->SceneLightSwitchIdent($lightNumber, $sceneNumber);
-        $this->MaintainVariable($ident, $name . "Switch", self::TypeBool, "~Switch", 0, $switchId !== 0);
+        $this->MaintainVariable($ident, $name . $sceneNumber . "Switch", self::TypeBool, "~Switch", 0, $switchId !== 0);
+        $this->EnableAction($ident);
 
         $dimId = $this->LightDimIdPropertyArray()->ValueAt($lightNumber);
         $ident = $this->SceneLightDimIdent($lightNumber, $sceneNumber);
         $this->MaintainVariable($ident, $name . $sceneNumber . "Dim", self::TypeInteger, "~Intensity.100", 0, $dimId !== 0);
+        $this->EnableAction($ident);
     }
 
     private function CreateMSDeactivate($sceneNumber)
@@ -391,43 +407,12 @@ class BetterLight extends BetterBase {
 
     private function UseCurrentSceneVars()
     {
-        // $this->SetMSExternMovement();
+        $currentSceneNumber = $this->CurrentSceneNumber();
 
-        // $currentSceneNumber = $this->CurrentSceneNumber();
-
-        // for($sceneNumber = 0; $sceneNumber < self::MaxScenes; $sceneNumber++)
-        // {
-        //     $isCurrentScene = ($sceneNumber == $currentSceneNumber);
-
-        //     $msIdent = $this->MSDeactivateIdent($sceneNumber);
-        //     $msId = @$this->GetIDForIdent($msIdent);
-
-        //     if($msId !== false)
-        //     {                    
-        //         IPS_SetHidden($msId, !$isCurrentScene);
-
-        //         if($isCurrentScene)
-        //         {
-        //             $this->SetMSDeactivate($this->GetValueForIdent($msIdent));
-        //         }
-        //     }
-
-        //     for($lightNumber = 0; $lightNumber < self::MaxLights; $lightNumber++)
-        //     {
-        //         $ident = $this->LightIdent($lightNumber, $sceneNumber);
-        //         $id = @$this->GetIDForIdent($ident);
-
-        //         if($id !== false)
-        //         {                    
-        //             IPS_SetHidden($id, !$isCurrentScene);
-
-        //             if($isCurrentScene)
-        //             {
-        //                 $this->SetLight($lightNumber, $this->GetValueForIdent($ident));
-        //             }
-        //         }
-        //     }            
-        // }
+        for($lightNumber = 0; $lightNumber < self::MaxLights; $lightNumber++)
+        {
+            $this->SetLightToScene($lightNumber, $currentSceneNumber);
+        }            
     }
 
     public function RequestAction($ident, $value) 
@@ -463,7 +448,6 @@ class BetterLight extends BetterBase {
 
                 default:
                     $this->SetValueForIdent($ident, $value);
-                    throw new Exception("Invalid Ident: " . $ident);
             }
         }
     }
