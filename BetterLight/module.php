@@ -271,7 +271,7 @@ class BetterLight extends BetterBase {
 
     private function LoadMSDeactivateFromScene($sceneNumber)
     {
-        $msId = $this->MSExternMovementIdProperty()->Value();
+        $msId = $this->MSDeactivateIdProperty()->Value();
 
         $msSceneIdent = $this->MSDeactivateIdent($sceneNumber);
         $msSceneValue = $this->GetValueForIdent($msSceneIdent);
@@ -281,7 +281,7 @@ class BetterLight extends BetterBase {
 
     private function SaveMSDeactivateToScene($sceneNumber)
     {
-        $msId = $this->MSExternMovementIdProperty()->Value();
+        $msId = $this->MSDeactivateIdProperty()->Value();
 
         $msSceneIdent = $this->MSDeactivateIdent($sceneNumber);
         $this->SetValueForIdent($msSceneIdent, GetValue($msId));        
