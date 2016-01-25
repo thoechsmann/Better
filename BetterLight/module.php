@@ -37,42 +37,42 @@ class BetterLight extends BetterBase {
         return new PropertyInteger($this, "msExternMovementId");
     }
 
-    private function LightNamePropertyArray()
+    private function LightNameProperties()
     {        
         return new PropertyArrayString($this, "Name", self::StrLight, self::MaxLights);
     }
 
-    private function LightSwitchIdPropertyArray()
+    private function LightSwitchIdProperties()
     {        
         return new PropertyArrayInteger($this, "SwitchId", self::StrLight, self::MaxLights);
     }
 
-    private function LightDimIdPropertyArray()
+    private function LightDimIdProperties()
     {        
         return new PropertyArrayInteger($this, "DimId", self::StrLight, self::MaxLights);
     }
 
-    private function LightStatusSwitchIdPropertyArray()
+    private function LightStatusSwitchIdProperties()
     {        
         return new PropertyArrayInteger($this, "StatusSwitchId", self::StrLight, self::MaxLights);
     }
 
-    private function LightStatusDimIdPropertyArray()
+    private function LightStatusDimIdProperties()
     {        
         return new PropertyArrayInteger($this, "StatusDimId", self::StrLight, self::MaxLights);
     }
 
-    private function SceneNamePropertyArray()
+    private function SceneNameProperties()
     {        
         return new PropertyArrayString($this, "Name", self::StrScene, self::MaxScenes);
     }
 
-    private function SwitchIdPropertyArray()
+    private function SwitchIdProperties()
     {        
         return new PropertyArrayString($this, "Id", self::StrSwitch, self::MaxSwitches);
     }
 
-    private function SwitchScenePropertyArray()
+    private function SwitchSceneProperties()
     {        
         return new PropertyArrayString($this, "Scene", self::StrSwitch, self::MaxSwitches);
     }
@@ -170,7 +170,7 @@ class BetterLight extends BetterBase {
 
         for($i = 0; $i < self::MaxScenes; $i++)
         {
-            if($this->SceneNamePropertyArray()->ValueAt($i) !== "")
+            if($this->SceneNameProperties()->ValueAt($i) !== "")
                 $count++;
         }   
 
@@ -184,8 +184,8 @@ class BetterLight extends BetterBase {
 
     private function LoadLightFromScene($lightNumber, $sceneNumber)
     {
-        $switchId = $this->LightSwitchIdPropertyArray()->ValueAt($lightNumber);
-        $dimId = $this->LightDimIdPropertyArray()->ValueAt($lightNumber);
+        $switchId = $this->LightSwitchIdProperties()->ValueAt($lightNumber);
+        $dimId = $this->LightDimIdProperties()->ValueAt($lightNumber);
 
         if($switchId == 0)
             return;
@@ -194,7 +194,7 @@ class BetterLight extends BetterBase {
         {
             $sceneSwitchIdent = $this->SceneLightSwitchIdent($lightNumber, $sceneNumber);
             $sceneSwitchValue = $this->GetValueForIdent($sceneSwitchIdent);
-            $statusSwitchId = $this->LightStatusSwitchIdPropertyArray()->ValueAt($lightNumber);
+            $statusSwitchId = $this->LightStatusSwitchIdProperties()->ValueAt($lightNumber);
             $statusSwitchValue = GetValue($statusSwitchId);
 
             // if($sceneSwitchValue != $statusSwitchValue)
@@ -206,7 +206,7 @@ class BetterLight extends BetterBase {
         {
             $sceneDimIdent = $this->SceneLightDimIdent($lightNumber, $sceneNumber);
             $sceneDimValue = $this->GetValueForIdent($sceneDimIdent);
-            $statusDimId = $this->LightStatusDimIdPropertyArray()->ValueAt($lightNumber);
+            $statusDimId = $this->LightStatusDimIdProperties()->ValueAt($lightNumber);
             $statusDimValue = GetValue($statusDimId);
 
             // if($sceneDimValue != $statusDimValue)
@@ -223,8 +223,8 @@ class BetterLight extends BetterBase {
 
     private function SaveLightToScene($lightNumber, $sceneNumber)
     {
-        $switchId = $this->LightSwitchIdPropertyArray()->ValueAt($lightNumber);
-        $dimId = $this->LightDimIdPropertyArray()->ValueAt($lightNumber);
+        $switchId = $this->LightSwitchIdProperties()->ValueAt($lightNumber);
+        $dimId = $this->LightDimIdProperties()->ValueAt($lightNumber);
 
         if($switchId == 0)
             return;
@@ -232,7 +232,7 @@ class BetterLight extends BetterBase {
         if($dimId == 0)
         {
             $sceneSwitchIdent = $this->SceneLightSwitchIdent($lightNumber, $sceneNumber);
-            $statusSwitchId = $this->LightStatusSwitchIdPropertyArray()->ValueAt($lightNumber);
+            $statusSwitchId = $this->LightStatusSwitchIdProperties()->ValueAt($lightNumber);
             $statusSwitchValue = GetValue($statusSwitchId);
 
             $this->SetValueForIdent($sceneSwitchIdent, $statusSwitchValue);
@@ -240,7 +240,7 @@ class BetterLight extends BetterBase {
         else
         {
             $sceneDimIdent = $this->SceneLightDimIdent($lightNumber, $sceneNumber);
-            $statusDimId = $this->LightStatusDimIdPropertyArray()->ValueAt($lightNumber);
+            $statusDimId = $this->LightStatusDimIdProperties()->ValueAt($lightNumber);
             $statusDimValue = GetValue($statusDimId);
 
             $this->SetValueForIdent($sceneDimIdent, $statusDimValue);
@@ -249,7 +249,7 @@ class BetterLight extends BetterBase {
 
     private function SetLightSwitch($lightNumber, $value)
     {
-        $switchId = $this->LightSwitchIdPropertyArray()->ValueAt($lightNumber);
+        $switchId = $this->LightSwitchIdProperties()->ValueAt($lightNumber);
 
         if($switchId == 0)
             return;
@@ -259,7 +259,7 @@ class BetterLight extends BetterBase {
 
     private function SetLightDim($lightNumber, $value)
     {        
-        $dimId = $this->LightDimIdPropertyArray()->ValueAt($lightNumber);
+        $dimId = $this->LightDimIdProperties()->ValueAt($lightNumber);
 
         if($dimId == 0)
             return;
@@ -327,14 +327,14 @@ class BetterLight extends BetterBase {
         $this->MSMainSwitchIdProperty()->Register();
         $this->MSDeactivateIdProperty()->Register();
         $this->MSExternMovementIdProperty()->Register();
-        $this->LightNamePropertyArray()->RegisterAll();
-        $this->LightSwitchIdPropertyArray()->RegisterAll();
-        $this->LightDimIdPropertyArray()->RegisterAll();
-        $this->LightStatusSwitchIdPropertyArray()->RegisterAll();
-        $this->LightStatusDimIdPropertyArray()->RegisterAll();
-        $this->SceneNamePropertyArray()->RegisterAll();
-        $this->SwitchIdPropertyArray()->RegisterAll();
-        $this->SwitchScenePropertyArray()->RegisterAll();
+        $this->LightNameProperties()->RegisterAll();
+        $this->LightSwitchIdProperties()->RegisterAll();
+        $this->LightDimIdProperties()->RegisterAll();
+        $this->LightStatusSwitchIdProperties()->RegisterAll();
+        $this->LightStatusDimIdProperties()->RegisterAll();
+        $this->SceneNameProperties()->RegisterAll();
+        $this->SwitchIdProperties()->RegisterAll();
+        $this->SwitchSceneProperties()->RegisterAll();
 	}
 	
 	public function ApplyChanges() 
@@ -366,12 +366,12 @@ class BetterLight extends BetterBase {
 
     private function CreateLightLink($lightNumber)
     {
-        $switchId = $this->LightSwitchIdPropertyArray()->ValueAt($lightNumber);
-        $dimId = $this->LightDimIdPropertyArray()->ValueAt($lightNumber);
-        $statusSwitchId = $this->LightStatusSwitchIdPropertyArray()->ValueAt($lightNumber);
-        $statusDimId = $this->LightStatusDimIdPropertyArray()->ValueAt($lightNumber);
+        $switchId = $this->LightSwitchIdProperties()->ValueAt($lightNumber);
+        $dimId = $this->LightDimIdProperties()->ValueAt($lightNumber);
+        $statusSwitchId = $this->LightStatusSwitchIdProperties()->ValueAt($lightNumber);
+        $statusDimId = $this->LightStatusDimIdProperties()->ValueAt($lightNumber);
 
-        $name = $this->LightNamePropertyArray()->ValueAt($lightNumber);        
+        $name = $this->LightNameProperties()->ValueAt($lightNumber);        
 
         if($switchId == 0 && ($dimId != 0 || $statusSwitchId != 0 || $statusDimId != 0))
             throw new Exception("Switch id not set, but other ids for light number " . $lightNumber . "!");
@@ -423,7 +423,7 @@ class BetterLight extends BetterBase {
 
     private function CreateSceneVars($sceneNumber)
     {
-        $sceneName = $this->SceneNamePropertyArray()->ValueAt($sceneNumber);
+        $sceneName = $this->SceneNameProperties()->ValueAt($sceneNumber);
         
         if($sceneName === "")
             return;
@@ -438,12 +438,12 @@ class BetterLight extends BetterBase {
 
     private function CreateSceneLight($sceneNumber, $lightNumber)
     {
-        $switchId = $this->LightSwitchIdPropertyArray()->ValueAt($lightNumber);
-        $dimId = $this->LightDimIdPropertyArray()->ValueAt($lightNumber);
+        $switchId = $this->LightSwitchIdProperties()->ValueAt($lightNumber);
+        $dimId = $this->LightDimIdProperties()->ValueAt($lightNumber);
 
         if($switchId != 0)
         {
-            $name = $this->LightNamePropertyArray()->ValueAt($lightNumber);
+            $name = $this->LightNameProperties()->ValueAt($lightNumber);
             
             if($dimId == 0)
             {
@@ -464,7 +464,7 @@ class BetterLight extends BetterBase {
 
     private function CreateMSDeactivate($sceneNumber)
     {
-        $sceneName = $this->SceneNamePropertyArray()->GetValue($sceneNumber);
+        $sceneName = $this->SceneNameProperties()->ValueAt($sceneNumber);
         
         if($sceneName == "")
             return;
@@ -482,8 +482,8 @@ class BetterLight extends BetterBase {
         
         for($i = 0; $i < self::MaxScenes; $i++)
         {
-            if($this->SceneNamePropertyArray()->ValueAt($i) !== "")
-                IPS_SetVariableProfileAssociation($this->SceneProfileString(), $i, $this->SceneNamePropertyArray()->ValueAt($i), "", 0xFFFFFF);
+            if($this->SceneNameProperties()->ValueAt($i) !== "")
+                IPS_SetVariableProfileAssociation($this->SceneProfileString(), $i, $this->SceneNameProperties()->ValueAt($i), "", 0xFFFFFF);
         }
     }
 
