@@ -1,6 +1,7 @@
 <?
 require_once(__DIR__ . "/../BetterBase.php");
 require_once(__DIR__ . "/../Property.php");
+require_once(__DIR__ . "/../Variable.php");
 
 class BetterLight extends BetterBase {
 
@@ -79,10 +80,17 @@ class BetterLight extends BetterBase {
     // 
 
     const SaveSceneIdent = "SaveScene";
-    const CurrentSceneIdent = "CurrentScene";
     const SaveToSceneIdent = "SaveToScene";
     const MSDeactivateIdent = "MSMainSwitch";
     const MSMainSwitchTriggerIdent = "MSMainSwitchTrigger";
+    const SceneSchedulerIdent = "SceneScheduler";
+    const CurrentSceneIdent = "CurrentScene";
+
+    private function CurrentSceneVar()
+    {
+        return new Variable($this, self::CurrentSceneIdent);
+    }
+
 
     private function LightSwitchIdent($lightNumber)
     {
@@ -169,11 +177,6 @@ class BetterLight extends BetterBase {
         return $count;
     }
 
-    private function CurrentSceneNumber()
-    {
-        return $this->GetValueForIdent(self::CurrentSceneIdent);
-    }
-
     private function SceneProfileString()
     {
         return "BL_scenes_" . $this->GetName() . $this->InstanceID;
@@ -211,6 +214,11 @@ class BetterLight extends BetterBase {
                 EIB_Scale(IPS_GetParent($dimId), $sceneDimValue);
             // }
         }
+    }
+
+    private function SceneTimeIdent($sceneNumber)
+    {
+        return self::StrScene . "Time" . sceneNumber;
     }
 
     private function SaveLightToScene($lightNumber, $sceneNumber)
@@ -289,13 +297,13 @@ class BetterLight extends BetterBase {
         EIB_Switch(IPS_GetParent($msId), $msSceneValue);
     }
 
-    private function SaveMSDeactivateToScene($sceneNumber)
-    {
-        $msId = $this->MSDeactivateIdProperty()->Value();
+    // private function SaveMSDeactivateToScene($sceneNumber)
+    // {
+    //     $msId = $this->MSDeactivateIdProperty()->Value();
 
-        $msSceneIdent = $this->MSDeactivateIdent($sceneNumber);
-        $this->SetValueForIdent($msSceneIdent, GetValue($msId));        
-    }
+    //     $msSceneIdent = $this->MSDeactivateIdent($sceneNumber);
+    //     $this->SetValueForIdent($msSceneIdent, GetValue($msId));        
+    // }
 
     private function SetMSExternMovement()
     {
@@ -456,9 +464,15 @@ class BetterLight extends BetterBase {
 
     private function CreateMSDeactivate($sceneNumber)
     {
+        $sceneName = $this->SceneNamePropertyArray->GetValue($sceneNumber);
+        
+        if($sceneName == "")
+            return;
+
         $ident = $this->MSDeactivateIdent($sceneNumber);
-        $id = $this->RegisterVariableBoolean($ident, "BMSperren" . $sceneNumber, "~Switch");
-        IPS_SetHidden($id, true);
+        $id = $this->RegisterVariableBoolean($ident, "BMSperren" . $sceneName, "~Switch", self::PosMSDisabled);
+        $this->EnableAction($ident);
+        IPS_SetHidden($id, true);        
     }
 
     private function CreateSceneProfile()
@@ -475,9 +489,10 @@ class BetterLight extends BetterBase {
 
     private function CreateSceneSelectionVar() 
     {
-        $id = $this->RegisterVariableInteger(self::CurrentSceneIdent, "Szene", $this->SceneProfileString());
-        $this->EnableAction(self::CurrentSceneIdent);
-        IPS_SetPosition($id, self::PosSceneSelection);
+        $currentScene = $this->CurrentSceneVar();
+        $currentScene->RegisterVariableInteger("Szene", $this->SceneProfileString());
+        $currentScene->EnableAction();
+        $currentScene->SetPosition(self::PosSceneSelection);
     }
 
     private function AddSaveButton() 
@@ -488,17 +503,16 @@ class BetterLight extends BetterBase {
         $this->RegisterScript(self::SaveSceneIdent, "Szene speichern", 
             "<? BL_StartSave(" . $this->InstanceID . ");?>",
             self::PosSaveSceneButton);
-        //$this->EnableAction(self::SaveSceneIdent);
 
         $this->CancelSave();
     }
 
     public function StartSave()
     {
-        $id = IPS_GetObjectIDByIdent(self::SaveToSceneIdent, $this->InstanceID);
+        $id = $this->GetIDForIdent(self::SaveToSceneIdent);
         IPS_SetHidden($id, false);
 
-        $id = IPS_GetObjectIDByIdent(self::SaveSceneIdent, $this->InstanceID);
+        $id = $this->GetIDForIdent(self::SaveSceneIdent);
         IPS_SetHidden($id, true);        
     }
 
@@ -508,13 +522,15 @@ class BetterLight extends BetterBase {
         {
             $this->SaveLightToScene($lightNumber, $sceneNumber);
         }
-        $this->SaveMSDeactivateToScene($sceneNumber);
+        // $this->SaveMSDeactivateToScene($sceneNumber);
 
         $this->CancelSave();
     }
 
     private function LoadFromScene($sceneNumber)
     {
+        $this->ShowMSDeactivate($sceneNumber);
+
         $this->LoadMSDeactivateFromScene($sceneNumber);
 
         for($lightNumber = 0; $lightNumber < self::MaxLights; $lightNumber++)
@@ -525,11 +541,21 @@ class BetterLight extends BetterBase {
 
     public function CancelSave()
     {
-        $id = IPS_GetObjectIDByIdent(self::SaveToSceneIdent, $this->InstanceID);
+        $id = $this->GetIDForIdent(self::SaveToSceneIdent);
         IPS_SetHidden($id, true);
 
-        $id = IPS_GetObjectIDByIdent(self::SaveSceneIdent, $this->InstanceID);
+        $id = $this->GetIDForIdent(self::SaveSceneIdent);
         IPS_SetHidden($id, false);        
+    }
+
+    private function ShowMSDeactivate($sceneNumber)
+    {
+        for($scene = 0; $scene<self::MaxScenes; $scene++)
+        {
+            $ident = $this->MSDeactivateIdent($scene);
+            $id = $this->GetIDForIdent($ident);
+            IPS_SetHidden($id, $scene != $sceneNumber);
+        }
     }
 
     public function RequestAction($ident, $value) 
@@ -557,7 +583,7 @@ class BetterLight extends BetterBase {
                 break;
 
             case self::CurrentSceneIdent:
-                $this->SetValueForIdent($ident, $value);
+                CurrentSceneVar()->SetValue($value);
                 $this->LoadFromScene($value);
                 $this->CancelSave();
                 break;
@@ -587,7 +613,7 @@ class BetterLight extends BetterBase {
 
         if($turnOn)
         {
-            $this->LoadFromScene($this->CurrentSceneNumber());
+            $this->LoadFromScene($this->CurrentSceneVar()->GetValue());
         }
         else
         {
