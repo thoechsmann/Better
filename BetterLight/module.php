@@ -464,7 +464,7 @@ class BetterLight extends BetterBase {
 
     private function CreateMSDeactivate($sceneNumber)
     {
-        $sceneName = $this->SceneNamePropertyArray->GetValue($sceneNumber);
+        $sceneName = $this->SceneNamePropertyArray()->GetValue($sceneNumber);
         
         if($sceneName == "")
             return;
@@ -583,7 +583,7 @@ class BetterLight extends BetterBase {
                 break;
 
             case self::CurrentSceneIdent:
-                CurrentSceneVar()->SetValue($value);
+                $this->CurrentSceneVar()->SetValue($value);
                 $this->LoadFromScene($value);
                 $this->CancelSave();
                 break;
