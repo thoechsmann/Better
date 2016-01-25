@@ -9,7 +9,7 @@ class Variable  {
         $this->ident = $ident;
     }
 
-    public function RegisterVariableInteger($name, $profile, $position = 0)
+    public function RegisterVariableInteger($name, $profile = "", $position = 0)
     {
         $this->module->RegisterVariableInteger($this->ident, $name, $profile, $position);
     }

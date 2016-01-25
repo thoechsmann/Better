@@ -35,6 +35,38 @@ class BetterBase extends IPSModule {
     {
         return parent::ReadPropertyString($name);
     }
+
+    public function RegisterVariableBoolean($Ident, $Name, $Profile = "", $Position = 0) {
+        return parent::RegisterVariableBoolean($Ident, $Name, $Profile, $Position);
+    }
+
+    public function RegisterVariableInteger($Ident, $Name, $Profile = "", $Position = 0) {
+        return parent::RegisterVariableInteger($Ident, $Name, $Profile, $Position);
+    }
+
+    public function RegisterVariableFloat($Ident, $Name, $Profile = "", $Position = 0) {
+        return parent::RegisterVariableFloat($Ident, $Name, $Profile, $Position);
+    }
+
+    public function RegisterVariableString($Ident, $Name, $Profile = "", $Position = 0) {
+        return parent::RegisterVariableString($Ident, $Name, $Profile, $Position);
+    }
+    
+    public function UnregisterVariable($Ident) {
+        parent::UnregisterVariable($Ident);
+    }
+
+    public function GetIDForIdent($Ident) {
+        return parent::GetIDForIdent($Ident);
+    }
+    
+    public function EnableAction($Ident) {
+        parent::EnableAction($Ident);
+    }
+        
+    public function DisableAction($Ident) {
+        parent::DisableAction($Ident);
+    }        
     //
 
 	public function Create() 
