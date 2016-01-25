@@ -11,7 +11,7 @@ class Variable  {
 
     public function RegisterVariableInteger($name, $profile, $position = 0)
     {
-        $module->RegisterVariableInteger($this->ident, $name, $profile, $position);
+        $this->module->RegisterVariableInteger($this->ident, $name, $profile, $position);
     }
 
     public function Ident()
@@ -21,7 +21,7 @@ class Variable  {
 
     public function Id()
     {
-        return $module->GetIDForIdent($this->ident);
+        return $this->module->GetIDForIdent($this->ident);
     }
 
     public function SetHidden($hide)
@@ -31,7 +31,7 @@ class Variable  {
 
     public function EnableAction()
     {
-        $module->EnableAction($this->ident);
+        $this->module->EnableAction($this->ident);
     }
 
     public function GetValue()
