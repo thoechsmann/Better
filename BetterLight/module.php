@@ -118,7 +118,7 @@ class BetterLight extends BetterBase {
     private function SceneLightDimVars()
     {
         return new VariableArray($this, 
-            $this->PERSISTENT_IDENT_PREFIX . self::StrScene . self::DimSwitch . self::StrLight, 
+            $this->PERSISTENT_IDENT_PREFIX . self::StrScene . self::StrDim . self::StrLight, 
             self::MaxLights, 
             self::MaxScenes);
     }
