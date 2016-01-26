@@ -126,18 +126,18 @@ class BetterLight extends BetterBase {
     {
         $getterId = $this->LightStatusSwitchIdProperties()->ValueAt($lightNumber);
         $setterId = $this->LightSwitchIdProperties()->ValueAt($lightNumber);
-        $displayId = $this->LightSwitchVars()->At($lightNumber)->Id();
+        $displayIdent = $this->LightSwitchVars()->At($lightNumber)->Ident();
 
-        return new Backing($this, $displayId, $getterId, $setterId, Backing::EIBTypeSwitch);
+        return new Backing($this, $displayIdent, $getterId, $setterId, Backing::EIBTypeSwitch);
     }
 
     private function LightDimBacking($lightNumber)
     {
         $getterId = $this->LightStatusDimIdProperties()->ValueAt($lightNumber);
         $setterId = $this->LightDimIdProperties()->ValueAt($lightNumber);
-        $displayId = $this->LightDimVars()->At($lightNumber)->Id();
+        $displayIdent = $this->LightDimVars()->At($lightNumber)->Ident();
 
-        return new Backing($this, $displayId, $getterId, $setterId, Backing::EIBTypeScale);
+        return new Backing($this, $displayIdent, $getterId, $setterId, Backing::EIBTypeScale);
     }
 
     // private function MSDeactivateIdent($sceneNumber)

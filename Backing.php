@@ -5,17 +5,17 @@ class Backing  {
     const EIBTypeSwitch = 0;
     const EIBTypeScale = 1;
 
-    private $displayId;
+    private $displayIdent;
     private $getterId;
     private $setterId;
     private $eibType;
 
-    public function __construct($module, $displayId, $getterId, $setterId, $eibType) {
-        if($displayId == 0 || $getterId == 0 || $setterId == 0)
+    public function __construct($module, $displayIdent, $getterId, $setterId, $eibType) {
+        if($displayIdent == "" || $getterId == 0 || $setterId == 0)
             throw new Exception("Backing::__construct - Some ids are 0.");
 
         $this->module = $module;
-        $this->displayId = $displayId;
+        $this->displayIdent = $displayIdent;
         $this->getterId = $getterId;
         $this->setterId = $setterId;
         $this->eibType = $eibType;
@@ -44,8 +44,9 @@ class Backing  {
 
     public function RegisterTrigger($additionalCode)
     {
-        $triggerIdent = $this->getterId . "Trigger";
-        $script = 'SetValue(' . $this->setterId . ', $_IPS[\'VALUE\']); ' . $additionalCode;
+        $triggerIdent = $this->displayIdent . "Trigger";
+        $displayId = $this->module->GetIDForIdent($this->displayIdent);
+        $script = 'SetValue(' . $displayId . ', $_IPS[\'VALUE\']); ' . $additionalCode;
         $this->RegisterTrigger($triggerIdent, $this->getterId, $script, self::TriggerTypeUpdate);
     }
 
