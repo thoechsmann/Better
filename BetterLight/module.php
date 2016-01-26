@@ -2,6 +2,7 @@
 require_once(__DIR__ . "/../BetterBase.php");
 require_once(__DIR__ . "/../Property.php");
 require_once(__DIR__ . "/../Variable.php");
+require_once(__DIR__ . "/../Backing.php");
 
 class BetterLight extends BetterBase {
 
