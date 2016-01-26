@@ -155,7 +155,6 @@ class VariableArray
         $size1Len = strlen((string)$this->sizes[0]);
         $size2Len = strlen((string)$this->sizes[1]);
 
-        $completeLen = 0;
         if($this->is2D)
             $completeLen = $prefixLen + $delimiterLen + $size1Len + $size2Len;
         else
@@ -169,7 +168,7 @@ class VariableArray
         $otherPrefix1 = substr($otherIdent, $pos, $prefixLen);
         $pos += $prefixLen;
 
-        if($otherPrefix1 != $this->prefixes[0])
+        if($otherPrefix1 != $this->prefix)
             return false;
 
         $indexes[0] = substr($otherIdent, $pos, $size1Len);
