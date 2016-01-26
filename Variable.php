@@ -16,9 +16,15 @@ class Variable  {
         IPS_SetName($id, $name);
     }
 
-   public function RegisterVariableBoolean($name, $profile = "", $position = 0)
+    public function RegisterVariableBoolean($name, $profile = "", $position = 0)
     {
         $id = $this->module->RegisterVariableBoolean($this->ident, $name, $profile, $position);
+        IPS_SetName($id, $name);
+    }
+
+    public function RegisterVariableString($name, $profile = "", $position = 0)
+    {
+        $id = $this->module->RegisterVariableString($this->ident, $name, $profile, $position);
         IPS_SetName($id, $name);
     }
 
