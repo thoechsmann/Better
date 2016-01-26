@@ -305,7 +305,6 @@ class BetterLight extends BetterBase {
         if($switchId != 0)
         {
             $switchBacking = $this->LightSwitchBacking($lightNumber);
-            $switchBacking->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
 
             $lightSwitch = $this->LightSwitchVars()->At($lightNumber);
             $lightSwitch->RegisterVariableBoolean($name, "~Switch", self::PosLightSwitch);
@@ -315,17 +314,20 @@ class BetterLight extends BetterBase {
             {
                 $lightSwitch->SetHidden(true);
             }
+
+            $switchBacking->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
         }
 
         if($dimId != 0)
         {
             $dimBacking = $this->LightDimBacking($lightNumber);
-            $dimBacking->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
 
             $lightDim = $this->LightDimVars()->At($lightNumber);
             $lightDim->RegisterVariableInteger($name, "~Intensity.100", self::PosLightSwitch);
             $lightDim->EnableAction();
             $lightDim->SetValue($dimBacking->GetValue());
+
+            $dimBacking->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
         }
     }
 
