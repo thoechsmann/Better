@@ -15,6 +15,11 @@ class Variable  {
         $this->module->RegisterVariableInteger($this->ident, $name, $profile, $position);
     }
 
+   public function RegisterVariableBoolean($name, $profile = "", $position = 0)
+    {
+        $this->module->RegisterVariableBoolean($this->ident, $name, $profile, $position);
+    }
+
     public function Ident()
     {
         return $this->ident;
@@ -70,7 +75,7 @@ class VariableArray
     private $sizes = array();
     private $is2D;    
 
-    public function __construct($module, $prefix1, $size1, $size2 = 0) {
+    public function __construct($module, $prefix, $size1, $size2 = 0) {
         $this->module = $module;        
 
         $this->prefix = $prefix;
@@ -89,15 +94,15 @@ class VariableArray
         $this->is2D = $size2 != 0;
     }
 
-    public function At($pos1, $pos2 = false)
+    public function At($index1, $index2 = false)
     {
         if(func_num_args() > 1 && $this->is2D)
             throw new Exception("VariableArray::At(index1, index2) - not initialized as 2D array.!");            
 
-        $this->CheckPositionBounds(0, $pos1);
+        $this->CheckPositionBounds(0, $index1);
     
-        if($pos2 !== false)
-            $this->CheckPositionBounds(1, $pos2);
+        if($index2 !== false)
+            $this->CheckPositionBounds(1, $index2);
 
         return new Variable($this->module, $this->prefix . $index1 . self::Delimiter . $index2);
     }
