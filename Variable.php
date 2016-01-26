@@ -96,8 +96,11 @@ class VariableArray
 
     public function At($index1, $index2 = false)
     {
-        if(func_num_args() > 1 && $this->is2D)
-            throw new Exception("VariableArray::At(index1, index2) - not initialized as 2D array.!");            
+        if($index2 === false && $this->is2D)
+            throw new Exception("VariableArray::At(index1) - initialized as 2D array. 2nd index required!");            
+
+        if(is_numeric($index2) && !$this->is2D)
+            throw new Exception("VariableArray::At(index1, index2) - not initialized as 2D array, but 2nd index provided!");            
 
         $this->CheckPositionBounds(0, $index1);
     
