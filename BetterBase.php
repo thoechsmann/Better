@@ -116,7 +116,7 @@ class BetterBase extends IPSModule {
         return $link;
     }
 
-    protected function RegisterTrigger($ident, $targetId, $script, $triggerType = self::TriggerTypeChange)
+    public function RegisterTrigger($ident, $targetId, $script, $triggerType = self::TriggerTypeChange)
     { 
          IPS_LogMessage("BetterBase", "RegisterTrigger(". 
             $ident . ", " . 
