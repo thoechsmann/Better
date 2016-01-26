@@ -125,6 +125,16 @@ class VariableArray
         }
     }
 
+    public function GetIndexForIdent($otherIdent)
+    {
+        return $this->IndexForIdent($otherIdent, 0);
+    }
+
+    public function GetIndex2ForIdent($otherIdent)
+    {
+        return $this->IndexForIdent($otherIdent, 1);
+    }
+
     private function CheckPositionBounds($index, $pos)
     {
         if($pos >= $this->sizes[$index])
@@ -137,7 +147,7 @@ class VariableArray
         }
     }
 
-    private function IndexForIdent($otherIdent, $indexNumber = 0)
+    private function IndexForIdent($otherIdent, $indexNumber)
     {
         $indexes = array();
         $prefixLen = strlen($this->prefix);

@@ -478,7 +478,7 @@ class BetterLight extends BetterBase {
 
     public function RequestAction($ident, $value) 
     {
-        $lightNumber = $this->LightSwitchVars()->IndexForIdent($ident);
+        $lightNumber = $this->LightSwitchVars()->GetIndexForIdent($ident);
         if($lightNumber !== false)
         {
             $this->LightSwitchBacking($lightNumber)->SetValue($value);
@@ -486,7 +486,7 @@ class BetterLight extends BetterBase {
             return;
         }
 
-        $lightNumber = $this->LightDimVars()->IndexForIdent($ident);
+        $lightNumber = $this->LightDimVars()->GetIndexForIdent($ident);
         if($lightNumber !== false)
         {
             $this->LightDimBacking($lightNumber)->SetValue($value);
