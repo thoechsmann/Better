@@ -48,7 +48,7 @@ class Backing  {
         $triggerIdent = $this->displayIdent . "Trigger";
         $displayId = $this->module->GetIDForIdent($this->displayIdent);
         $script = 'SetValue(' . $displayId . ', $_IPS[\'VALUE\']); ' . $additionalCode;
-        $this->RegisterTrigger($triggerIdent, $this->getterId, $script, BetterBase::TriggerTypeUpdate);
+        $this->module->RegisterTrigger($triggerIdent, $this->getterId, $script, BetterBase::TriggerTypeUpdate);
     }
 
 }
