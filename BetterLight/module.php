@@ -179,7 +179,7 @@ class BetterLight extends BetterBase {
         }
         else
         {
-            $value = $this->SceneLightDimVars->At($lightNumber, $sceneNumber)->GetValue();
+            $value = $this->SceneLightDimVars()->At($lightNumber, $sceneNumber)->GetValue();
             $this->LightDimBacking($lightNumber)->SetValue($value);
         }
     }
