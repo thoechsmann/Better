@@ -1,4 +1,5 @@
 <?
+require_once(__DIR__ . "/../BetterBase.php");
 
 class Backing  {
 
@@ -47,7 +48,7 @@ class Backing  {
         $triggerIdent = $this->displayIdent . "Trigger";
         $displayId = $this->module->GetIDForIdent($this->displayIdent);
         $script = 'SetValue(' . $displayId . ', $_IPS[\'VALUE\']); ' . $additionalCode;
-        $this->RegisterTrigger($triggerIdent, $this->getterId, $script, self::TriggerTypeUpdate);
+        $this->RegisterTrigger($triggerIdent, $this->getterId, $script, BetterBase::TriggerTypeUpdate);
     }
 
 }
