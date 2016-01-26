@@ -156,7 +156,7 @@ class BetterLight extends BetterBase {
 
         if($dimId == 0)
         {
-            $sceneSwitchValue = $this->SceneLightSwitchVars->At($lightNumber, $sceneNumber)->GetValue();
+            $sceneSwitchValue = $this->SceneLightSwitchVars()->At($lightNumber, $sceneNumber)->GetValue();
             $statusSwitchId = $this->LightStatusSwitchIdProperties()->ValueAt($lightNumber);
             $statusSwitchValue = GetValue($statusSwitchId);
 
@@ -185,7 +185,7 @@ class BetterLight extends BetterBase {
             $statusSwitchId = $this->LightStatusSwitchIdProperties()->ValueAt($lightNumber);
             $statusSwitchValue = GetValue($statusSwitchId);
 
-            $this->SceneLightSwitchVars->At($lightNumber, $sceneNumber)->SetValue($statusSwitchValue);
+            $this->SceneLightSwitchVars()->At($lightNumber, $sceneNumber)->SetValue($statusSwitchValue);
         }
         else
         {
@@ -193,7 +193,7 @@ class BetterLight extends BetterBase {
             $statusDimId = $this->LightStatusDimIdProperties()->ValueAt($lightNumber);
             $statusDimValue = GetValue($statusDimId);
 
-            $this->SceneLightDimVars->At($lightNumber, $sceneNumber)->SetValue($statusDimValue);
+            $this->SceneLightDimVars()->At($lightNumber, $sceneNumber)->SetValue($statusDimValue);
         }
     }
 
@@ -339,13 +339,13 @@ class BetterLight extends BetterBase {
             $lightSwitch->EnableAction();
             $lightSwitch->SetValue(GetValue($statusSwitchId));
 
-            $triggerIdent = $ident . "Trigger";
+            $triggerIdent = $lightSwitch->Ident() . "Trigger";
             $script = 'SetValue(' . $lightSwitch->Id() . ', $_IPS[\'VALUE\']); BL_CancelSave($_IPS[\'TARGET\']);';
             $this->RegisterTrigger($triggerIdent, $statusSwitchId, $script, self::TriggerTypeUpdate);
 
             if($dimId != 0)
             {
-                IPS_SetHidden($id, true);
+                $lightSwitch->SetHidden(true);
             }
         }
 
@@ -356,7 +356,7 @@ class BetterLight extends BetterBase {
             $lightDim->EnableAction();
             $lightDim->SetValue(GetValue($statusDimId));
 
-            $triggerIdent = $ident . "Trigger";
+            $triggerIdent = $lightDim->Ident() . "Trigger";
             $script = 'SetValue(' . $lightDim->Id()  . ', $_IPS[\'VALUE\']); BL_CancelSave($_IPS[\'TARGET\']);';
             $this->RegisterTrigger($triggerIdent, $statusDimId, $script, self::TriggerTypeUpdate);
         }
@@ -397,12 +397,12 @@ class BetterLight extends BetterBase {
             
             if($dimId == 0)
             {
-                $sceneLight = $this->SceneLightSwitchVars->At($lightNumber, $sceneNumber);
+                $sceneLight = $this->SceneLightSwitchVars()->At($lightNumber, $sceneNumber);
                 $sceneLight->RegisterVariableBoolean($name . $sceneNumber . "Switch", "~Switch");
             }
             else
             {
-                $sceneLight = $this->SceneLightDimVars->At($lightNumber, $sceneNumber);
+                $sceneLight = $this->SceneLightDimVars()->At($lightNumber, $sceneNumber);
                 $sceneLight->RegisterVariableInteger($name . $sceneNumber . "Dim", "~Intensity.100");
             }
 
