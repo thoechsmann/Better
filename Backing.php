@@ -1,5 +1,5 @@
 <?
-require_once(__DIR__ . "/../BetterBase.php");
+require_once(__DIR__ . "/BetterBase.php");
 
 class Backing  {
 
