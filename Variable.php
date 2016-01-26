@@ -115,7 +115,14 @@ class VariableArray
         if($index2 !== false)
             $this->CheckPositionBounds(1, $index2);
 
-        return new Variable($this->module, $this->prefix . $index1 . self::Delimiter . $index2);
+        if($this->is2D)
+        {
+            return new Variable($this->module, $this->prefix . $index1 . self::Delimiter . $index2);
+        }
+        else
+        {
+            return new Variable($this->module, $this->prefix . $index1);
+        }
     }
 
     private function CheckPositionBounds($index, $pos)
