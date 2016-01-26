@@ -88,8 +88,8 @@ class VariableArray
         if(!is_numeric($size2))
             throw new Exception("VariableArray::__construct - size2 is not a number!");
 
-        if($prefix1 == "")
-            throw new Exception("VariableArray::__construct - prefix1 not set!");
+        if($prefix == "")
+            throw new Exception("VariableArray::__construct - prefix not set!");
 
         $this->is2D = $size2 != 0;
     }
