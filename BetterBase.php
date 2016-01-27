@@ -13,7 +13,7 @@ class BetterBase extends IPSModule {
     const TriggerTypeValue = 4;
 
     // Idents with this prefix will not be removed when updating instance.
-    protected $PERSISTENT_IDENT_PREFIX = "persistent_";
+    const PersistentPrefix = "persistent_";
 
     // Make same stuff public. Required by property class.
     public function RegisterPropertyInteger($name, $value)
@@ -243,8 +243,8 @@ class BetterBase extends IPSModule {
         {
             $object = IPS_GetObject($childId);            
 
-            $prefix = substr($object["ObjectIdent"], 0, strlen($this->PERSISTENT_IDENT_PREFIX));
-            if($prefix === $this->PERSISTENT_IDENT_PREFIX) // persistent
+            $prefix = substr($object["ObjectIdent"], 0, strlen(self::PersistentPrefix));
+            if($prefix === self::PersistentPrefix)
             {
                 continue;
             }

@@ -89,7 +89,7 @@ class BetterLight extends BetterBase {
     // Variables
     private function CurrentSceneVar()
     {
-        return new Variable($this, $this->PERSISTENT_IDENT_PREFIX . self::CurrentSceneIdent);
+        return new Variable($this, parent::PersistentPrefix . self::CurrentSceneIdent);
     }
 
     private function SaveToSceneVar()
@@ -110,7 +110,7 @@ class BetterLight extends BetterBase {
     private function SceneLightSwitchVars()
     {
         return new VariableArray($this, 
-            $this->PERSISTENT_IDENT_PREFIX . self::StrScene . self::StrSwitch . self::StrLight, 
+            parent::PersistentPrefix . self::StrScene . self::StrSwitch . self::StrLight, 
             self::MaxLights, 
             self::MaxScenes);
     }
@@ -118,7 +118,7 @@ class BetterLight extends BetterBase {
     private function SceneLightDimVars()
     {
         return new VariableArray($this, 
-            $this->PERSISTENT_IDENT_PREFIX . self::StrScene . self::StrDim . self::StrLight, 
+            parent::PersistentPrefix . self::StrScene . self::StrDim . self::StrLight, 
             self::MaxLights, 
             self::MaxScenes);
     }
@@ -144,7 +144,7 @@ class BetterLight extends BetterBase {
 
     // private function MSDeactivateIdent($sceneNumber)
     // {
-    //     return $this->PERSISTENT_IDENT_PREFIX . "scene". $sceneNumber ."MSDeactivate";
+    //     return parent::PersistentPrefix . "scene". $sceneNumber ."MSDeactivate";
     // }
     
     private function SceneCount()
@@ -418,9 +418,10 @@ class BetterLight extends BetterBase {
     private function CreateSceneScheduler()
     {
         // Scheduled Event
-        $schedulerId = $this->RegisterScheduler(self::SceneSchedulerIdent, "Szenen Zeiten");
+        $schedulerId = $this->RegisterScheduler(parent::PersistentPrefix . self::SceneSchedulerIdent, "Szenen Zeiten");
         IPS_SetIcon($schedulerId, "Calendar");
-        IPS_SetPosition($schedulerId, PosSceneScheduler);
+        IPS_SetHidden($schedulerId, false);
+        IPS_SetPosition($schedulerId, self::PosSceneScheduler);
         IPS_SetEventScheduleGroup($schedulerId, 0, 127); //Mo - Fr (1 + 2 + 4 + 8 + 16)
 
         for($sceneNumber = 0; $sceneNumber<self::MaxScenes; $sceneNumber++)
@@ -428,12 +429,9 @@ class BetterLight extends BetterBase {
             $sceneName = $this->SceneNameProperties()->ValueAt($sceneNumber);
             
             if($sceneName != "")
-                IPS_SetEventScheduleAction($schedulerId, $sceneNumber, $sceneName, 0xFF0000, "BL_SetMode(\$_IPS['TARGET'], 1);");            
+                IPS_SetEventScheduleAction($schedulerId, $sceneNumber, $sceneName, 0xFF0000, 
+                    "BL_SetScene(\$_IPS['TARGET'], $sceneNumber);");
         }
-        IPS_SetEventScheduleAction($scheduler, 0, "Komfort", 0xFF0000, "BH_SetMode(\$_IPS['TARGET'], 1);");
-        IPS_SetEventScheduleAction($scheduler, 1, "Standby", 0xFFFF00, "BH_SetMode(\$_IPS['TARGET'], 2);");
-        IPS_SetEventScheduleAction($scheduler, 2, "Nacht", 0x0000FF, "BH_SetMode(\$_IPS['TARGET'], 3);");
-
     }
 
     private function AddSaveButton() 
@@ -490,7 +488,6 @@ class BetterLight extends BetterBase {
 
         if($isOn)
             $this->LoadFromScene($sceneNumber);
-
     }
 
     public function CancelSave()
