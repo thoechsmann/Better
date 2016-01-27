@@ -416,9 +416,7 @@ class BetterLight extends BetterBase {
             if($sceneName != "")
             {
                 $sceneColor = intval($this->SceneColorProperties()->ValueAt($sceneNumber), 0);
-                IPS_LogMessage("BetterLight", 
-                    "CreateSceneProfile sceneNumber = $sceneNumber, sceneColor = $sceneColor stringColor = " .
-                    $this->SceneColorProperties()->ValueAt($sceneNumber));
+
                 IPS_SetVariableProfileAssociation($this->SceneProfileString(), $sceneNumber, $sceneName, "", $sceneColor);
             }
         }
