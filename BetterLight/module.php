@@ -498,14 +498,16 @@ class BetterLight extends BetterBase {
         }            
     }
 
-    public function SetScene($sceneNumber)
+    public function SetScene($sceneNumber, $turnOn = false)
     {
         $this->CurrentSceneVar()->SetValue($sceneNumber);
+
+        $this->CancelSave();
 
         $msId = $this->MSMainSwitchIdProperty()->Value();
         $isOn = GetValue($msId);
 
-        if($isOn)
+        if($isOn || $turnOn)
             $this->LoadFromScene($sceneNumber);
     }
 
@@ -532,7 +534,7 @@ class BetterLight extends BetterBase {
         $lightNumber = $this->LightSwitchVars()->GetIndexForIdent($ident);
         if($lightNumber !== false)
         {
-            $this->LightSwitchBacking($lightNumber)->SetValue($value);
+            $this->LightSwitchBacking($lightNumber)->SetValue($value);            
             $this->CancelSave();
             return;
         }
@@ -551,15 +553,11 @@ class BetterLight extends BetterBase {
             //     $this->CancelSave();
             //     break;
 
-            case self::CurrentSceneIdent:
-                $this->CurrentSceneVar()->SetValue($value);
-                $this->LoadFromScene($value);
-                $this->CancelSave();
+            case $this->CurrentSceneVar()->Ident();
+                $this->SetScene($value, true);                
                 break;
 
             case self::SaveSceneIdent:
-                IPS_LogMessage("BetterLight", "RequestAction: self::SaveSceneIdent");
-
                 $this->StartSave();
                 break;
 
