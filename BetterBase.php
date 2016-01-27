@@ -201,7 +201,7 @@ class BetterBase extends IPSModule {
         if (!IPS_EventExists($id)) throw new Exception("Event $ident could not be created."); 
 
         IPS_SetIdent($id, $ident);  
-        IPS_SetName($id, $ident); 
+        IPS_SetName($id, $name); 
 
         return $id;
     }
