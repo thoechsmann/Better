@@ -47,16 +47,16 @@ class PropertyString extends Property  {
 
 class PropertyIntegerIndexed extends PropertyInteger  {
 
-    public function __construct($module, $name, $indexName, $index) {
-        parent::__construct($module, $indexName . $index . $name);
+    public function __construct($module, $name, $index) {
+        parent::__construct($module, $name . $index);
     }
 
 }
 
 class PropertyStringIndexed extends PropertyString  {
 
-    public function __construct($module, $name, $indexName, $index) {
-        parent::__construct($module, $indexName . $index . $name);
+    public function __construct($module, $name, $index) {
+        parent::__construct($module, $name . $index);
     }
 
 }
@@ -64,14 +64,12 @@ class PropertyStringIndexed extends PropertyString  {
 class PropertyArray {
 
     protected $module;
-    protected $indexName;
     protected $count;
     protected $properties = array();
 
-    public function __construct($module, $name, $indexName, $count) {
+    public function __construct($module, $name, $count) {
         $this->module = $module;
         $this->name = $name;
-        $this->indexName = $indexName;
         $this->count = $count; 
     }
 
@@ -101,12 +99,12 @@ class PropertyArray {
 
 class PropertyArrayInteger extends PropertyArray  {
 
-    public function __construct($module, $name, $indexName, $count) {
-        parent::__construct($module, $name, $indexName, $count);
+    public function __construct($module, $name, $count) {
+        parent::__construct($module, $name, $count);
 
         for($i = 0; $i<$count; $i++)
         {
-            $this->properties[$i] = new PropertyIntegerIndexed($this->module, $name, $indexName, $i);
+            $this->properties[$i] = new PropertyIntegerIndexed($this->module, $name, $i);
         }       
     }
 
@@ -114,12 +112,12 @@ class PropertyArrayInteger extends PropertyArray  {
 
 class PropertyArrayString extends PropertyArray  {
 
-    public function __construct($module, $name, $indexName, $count) {
-        parent::__construct($module, $name, $indexName, $count);
+    public function __construct($module, $name,  $count) {
+        parent::__construct($module, $name, $count);
 
         for($i = 0; $i<$count; $i++)
         {
-            $this->properties[$i] = new PropertyStringIndexed($this->module, $name, $indexName, $i);
+            $this->properties[$i] = new PropertyStringIndexed($this->module, $name, $i);
         }       
     }
 

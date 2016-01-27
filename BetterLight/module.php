@@ -12,7 +12,7 @@ class BetterLight extends BetterBase {
 
     const StrLight = "light";
     const StrScene = "scene";
-    const StrSwitch = "Switch";
+    const StrSwitch = "switch";
     const StrDim = "Dim";
     const StrLink = "Link";
 
@@ -48,42 +48,47 @@ class BetterLight extends BetterBase {
 
     private function LightNameProperties()
     {        
-        return new PropertyArrayString($this, "Name", self::StrLight, self::MaxLights);
+        return new PropertyArrayString($this, self::StrLight . "Name", self::MaxLights);
     }
 
     private function LightSwitchIdProperties()
     {        
-        return new PropertyArrayInteger($this, "SwitchId", self::StrLight, self::MaxLights);
+        return new PropertyArrayInteger($this, self::StrLight . "SwitchId", self::MaxLights);
     }
 
     private function LightDimIdProperties()
     {        
-        return new PropertyArrayInteger($this, "DimId", self::StrLight, self::MaxLights);
+        return new PropertyArrayInteger($this, self::StrLight . "DimId", self::MaxLights);
     }
 
     private function LightStatusSwitchIdProperties()
     {        
-        return new PropertyArrayInteger($this, "StatusSwitchId", self::StrLight, self::MaxLights);
+        return new PropertyArrayInteger($this, self::StrLight . "StatusSwitchId", self::MaxLights);
     }
 
     private function LightStatusDimIdProperties()
     {        
-        return new PropertyArrayInteger($this, "StatusDimId", self::StrLight, self::MaxLights);
+        return new PropertyArrayInteger($this, self::StrLight . "StatusDimId", self::MaxLights);
     }
 
     private function SceneNameProperties()
     {        
-        return new PropertyArrayString($this, "Name", self::StrScene, self::MaxScenes);
+        return new PropertyArrayString($this, self::StrScene . "Name", self::MaxScenes);
+    }
+
+    private function SceneColorProperties()
+    {        
+        return new PropertyArrayString($this, self::StrScene . "Color", self::MaxScenes);
     }
 
     private function SwitchIdProperties()
     {        
-        return new PropertyArrayString($this, "Id", self::StrSwitch, self::MaxSwitches);
+        return new PropertyArrayString($this, self::StrSwitch . "Id", self::MaxSwitches);
     }
 
     private function SwitchSceneProperties()
     {        
-        return new PropertyArrayString($this, "Scene", self::StrSwitch, self::MaxSwitches);
+        return new PropertyArrayString($this, self::StrSwitch . "Scene", self::MaxSwitches);
     }
 
     // Variables
@@ -400,10 +405,15 @@ class BetterLight extends BetterBase {
         @IPS_DeleteVariableProfile($this->SceneProfileString());
         IPS_CreateVariableProfile($this->SceneProfileString(), 1);
         
-        for($i = 0; $i < self::MaxScenes; $i++)
+        for($sceneNumber = 0; $sceneNumber < self::MaxScenes; $sceneNumber++)
         {
-            if($this->SceneNameProperties()->ValueAt($i) !== "")
-                IPS_SetVariableProfileAssociation($this->SceneProfileString(), $i, $this->SceneNameProperties()->ValueAt($i), "", 0xFFFFFF);
+            $sceneName = $this->SceneNameProperties()->ValueAt($sceneNumber);
+
+            if($sceneName != "")
+            {
+                $sceneColor = $this->SceneColorProperties()->ValueAt($sceneNumber);
+                IPS_SetVariableProfileAssociation($this->SceneProfileString(), $sceneNumber, $sceneName, "", $sceneColor);
+            }
         }
     }
 
@@ -429,8 +439,12 @@ class BetterLight extends BetterBase {
             $sceneName = $this->SceneNameProperties()->ValueAt($sceneNumber);
             
             if($sceneName != "")
-                IPS_SetEventScheduleAction($schedulerId, $sceneNumber, $sceneName, 0xFF0000, 
+            {
+                $sceneColor = $this->SceneColorProperties()->ValueAt($sceneNumber);
+
+                IPS_SetEventScheduleAction($schedulerId, $sceneNumber, $sceneName, $sceneColor, 
                     "BL_SetScene(\$_IPS['TARGET'], $sceneNumber);");
+            }
         }
     }
 

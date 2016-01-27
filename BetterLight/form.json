@@ -54,9 +54,60 @@
 		{ "type": "SelectVariable", "name": "light7StatusDimId", "caption": "Licht8 (Status Dim)" },
 		
 		{ "type": "ValidationTextBox", "name": "scene0Name", "caption": "Name Szene 1" },
+		{ "type": "Select", "name": "scene0Color", "caption": "Farbe Scene 1",
+    		"options": [
+		        { "label": "Rot", "value":    "0xFF0000" },
+		        { "label": "Grün", "value":   "0x00FF00" },
+		        { "label": "Blau", "value":   "0x0000FF" },
+		        { "label": "Gelb", "value":   "0xFFFF00" },
+		        { "label": "Rosa", "value":   "0xFF00FF" },
+		        { "label": "Türkis", "value": "0x00FFFF" },
+		        { "label": "Lila", "value":   "0x942192" },
+		        { "label": "Orange", "value":   "0xFF9300" },
+		        { "label": "Magenta", "value":   "0xff40ff" }
+		] },
+
 		{ "type": "ValidationTextBox", "name": "scene1Name", "caption": "Name Szene 2" },
+		{ "type": "Select", "name": "scene1Color", "caption": "Farbe Scene 2",
+    		"options": [
+		        { "label": "Rot", "value":    "0xFF0000" },
+		        { "label": "Grün", "value":   "0x00FF00" },
+		        { "label": "Blau", "value":   "0x0000FF" },
+		        { "label": "Gelb", "value":   "0xFFFF00" },
+		        { "label": "Rosa", "value":   "0xFF00FF" },
+		        { "label": "Türkis", "value": "0x00FFFF" },
+		        { "label": "Lila", "value":   "0x942192" },
+		        { "label": "Orange", "value":   "0xFF9300" },
+		        { "label": "Magenta", "value":   "0xff40ff" }
+		] },
+
 		{ "type": "ValidationTextBox", "name": "scene2Name", "caption": "Name Szene 3" },
+		{ "type": "Select", "name": "scene2Color", "caption": "Farbe Scene 3",
+    		"options": [
+		        { "label": "Rot", "value":    "0xFF0000" },
+		        { "label": "Grün", "value":   "0x00FF00" },
+		        { "label": "Blau", "value":   "0x0000FF" },
+		        { "label": "Gelb", "value":   "0xFFFF00" },
+		        { "label": "Rosa", "value":   "0xFF00FF" },
+		        { "label": "Türkis", "value": "0x00FFFF" },
+		        { "label": "Lila", "value":   "0x942192" },
+		        { "label": "Orange", "value":   "0xFF9300" },
+		        { "label": "Magenta", "value":   "0xff40ff" }
+		] },
+
 		{ "type": "ValidationTextBox", "name": "scene3Name", "caption": "Name Szene 4" },
+		{ "type": "Select", "name": "scene3Color", "caption": "Farbe Scene 4",
+    		"options": [
+		        { "label": "Rot", "value":    "0xFF0000" },
+		        { "label": "Grün", "value":   "0x00FF00" },
+		        { "label": "Blau", "value":   "0x0000FF" },
+		        { "label": "Gelb", "value":   "0xFFFF00" },
+		        { "label": "Rosa", "value":   "0xFF00FF" },
+		        { "label": "Türkis", "value": "0x00FFFF" },
+		        { "label": "Lila", "value":   "0x942192" },
+		        { "label": "Orange", "value":   "0xFF9300" },
+		        { "label": "Magenta", "value":   "0xff40ff" }
+		] },
 
 		{ "type": "SelectVariable", "name": "switch0Id", "caption": "Schalter1 Id" },
 		{ "type": "NumberSpinner", "name": "switch0Scene", "caption": "Schalter1 Szenen Id" },
