@@ -21,6 +21,7 @@ class BetterLight extends BetterBase {
     const PosLightDim = 3;
     const PosLightSwitch = 4;
     const PosSaveSceneButton = 5;
+    const PosSceneScheduler = 6;
 
     const SaveSceneIdent = "SaveScene";
     const MSMainSwitchTriggerIdent = "MSMainSwitchTrigger";
@@ -88,7 +89,7 @@ class BetterLight extends BetterBase {
     // Variables
     private function CurrentSceneVar()
     {
-        return new Variable($this, self::CurrentSceneIdent);
+        return new Variable($this, $this->PERSISTENT_IDENT_PREFIX . self::CurrentSceneIdent);
     }
 
     private function SaveToSceneVar()
@@ -278,6 +279,7 @@ class BetterLight extends BetterBase {
         $this->CreateScenes();
         $this->CreateSceneProfile();
         $this->CreateSceneSelectionVar();
+        $this->CreateSceneScheduler();
         $this->AddSaveButton();        
 	}
 
@@ -413,6 +415,27 @@ class BetterLight extends BetterBase {
         $currentScene->SetPosition(self::PosSceneSelection);
     }
 
+    private function CreateSceneScheduler()
+    {
+        // Scheduled Event
+        $schedulerId = $this->RegisterScheduler(self::SceneSchedulerIdent, "Szenen Zeiten");
+        IPS_SetIcon($schedulerId, "Calendar");
+        IPS_SetPosition($schedulerId, PosSceneScheduler);
+        IPS_SetEventScheduleGroup($schedulerId, 0, 127); //Mo - Fr (1 + 2 + 4 + 8 + 16)
+
+        for($sceneNumber = 0; $sceneNumber<self::MaxScenes; $sceneNumber++)
+        {
+            $sceneName = $this->SceneNameProperties()->ValueAt($sceneNumber);
+            
+            if($sceneName != "")
+                IPS_SetEventScheduleAction($schedulerId, $sceneNumber, $sceneName, 0xFF0000, "BL_SetMode(\$_IPS['TARGET'], 1);");            
+        }
+        IPS_SetEventScheduleAction($scheduler, 0, "Komfort", 0xFF0000, "BH_SetMode(\$_IPS['TARGET'], 1);");
+        IPS_SetEventScheduleAction($scheduler, 1, "Standby", 0xFFFF00, "BH_SetMode(\$_IPS['TARGET'], 2);");
+        IPS_SetEventScheduleAction($scheduler, 2, "Nacht", 0x0000FF, "BH_SetMode(\$_IPS['TARGET'], 3);");
+
+    }
+
     private function AddSaveButton() 
     {
         $saveToScene = $this->SaveToSceneVar();
@@ -456,6 +479,18 @@ class BetterLight extends BetterBase {
         {
             $this->LoadLightFromScene($lightNumber, $sceneNumber);
         }            
+    }
+
+    public function SetScene($sceneNumber)
+    {
+        $this->CurrentSceneVar()->SetValue($sceneNumber);
+
+        $msId = $this->MSMainSwitchIdProperty()->Value();
+        $isOn = GetValue($msId);
+
+        if($isOn)
+            $this->LoadFromScene($sceneNumber);
+
     }
 
     public function CancelSave()
