@@ -11,11 +11,11 @@
 		{ "type": "SelectVariable", "name": "lightStatusSwitchId0", "caption": "Licht1 (Status Ein/Aus)" },
 		{ "type": "SelectVariable", "name": "lightStatusDimId0", "caption": "Licht1 (Status Dim)" },
 		
-		{ "type": "ValidationTextBox", "name": "lightName0", "caption": "Licht2" },
-		{ "type": "SelectVariable", "name": "lightSwitchId0", "caption": "Licht2 (Schalten)" },
-		{ "type": "SelectVariable", "name": "lightDimId0", "caption": "Licht2 (Dimmen)" },
-		{ "type": "SelectVariable", "name": "lightStatusSwitchId0", "caption": "Licht2 (Status Ein/Aus)" },
-		{ "type": "SelectVariable", "name": "lightStatusDimId0", "caption": "Licht2 (Status Dim)" },
+		{ "type": "ValidationTextBox", "name": "lightName1", "caption": "Licht2" },
+		{ "type": "SelectVariable", "name": "lightSwitchId1", "caption": "Licht2 (Schalten)" },
+		{ "type": "SelectVariable", "name": "lightDimId1", "caption": "Licht2 (Dimmen)" },
+		{ "type": "SelectVariable", "name": "lightStatusSwitchId1", "caption": "Licht2 (Status Ein/Aus)" },
+		{ "type": "SelectVariable", "name": "lightStatusDimId1", "caption": "Licht2 (Status Dim)" },
 		
 		{ "type": "ValidationTextBox", "name": "lightName2", "caption": "Licht3" },
 		{ "type": "SelectVariable", "name": "lightSwitchId2", "caption": "Licht3 (Schalten)" },
