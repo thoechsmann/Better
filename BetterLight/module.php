@@ -265,14 +265,18 @@ class BetterLight extends BetterBase {
         $this->MSMainSwitchIdProperty()->Register();
         $this->MSDeactivateIdProperty()->Register();
         $this->MSExternMovementIdProperty()->Register();
+
         $this->LightNameProperties()->RegisterAll();
         $this->LightSwitchIdProperties()->RegisterAll();
         $this->LightDimIdProperties()->RegisterAll();
         $this->LightStatusSwitchIdProperties()->RegisterAll();
         $this->LightStatusDimIdProperties()->RegisterAll();
-        $this->SceneNameProperties()->RegisterAll();
+
         $this->SwitchIdProperties()->RegisterAll();
         $this->SwitchSceneProperties()->RegisterAll();
+
+        $this->SceneNameProperties()->RegisterAll();
+        $this->SceneColorProperties()->RegisterAll();
 	}
 	
 	public function ApplyChanges() 
