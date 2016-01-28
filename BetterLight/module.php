@@ -197,7 +197,7 @@ class BetterLight extends BetterBase {
             $backing = $this->LightDimBacking($lightNumber);
         }
 
-        $ident = $var->Ident();
+        $ident = $backing->DsiplayIdent();
         $identToIgnore = $this->IdentToIgnoreOnNextTurnOnVar()->GetValue();
 
         if($ident != $identToIgnore)

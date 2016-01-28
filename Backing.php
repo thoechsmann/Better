@@ -22,6 +22,11 @@ class Backing  {
         $this->eibType = $eibType;
     }
 
+    public function DisplayIdent()
+    {
+        return $this->displayIdent;
+    }
+
     public function SetValue($value)
     {
         $parent = IPS_GetParent($this->setterId);
