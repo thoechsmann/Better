@@ -48,6 +48,12 @@ class Backing  {
         return GetValue($this->getterId);
     }
 
+    public function GetDisplayValue()
+    {
+        $id = $this->module->GetIDForIdent($this->displayIdent);
+        return GetValue($id);
+    }
+
     public function RegisterTrigger($additionalCode)
     {
         $triggerIdent = $this->displayIdent . "Trigger";

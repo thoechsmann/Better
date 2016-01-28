@@ -200,12 +200,16 @@ class BetterLight extends BetterBase {
         $ident = $backing->DisplayIdent();
         $identToIgnore = $this->IdentToIgnoreOnNextTurnOnVar()->GetValue();
 
-        if($ident != $identToIgnore)
+        if($ident == $identToIgnore)
+        {
+            $value = $var->GetDisplayValue();
+        }
+        else
         {
             $value = $var->GetValue();
-            $backing->SetValue($value);
         }
 
+        $backing->SetValue($value);
     }
 
     private function SaveLightToScene($lightNumber, $sceneNumber)
