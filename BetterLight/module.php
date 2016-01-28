@@ -593,6 +593,7 @@ class BetterLight extends BetterBase {
             if(!$isOn)
             {
                 $this->IdentToIgnoreOnNextTurnOnVar()->SetValue($ident);
+                $this->LightSwitchBacking($lightNumber)->SetDisplayValue($value);
                 $this->SetMSExternMovement();
             }
             return;
@@ -607,6 +608,7 @@ class BetterLight extends BetterBase {
             if(!$isOn)
             {
                 $this->IdentToIgnoreOnNextTurnOnVar()->SetValue($ident);
+                $this->LightDimBacking($lightNumber)->SetDisplayValue($value);
                 $this->SetMSExternMovement();
             }
             return;
