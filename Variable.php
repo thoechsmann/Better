@@ -28,6 +28,15 @@ class Variable  {
         IPS_SetName($id, $name);
     }
 
+    public function RegisterVariableFloat($name = "", $profile = "", $position = 0)
+    {
+        if($name == "")
+            $name = $this->Ident();
+
+        $id = $this->module->RegisterVariableFloat($this->ident, $name, $profile, $position);
+        IPS_SetName($id, $name);
+    }
+
     public function RegisterVariableString($name = "", $profile = "", $position = 0)
     {
         if($name == "")
