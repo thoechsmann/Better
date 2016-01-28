@@ -201,13 +201,13 @@ class BetterLight extends BetterBase {
         {
             $var = $this->SceneLightSwitchVars()->At($lightNumber, $sceneNumber);
             $backing = $this->LightSwitchBacking($lightNumber);
-            $triggedValue = $this->IdendTriggerdTurnOnSwitchValue();
+            $triggedValue = $this->IdendTriggerdTurnOnSwitchValueVar();
         }
         else
         {
             $var = $this->SceneLightDimVars()->At($lightNumber, $sceneNumber);
             $backing = $this->LightDimBacking($lightNumber);
-            $triggedValue = $this->IdendTriggerdTurnOnDimValue();
+            $triggedValue = $this->IdendTriggerdTurnOnDimValueVar();
         }
 
         $ident = $backing->DisplayIdent();
@@ -347,8 +347,8 @@ class BetterLight extends BetterBase {
         $this->IdendTriggerdTurnOnVar()->RegisterVariableString();
         $this->IdendTriggerdTurnOnVar()->SetValue("");
 
-        $this->IdendTriggerdTurnOnSwitchValue()->RegisterVariableBoolean();
-        $this->IdendTriggerdTurnOnDimValue()->RegisterVariableFloat();
+        $this->IdendTriggerdTurnOnSwitchValueVar()->RegisterVariableBoolean();
+        $this->IdendTriggerdTurnOnDimValueVar()->RegisterVariableFloat();
 
         for($i=0; $i<self::MaxLights; $i++)
         {
