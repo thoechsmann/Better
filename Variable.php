@@ -13,7 +13,7 @@ class Variable  {
     public function RegisterVariableInteger($name = "", $profile = "", $position = 0)
     {
         if($name == "")
-            $name = $ident;
+            $name = $this->Ident();
 
         $id = $this->module->RegisterVariableInteger($this->ident, $name, $profile, $position);
         IPS_SetName($id, $name);
@@ -22,7 +22,7 @@ class Variable  {
     public function RegisterVariableBoolean($name = "", $profile = "", $position = 0)
     {
         if($name == "")
-            $name = $ident;
+            $name = $this->Ident();
 
         $id = $this->module->RegisterVariableBoolean($this->ident, $name, $profile, $position);
         IPS_SetName($id, $name);
@@ -31,7 +31,7 @@ class Variable  {
     public function RegisterVariableString($name = "", $profile = "", $position = 0)
     {
         if($name == "")
-            $name = $ident;
+            $name = $this->Ident();
 
         $id = $this->module->RegisterVariableString($this->ident, $name, $profile, $position);
         IPS_SetName($id, $name);
