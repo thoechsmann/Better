@@ -27,8 +27,6 @@ class BetterLight extends BetterBase {
     const MSMainSwitchTriggerIdent = "MSMainSwitchTrigger";
     const SceneSchedulerIdent = "SceneScheduler";
     const MSDeactivateIdent = "MSDeactivate";
-    const CurrentSceneIdent = "CurrentScene";
-    const SaveToSceneIdent = "SaveToScene";
 
     // Properties
     private function MSMainSwitchIdProperty()
@@ -94,12 +92,12 @@ class BetterLight extends BetterBase {
     // Variables
     private function CurrentSceneVar()
     {
-        return new Variable($this, parent::PersistentPrefix . self::CurrentSceneIdent);
+        return new Variable($this, parent::PersistentPrefix . "CurrentScene");
     }
 
     private function SaveToSceneVar()
     {
-        return new Variable($this, self::SaveToSceneIdent);
+        return new Variable($this, "SaveToScene");
     }
 
     private function LightSwitchVars()
@@ -353,6 +351,11 @@ class BetterLight extends BetterBase {
 
     private function CreateSceneVars($sceneNumber)
     {
+        if($sceneNumber == 0)
+        {
+            $this->SceneNameProperties()->At($sceneNumber)->SetValue("Aus");            
+        }
+
         $sceneName = $this->SceneNameProperties()->ValueAt($sceneNumber);
         
         if($sceneName === "")
@@ -553,15 +556,15 @@ class BetterLight extends BetterBase {
             //     $this->CancelSave();
             //     break;
 
-            case $this->CurrentSceneVar()->Ident();
-                $this->SetScene($value, true);                
-                break;
-
             case self::SaveSceneIdent:
                 $this->StartSave();
                 break;
 
-            case self::SaveToSceneIdent:
+            case $this->CurrentSceneVar()->Ident():
+                $this->SetScene($value, true);
+                break;
+
+            case $this->SaveToSceneVar()->Ident():
                 $this->SaveToScene($value);
                 break;
 

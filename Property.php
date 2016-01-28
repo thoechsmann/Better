@@ -13,6 +13,11 @@ class Property  {
     {
         return $this->name;
     }
+
+    public function SetValue($value)
+    {
+        IPS_SetProperty($this->module->InstanceID, $this->name, $value);
+    }
 }
 
 class PropertyInteger extends Property  {
