@@ -202,10 +202,12 @@ class BetterLight extends BetterBase {
 
         if($ident == $identToIgnore)
         {
-            $value = $var->GetDisplayValue();
+            // load displayed value. Just changed by user
+            $value = $backing->GetDisplayValue(); 
         }
         else
         {
+            // load value saved in scene 
             $value = $var->GetValue();
         }
 
