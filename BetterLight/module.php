@@ -163,9 +163,14 @@ class BetterLight extends BetterBase {
         return $count;
     }
 
-    private function SceneProfileString()
+    private function SetSceneProfileString()
     {
-        return "BL_scenes_" . $this->GetName() . $this->InstanceID;
+        return "BL_setScenes_" . $this->GetName() . $this->InstanceID;
+    }
+
+    private function SaveSceneProfileString()
+    {
+        return "BL_saveScenes_" . $this->GetName() . $this->InstanceID;
     }
 
     private function LoadLightFromScene($lightNumber, $sceneNumber)
@@ -284,7 +289,7 @@ class BetterLight extends BetterBase {
         $this->CreateMotionTrigger();
         $this->CreateLinks();
         $this->CreateScenes();
-        $this->CreateSceneProfile();
+        $this->CreateSceneProfiles();
         $this->CreateSceneSelectionVar();
         $this->CreateSceneScheduler();
         $this->AddSaveButton();        
@@ -353,7 +358,8 @@ class BetterLight extends BetterBase {
     {
         if($sceneNumber == 0)
         {
-            $this->SceneNameProperties()->At($sceneNumber)->SetValue("Aus");            
+            $this->SceneNameProperties()->At($sceneNumber)->SetValue("Aus");
+            $this->SceneColorProperties()->At($sceneNumber)->SetValue("0x000000");
         }
 
         $sceneName = $this->SceneNameProperties()->ValueAt($sceneNumber);
@@ -407,10 +413,16 @@ class BetterLight extends BetterBase {
         // IPS_SetHidden($id, true);        
     }
 
-    private function CreateSceneProfile()
-    {        
-        @IPS_DeleteVariableProfile($this->SceneProfileString());
-        IPS_CreateVariableProfile($this->SceneProfileString(), 1);
+    private function CreateSceneProfiles()
+    {   
+        $setProfile = $this->SetSceneProfileString();
+        $saveProfile = $this->SaveSceneProfileString();
+
+        @IPS_DeleteVariableProfile($setProfile);
+        IPS_CreateVariableProfile($setProfile, 1);
+
+        @IPS_DeleteVariableProfile($saveProfile);
+        IPS_CreateVariableProfile($saveProfile, 1);
         
         for($sceneNumber = 0; $sceneNumber < self::MaxScenes; $sceneNumber++)
         {
@@ -420,7 +432,12 @@ class BetterLight extends BetterBase {
             {
                 $sceneColor = intval($this->SceneColorProperties()->ValueAt($sceneNumber), 0);
 
-                IPS_SetVariableProfileAssociation($this->SceneProfileString(), $sceneNumber, $sceneName, "", $sceneColor);
+                IPS_SetVariableProfileAssociation($setProfile, $sceneNumber, $sceneName, "", $sceneColor);
+
+                if($sceneNumber != 0)
+                {
+                    IPS_SetVariableProfileAssociation($saveProfile, $sceneNumber, $sceneName, "", $sceneColor);
+                }
             }
         }
     }
@@ -428,7 +445,7 @@ class BetterLight extends BetterBase {
     private function CreateSceneSelectionVar() 
     {
         $currentScene = $this->CurrentSceneVar();
-        $currentScene->RegisterVariableInteger("Szene", $this->SceneProfileString());
+        $currentScene->RegisterVariableInteger("Szene", $this->SetSceneProfileString());
         $currentScene->EnableAction();
         $currentScene->SetPosition(self::PosSceneSelection);
     }
@@ -459,7 +476,7 @@ class BetterLight extends BetterBase {
     private function AddSaveButton() 
     {
         $saveToScene = $this->SaveToSceneVar();
-        $saveToScene->RegisterVariableInteger("Speichern unter:", $this->SceneProfileString(), self::PosSaveSceneButton);
+        $saveToScene->RegisterVariableInteger("Speichern unter:", $this->SaveSceneProfileString(), self::PosSaveSceneButton);
         $saveToScene->EnableAction();
         $saveToScene->SetValue(-1);
 
