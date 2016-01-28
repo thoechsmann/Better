@@ -110,10 +110,21 @@ class BetterLight extends BetterBase {
         return new Variable($this, "SaveToScene");
     }
 
-    private function IdentToIgnoreOnNextTurnOnVar()
+    private function IdendTriggerdTurnOnVar()
     {
-        return new Variable($this, "IdentToIgnoreOnNextTurnOn");
+        return new Variable($this, "IdendTriggerdTurnOn");
     }
+
+    private function IdendTriggerdTurnOnSwitchValueVar()
+    {
+        return new Variable($this, "IdendTriggerdTurnOnSwitchValue");
+    }
+
+    private function IdendTriggerdTurnOnDimValueVar()
+    {
+        return new Variable($this, "IdendTriggerdTurnOnDimValue");
+    }
+
 
     private function SceneLightSwitchVars()
     {
@@ -190,20 +201,22 @@ class BetterLight extends BetterBase {
         {
             $var = $this->SceneLightSwitchVars()->At($lightNumber, $sceneNumber);
             $backing = $this->LightSwitchBacking($lightNumber);
+            $triggedValue = $this->IdendTriggerdTurnOnSwitchValue();
         }
         else
         {
             $var = $this->SceneLightDimVars()->At($lightNumber, $sceneNumber);
             $backing = $this->LightDimBacking($lightNumber);
+            $triggedValue = $this->IdendTriggerdTurnOnDimValue();
         }
 
         $ident = $backing->DisplayIdent();
-        $identToIgnore = $this->IdentToIgnoreOnNextTurnOnVar()->GetValue();
+        $identTrigged = $this->IdendTriggerdTurnOnVar()->GetValue();
 
-        if($ident == $identToIgnore)
+        if($ident == $identTrigged)
         {
-            // load displayed value. Just changed by user
-            $value = $backing->GetDisplayValue(); 
+            // load value stored in temp var
+            $value = $triggedValue->GetValue();
         }
         else
         {
@@ -331,8 +344,11 @@ class BetterLight extends BetterBase {
 
     private function CreateLinks()
     {
-        $this->IdentToIgnoreOnNextTurnOnVar()->RegisterVariableString();
-        $this->IdentToIgnoreOnNextTurnOnVar()->SetValue("");
+        $this->IdendTriggerdTurnOnVar()->RegisterVariableString();
+        $this->IdendTriggerdTurnOnVar()->SetValue("");
+
+        $this->IdendTriggerdTurnOnSwitchValue()->RegisterVariableBoolean();
+        $this->IdendTriggerdTurnOnDimValue()->RegisterVariableFloat();
 
         for($i=0; $i<self::MaxLights; $i++)
         {
@@ -592,8 +608,8 @@ class BetterLight extends BetterBase {
             $isOn = $this->MainSwitchStatus();
             if(!$isOn)
             {
-                $this->IdentToIgnoreOnNextTurnOnVar()->SetValue($ident);
-                $this->LightSwitchBacking($lightNumber)->SetDisplayValue($value);
+                $this->IdendTriggerdTurnOnVar()->SetValue($ident);
+                $this->IdendTriggerdTurnOnSwitchValueVar()->SetValue($value);
                 $this->SetMSExternMovement();
             }
             return;
@@ -607,8 +623,8 @@ class BetterLight extends BetterBase {
             $isOn = $this->MainSwitchStatus();
             if(!$isOn)
             {
-                $this->IdentToIgnoreOnNextTurnOnVar()->SetValue($ident);
-                $this->LightDimBacking($lightNumber)->SetDisplayValue($value);
+                $this->IdendTriggerdTurnOnVar()->SetValue($ident);
+                $this->IdendTriggerdTurnOnDimValueVar()->SetValue($value);
                 $this->SetMSExternMovement();
             }
             return;
@@ -653,7 +669,7 @@ class BetterLight extends BetterBase {
             $this->TurnOffAll();
         }
 
-        $this->IdentToIgnoreOnNextTurnOnVar()->SetValue("");
+        $this->IdendTriggerdTurnOnVar()->SetValue("");
     }
 
     public function TurnOffAll()

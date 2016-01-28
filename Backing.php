@@ -48,20 +48,6 @@ class Backing  {
         return GetValue($this->getterId);
     }
 
-    // normally the display is backe by the EIB insatance and get the value from there.
-    // sometimes we need the displayed value however.
-    public function GetDisplayValue()
-    {
-        $id = $this->module->GetIDForIdent($this->displayIdent);
-        return GetValue($id);
-    }
-
-    public function SetDisplayValue()
-    {
-        $id = $this->module->GetIDForIdent($this->displayIdent);
-        return GetValue($id);
-    }
-
     public function RegisterTrigger($additionalCode)
     {
         $triggerIdent = $this->displayIdent . "Trigger";
