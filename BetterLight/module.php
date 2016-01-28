@@ -261,6 +261,12 @@ class BetterLight extends BetterBase {
         }
     }
 
+    public function MainSwitchStatus()
+    {
+        $msId = $this->MSMainSwitchIdProperty()->Value();
+        return GetValue($msId);
+    }
+
 	public function Create() 
     {
 		parent::Create();		
@@ -521,14 +527,17 @@ class BetterLight extends BetterBase {
     public function SetScene($sceneNumber, $turnOn = false)
     {
         $this->CurrentSceneVar()->SetValue($sceneNumber);
-
         $this->CancelSave();
+        $isOn = $this->MainSwitchStatus();
 
-        $msId = $this->MSMainSwitchIdProperty()->Value();
-        $isOn = GetValue($msId);
-
-        if($isOn || $turnOn)
+        if($isOn)
+        {
             $this->LoadFromScene($sceneNumber);
+        }
+        else if($turnOn)
+        {
+            $this->SetMSExternMovement();
+        }
     }
 
     public function CancelSave()
@@ -554,7 +563,7 @@ class BetterLight extends BetterBase {
         $lightNumber = $this->LightSwitchVars()->GetIndexForIdent($ident);
         if($lightNumber !== false)
         {
-            $this->LightSwitchBacking($lightNumber)->SetValue($value);            
+            $this->LightSwitchBacking($lightNumber)->SetValue($value);
             $this->CancelSave();
             return;
         }
@@ -593,8 +602,7 @@ class BetterLight extends BetterBase {
 
     public function MSMainSwitchEvent()
     {
-        $msId = $this->MSMainSwitchIdProperty()->Value();
-        $turnOn = GetValue($msId);
+        $turnOn = $this->MainSwitchStatus();
 
         IPS_LogMessage("BetterLight", "MSMainSwitchEvent TurnOn: $turnOn MSDeactivated: " . $this->IsMSDeactivated());
 
