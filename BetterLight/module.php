@@ -90,6 +90,16 @@ class BetterLight extends BetterBase {
     }
 
     // Variables
+    private function LightSwitchVars()
+    {
+        return new VariableArray($this, self::StrLight . self::StrSwitch, self::MaxLights);
+    }
+
+    private function LightDimVars()
+    {
+        return new VariableArray($this, self::StrLight . self::StrDim, self::MaxLights);
+    }
+
     private function CurrentSceneVar()
     {
         return new Variable($this, parent::PersistentPrefix . "CurrentScene");
@@ -100,14 +110,9 @@ class BetterLight extends BetterBase {
         return new Variable($this, "SaveToScene");
     }
 
-    private function LightSwitchVars()
+    private function IdentToIgnoreOnNextTurnOnVar()
     {
-        return new VariableArray($this, self::StrLight . self::StrSwitch, self::MaxLights);
-    }
-
-    private function LightDimVars()
-    {
-        return new VariableArray($this, self::StrLight . self::StrDim, self::MaxLights);
+        return new Variable($this, "IdentToIgnoreOnNextTurnOn");
     }
 
     private function SceneLightSwitchVars()
@@ -183,14 +188,24 @@ class BetterLight extends BetterBase {
 
         if($dimId == 0)
         {
-            $value = $this->SceneLightSwitchVars()->At($lightNumber, $sceneNumber)->GetValue();
-            $this->LightSwitchBacking($lightNumber)->SetValue($value);
+            $var = $this->SceneLightSwitchVars()->At($lightNumber, $sceneNumber);
+            $backing = $this->LightSwitchBacking($lightNumber);
         }
         else
         {
-            $value = $this->SceneLightDimVars()->At($lightNumber, $sceneNumber)->GetValue();
-            $this->LightDimBacking($lightNumber)->SetValue($value);
+            $var = $this->SceneLightDimVars()->At($lightNumber, $sceneNumber);
+            $backing = $this->LightDimBacking($lightNumber);
         }
+
+        $ident = $var->Ident();
+        $identToIgnore = $this->IdentToIgnoreOnNextTurnOnVar()->GetValue();
+
+        if($ident != $identToIgnore)
+        {
+            $value = $var->GetValue();
+            $backing->SetValue($value);
+        }
+
     }
 
     private function SaveLightToScene($lightNumber, $sceneNumber)
@@ -310,6 +325,9 @@ class BetterLight extends BetterBase {
 
     private function CreateLinks()
     {
+        $this->IdentToIgnoreOnNextTurnOnVar()->RegisterVariableString();
+        $this->IdentToIgnoreOnNextTurnOnVar()->SetValue("");
+
         for($i=0; $i<self::MaxLights; $i++)
         {
             $this->CreateLightLink($i);
@@ -564,7 +582,13 @@ class BetterLight extends BetterBase {
         if($lightNumber !== false)
         {
             $this->LightSwitchBacking($lightNumber)->SetValue($value);
-            $this->CancelSave();
+            $this->CancelSave();            
+            $this->IdentToIgnoreOnNextTurnOnVar()->SetValue($ident);
+            $isOn = $this->MainSwitchStatus();
+            if(!$isOn)
+            {
+                $this->SetMSExternMovement();
+            }
             return;
         }
 
@@ -573,6 +597,12 @@ class BetterLight extends BetterBase {
         {
             $this->LightDimBacking($lightNumber)->SetValue($value);
             $this->CancelSave();
+            $this->IdentToIgnoreOnNextTurnOnVar()->SetValue($ident);
+            $isOn = $this->MainSwitchStatus();
+            if(!$isOn)
+            {
+                $this->SetMSExternMovement();
+            }
             return;
         }
 
@@ -614,6 +644,8 @@ class BetterLight extends BetterBase {
         {
             $this->TurnOffAll();
         }
+
+        $this->IdentToIgnoreOnNextTurnOnVar()->SetValue("");
     }
 
     public function TurnOffAll()

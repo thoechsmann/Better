@@ -10,20 +10,29 @@ class Variable  {
         $this->ident = $ident;
     }
 
-    public function RegisterVariableInteger($name, $profile = "", $position = 0)
+    public function RegisterVariableInteger($name = "", $profile = "", $position = 0)
     {
+        if($name == "")
+            $name = $ident;
+
         $id = $this->module->RegisterVariableInteger($this->ident, $name, $profile, $position);
         IPS_SetName($id, $name);
     }
 
-    public function RegisterVariableBoolean($name, $profile = "", $position = 0)
+    public function RegisterVariableBoolean($name = "", $profile = "", $position = 0)
     {
+        if($name == "")
+            $name = $ident;
+
         $id = $this->module->RegisterVariableBoolean($this->ident, $name, $profile, $position);
         IPS_SetName($id, $name);
     }
 
-    public function RegisterVariableString($name, $profile = "", $position = 0)
+    public function RegisterVariableString($name = "", $profile = "", $position = 0)
     {
+        if($name == "")
+            $name = $ident;
+
         $id = $this->module->RegisterVariableString($this->ident, $name, $profile, $position);
         IPS_SetName($id, $name);
     }
