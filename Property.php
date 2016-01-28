@@ -16,7 +16,7 @@ class Property  {
 
     public function SetValue($value)
     {
-        IPS_SetProperty($this->module->InstanceID, $this->name, $value);
+        IPS_SetProperty($this->module->InstanceId(), $this->name, $value);
     }
 }
 

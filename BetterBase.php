@@ -69,6 +69,12 @@ class BetterBase extends IPSModule {
     }        
     //
 
+    public function InstanceId()
+    {
+        return $this->InstanceID;
+    }
+
+
 	public function Create() 
     {
 		//Never delete this line!
