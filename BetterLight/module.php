@@ -626,7 +626,7 @@ class BetterLight extends BetterBase {
         {
             if(!$isOn || ($msLockChanged && $isOn))
             {
-                $this->IdendTriggerdTurnOnVar()->SetValue($ident);
+                $this->IdendTriggerdTurnOnVar()->SetValue($backing->DisplayIdent());
                 $storeVar->SetValue($value);
                 $this->SetMSExternMovement();
             }
