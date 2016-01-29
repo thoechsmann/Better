@@ -620,14 +620,17 @@ class BetterLight extends BetterBase {
             $backing->SetValue($value);
             $this->SetScene($this->CurrentSceneVar()->GetValue());
         }
-        else if(!$isOn)
+        else
         {
-            $this->IdendTriggerdTurnOnVar()->SetValue($ident);
-            $storeVar->SetValue($value);
-            $this->SetMSExternMovement();
-        }
+            if(!$isOn)
+            {
+                $this->IdendTriggerdTurnOnVar()->SetValue($ident);
+                $storeVar->SetValue($value);
+                $this->SetMSExternMovement();
+            }
 
-        $this->LightSwitchBacking($lightNumber)->SetValue($value);
+            $backing->SetValue($value);
+        }
     }
 
     public function RequestAction($ident, $value) 
