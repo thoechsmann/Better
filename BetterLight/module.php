@@ -611,7 +611,6 @@ class BetterLight extends BetterBase {
         $lightNumber = $this->LightSwitchVars()->GetIndexForIdent($ident);
         if($lightNumber !== false)
         {
-            $this->LightSwitchBacking($lightNumber)->SetValue($value);
             $this->CancelSave();            
             $isOn = $this->MainSwitchStatus();
             if(!$isOn)
@@ -620,13 +619,13 @@ class BetterLight extends BetterBase {
                 $this->IdendTriggerdTurnOnSwitchValueVar()->SetValue($value);
                 $this->SetMSExternMovement();
             }
+            $this->LightSwitchBacking($lightNumber)->SetValue($value);
             return;
         }
 
         $lightNumber = $this->LightDimVars()->GetIndexForIdent($ident);
         if($lightNumber !== false)
         {
-            $this->LightDimBacking($lightNumber)->SetValue($value);
             $this->CancelSave();
             $isOn = $this->MainSwitchStatus();
             if(!$isOn)
@@ -635,6 +634,7 @@ class BetterLight extends BetterBase {
                 $this->IdendTriggerdTurnOnDimValueVar()->SetValue($value);
                 $this->SetMSExternMovement();
             }
+            $this->LightDimBacking($lightNumber)->SetValue($value);
             return;
         }
 
@@ -644,7 +644,6 @@ class BetterLight extends BetterBase {
                 break;
 
             case $this->MSDeactivateVar()->Ident():
-                $this->MSDeactivateBacking()->SetValue($value);
                 $this->CancelSave();
                 $isOn = $this->MainSwitchStatus();
                 if(!$isOn)
@@ -653,6 +652,7 @@ class BetterLight extends BetterBase {
                     $this->IdendTriggerdTurnOnSwitchValueVar()->SetValue($value);
                     // $this->SetMSExternMovement();
                 }
+                $this->MSDeactivateBacking()->SetValue($value);
                 break;
 
             case $this->CurrentSceneVar()->Ident():
