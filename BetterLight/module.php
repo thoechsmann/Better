@@ -624,7 +624,7 @@ class BetterLight extends BetterBase {
         }
         else
         {
-            if(!$isOn)
+            if(!$isOn || ($msLockChanged && $isOn))
             {
                 $this->IdendTriggerdTurnOnVar()->SetValue($ident);
                 $storeVar->SetValue($value);
