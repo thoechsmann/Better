@@ -17,7 +17,7 @@ class BetterLight extends BetterBase {
     const StrLink = "Link";
 
     const PosSceneSelection = 1;
-    const PosMSDeactivate = 2;
+    const PosMSLock = 2;
     const PosLightDim = 3;
     const PosLightSwitch = 4;
     const PosSaveSceneButton = 5;
@@ -26,7 +26,7 @@ class BetterLight extends BetterBase {
     const SaveSceneIdent = "SaveScene";
     const MSMainSwitchTriggerIdent = "MSMainSwitchTrigger";
     const SceneSchedulerIdent = "SceneScheduler";
-    const MSDeactivateIdent = "MSDeactivate";
+    const MSLockIdent = "MSLock";
 
     // Properties
     private function MSMainSwitchIdProperty()
@@ -34,9 +34,9 @@ class BetterLight extends BetterBase {
         return new PropertyInteger($this, "msMainSwitchId");
     }
 
-    private function MSDeactivateIdProperty()
+    private function MSLockIdProperty()
     {
-        return new PropertyInteger($this, "msDeactivateId");
+        return new PropertyInteger($this, "msLockId");
     }
 
     private function MSExternMovementIdProperty()
@@ -100,9 +100,9 @@ class BetterLight extends BetterBase {
         return new VariableArray($this, self::StrLight . self::StrDim, self::MaxLights);
     }
 
-    private function MSDeactivateVar()
+    private function MSLockVar()
     {
-        return new Variable($this, "MSDeactivate");
+        return new Variable($this, "MSLock");
     }
 
     private function CurrentSceneVar()
@@ -147,10 +147,10 @@ class BetterLight extends BetterBase {
             self::MaxScenes);
     }
 
-    private function SceneMSDeactivateVars()
+    private function SceneMSLockVars()
     {
         return new VariableArray($this, 
-            parent::PersistentPrefix . self::StrScene . "MSDeactivate", self::MaxScenes);
+            parent::PersistentPrefix . self::StrScene . "MSLock", self::MaxScenes);
     }
 
     // Backing
@@ -172,11 +172,11 @@ class BetterLight extends BetterBase {
         return new Backing($this, $displayIdent, $getterId, $setterId, Backing::EIBTypeScale);
     }
 
-    private function MSDeactivateBacking()
+    private function MSLockBacking()
     {
-        $getterId = $this->MSDeactivateIdProperty()->Value();
-        $setterId = $this->MSDeactivateIdProperty()->Value();
-        $displayIdent = $this->MSDeactivateVar()->Ident();
+        $getterId = $this->MSLockIdProperty()->Value();
+        $setterId = $this->MSLockIdProperty()->Value();
+        $displayIdent = $this->MSLockVar()->Ident();
 
         return new Backing($this, $displayIdent, $getterId, $setterId, Backing::EIBTypeSwitch);
     }
@@ -249,9 +249,9 @@ class BetterLight extends BetterBase {
         }
     }
 
-    private function IsMSDeactivated()
+    private function IsMSLocked()
     {
-        $msId = $this->MSDeactivateIdProperty()->Value();
+        $msId = $this->MSLockIdProperty()->Value();
 
         if($msId == 0)
             return false;
@@ -259,9 +259,9 @@ class BetterLight extends BetterBase {
         return GetValue($msId);
     }
 
-    private function SetMSDeactivate($value)
+    private function SetMSLock($value)
     {
-        $msId = $this->MSDeactivateIdProperty()->Value();
+        $msId = $this->MSLockIdProperty()->Value();
 
         if($msId !== 0)
         {
@@ -269,10 +269,10 @@ class BetterLight extends BetterBase {
         }
     }
 
-    private function LoadMSDeactivateFromScene($sceneNumber)
+    private function LoadMSLockFromScene($sceneNumber)
     {
-        $var = $this->SceneMSDeactivateVars()->At($sceneNumber);
-        $backing = $this->MSDeactivateBacking();
+        $var = $this->SceneMSLockVars()->At($sceneNumber);
+        $backing = $this->MSLockBacking();
 
         $ident = $backing->DisplayIdent();
         $identTrigged = $this->IdendTriggerdTurnOnVar()->GetValue();
@@ -292,10 +292,10 @@ class BetterLight extends BetterBase {
         $backing->SetValue($value);
     }
 
-    private function SaveMSDeactivateToScene($sceneNumber)
+    private function SaveMSLockToScene($sceneNumber)
     {
-        $value = $this->MSDeactivateBacking()->GetValue();
-        $this->SceneMSDeactivateVars()->At($sceneNumber)->SetValue($value);
+        $value = $this->MSLockBacking()->GetValue();
+        $this->SceneMSLockVars()->At($sceneNumber)->SetValue($value);
     }
 
     private function SetMSExternMovement()
@@ -319,7 +319,7 @@ class BetterLight extends BetterBase {
 		parent::Create();		
         
         $this->MSMainSwitchIdProperty()->Register();
-        $this->MSDeactivateIdProperty()->Register();
+        $this->MSLockIdProperty()->Register();
         $this->MSExternMovementIdProperty()->Register();
 
         $this->LightNameProperties()->RegisterAll();
@@ -375,11 +375,11 @@ class BetterLight extends BetterBase {
 
     private function CreateMSLink()
     {
-        $var = $this->MSDeactivateVar();
-        $var->RegisterVariableBoolean("BM Sperren", "~Switch", self::PosMSDeactivate);
+        $var = $this->MSLockVar();
+        $var->RegisterVariableBoolean("BM Sperren", "~Switch", self::PosMSLock);
         $var->EnableAction();
 
-        $this->MSDeactivateBacking()->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
+        $this->MSLockBacking()->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
     }
 
     private function CreateLightLink($lightNumber)
@@ -444,7 +444,7 @@ class BetterLight extends BetterBase {
             $this->CreateSceneLight($sceneNumber, $i);
         }
 
-        $this->CreateMSDeactivate($sceneNumber);
+        $this->CreateMSLock($sceneNumber);
     }
 
     private function CreateSceneLight($sceneNumber, $lightNumber)
@@ -472,9 +472,9 @@ class BetterLight extends BetterBase {
         }
     }
 
-    private function CreateMSDeactivate($sceneNumber)
+    private function CreateMSLock($sceneNumber)
     {
-        $var = $this->SceneMSDeactivateVars()->At($sceneNumber);
+        $var = $this->SceneMSLockVars()->At($sceneNumber);
         $var->RegisterVariableBoolean();
         $var->SetHidden(true);
     }
@@ -567,14 +567,14 @@ class BetterLight extends BetterBase {
         {
             $this->SaveLightToScene($lightNumber, $sceneNumber);
         }
-        $this->SaveMSDeactivateToScene($sceneNumber);
+        $this->SaveMSLockToScene($sceneNumber);
 
         $this->CancelSave();
     }
 
     private function LoadFromScene($sceneNumber)
     {
-        $this->LoadMSDeactivateFromScene($sceneNumber);
+        $this->LoadMSLockFromScene($sceneNumber);
 
         for($lightNumber = 0; $lightNumber < self::MaxLights; $lightNumber++)
         {
@@ -606,35 +606,51 @@ class BetterLight extends BetterBase {
         IPS_SetHidden($id, false);        
     }
 
+    // FIX: Remove storeVar. Save everything in a string.
+    private function SetBackedValue($backing, $value, $storeVar)
+    {
+        $this->CancelSave();            
+        $isOn = $this->MainSwitchStatus();
+        $IsMSLocked = $this->IsMSLocked();
+        $msLockChanged = $backing->DisplayIdent() == $this->MSLockVar()->Ident();
+
+        if($IsMSLocked)
+        {
+            // if MS is locked we do not get a turn on event.
+            $backing->SetValue($value);
+            $this->SetScene($this->CurrentSceneVar()->GetValue());
+        }
+        else if(!$isOn)
+        {
+            $this->IdendTriggerdTurnOnVar()->SetValue($ident);
+            $storeVar->SetValue($value);
+            $this->SetMSExternMovement();
+        }
+
+        $this->LightSwitchBacking($lightNumber)->SetValue($value);
+    }
+
     public function RequestAction($ident, $value) 
     {
         $lightNumber = $this->LightSwitchVars()->GetIndexForIdent($ident);
         if($lightNumber !== false)
         {
-            $this->CancelSave();            
-            $isOn = $this->MainSwitchStatus();
-            if(!$isOn)
-            {
-                $this->IdendTriggerdTurnOnVar()->SetValue($ident);
-                $this->IdendTriggerdTurnOnSwitchValueVar()->SetValue($value);
-                $this->SetMSExternMovement();
-            }
-            $this->LightSwitchBacking($lightNumber)->SetValue($value);
+            $this->SetBackedValue(
+                $this->LightSwitchBacking($lightNumber), 
+                $value, 
+                $this->IdendTriggerdTurnOnSwitchValueVar());
+
             return;
         }
 
         $lightNumber = $this->LightDimVars()->GetIndexForIdent($ident);
         if($lightNumber !== false)
         {
-            $this->CancelSave();
-            $isOn = $this->MainSwitchStatus();
-            if(!$isOn)
-            {
-                $this->IdendTriggerdTurnOnVar()->SetValue($ident);
-                $this->IdendTriggerdTurnOnDimValueVar()->SetValue($value);
-                $this->SetMSExternMovement();
-            }
-            $this->LightDimBacking($lightNumber)->SetValue($value);
+            $this->SetBackedValue(
+                $this->LightDimBacking($lightNumber), 
+                $value, 
+                $this->IdendTriggerdTurnOnDimValueVar());
+
             return;
         }
 
@@ -643,16 +659,11 @@ class BetterLight extends BetterBase {
                 $this->StartSave();
                 break;
 
-            case $this->MSDeactivateVar()->Ident():
-                $this->CancelSave();
-                $isOn = $this->MainSwitchStatus();
-                if(!$isOn)
-                {
-                    $this->IdendTriggerdTurnOnVar()->SetValue($ident);
-                    $this->IdendTriggerdTurnOnSwitchValueVar()->SetValue($value);
-                    // $this->SetMSExternMovement();
-                }
-                $this->MSDeactivateBacking()->SetValue($value);
+            case $this->MSLockVar()->Ident():
+                $this->SetBackedValue(
+                    $this->MSLockBacking(), 
+                    $value, 
+                    $this->IdendTriggerdTurnOnSwitchValueVar());
                 break;
 
             case $this->CurrentSceneVar()->Ident():
@@ -673,7 +684,7 @@ class BetterLight extends BetterBase {
     {
         $turnOn = $this->MainSwitchStatus();
 
-        IPS_LogMessage("BetterLight", "MSMainSwitchEvent TurnOn: $turnOn MSDeactivated: " . $this->IsMSDeactivated());
+        IPS_LogMessage("BetterLight", "MSMainSwitchEvent TurnOn: $turnOn, MSLocked: " . $this->IsMSLocked());
 
         if($turnOn)
         {
