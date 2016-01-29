@@ -174,8 +174,10 @@ class BetterLight extends BetterBase {
 
     private function MSLockBacking()
     {
-        $getterId = $this->MSLockIdProperty()->Value();
+        // We only get displayed value. MSLock makes trouble otherwise as it triggers other events when set.
+        // So there is no backed getter.
         $setterId = $this->MSLockIdProperty()->Value();
+        $getterId = $this->MSLockVar()->Id();
         $displayIdent = $this->MSLockVar()->Ident();
 
         return new Backing($this, $displayIdent, $getterId, $setterId, Backing::EIBTypeSwitch);
@@ -617,7 +619,6 @@ class BetterLight extends BetterBase {
         $this->CancelSave();            
         $isOn = $this->MainSwitchStatus();
         $IsMSLocked = $this->IsMSLocked();
-        $msLockChanged = $backing->DisplayIdent() == $this->MSLockVar()->Ident();
 
         if($IsMSLocked)
         {
@@ -627,7 +628,7 @@ class BetterLight extends BetterBase {
         }
         else
         {
-            if(!$isOn || ($msLockChanged && $isOn))
+            if(!$isOn)
             {
                 $this->IdendTriggerdTurnOnVar()->SetValue($backing->DisplayIdent());
                 $storeVar->SetValue($value);
@@ -668,10 +669,8 @@ class BetterLight extends BetterBase {
                 break;
 
             case $this->MSLockVar()->Ident():
-                $this->SetBackedValue(
-                    $this->MSLockBacking(), 
-                    $value, 
-                    $this->IdendTriggerdTurnOnSwitchValueVar());
+                $this->SetValueForIdent($ident, $value);
+                $this->CancelSave();
                 break;
 
             case $this->CurrentSceneVar()->Ident():
