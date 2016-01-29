@@ -271,6 +271,7 @@ class BetterLight extends BetterBase {
 
     private function LoadMSLockFromScene($sceneNumber)
     {
+        IPS_LogMessage("BL","LoadMSLockFromScene(sceneNumber=$sceneNumber)");
         $var = $this->SceneMSLockVars()->At($sceneNumber);
         $backing = $this->MSLockBacking();
 
@@ -282,11 +283,13 @@ class BetterLight extends BetterBase {
         {
             // load value stored in temp var
             $value = $triggedValue->GetValue();
+            IPS_LogMessage("BL","LoadMSLockFromScene() - Load from temp var (value=$value)");
         }
         else
         {
             // load value saved in scene 
             $value = $var->GetValue();
+            IPS_LogMessage("BL","LoadMSLockFromScene() - Load from backing var (value=$value)");
         }
 
         $backing->SetValue($value);
