@@ -277,7 +277,7 @@ class BetterLight extends BetterBase {
 
         $ident = $backing->DisplayIdent();
         $identTrigged = $this->IdendTriggerdTurnOnVar()->GetValue();
-        $triggedValue = $this->IdendTriggerdTurnOnDimValueVar();
+        $triggedValue = $this->IdendTriggerdTurnOnSwitchValueVar();
 
         if($ident == $identTrigged)
         {
