@@ -574,6 +574,7 @@ class BetterLight extends BetterBase {
 
     private function LoadFromScene($sceneNumber)
     {
+        IPS_LogMessage("BL","LoadFromScene(sceneNumber = $sceneNumber) ");
         $this->LoadMSLockFromScene($sceneNumber);
 
         for($lightNumber = 0; $lightNumber < self::MaxLights; $lightNumber++)
@@ -584,6 +585,7 @@ class BetterLight extends BetterBase {
 
     public function SetScene($sceneNumber, $turnOn = false)
     {
+        IPS_LogMessage("BL","SetScene(sceneNumber = $sceneNumber, turnOn = $turnOn) ");
         $this->CurrentSceneVar()->SetValue($sceneNumber);
         $this->CancelSave();
         $isOn = $this->MainSwitchStatus();
@@ -687,7 +689,7 @@ class BetterLight extends BetterBase {
     {
         $turnOn = $this->MainSwitchStatus();
 
-        IPS_LogMessage("BetterLight", "MSMainSwitchEvent TurnOn: $turnOn, MSLocked: " . $this->IsMSLocked());
+        IPS_LogMessage("BL", "MSMainSwitchEvent - turnOn:$turnOn, isMSLocked:" . $this->IsMSLocked());
 
         if($turnOn)
         {
