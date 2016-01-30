@@ -384,7 +384,7 @@ class BetterLight extends BetterBase {
         $var->RegisterVariableBoolean("BM Sperren", "~Switch", self::PosMSLock);
         $var->EnableAction();
 
-        $this->MSLockBacking()->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
+        // $this->MSLockBacking()->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
     }
 
     private function CreateLightLink($lightNumber)
