@@ -630,7 +630,7 @@ class BetterLight extends BetterBase {
     private function CreateMotionSensor()
     {
         $ms = $this->MotionSensor();
-        $ms->RegisterVariables();
+        $ms->RegisterVariables($this->SceneCount());
         $ms->RegisterTriggers();
     }
 
