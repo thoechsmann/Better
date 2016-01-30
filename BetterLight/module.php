@@ -5,12 +5,13 @@ require_once(__DIR__ . "/../Variable.php");
 require_once(__DIR__ . "/../Backing.php");
 
 class DimLight {
+    const Size = 6;
     const StrLight = "DimLight";
     const StrScene = "Scene";
 
-    static public function GetIndexForDisplayIdent($ident, $size)
+    static public function GetIndexForDisplayIdent($ident)
     {
-        for($i = 0; $i<size; $i++)
+        for($i = 0; $i<self::Size; $i++)
         {
             $var = new DimLight(0, $i);
             if($var->IsDisplayVar($ident))
@@ -61,7 +62,7 @@ class DimLight {
 
     public function IsDisplayVar($ident)
     {
-        return $ident = $this->DisplayVar()->Idenet();
+        return $ident = $this->DisplayVar()->Ident();
     }
 
     private function SceneVars($sceneNumber)
@@ -131,6 +132,25 @@ class DimLight {
     {
         $backing = $this->DisplayVarBacking();
         $backing->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
+    }
+
+    public function SaveToScene($sceneNumber)
+    {
+        $value = $this->DisplayVar()->GetValue();
+        $this->SceneVars($sceneNumber)->SetValue($value);
+    }
+
+    public function LoadFromScene($sceneNumber, $triggerIdent = "", $triggerValue = 0)
+    {
+        $value = $this->SceneVars($sceneNumber)->GetValue();
+
+        if($this->IsDisplayVar($identTrigged))
+        {
+            // load value stored in temp var
+            $value = $triggedValue;
+        }
+
+        $this->DisplayVarBacking->SetValue($value);
     }
 }
 
@@ -316,7 +336,6 @@ class Scene
 
 class BetterLight extends BetterBase {
 
-    const MaxLights = 8;
     const MaxScenes = 4;
     const MaxSwitches = 4;
 
@@ -394,6 +413,23 @@ class BetterLight extends BetterBase {
     //
 
 
+    private function DimLightCount()
+    {
+        $count = 0;
+        
+        for($i=0; $i<DimLight::Size; $i++)
+        {
+            $light = $this->DimLights($i);
+
+            if(!$light->IsDefined())
+            {
+                return $count;
+            }
+
+            $count++;
+        }
+    }
+
     private function SceneCount()
     {
         $count = 0;
@@ -421,64 +457,6 @@ class BetterLight extends BetterBase {
         return "BL_saveScenes_" . $this->GetName() . $this->InstanceID;
     }
 
-    private function LoadLightFromScene($lightNumber, $sceneNumber)
-    {
-        // $switchId = $this->LightSwitchIdProperties()->ValueAt($lightNumber);
-        // $dimId = $this->LightDimIdProperties()->ValueAt($lightNumber);
-
-        // if($switchId == 0)
-        //     return;
-
-        // if($dimId == 0)
-        // {
-        //     $var = $this->SceneLightSwitchVars()->At($lightNumber, $sceneNumber);
-        //     $backing = $this->LightSwitchBacking($lightNumber);
-        //     $triggedValue = $this->IdendTriggerdTurnOnSwitchValueVar();
-        // }
-        // else
-        // {
-        //     $var = $this->SceneLightDimVars()->At($lightNumber, $sceneNumber);
-        //     $backing = $this->LightDimBacking($lightNumber);
-        //     $triggedValue = $this->IdendTriggerdTurnOnDimValueVar();
-        // }
-
-        // $ident = $backing->DisplayIdent();
-        // $identTrigged = $this->IdendTriggerdTurnOnVar()->GetValue();
-
-        // if($ident == $identTrigged)
-        // {
-        //     // load value stored in temp var
-        //     $value = $triggedValue->GetValue();
-        // }
-        // else
-        // {
-        //     // load value saved in scene 
-        //     $value = $var->GetValue();
-        // }
-
-        // $backing->SetValue($value);
-    }
-
-    private function SaveLightToScene($lightNumber, $sceneNumber)
-    {
-        // $switchId = $this->LightSwitchIdProperties()->ValueAt($lightNumber);
-        // $dimId = $this->LightDimIdProperties()->ValueAt($lightNumber);
-
-        // if($switchId == 0)
-        //     return;
-
-        // if($dimId == 0)
-        // {
-        //     $value = $this->LightSwitchBacking($lightNumber)->GetValue();
-        //     $this->SceneLightSwitchVars()->At($lightNumber, $sceneNumber)->SetValue($value);
-        // }
-        // else
-        // {
-        //     $value = $this->LightDimBacking($lightNumber)->GetValue();
-        //     $this->SceneLightDimVars()->At($lightNumber, $sceneNumber)->SetValue($value);
-        // }
-    }
-
     private function LoadMSLockFromScene($sceneNumber)
     {
         // We just update the displayed var. 
@@ -493,9 +471,9 @@ class BetterLight extends BetterBase {
         $this->SceneMSLockVars()->At($sceneNumber)->SetValue($value);
     }
 
-	public function Create() 
+    public function Create() 
     {
-		parent::Create();		
+        parent::Create();       
         
         // $this->MSMainSwitchIdProperty()->Register();
         // $this->MSLockIdProperty()->Register();
@@ -503,7 +481,7 @@ class BetterLight extends BetterBase {
 
         $this->MotionSensor()->RegisterProperties();
 
-        for($i=0; $i<self::MaxLights; $i++)
+        for($i=0; $i<DimLight::Size; $i++)
         {
             $this->DimLights($i)->RegisterProperties();
         }
@@ -524,12 +502,12 @@ class BetterLight extends BetterBase {
 
         // $this->SceneNameProperties()->RegisterAll();
         // $this->SceneColorProperties()->RegisterAll();
-	}
-	
-	public function ApplyChanges() 
+    }
+    
+    public function ApplyChanges() 
     {
-		parent::ApplyChanges();
-		
+        parent::ApplyChanges();
+        
         $this->CreateMotionSensor();
         $this->CreateLights();
         $this->CreateSceneProfiles();
@@ -547,7 +525,7 @@ class BetterLight extends BetterBase {
         $this->IdendTriggerdTurnOnDimValueVar()->RegisterVariableFloat();
         $this->IdendTriggerdTurnOnDimValueVar()->SetHidden(true);
 
-	}
+    }
 
     private function CreateMotionSensor()
     {
@@ -560,16 +538,13 @@ class BetterLight extends BetterBase {
     {
         $sceneCount = $this->SceneCount();
 
-        for($i=0; $i<self::MaxLights; $i++)
+        for($i=0; $i<$this->DimLightCount(); $i++)
         {
             $light = $this->DimLights($i);
 
-            if($light->IsDefined())
-            {
-                IPS_LogMessage("BL", "Registering Light $i");
-                $light->RegisterVariables($sceneCount);
-                $light->RegisterTriggers();      
-            }
+            IPS_LogMessage("BL", "Registering Light $i");
+            $light->RegisterVariables($sceneCount);
+            $light->RegisterTriggers();      
         }
     }
 
@@ -630,9 +605,10 @@ class BetterLight extends BetterBase {
         $saveToScene->EnableAction();
         $saveToScene->SetValue(-1);
 
-        $this->RegisterScript(self::SaveSceneIdent, "Szene speichern", 
+        $id = $this->RegisterScript(self::SaveSceneIdent, "Szene speichern", 
             "<? BL_StartSave(" . $this->InstanceID . ");?>",
             self::PosSaveSceneButton);
+        IPS_SetHidden($id, true);
     }
 
     public function StartSave()
@@ -645,23 +621,26 @@ class BetterLight extends BetterBase {
 
     private function SaveToScene($sceneNumber)
     {
-        // for($lightNumber = 0; $lightNumber < self::MaxLights; $lightNumber++)
-        // {
-        //     $this->SaveLightToScene($lightNumber, $sceneNumber);
-        // }
+        for($i = 0; $i < $this->DimLightCount(); $i++)
+        {
+            $this->DimLights($i)->SaveToScene($sceneNumber);
+        }
         // $this->SaveMSLockToScene($sceneNumber);
 
-        // $this->CancelSave();
+        $this->CancelSave();
     }
 
     private function LoadFromScene($sceneNumber)
     {
         // IPS_LogMessage("BL","LoadFromScene(sceneNumber = $sceneNumber) ");
 
-        // for($lightNumber = 0; $lightNumber < self::MaxLights; $lightNumber++)
-        // {
-        //     $this->LoadLightFromScene($lightNumber, $sceneNumber);
-        // }            
+        $triggerIdent = $this->IdendTriggerdTurnOnVar()->GetValue();
+        $triggerBoolValue = $this->IdendTriggerdTurnOnDimValueVar()->GetValue();
+
+        for($i = 0; $i < $this->DimLightCount(); $i++)
+        {
+            $this->DimLights($i)->LoadFromScene($sceneNumber, $triggerIdent, $triggerBoolValue);
+        }
     }
 
     public function SetScene($sceneNumber, $turnOn = false)
