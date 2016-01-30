@@ -519,7 +519,7 @@ class BetterLight extends BetterBase {
         // $this->CreateSceneProfiles();
         // $this->CreateSceneSelectionVar();
         // $this->CreateSceneScheduler();
-        $this->AddSaveButton();        
+        // $this->AddSaveButton();        
 	}
 
     private function CreateMotionTrigger()
