@@ -745,7 +745,7 @@ class BetterLight extends BetterBase {
         //     return;
         // }
 
-        $lightNumber = DimLights::GetIndexForDisplayIdent($ident);
+        $lightNumber = DimLight::GetIndexForDisplayIdent($ident);
         if($lightNumber !== false)
         {
             $this->SetBackedValue(
