@@ -599,13 +599,28 @@ class BetterLight extends BetterBase {
         $this->CurrentSceneVar()->SetValue($sceneNumber);
         $this->CancelSave();
         $isOn = $this->MainSwitchStatus();
+        $isMSLocked = $this->IsMSLocked();
+        $shouldBeLocked = $this->SceneMSLockVars($currentScene)->GetValue();
 
         if($isOn)
         {
-            $this->LoadFromScene($sceneNumber);
+            if($isMSLocked != $shouldBeLocked)
+                $this->SetMSLock($shouldBeLocked);
+
+            // Do not load scene when ms is activated nad light is on as turning ms lock on will send light status event.
+            // This event will be catched and used to set the current scene.
+            if(!$shouldBeLocked)
+                $this->LoadFromScene($sceneNumber);
+
         }
         else if($turnOn)
         {
+            if($isMSLocked != $shouldBeLocked)
+                $this->SetMSLock($shouldBeLocked);
+
+            if($shouldBeLocked)
+                $this->LoadFromScene($sceneNumber);
+
             $this->SetMSExternMovement();
         }
     }
