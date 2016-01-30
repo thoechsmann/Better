@@ -429,9 +429,9 @@ class BetterLight extends BetterBase {
         return new Scene($this, $sceneNumber);
     }
 
-    private function MS()
+    private function MotionSensor()
     {
-        return new MS($this);
+        return new MotionSensor($this);
     }
     //
 
@@ -629,7 +629,7 @@ class BetterLight extends BetterBase {
 
     private function CreateMS()
     {
-        $ms = $this->MS();
+        $ms = $this->MotionSensor();
         $ms->RegisterVariables();
         $ms->RegisterTriggers();
     }
