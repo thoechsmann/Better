@@ -149,7 +149,7 @@ class MotionSensor
 
     private function LockVar()
     {
-        return new Variable($this, self::StrMS . "Lock");
+        return new Variable($this->module, self::StrMS . "Lock");
     
     }
 
