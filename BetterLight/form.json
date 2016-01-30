@@ -37,8 +37,8 @@
 		{ "type": "SelectVariable", "name": "switchLightStatusId1", "caption": "Schalt Licht2 (Status)" },
 		
 
-		{ "type": "ValidationTextBox", "name": "SceneName0", "caption": "Name Szene AUS" },
-		{ "type": "Select", "name": "SceneColor0", "caption": "Farbe Scene AUS",
+		{ "type": "ValidationTextBox", "name": "Scene0Name", "caption": "Name Szene AUS" },
+		{ "type": "Select", "name": "Scene0Color", "caption": "Farbe Scene AUS",
     		"options": [
 		        { "label": "Rot", "value":     "0xFF0000" },
 		        { "label": "Grün", "value":    "0x00FF00" },
@@ -54,8 +54,8 @@
 		        { "label": "Grau", "value":    "0x888888" }
 		] },
 
-		{ "type": "ValidationTextBox", "name": "SceneName1", "caption": "Name Szene 1" },
-		{ "type": "Select", "name": "SceneColor1", "caption": "Farbe Scene 1",
+		{ "type": "ValidationTextBox", "name": "Scene1Name", "caption": "Name Szene 1" },
+		{ "type": "Select", "name": "Scene1Color", "caption": "Farbe Scene 1",
     		"options": [
 		        { "label": "Rot", "value":     "0xFF0000" },
 		        { "label": "Grün", "value":    "0x00FF00" },
@@ -71,8 +71,8 @@
 		        { "label": "Grau", "value":    "0x888888" }
 		] },
 
-		{ "type": "ValidationTextBox", "name": "SceneName2", "caption": "Name Szene 2" },
-		{ "type": "Select", "name": "SceneColor2", "caption": "Farbe Scene 2",
+		{ "type": "ValidationTextBox", "name": "Scene2Name", "caption": "Name Szene 2" },
+		{ "type": "Select", "name": "Scene2Color", "caption": "Farbe Scene 2",
     		"options": [
 		        { "label": "Rot", "value":     "0xFF0000" },
 		        { "label": "Grün", "value":    "0x00FF00" },
@@ -88,8 +88,8 @@
 		        { "label": "Grau", "value":    "0x888888" }
 		] },
 
-		{ "type": "ValidationTextBox", "name": "SceneName3", "caption": "Name Szene 3" },
-		{ "type": "Select", "name": "SceneColor3", "caption": "Farbe Scene 3",
+		{ "type": "ValidationTextBox", "name": "Scene3Name", "caption": "Name Szene 3" },
+		{ "type": "Select", "name": "Scene3Color", "caption": "Farbe Scene 3",
     		"options": [
 		        { "label": "Rot", "value":     "0xFF0000" },
 		        { "label": "Grün", "value":    "0x00FF00" },
