@@ -20,22 +20,22 @@ class DimLight {
 
     private function NameProp()
     {        
-        return new PropertyString($this->module, self::StrLight . "Name" . $index);
+        return new PropertyString($this->module, self::StrLight . "Name" . $this->index);
     }   
 
     private function SwitchIdProp()
     {        
-        return new PropertyInteger($this->module, self::StrLight . "SwitchId" . $index);
+        return new PropertyInteger($this->module, self::StrLight . "SwitchId" . $this->index);
     }
 
     private function SetValueIdProp()
     {        
-        return new PropertyInteger($this->module, self::StrLight . "SetValueId" . $index);
+        return new PropertyInteger($this->module, self::StrLight . "SetValueId" . $this->index);
     }
 
     private function StatusValueIdProp()
     {        
-        return new PropertyInteger($this->module, self::StrLight . "StatusValueId" . $index);
+        return new PropertyInteger($this->module, self::StrLight . "StatusValueId" . $this->index);
     }
 
     // Variables
