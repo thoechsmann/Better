@@ -19,29 +19,29 @@ class DimLight {
 
     private function NameProp()
     {        
-        return new PropertyString($this, self::Prefix . "Name" . $index);
+        return new PropertyString($this->module, self::Prefix . "Name" . $index);
     }   
 
     private function SwitchIdProp()
     {        
-        return new PropertyInteger($this, self::Prefix . "SwitchId" . $index);
+        return new PropertyInteger($this->module, self::Prefix . "SwitchId" . $index);
     }
 
     private function SetValueIdProp()
     {        
-        return new PropertyInteger($this, self::Prefix . "SetValueId" . $index);
+        return new PropertyInteger($this->module, self::Prefix . "SetValueId" . $index);
     }
 
     private function StatusValueIdProp()
     {        
-        return new PropertyInteger($this, self::Prefix . "StatusValueId" . $index);
+        return new PropertyInteger($this->module, self::Prefix . "StatusValueId" . $index);
     }
 
     // Variables
 
     private function DisplayVar()
     {
-        return new Variable($this, self::Prefix . "DisplayVar");
+        return new Variable($this->module, self::Prefix . "DisplayVar");
     }
 
     private function DisplayVarBacking()
@@ -50,7 +50,7 @@ class DimLight {
         $setterId = $this->SetValueIdProp()->Value();
         $displayIdent = $this->DisplayVar()->Ident();
 
-        return new Backing($this, $displayIdent, $getterId, $setterId, Backing::EIBTypeScale);
+        return new Backing($this->module, $displayIdent, $getterId, $setterId, Backing::EIBTypeScale);
     }
 }
 
