@@ -172,17 +172,6 @@ class BetterLight extends BetterBase {
         return new Backing($this, $displayIdent, $getterId, $setterId, Backing::EIBTypeScale);
     }
 
-    private function MSLockBacking()
-    {
-        // We only get displayed value. MSLock makes trouble otherwise as it triggers other events when set.
-        // So there is no backed getter.
-        $setterId = $this->MSLockIdProperty()->Value();
-        $getterId = $this->MSLockVar()->Id();
-        $displayIdent = $this->MSLockVar()->Ident();
-
-        return new Backing($this, $displayIdent, $getterId, $setterId, Backing::EIBTypeSwitch);
-    }
-
     private function SetSceneProfileString()
     {
         return "BL_setScenes_" . $this->GetName() . $this->InstanceID;
@@ -271,35 +260,35 @@ class BetterLight extends BetterBase {
         }
     }
 
-    private function LoadMSLockFromScene($sceneNumber)
-    {
-        IPS_LogMessage("BL","LoadMSLockFromScene(sceneNumber=$sceneNumber)");
-        $var = $this->SceneMSLockVars()->At($sceneNumber);
-        $backing = $this->MSLockBacking();
+    // private function LoadMSLockFromScene($sceneNumber)
+    // {
+    //     IPS_LogMessage("BL","LoadMSLockFromScene(sceneNumber=$sceneNumber)");
+    //     $var = $this->SceneMSLockVars()->At($sceneNumber);
+    //     $backing = $this->MSLockBacking();
 
-        $ident = $backing->DisplayIdent();
-        $identTrigged = $this->IdendTriggerdTurnOnVar()->GetValue();
-        $triggedValue = $this->IdendTriggerdTurnOnSwitchValueVar();
+    //     $ident = $backing->DisplayIdent();
+    //     $identTrigged = $this->IdendTriggerdTurnOnVar()->GetValue();
+    //     $triggedValue = $this->IdendTriggerdTurnOnSwitchValueVar();
 
-        if($ident == $identTrigged)
-        {
-            // load value stored in temp var
-            $value = $triggedValue->GetValue();
-            IPS_LogMessage("BL","LoadMSLockFromScene() - Load from temp var (value=$value)");
-        }
-        else
-        {
-            // load value saved in scene 
-            $value = $var->GetValue();
-            IPS_LogMessage("BL","LoadMSLockFromScene() - Load from backing var (value=$value)");
-        }
+    //     if($ident == $identTrigged)
+    //     {
+    //         // load value stored in temp var
+    //         $value = $triggedValue->GetValue();
+    //         IPS_LogMessage("BL","LoadMSLockFromScene() - Load from temp var (value=$value)");
+    //     }
+    //     else
+    //     {
+    //         // load value saved in scene 
+    //         $value = $var->GetValue();
+    //         IPS_LogMessage("BL","LoadMSLockFromScene() - Load from backing var (value=$value)");
+    //     }
 
-        $backing->SetValue($value);
-    }
+    //     $backing->SetValue($value);
+    // }
 
     private function SaveMSLockToScene($sceneNumber)
     {
-        $value = $this->MSLockBacking()->GetValue();
+        $value = $this->MSLockVar()->GetValue();
         $this->SceneMSLockVars()->At($sceneNumber)->SetValue($value);
     }
 
@@ -383,8 +372,6 @@ class BetterLight extends BetterBase {
         $var = $this->MSLockVar();
         $var->RegisterVariableBoolean("BM Sperren", "~Switch", self::PosMSLock);
         $var->EnableAction();
-
-        // $this->MSLockBacking()->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
     }
 
     private function CreateLightLink($lightNumber)
@@ -585,7 +572,6 @@ class BetterLight extends BetterBase {
     private function LoadFromScene($sceneNumber)
     {
         IPS_LogMessage("BL","LoadFromScene(sceneNumber = $sceneNumber) ");
-        $this->LoadMSLockFromScene($sceneNumber);
 
         for($lightNumber = 0; $lightNumber < self::MaxLights; $lightNumber++)
         {
