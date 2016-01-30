@@ -6,16 +6,11 @@
 		{ "type": "SelectVariable", "name": "msExternMovementId", "caption": "BM (Externe Bewegung)" },
 		
 
-		{ "type": "ValidationTextBox", "name": "DimLightName0", "caption": "Dim Licht1 Name" },
-		{ "type": "SelectVariable", "name": "DimLightSwitchId0", "caption": "Dim Licht1 (Schalten)" },
-		{ "type": "SelectVariable", "name": "DimLightSetValueId0", "caption": "Dim Licht1 (Wert setzen)" },
-		{ "type": "SelectVariable", "name": "DimLightStatusValueId0", "caption": "Dim Licht1 (Status Wert)" },
+		{ "type": "ValidationTextBox", "name": "DimLight0Name", "caption": "Dim Licht1 Name" },
+		{ "type": "SelectVariable", "name": "DimLight0SwitchId", "caption": "Dim Licht1 (Schalten)" },
+		{ "type": "SelectVariable", "name": "DimLight0SetValueId", "caption": "Dim Licht1 (Wert setzen)" },
+		{ "type": "SelectVariable", "name": "DimLight0StatusValueId", "caption": "Dim Licht1 (Status Wert)" },
 		
-		{ "type": "ValidationTextBox", "name": "DimLightName1", "caption": "Dim Licht2 Name" },
-		{ "type": "SelectVariable", "name": "DimLightSwitchId1", "caption": "Dim Licht2 (Schalten)" },
-		{ "type": "SelectVariable", "name": "DimLightSetValueId1", "caption": "Dim Licht2 (Wert setzen)" },
-		{ "type": "SelectVariable", "name": "DimLightStatusValueId1", "caption": "Dim Licht2 (Status Wert)" },
-
 
 		{ "type": "ValidationTextBox", "name": "rgbLightName0", "caption": "RGB Licht1 Name" },
 		{ "type": "SelectVariable", "name": "rgbLightSwitchId0", "caption": "RGB Licht1 (Schalten)" },
