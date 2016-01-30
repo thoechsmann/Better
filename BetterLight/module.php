@@ -586,7 +586,7 @@ class BetterLight extends BetterBase {
         $this->CancelSave();
         $isOn = $this->MainSwitchStatus();
         $isMSLocked = $this->IsMSLocked();
-        $shouldBeLocked = $this->SceneMSLockVars()->At($currentScene)->GetValue();
+        $shouldBeLocked = $this->SceneMSLockVars()->At($sceneNumber)->GetValue();
 
         if($isOn)
         {
