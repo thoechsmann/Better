@@ -4,6 +4,56 @@ require_once(__DIR__ . "/../Property.php");
 require_once(__DIR__ . "/../Variable.php");
 require_once(__DIR__ . "/../Backing.php");
 
+class DimLight {
+    const Prefix = "dimLight";
+
+    private $index;
+    private $module;
+
+    public function __construct($module, $index) {
+        $this->module = $module;
+        $this->index = $index;
+    }
+
+    // Properties
+
+    private function NameProp()
+    {        
+        return new PropertyString($this, self::Prefix . "Name" . $index);
+    }   
+
+    private function SwitchIdProp()
+    {        
+        return new PropertyInteger($this, self::Prefix . "SwitchId" . $index);
+    }
+
+    private function SetValueIdProp()
+    {        
+        return new PropertyInteger($this, self::Prefix . "SetValueId" . $index);
+    }
+
+    private function StatusValueIdProp()
+    {        
+        return new PropertyInteger($this, self::Prefix . "StatusValueId" . $index);
+    }
+
+    // Variables
+
+    private function DisplayVar()
+    {
+        return new Variable($this, self::Prefix . "DisplayVar");
+    }
+
+    private function DisplayVarBacking()
+    {
+        $getterId = $this->StatusValueIdProp()->Value();
+        $setterId = $this->SetValueIdProp()->Value();
+        $displayIdent = $this->DisplayVar()->Ident();
+
+        return new Backing($this, $displayIdent, $getterId, $setterId, Backing::EIBTypeScale);
+    }
+}
+
 class BetterLight extends BetterBase {
 
     const MaxLights = 8;
@@ -172,6 +222,13 @@ class BetterLight extends BetterBase {
         return new Backing($this, $displayIdent, $getterId, $setterId, Backing::EIBTypeScale);
     }
 
+    // Lights
+    private function DimLight($lightNumber)
+    {
+        return new DimLight($lightNumer);
+    }
+    //
+
     private function SetSceneProfileString()
     {
         return "BL_setScenes_" . $this->GetName() . $this->InstanceID;
@@ -298,11 +355,11 @@ class BetterLight extends BetterBase {
         $this->MSLockIdProperty()->Register();
         $this->MSExternMovementIdProperty()->Register();
 
-        $this->LightNameProperties()->RegisterAll();
-        $this->LightSwitchIdProperties()->RegisterAll();
-        $this->LightDimIdProperties()->RegisterAll();
-        $this->LightStatusSwitchIdProperties()->RegisterAll();
-        $this->LightStatusDimIdProperties()->RegisterAll();
+        // $this->LightNameProperties()->RegisterAll();
+        // $this->LightSwitchIdProperties()->RegisterAll();
+        // $this->LightDimIdProperties()->RegisterAll();
+        // $this->LightStatusSwitchIdProperties()->RegisterAll();
+        // $this->LightStatusDimIdProperties()->RegisterAll();
 
         $this->SwitchIdProperties()->RegisterAll();
         $this->SwitchSceneProperties()->RegisterAll();
@@ -315,13 +372,13 @@ class BetterLight extends BetterBase {
     {
 		parent::ApplyChanges();
 		
-        $this->CreateMotionTrigger();
-        $this->CreateLinks();
-        $this->CreateScenes();
-        $this->CreateSceneProfiles();
-        $this->CreateSceneSelectionVar();
-        $this->CreateSceneScheduler();
-        $this->AddSaveButton();        
+        // $this->CreateMotionTrigger();
+        // $this->CreateLinks();
+        // $this->CreateScenes();
+        // $this->CreateSceneProfiles();
+        // $this->CreateSceneSelectionVar();
+        // $this->CreateSceneScheduler();
+        // $this->AddSaveButton();        
 	}
 
     private function CreateMotionTrigger()
@@ -352,7 +409,7 @@ class BetterLight extends BetterBase {
     private function CreateMSLink()
     {
         $var = $this->MSLockVar();
-        $var->RegisterVariableBoolean("BM Sperren", "~Switch", self::PosMSLock);
+        $var->RegisterVariableBoolean("BM Sperren", "~Lock", self::PosMSLock);
         $var->EnableAction();
     }
 
