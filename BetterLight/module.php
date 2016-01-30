@@ -106,7 +106,7 @@ class DimLight {
 
         for($i = 0; $i<$sceneCount; $i++)
         {
-            $sceneLight = $this->SceneVars($sceneNumber);
+            $sceneLight = $this->SceneVars($i);
             $sceneLight->RegisterVariableInteger();
             $sceneLight->SetHidden(true);
         }
