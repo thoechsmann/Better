@@ -549,6 +549,7 @@ class BetterLight extends BetterBase {
 
             if($light->IsDefined())
             {
+                IPS_LogMessage("BL", "Registering Light $i");
                 $light->RegisterVariables($sceneCount);
                 $light->RegisterTriggers();      
             }
