@@ -260,31 +260,13 @@ class BetterLight extends BetterBase {
         }
     }
 
-    // private function LoadMSLockFromScene($sceneNumber)
-    // {
-    //     IPS_LogMessage("BL","LoadMSLockFromScene(sceneNumber=$sceneNumber)");
-    //     $var = $this->SceneMSLockVars()->At($sceneNumber);
-    //     $backing = $this->MSLockBacking();
-
-    //     $ident = $backing->DisplayIdent();
-    //     $identTrigged = $this->IdendTriggerdTurnOnVar()->GetValue();
-    //     $triggedValue = $this->IdendTriggerdTurnOnSwitchValueVar();
-
-    //     if($ident == $identTrigged)
-    //     {
-    //         // load value stored in temp var
-    //         $value = $triggedValue->GetValue();
-    //         IPS_LogMessage("BL","LoadMSLockFromScene() - Load from temp var (value=$value)");
-    //     }
-    //     else
-    //     {
-    //         // load value saved in scene 
-    //         $value = $var->GetValue();
-    //         IPS_LogMessage("BL","LoadMSLockFromScene() - Load from backing var (value=$value)");
-    //     }
-
-    //     $backing->SetValue($value);
-    // }
+    private function LoadMSLockFromScene($sceneNumber)
+    {
+        // We just update the displayed var. 
+        // It will not write it to EIB. That was already done in the SetScene method.
+        $value = $this->SceneMSLockVars()->At($sceneNumber)->GetValue();
+        $this->MSLockVar()->SetValue($value);
+    }
 
     private function SaveMSLockToScene($sceneNumber)
     {
