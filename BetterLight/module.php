@@ -75,7 +75,7 @@ class DimLight {
 
     public function IsDefined()
     {
-        return $this->Name() == "";
+        return $this->Name() != "";
     }
 
     public function RegisterProperties()
