@@ -223,12 +223,12 @@ class Scene
 
     private function NameProp()
     {        
-        return new PropertyString($this->module, self::StrScene . "Name" . $this->index);
+        return new PropertyString($this->module, self::StrScene . $this->index . "Name");
     }   
 
     private function ColorProp()
     {        
-        return new PropertyString($this->module, self::StrScene . "Color" . $this->index);
+        return new PropertyString($this->module, self::StrScene . $this->index . "Color");
     }
 
     public function RegisterProperties()
