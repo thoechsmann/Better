@@ -515,7 +515,7 @@ class BetterLight extends BetterBase {
 		
         $this->CreateMotionTrigger();
         $this->CreateLights();
-        // $this->CreateScenes();
+        $this->CreateScenes();
         // $this->CreateSceneProfiles();
         // $this->CreateSceneSelectionVar();
         // $this->CreateSceneScheduler();
