@@ -247,6 +247,12 @@ class Scene
         return intval($this->ColorProp()->Value(), 0);
     }
 
+    public function IsDefined()
+    {
+        return $this->Name() != "";
+    }
+
+
 }
 
 class BetterLight extends BetterBase {
@@ -442,9 +448,9 @@ class BetterLight extends BetterBase {
         
         for($i=0; $i<self::MaxScenes; $i++)
         {
-            $scene = $this->Scene($i);
+            $scene = $this->Scenes($i);
 
-            if($scene->Name() == "")
+            if(!$scene->IsDefined())
             {
                 return $count;
             }
