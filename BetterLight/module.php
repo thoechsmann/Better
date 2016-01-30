@@ -351,7 +351,7 @@ class BetterLight extends BetterBase {
         {
             $scene = $this->Scene($i);
 
-            if($scene->Name() == 0)
+            if($scene->Name() == "")
             {
                 return $count;
             }
