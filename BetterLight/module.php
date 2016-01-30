@@ -334,13 +334,13 @@ class BetterLight extends BetterBase {
     // Lights
     private function DimLight($lightNumber)
     {
-        return new DimLight($lightNumer);
+        return new DimLight($this, $lightNumber);
     }
     //
 
     private function Scene($sceneNumber)
     {
-        return new Scene($sceneNumber);
+        return new Scene($this, $sceneNumber);
     }
 
     private function SceneCount()
