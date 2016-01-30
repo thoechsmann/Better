@@ -579,7 +579,7 @@ class BetterLight extends BetterBase {
         // $this->MSLockIdProperty()->Register();
         // $this->MSExternMovementIdProperty()->Register();
 
-        $this->MS()->RegisterProperties();
+        $this->MotionSensor()->RegisterProperties();
 
         for($i=0; $i<self::MaxLights; $i++)
         {
@@ -608,7 +608,7 @@ class BetterLight extends BetterBase {
     {
 		parent::ApplyChanges();
 		
-        $this->CreateMS();
+        $this->CreateMotionSensor();
         $this->CreateLights();
         $this->CreateSceneProfiles();
         $this->CreateSceneSelectionVar();
@@ -627,7 +627,7 @@ class BetterLight extends BetterBase {
 
 	}
 
-    private function CreateMS()
+    private function CreateMotionSensor()
     {
         $ms = $this->MotionSensor();
         $ms->RegisterVariables();
