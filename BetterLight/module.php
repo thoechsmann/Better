@@ -5,7 +5,8 @@ require_once(__DIR__ . "/../Variable.php");
 require_once(__DIR__ . "/../Backing.php");
 
 class DimLight {
-    const Prefix = "dimLight";
+    const StrLight = "DimLight";
+    const StrScene = "Scene";
 
     private $index;
     private $module;
@@ -19,39 +20,147 @@ class DimLight {
 
     private function NameProp()
     {        
-        return new PropertyString($this->module, self::Prefix . "Name" . $index);
+        return new PropertyString($this->module, self::StrLight . "Name" . $index);
     }   
 
     private function SwitchIdProp()
     {        
-        return new PropertyInteger($this->module, self::Prefix . "SwitchId" . $index);
+        return new PropertyInteger($this->module, self::StrLight . "SwitchId" . $index);
     }
 
     private function SetValueIdProp()
     {        
-        return new PropertyInteger($this->module, self::Prefix . "SetValueId" . $index);
+        return new PropertyInteger($this->module, self::StrLight . "SetValueId" . $index);
     }
 
     private function StatusValueIdProp()
     {        
-        return new PropertyInteger($this->module, self::Prefix . "StatusValueId" . $index);
+        return new PropertyInteger($this->module, self::StrLight . "StatusValueId" . $index);
     }
 
     // Variables
 
     private function DisplayVar()
     {
-        return new Variable($this->module, self::Prefix . "DisplayVar");
+        return new Variable($this->module, 
+            self::Prefix . $this->index .
+            "DisplayVar");
     }
+
+    private function SceneVars($sceneNumber)
+    {
+        return new Variable($this->module, 
+            BetterBase::PersistentPrefix . 
+            self::StrLight . $this->index . 
+            self::StrScene . $sceneNumber . 
+            "Value");
+    }
+
+    // Backings
 
     private function DisplayVarBacking()
     {
         $getterId = $this->StatusValueIdProp()->Value();
         $setterId = $this->SetValueIdProp()->Value();
         $displayIdent = $this->DisplayVar()->Ident();
-
         return new Backing($this->module, $displayIdent, $getterId, $setterId, Backing::EIBTypeScale);
     }
+
+    //
+
+    public function Name()
+    {
+        return $this->NameProp()->Value();
+    }
+
+    public function IsDefined()
+    {
+        return $this->Name() == "";
+    }
+
+    public function RegisterProperties()
+    {
+        $this->NameProp()->Register();
+        $this->SwitchIdProp()->Register();
+        $this->SetValueIdProp()->Register();
+        $this->StatusValueIdProp()->Register();
+    }
+
+    public function RegisterVariables($sceneCount)
+    {
+        $this->RegisterDisplayVar();
+        $this->RegisterSceneVars($sceneCount);
+    }
+
+    private function RegisterDisplayVar()
+    {
+        $name = $this->NameProp()->Value();
+        $var = $this->DisplayVar();
+        $var->RegisterVariableInteger($name, "~Intensity.100"); //, self::PosLightSwitch);
+        $var->EnableAction();
+    }
+
+    private function RegisterSceneVars($sceneCount)
+    {
+        $name = $this->Name();
+
+        for($i = 0; $i<$sceneCount; $i++)
+        {
+            $sceneLight = $this->SceneVars($sceneNumber);
+            $sceneLight->RegisterVariableInteger();
+            $sceneLight->SetHidden(true);
+        }
+    }
+
+    public function RegisterTriggers()
+    {
+        $backing = $this->DisplayVarBacking();
+        $backing->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
+    }
+}
+
+class Scene
+{
+    private $index;
+    private $module;
+
+    const StrScene = "Scene";
+
+    public function __construct($module, $index) {
+        $this->module = $module;
+        $this->index = $index;
+    }
+
+    // Properties
+
+    private function NameProp()
+    {        
+        return new PropertyString($this->module, self::StrScene . "Name" . $index);
+    }   
+
+    private function ColorProp()
+    {        
+        return new PropertyString($this->module, self::StrScene . "Color" . $index);
+    }
+
+    //
+
+    public function RegisterProperties()
+    {
+        $this->NameProp()->Register();
+        $this->ColorProp()->Register();
+    }
+
+    public function Name()
+    {
+        return $this->NameProp()->Value();
+    }
+
+    public function Color()
+    {
+        return $this->ColorProp()->Value();
+    }
+
 }
 
 class BetterLight extends BetterBase {
@@ -229,6 +338,28 @@ class BetterLight extends BetterBase {
     }
     //
 
+    private function Scene($sceneNumber)
+    {
+        return new Scene($sceneNumber);
+    }
+
+    private function SceneCount()
+    {
+        $count = 0;
+        
+        for($i=0; $i<self::MaxScenes; $i++)
+        {
+            $scene = $this->Scene($i);
+
+            if($scene->Name() == 0)
+            {
+                return $count;
+            }
+
+            $count++;
+        }
+    }
+
     private function SetSceneProfileString()
     {
         return "BL_setScenes_" . $this->GetName() . $this->InstanceID;
@@ -355,6 +486,16 @@ class BetterLight extends BetterBase {
         $this->MSLockIdProperty()->Register();
         $this->MSExternMovementIdProperty()->Register();
 
+        for($i=0; $i<self::MaxLights; $i++)
+        {
+            $this->DimLight($i)->RegisterProperties();
+        }
+
+        for($i=0; $i<self::MaxScenes; $i++)
+        {
+            $this->Scene($i)->RegisterProperties();
+        }
+
         // $this->LightNameProperties()->RegisterAll();
         // $this->LightSwitchIdProperties()->RegisterAll();
         // $this->LightDimIdProperties()->RegisterAll();
@@ -364,30 +505,27 @@ class BetterLight extends BetterBase {
         $this->SwitchIdProperties()->RegisterAll();
         $this->SwitchSceneProperties()->RegisterAll();
 
-        $this->SceneNameProperties()->RegisterAll();
-        $this->SceneColorProperties()->RegisterAll();
+        // $this->SceneNameProperties()->RegisterAll();
+        // $this->SceneColorProperties()->RegisterAll();
 	}
 	
 	public function ApplyChanges() 
     {
 		parent::ApplyChanges();
 		
-        // $this->CreateMotionTrigger();
-        // $this->CreateLinks();
+        $this->CreateMotionTrigger();
+        $this->CreateLights();
         // $this->CreateScenes();
         // $this->CreateSceneProfiles();
         // $this->CreateSceneSelectionVar();
         // $this->CreateSceneScheduler();
-        // $this->AddSaveButton();        
+        $this->AddSaveButton();        
 	}
 
     private function CreateMotionTrigger()
     {
         $this->RegisterTrigger(self::MSMainSwitchTriggerIdent, $this->MSMainSwitchIdProperty()->Value(), 'BL_MSMainSwitchEvent($_IPS[\'TARGET\']);', self::TriggerTypeUpdate);
-    }
 
-    private function CreateLinks()
-    {
         $this->IdendTriggerdTurnOnVar()->RegisterVariableString();
         $this->IdendTriggerdTurnOnVar()->SetValue("");
         $this->IdendTriggerdTurnOnVar()->SetHidden(true);
@@ -399,12 +537,43 @@ class BetterLight extends BetterBase {
         $this->IdendTriggerdTurnOnDimValueVar()->SetHidden(true);
 
         $this->CreateMSLink();
+    }
+
+    private function CreateLights()
+    {
+        $sceneCount = $this->SceneCount();
 
         for($i=0; $i<self::MaxLights; $i++)
         {
-            $this->CreateLightLink($i);
+            $light = $this->DimLight($i);
+
+            if($light->IsDefined())
+            {
+                $light->RegisterVariables($sceneCount);
+                $light->RegisterTriggers();      
+            }
         }
     }
+
+    // private function CreateLinks()
+    // {
+    //     $this->IdendTriggerdTurnOnVar()->RegisterVariableString();
+    //     $this->IdendTriggerdTurnOnVar()->SetValue("");
+    //     $this->IdendTriggerdTurnOnVar()->SetHidden(true);
+
+    //     $this->IdendTriggerdTurnOnSwitchValueVar()->RegisterVariableBoolean();
+    //     $this->IdendTriggerdTurnOnSwitchValueVar()->SetHidden(true);
+
+    //     $this->IdendTriggerdTurnOnDimValueVar()->RegisterVariableFloat();
+    //     $this->IdendTriggerdTurnOnDimValueVar()->SetHidden(true);
+
+    //     $this->CreateMSLink();
+
+    //     for($i=0; $i<self::MaxLights; $i++)
+    //     {
+    //         $this->CreateLightLink($i);
+    //     }
+    // }
 
     private function CreateMSLink()
     {
@@ -413,41 +582,41 @@ class BetterLight extends BetterBase {
         $var->EnableAction();
     }
 
-    private function CreateLightLink($lightNumber)
-    {
-        $switchId = $this->LightSwitchIdProperties()->ValueAt($lightNumber);
-        $dimId = $this->LightDimIdProperties()->ValueAt($lightNumber);
+    // private function CreateLightLink($lightNumber)
+    // {
+    //     $switchId = $this->LightSwitchIdProperties()->ValueAt($lightNumber);
+    //     $dimId = $this->LightDimIdProperties()->ValueAt($lightNumber);
 
-        $name = $this->LightNameProperties()->ValueAt($lightNumber);        
+    //     $name = $this->LightNameProperties()->ValueAt($lightNumber);        
 
-        if($switchId != 0)
-        {
-            $switchBacking = $this->LightSwitchBacking($lightNumber);
+    //     if($switchId != 0)
+    //     {
+    //         $switchBacking = $this->LightSwitchBacking($lightNumber);
 
-            $lightSwitch = $this->LightSwitchVars()->At($lightNumber);
-            $lightSwitch->RegisterVariableBoolean($name, "~Switch", self::PosLightSwitch);
-            $lightSwitch->EnableAction();
-            $lightSwitch->SetValue($switchBacking->GetValue());
-            if($dimId != 0)
-            {
-                $lightSwitch->SetHidden(true);
-            }
+    //         $lightSwitch = $this->LightSwitchVars()->At($lightNumber);
+    //         $lightSwitch->RegisterVariableBoolean($name, "~Switch", self::PosLightSwitch);
+    //         $lightSwitch->EnableAction();
+    //         $lightSwitch->SetValue($switchBacking->GetValue());
+    //         if($dimId != 0)
+    //         {
+    //             $lightSwitch->SetHidden(true);
+    //         }
 
-            $switchBacking->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
-        }
+    //         $switchBacking->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
+    //     }
 
-        if($dimId != 0)
-        {
-            $dimBacking = $this->LightDimBacking($lightNumber);
+    //     if($dimId != 0)
+    //     {
+    //         $dimBacking = $this->LightDimBacking($lightNumber);
 
-            $lightDim = $this->LightDimVars()->At($lightNumber);
-            $lightDim->RegisterVariableInteger($name, "~Intensity.100", self::PosLightSwitch);
-            $lightDim->EnableAction();
-            $lightDim->SetValue($dimBacking->GetValue());
+    //         $lightDim = $this->LightDimVars()->At($lightNumber);
+    //         $lightDim->RegisterVariableInteger($name, "~Intensity.100", self::PosLightSwitch);
+    //         $lightDim->EnableAction();
+    //         $lightDim->SetValue($dimBacking->GetValue());
 
-            $dimBacking->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
-        }
-    }
+    //         $dimBacking->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
+    //     }
+    // }
 
     private function CreateScenes()
     {

@@ -6,35 +6,15 @@
 		{ "type": "SelectVariable", "name": "msExternMovementId", "caption": "BM (Externe Bewegung)" },
 		
 
-		{ "type": "ValidationTextBox", "name": "dimLightName0", "caption": "Dim Licht1 Name" },
-		{ "type": "SelectVariable", "name": "dimLightSwitchId0", "caption": "Dim Licht1 (Schalten)" },
-		{ "type": "SelectVariable", "name": "dimLightSetValueId0", "caption": "Dim Licht1 (Wert setzen)" },
-		{ "type": "SelectVariable", "name": "dimLightStatusValueId0", "caption": "Dim Licht1 (Status Wert)" },
+		{ "type": "ValidationTextBox", "name": "DimLightName0", "caption": "Dim Licht1 Name" },
+		{ "type": "SelectVariable", "name": "DimLightSwitchId0", "caption": "Dim Licht1 (Schalten)" },
+		{ "type": "SelectVariable", "name": "DimLightSetValueId0", "caption": "Dim Licht1 (Wert setzen)" },
+		{ "type": "SelectVariable", "name": "DimLightStatusValueId0", "caption": "Dim Licht1 (Status Wert)" },
 		
-		{ "type": "ValidationTextBox", "name": "dimLightName1", "caption": "Dim Licht2 Name" },
-		{ "type": "SelectVariable", "name": "dimLightSwitchId1", "caption": "Dim Licht2 (Schalten)" },
-		{ "type": "SelectVariable", "name": "dimLightSetValueId1", "caption": "Dim Licht2 (Wert setzen)" },
-		{ "type": "SelectVariable", "name": "dimLightStatusValueId1", "caption": "Dim Licht2 (Status Wert)" },
-
-		{ "type": "ValidationTextBox", "name": "dimLightName2", "caption": "Dim Licht3 Name" },
-		{ "type": "SelectVariable", "name": "dimLightSwitchId2", "caption": "Dim Licht3 (Schalten)" },
-		{ "type": "SelectVariable", "name": "dimLightSetValueId2", "caption": "Dim Licht3 (Wert setzen)" },
-		{ "type": "SelectVariable", "name": "dimLightStatusValueId2", "caption": "Dim Licht3 (Status Wert)" },
-
-		{ "type": "ValidationTextBox", "name": "dimLightName3", "caption": "Dim Licht4 Name" },
-		{ "type": "SelectVariable", "name": "dimLightSwitchId3", "caption": "Dim Licht4 (Schalten)" },
-		{ "type": "SelectVariable", "name": "dimLightSetValueId3", "caption": "Dim Licht4 (Wert setzen)" },
-		{ "type": "SelectVariable", "name": "dimLightStatusValueId3", "caption": "Dim Licht4 (Status Wert)" },
-
-		{ "type": "ValidationTextBox", "name": "dimLightName4", "caption": "Dim Licht5 Name" },
-		{ "type": "SelectVariable", "name": "dimLightSwitchId4", "caption": "Dim Licht5 (Schalten)" },
-		{ "type": "SelectVariable", "name": "dimLightSetValueId4", "caption": "Dim Licht5 (Wert setzen)" },
-		{ "type": "SelectVariable", "name": "dimLightStatusValueId4", "caption": "Dim Licht5 (Status Wert)" },
-
-		{ "type": "ValidationTextBox", "name": "dimLightName5", "caption": "Dim Licht6 Name" },
-		{ "type": "SelectVariable", "name": "dimLightSwitchId5", "caption": "Dim Licht6 (Schalten)" },
-		{ "type": "SelectVariable", "name": "dimLightSetValueId5", "caption": "Dim Licht6 (Wert setzen)" },
-		{ "type": "SelectVariable", "name": "dimLightStatusValueId5", "caption": "Dim Licht6 (Status Wert)" },
+		{ "type": "ValidationTextBox", "name": "DimLightName1", "caption": "Dim Licht2 Name" },
+		{ "type": "SelectVariable", "name": "DimLightSwitchId1", "caption": "Dim Licht2 (Schalten)" },
+		{ "type": "SelectVariable", "name": "DimLightSetValueId1", "caption": "Dim Licht2 (Wert setzen)" },
+		{ "type": "SelectVariable", "name": "DimLightStatusValueId1", "caption": "Dim Licht2 (Status Wert)" },
 
 
 		{ "type": "ValidationTextBox", "name": "rgbLightName0", "caption": "RGB Licht1 Name" },
@@ -62,8 +42,8 @@
 		{ "type": "SelectVariable", "name": "switchLightStatusId1", "caption": "Schalt Licht2 (Status)" },
 		
 
-		{ "type": "ValidationTextBox", "name": "sceneName0", "caption": "Name Szene AUS" },
-		{ "type": "Select", "name": "sceneColor0", "caption": "Farbe Scene AUS",
+		{ "type": "ValidationTextBox", "name": "SceneName0", "caption": "Name Szene AUS" },
+		{ "type": "Select", "name": "SceneColor0", "caption": "Farbe Scene AUS",
     		"options": [
 		        { "label": "Rot", "value":     "0xFF0000" },
 		        { "label": "Grün", "value":    "0x00FF00" },
@@ -79,8 +59,8 @@
 		        { "label": "Grau", "value":    "0x888888" }
 		] },
 
-		{ "type": "ValidationTextBox", "name": "sceneName1", "caption": "Name Szene 1" },
-		{ "type": "Select", "name": "sceneColor1", "caption": "Farbe Scene 1",
+		{ "type": "ValidationTextBox", "name": "SceneName1", "caption": "Name Szene 1" },
+		{ "type": "Select", "name": "SceneColor1", "caption": "Farbe Scene 1",
     		"options": [
 		        { "label": "Rot", "value":     "0xFF0000" },
 		        { "label": "Grün", "value":    "0x00FF00" },
@@ -96,8 +76,8 @@
 		        { "label": "Grau", "value":    "0x888888" }
 		] },
 
-		{ "type": "ValidationTextBox", "name": "sceneName2", "caption": "Name Szene 2" },
-		{ "type": "Select", "name": "sceneColor2", "caption": "Farbe Scene 2",
+		{ "type": "ValidationTextBox", "name": "SceneName2", "caption": "Name Szene 2" },
+		{ "type": "Select", "name": "SceneColor2", "caption": "Farbe Scene 2",
     		"options": [
 		        { "label": "Rot", "value":     "0xFF0000" },
 		        { "label": "Grün", "value":    "0x00FF00" },
@@ -113,8 +93,8 @@
 		        { "label": "Grau", "value":    "0x888888" }
 		] },
 
-		{ "type": "ValidationTextBox", "name": "sceneName3", "caption": "Name Szene 3" },
-		{ "type": "Select", "name": "sceneColor3", "caption": "Farbe Scene 3",
+		{ "type": "ValidationTextBox", "name": "SceneName3", "caption": "Name Szene 3" },
+		{ "type": "Select", "name": "SceneColor3", "caption": "Farbe Scene 3",
     		"options": [
 		        { "label": "Rot", "value":     "0xFF0000" },
 		        { "label": "Grün", "value":    "0x00FF00" },
