@@ -436,7 +436,7 @@ class BetterLight extends BetterBase {
         if($sceneNumber == 0)
         {
             $this->SceneNameProperties()->At($sceneNumber)->SetValue("Aus");
-            $this->SceneColorProperties()->At($sceneNumber)->SetValue("0x000000");
+            $this->SceneColorProperties()->At($sceneNumber)->SetValue("0x000000");            
         }
 
         $sceneName = $this->SceneNameProperties()->ValueAt($sceneNumber);
@@ -482,6 +482,11 @@ class BetterLight extends BetterBase {
         $var = $this->SceneMSLockVars()->At($sceneNumber);
         $var->RegisterVariableBoolean();
         $var->SetHidden(true);
+
+        if($sceneNumber == 0)
+        {
+            $var->SetValue(true);
+        }
     }
 
     private function CreateSceneProfiles()
