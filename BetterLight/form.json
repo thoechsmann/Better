@@ -1,9 +1,9 @@
 {
 	"elements":
 	[
-		{ "type": "SelectVariable", "name": "msMainSwitchId", "caption": "BM (Ausgang Schalten)" },
-		{ "type": "SelectVariable", "name": "msLockId", "caption": "BM (Sperren)" },
-		{ "type": "SelectVariable", "name": "msExternMovementId", "caption": "BM (Externe Bewegung)" },
+		{ "type": "SelectVariable", "name": "MSMainSwitchId", "caption": "BM (Ausgang Schalten)" },
+		{ "type": "SelectVariable", "name": "MSLockId", "caption": "BM (Sperren)" },
+		{ "type": "SelectVariable", "name": "MSExternMovementId", "caption": "BM (Externe Bewegung)" },
 		
 
 		{ "type": "ValidationTextBox", "name": "DimLight0Name", "caption": "Dim Licht1 Name" },
