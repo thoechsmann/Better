@@ -345,17 +345,25 @@ class Scene
         return $this->NameProp()->Value();
     }
 
+    public function SetName($value)
+    {
+        $this->NameProp()->SetValue($value);
+    }
+
     public function Color()
     {
         return intval($this->ColorProp()->Value(), 0);
+    }
+
+    public function SetColor($value)
+    {
+        $this->ColorProp()->SetValue($value);
     }
 
     public function IsDefined()
     {
         return $this->Name() != "";
     }
-
-
 }
 
 class BetterLight extends BetterBase {
@@ -495,6 +503,13 @@ class BetterLight extends BetterBase {
 
         $this->SwitchIdProperties()->RegisterAll();
         $this->SwitchSceneProperties()->RegisterAll();
+
+        // Set default values
+        $this->Scenes(0)->SetName("Aus");
+        $this->Scenes(0)->SetColor("0x000000");
+
+        $this->Scenes(1)->SetName("Standard");
+        $this->Scenes(1)->SetColor("0x00FF00");
     }
     
     public function ApplyChanges() 
@@ -525,6 +540,7 @@ class BetterLight extends BetterBase {
         $ms = $this->MotionSensor();
         $ms->RegisterVariables($this->SceneCount());
         $ms->RegisterTriggers();
+
     }
 
     private function CreateLights()
