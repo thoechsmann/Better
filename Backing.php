@@ -45,7 +45,7 @@ class Backing  {
             case self::EIBTypeRGB:
                 $hex = $this->int2hex($value);
                 $rgb = $this->hex2rgb($hex);
-                EIB_RGB($parent, $rgb[0], $rgb[1], $rgb[2]);
+                EIB_SetRGB($parent, $rgb[0], $rgb[1], $rgb[2]);
                 break;
         }
     }
