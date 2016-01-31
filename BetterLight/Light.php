@@ -74,7 +74,7 @@ class Light {
 
     public function TurnOff()
     {
-        $id = $this->SwitchIdProp();
+        $id = $this->SwitchIdProp()->Value();
         EIB_Switch(IPS_GetParent($id), false);
     }
 
