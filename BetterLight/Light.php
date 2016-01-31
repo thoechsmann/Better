@@ -143,6 +143,7 @@ class DimLight extends Light {
         $this->RegisterDisplayVar();
         $this->RegisterSceneVars($sceneCount);
 
+        $backing = $this->DisplayVarBacking();
         $backing->Update();
     }
 
@@ -237,6 +238,7 @@ class RGBLight extends Light {
         $this->RegisterDisplayVar();
         $this->RegisterSceneVars($sceneCount);
 
+        $backing = $this->DisplayVarBacking();
         $backing->Update();
     }
 
@@ -334,6 +336,7 @@ class SwitchLight extends Light {
         $this->RegisterDisplayVar();
         $this->RegisterSceneVars($sceneCount);
 
+        $backing = $this->DisplayVarBacking();
         $backing->Update();
     }
 
