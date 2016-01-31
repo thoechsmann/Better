@@ -540,7 +540,7 @@ class BetterLight extends BetterBase {
 
         // Set defaults
         $this->MotionSensor()->SetSceneLock(0, true);
-        $this->MotionSensor()->SetSceneLock(0, false);
+        $this->MotionSensor()->SetSceneLock(1, false);
 
     }
 
