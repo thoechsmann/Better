@@ -26,7 +26,7 @@ class Backing  {
 
     public function Update()
     {
-        $this->module->SetValueForIdent($this->GetValue());
+        $this->module->SetValueForIdent($this->displayIdent, $this->GetValue());
     }
 
     public function DisplayIdent()
