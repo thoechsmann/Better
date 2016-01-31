@@ -43,7 +43,9 @@ class Backing  {
                 break;
 
             case self::EIBTypeRGB:
-                DMX_SetRGB($parent, $value);
+                $hex = $this->int2hex($value);
+                $rgb = $this->hex2rgb($hex);
+                EIB_RGB($parent, $rgb[0], $rgb[1], $rgb[2]);
                 break;
         }
     }
@@ -60,6 +62,20 @@ class Backing  {
         $script = 'SetValue(' . $displayId . ', $_IPS[\'VALUE\']); ' . $additionalCode;
         $this->module->RegisterTrigger($triggerIdent, $this->getterId, $script, BetterBase::TriggerTypeUpdate);
     }
+
+    private function int2hex($value)
+    {
+        return sprintf("%06X", $value);
+    }
+
+    private function hex2rgb($hex) 
+    {         
+        $rgb = array(); 
+        $rgb[0] = hexdec ( $hex[0] . $hex[1] ); 
+        $rgb[1] = hexdec ( $hex[2] . $hex[3] ); 
+        $rgb[2] = hexdec ( $hex[4] . $hex[5] ); 
+        return $rgb; 
+    } 
 
 }
 
