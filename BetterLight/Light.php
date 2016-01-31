@@ -228,7 +228,6 @@ class RGBLight extends Light {
         parent::RegisterProperties();
 
         $this->SetValueIdProp()->Register();
-        $this->StatusValueIdProp()->Register();
     }
 
     public function RegisterVariables($sceneCount)
