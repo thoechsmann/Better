@@ -43,7 +43,7 @@ class Backing  {
                 break;
 
             case self::EIBTypeRGB:
-                SetValue($parent, $value);
+                DMX_SetRGB($parent, $value);
                 break;
         }
     }
