@@ -184,6 +184,102 @@ class DimLight extends Light {
     }
 }
 
+class RGBLight extends Light {
+    const Size = 2;
+    const Prefix = "RGBLight";
+
+    static public function GetIndexForDisplayIdent($ident)
+    {
+        for($i = 0; $i<self::Size; $i++)
+        {
+            $var = new RGBLight(0, $i);
+            if($var->IsDisplayVar($ident))
+                return $i;
+        }
+
+        return false;
+    }
+
+    public function __construct($module, $index) {
+        parent::__construct($module, $index, RGBLight::Prefix);
+    }
+
+    // Properties
+
+    private function SetValueIdProp()
+    {        
+        return new PropertyInteger($this->module, $this->prefix . $this->index . "SetValueId");
+    }
+
+    // Backings
+
+    public function DisplayVarBacking()
+    {
+        $getterId = $this->SetValueIdProp()->Value();
+        $setterId = $this->SetValueIdProp()->Value();
+        $displayIdent = $this->DisplayVar()->Ident();
+        return new Backing($this->module, $displayIdent, $getterId, $setterId, Backing::EIBTypeScale);
+    }
+
+    // Register
+
+    public function RegisterProperties()
+    {
+        parent::RegisterProperties();
+
+        $this->SetValueIdProp()->Register();
+        $this->StatusValueIdProp()->Register();
+    }
+
+    public function RegisterVariables($sceneCount)
+    {
+        $this->RegisterDisplayVar();
+        $this->RegisterSceneVars($sceneCount);
+    }
+
+    private function RegisterDisplayVar()
+    {
+        $name = $this->NameProp()->Value();
+        $var = $this->DisplayVar();
+        $var->RegisterVariableInteger($name, "~HexColor"); //, self::PosLightSwitch);
+        $var->EnableAction();
+    }
+
+    private function RegisterSceneVars($sceneCount)
+    {
+        for($i = 0; $i<$sceneCount; $i++)
+        {
+            $sceneLight = $this->SceneVars($i);
+            $sceneLight->RegisterVariableInteger();
+            $sceneLight->SetHidden(true);
+        }
+    }
+
+    public function RegisterTriggers()
+    {
+        // $backing = $this->DisplayVarBacking();
+        // $backing->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
+    }
+
+    //
+
+    public function LoadFromScene($sceneNumber, $triggerIdent = "", $triggerValue = 0)
+    {
+        $value = $this->SceneVars($sceneNumber)->GetValue();
+
+        if($this->IsDisplayVar($triggerIdent))
+        {
+            // load value stored in temp var
+            $value = $triggerValue;
+        }
+
+        $id = $this->SetValueIdProp();
+        SetValue($id, $value);
+
+        // $this->DisplayVarBacking()->SetValue($value);
+    }
+}
+
 class SwitchLight extends Light {
     const Size = 2;
     const Prefix = "SwitchLight";

@@ -14,8 +14,7 @@
 
 		{ "type": "ValidationTextBox", "name": "rgbLightName0", "caption": "RGB Licht1 Name" },
 		{ "type": "SelectVariable", "name": "rgbLightSwitchId0", "caption": "RGB Licht1 (Schalten)" },
-		{ "type": "SelectVariable", "name": "rgbLightSetValueId0", "caption": "RGB Licht1 (RGB Wert setzen)" },
-		{ "type": "SelectVariable", "name": "rgbLightStatusValueId0", "caption": "RGB Licht1 (RGB Status Wert)" },
+		{ "type": "SelectVariable", "name": "rgbLightSetValueId0", "caption": "RGB Licht1 (RGB Controller)" },
 		{ "type": "ValidationTextBox", "name": "rgbLightProgramName0_0", "caption": "RGB Licht1 (Programm 1 Name)" },
 		{ "type": "SelectVariable", "name": "rgbLightProgramId0_0", "caption": "RGB Licht1 (Programm 1)" },
 		{ "type": "ValidationTextBox", "name": "rgbLightProgramName1_0", "caption": "RGB Licht1 (Programm 2 Name)" },
