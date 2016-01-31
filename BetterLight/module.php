@@ -669,7 +669,7 @@ class BetterLight extends BetterBase {
             if($ms->IsLocked())
                 $this->LoadFromScene($sceneNumber);
             else
-                $this->SetMSExternMovement();
+                $ms->TriggerExternMovement();
         }
     }
 
