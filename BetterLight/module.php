@@ -367,6 +367,11 @@ class BetterLight extends BetterBase {
         {
             $this->SwitchLights($i)->SaveToScene($sceneNumber);
         }
+
+        for($i = 0; $i < $this->RGBLightCount(); $i++)
+        {
+            $this->RGBLights($i)->SaveToScene($sceneNumber);
+        }
         
         $this->MotionSensor()->SaveToScene($sceneNumber);
 
