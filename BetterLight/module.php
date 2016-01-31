@@ -299,7 +299,7 @@ class MotionSensor
     public function LoadFromScene($sceneNumber)
     {
         $currentValue = $this->IsLocked();
-        $value = $this->SceneVars($sceneNumber)->GetValue();
+        $value = $this->LockSceneVars($sceneNumber)->GetValue();
 
         if($currentValue != $value)
         {
@@ -313,6 +313,7 @@ class Scene
     private $index;
     private $module;
 
+    const Size = 4;
     const StrScene = "Scene";
 
     public function __construct($module, $index) {
@@ -358,14 +359,9 @@ class Scene
 
 class BetterLight extends BetterBase {
 
-    const MaxScenes = 4;
     const MaxSwitches = 4;
 
-    const StrLight = "light";
-    const StrScene = "scene";
     const StrSwitch = "switch";
-    const StrDim = "Dim";
-    const StrLink = "Link";
 
     const PosSceneSelection = 1;
     const PosMSLock = 2;
@@ -457,7 +453,7 @@ class BetterLight extends BetterBase {
     {
         $count = 0;
         
-        for($i=0; $i<self::MaxScenes; $i++)
+        for($i=0; $i<Scene::Size; $i++)
         {
             $scene = $this->Scenes($i);
 
@@ -491,7 +487,7 @@ class BetterLight extends BetterBase {
             $this->DimLights($i)->RegisterProperties();
         }
 
-        for($i=0; $i<self::MaxScenes; $i++)
+        for($i=0; $i<Scene::Size; $i++)
         {
             $this->Scenes($i)->RegisterProperties();
         }
@@ -654,8 +650,6 @@ class BetterLight extends BetterBase {
  
         $ms = $this->MotionSensor();
         $isOn = $ms->IsMainSwitchOn();
-        // $isMSLocked = $ms->IsLocked();
-        // $shouldBeLocked = $this->SceneMSLockVars()->At($sceneNumber)->GetValue();
 
         if($isOn || $turnOn)
         {
@@ -664,9 +658,6 @@ class BetterLight extends BetterBase {
 
         if($isOn)
         {
-            // if($isMSLocked != $shouldBeLocked)
-            //     $this->SetMSLock($shouldBeLocked);
-
             // Do not load scene when ms is activated and light is on as turning ms lock on will send light status event.
             // This event will be catched and used to set the current scene.
             if(!$ms->IsLocked())
@@ -675,9 +666,6 @@ class BetterLight extends BetterBase {
         }
         else if($turnOn)
         {
-            // if($isMSLocked != $shouldBeLocked)
-            //     $this->SetMSLock($shouldBeLocked);
-
             if($ms->IsLocked())
                 $this->LoadFromScene($sceneNumber);
             else
