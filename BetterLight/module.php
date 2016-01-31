@@ -281,6 +281,11 @@ class MotionSensor
         }        
     }
 
+    public function SetSceneLock($sceneNumber, $value)
+    {
+        $this->LockSceneVars($sceneNumber)->SetValue($value);
+    }
+
     public function TriggerExternMovement()
     {
         $id = $this->ExternMovementIdProp()->Value();
@@ -532,6 +537,10 @@ class BetterLight extends BetterBase {
 
         $this->IdendTriggerdTurnOnDimValueVar()->RegisterVariableFloat();
         $this->IdendTriggerdTurnOnDimValueVar()->SetHidden(true);
+
+        // Set defaults
+        $this->MotionSensor()->SetSceneLock(0, true);
+        $this->MotionSensor()->SetSceneLock(0, false);
 
     }
 
