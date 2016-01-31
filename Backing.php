@@ -7,6 +7,7 @@ class Backing  {
     const EIBTypeScale = 1;
     const EIBTypeRGB = 2;
 
+    private $module;
     private $displayIdent;
     private $getterId;
     private $setterId;
@@ -21,6 +22,11 @@ class Backing  {
         $this->getterId = $getterId;
         $this->setterId = $setterId;
         $this->eibType = $eibType;
+    }
+
+    public function Update()
+    {
+        $this->module->SetValueForIdent($this->GetValue());
     }
 
     public function DisplayIdent()
