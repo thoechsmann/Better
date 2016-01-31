@@ -216,7 +216,7 @@ class SwitchLight extends Light {
     public function DisplayVarBacking()
     {
         $getterId = $this->StatusIdProp()->Value();
-        $setterId = $this->SetValueIdProp()->Value();
+        $setterId = $this->SwitchIdProp()->Value();
         $displayIdent = $this->DisplayVar()->Ident();
         return new Backing($this->module, $displayIdent, $getterId, $setterId, Backing::EIBTypeSwitch);
     }
