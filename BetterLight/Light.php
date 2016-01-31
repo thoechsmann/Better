@@ -73,7 +73,7 @@ class Light {
 
 }
 
-class DimLight {
+class DimLight extends Light {
     const Size = 6;
 
     static public function GetIndexForDisplayIdent($ident)
