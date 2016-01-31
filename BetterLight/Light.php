@@ -34,7 +34,7 @@ class Light {
     protected function DisplayVar()
     {
         return new Variable($this->module, 
-            self::StrLight . $this->index .
+            $this->prefix . $this->index .
             "DisplayVar");
     }
 
@@ -47,7 +47,7 @@ class Light {
     {
         return new Variable($this->module, 
             BetterBase::PersistentPrefix . 
-            self::StrLight . $this->index . 
+            $this->prefix . $this->index . 
             self::StrScene . $sceneNumber . 
             "Value");
     }
