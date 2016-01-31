@@ -5,27 +5,28 @@ require_once(__DIR__ . "/../Variable.php");
 require_once(__DIR__ . "/../Backing.php");
 
 class Light {
-    const StrLight = "Light";
     const StrScene = "Scene";
 
     protected $index;
     protected $module;
+    protected $prefix;
 
-    public function __construct($module, $index) {
+    public function __construct($module, $index, $prefix) {
         $this->module = $module;
         $this->index = $index;
+        $this->prefix = $prefix;
     }
 
     // Properties
 
     protected function NameProp()
     {        
-        return new PropertyString($this->module, self::StrLight . $this->index . "Name");
+        return new PropertyString($this->module, $this->prefix . $this->index . "Name");
     }   
 
     protected function SwitchIdProp()
     {        
-        return new PropertyInteger($this->module, self::StrLight . $this->index . "SwitchId");
+        return new PropertyInteger($this->module, $this->prefix . $this->index . "SwitchId");
     }
 
     // Variables
@@ -71,10 +72,23 @@ class Light {
         return $this->Name() != "";
     }
 
+    public function TurnOff()
+    {
+        $id = $this->SwitchIdProp();
+        EIB_Switch(IPS_GetParent($id), false);
+    }
+
+    public function SaveToScene($sceneNumber)
+    {
+        $value = $this->DisplayVar()->GetValue();
+        $this->SceneVars($sceneNumber)->SetValue($value);
+    }
+
 }
 
 class DimLight extends Light {
     const Size = 6;
+    const Prefix = "DimLight";
 
     static public function GetIndexForDisplayIdent($ident)
     {
@@ -89,19 +103,19 @@ class DimLight extends Light {
     }
 
     public function __construct($module, $index) {
-        parent::__construct($module, $index);
+        parent::__construct($module, $index, DimLight::Prefix);
     }
 
     // Properties
 
     private function SetValueIdProp()
     {        
-        return new PropertyInteger($this->module, Light::StrLight . $this->index . "SetValueId");
+        return new PropertyInteger($this->module, $this->prefix . $this->index . "SetValueId");
     }
 
     private function StatusValueIdProp()
     {        
-        return new PropertyInteger($this->module, Light::StrLight . $this->index . "StatusValueId");
+        return new PropertyInteger($this->module, $this->prefix . $this->index . "StatusValueId");
     }
 
     // Backings
@@ -156,16 +170,97 @@ class DimLight extends Light {
 
     //
 
-    public function TurnOff()
+    public function LoadFromScene($sceneNumber, $triggerIdent = "", $triggerValue = 0)
     {
-        $this->DisplayVarBacking()->SetValue(false);
+        $value = $this->SceneVars($sceneNumber)->GetValue();
+
+        if($this->IsDisplayVar($triggerIdent))
+        {
+            // load value stored in temp var
+            $value = $triggerValue;
+        }
+
+        $this->DisplayVarBacking()->SetValue($value);
+    }
+}
+
+class SwitchLight extends Light {
+    const Size = 2;
+    const Prefix = "SwitchLight";
+
+    static public function GetIndexForDisplayIdent($ident)
+    {
+        for($i = 0; $i<self::Size; $i++)
+        {
+            $var = new SwitchLight(0, $i);
+            if($var->IsDisplayVar($ident))
+                return $i;
+        }
+
+        return false;
     }
 
-    public function SaveToScene($sceneNumber)
-    {
-        $value = $this->DisplayVar()->GetValue();
-        $this->SceneVars($sceneNumber)->SetValue($value);
+    public function __construct($module, $index) {
+        parent::__construct($module, $index, SwitchLight::Prefix);
     }
+
+    // Properties
+
+    private function StatusIdProp()
+    {        
+        return new PropertyInteger($this->module, $this->prefix . $this->index . "StatusId");
+    }
+
+    // Backings
+
+    public function DisplayVarBacking()
+    {
+        $getterId = $this->StatusIdProp()->Value();
+        $setterId = $this->SetValueIdProp()->Value();
+        $displayIdent = $this->DisplayVar()->Ident();
+        return new Backing($this->module, $displayIdent, $getterId, $setterId, Backing::EIBTypeSwitch);
+    }
+
+    // Register
+
+    public function RegisterProperties()
+    {
+        parent::RegisterProperties();
+
+        $this->StatusIdProp()->Register();
+    }
+
+    public function RegisterVariables($sceneCount)
+    {
+        $this->RegisterDisplayVar();
+        $this->RegisterSceneVars($sceneCount);
+    }
+
+    private function RegisterDisplayVar()
+    {
+        $name = $this->NameProp()->Value();
+        $var = $this->DisplayVar();
+        $var->RegisterVariableBoolean($name, "~Switch"); //, self::PosLightSwitch);
+        $var->EnableAction();
+    }
+
+    private function RegisterSceneVars($sceneCount)
+    {
+        for($i = 0; $i<$sceneCount; $i++)
+        {
+            $sceneLight = $this->SceneVars($i);
+            $sceneLight->RegisterVariableBoolean();
+            $sceneLight->SetHidden(true);
+        }
+    }
+
+    public function RegisterTriggers()
+    {
+        $backing = $this->DisplayVarBacking();
+        $backing->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
+    }
+
+    //
 
     public function LoadFromScene($sceneNumber, $triggerIdent = "", $triggerValue = 0)
     {
@@ -180,6 +275,7 @@ class DimLight extends Light {
         $this->DisplayVarBacking()->SetValue($value);
     }
 }
+
 
 class MotionSensor 
 {

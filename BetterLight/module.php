@@ -69,6 +69,11 @@ class BetterLight extends BetterBase {
         return new DimLight($this, $lightNumber);
     }
 
+    private function SwitchLights($lightNumber)
+    {
+        return new SwitchLight($this, $lightNumber);
+    }
+
     private function Scenes($sceneNumber)
     {
         return new Scene($this, $sceneNumber);
@@ -88,6 +93,23 @@ class BetterLight extends BetterBase {
         for($i=0; $i<DimLight::Size; $i++)
         {
             $light = $this->DimLights($i);
+
+            if(!$light->IsDefined())
+            {
+                return $count;
+            }
+
+            $count++;
+        }
+    }
+
+    private function SwitchLightCount()
+    {
+        $count = 0;
+        
+        for($i=0; $i<SwitchLight::Size; $i++)
+        {
+            $light = $this->SwitchLights($i);
 
             if(!$light->IsDefined())
             {
@@ -134,6 +156,11 @@ class BetterLight extends BetterBase {
         for($i=0; $i<DimLight::Size; $i++)
         {
             $this->DimLights($i)->RegisterProperties();
+        }
+
+        for($i=0; $i<SwitchLight::Size; $i++)
+        {
+            $this->SwitchLights($i)->RegisterProperties();
         }
 
         for($i=0; $i<Scene::Size; $i++)
@@ -195,10 +222,20 @@ class BetterLight extends BetterBase {
         {
             $light = $this->DimLights($i);
 
-            IPS_LogMessage("BL", "Registering Light $i");
+            IPS_LogMessage("BL", "Registering vars for Dim Light $i");
             $light->RegisterVariables($sceneCount);
             $light->RegisterTriggers();      
         }
+
+        for($i=0; $i<$this->SwitchLightCount(); $i++)
+        {
+            $light = $this->SwitchLights($i);
+
+            IPS_LogMessage("BL", "Registering vars for Switch Light $i");
+            $light->RegisterVariables($sceneCount);
+            $light->RegisterTriggers();      
+        }
+
     }
 
     private function CreateSceneProfiles()
@@ -282,6 +319,11 @@ class BetterLight extends BetterBase {
         {
             $this->DimLights($i)->SaveToScene($sceneNumber);
         }
+
+        for($i = 0; $i < $this->SwitchLightCount(); $i++)
+        {
+            $this->SwitchLights($i)->SaveToScene($sceneNumber);
+        }
         
         $this->MotionSensor()->SaveToScene($sceneNumber);
 
@@ -298,6 +340,11 @@ class BetterLight extends BetterBase {
         for($i = 0; $i < $this->DimLightCount(); $i++)
         {
             $this->DimLights($i)->LoadFromScene($sceneNumber, $triggerIdent, $triggerBoolValue);
+        }
+
+        for($i = 0; $i < $this->SwitchLightCount(); $i++)
+        {
+            $this->SwitchLights($i)->LoadFromScene($sceneNumber, $triggerIdent, $triggerBoolValue);
         }
 
         // Motion Sensor is set in SetScene.
@@ -374,16 +421,18 @@ class BetterLight extends BetterBase {
     public function RequestAction($ident, $value) 
     {
         IPS_LogMessage("BL", "RequestAction - ident:$ident, value:$value");
-        // $lightNumber = $this->LightSwitchVars()->GetIndexForIdent($ident);
-        // if($lightNumber !== false)
-        // {
-        //     $this->SetBackedValue(
-        //         $this->LightSwitchBacking($lightNumber), 
-        //         $value, 
-        //         $this->IdendTriggerdTurnOnSwitchValueVar());
+        $lightNumber = SwitchLight::GetIndexForDisplayIdent($ident);
+        if($lightNumber !== false)
+        {
+            IPS_LogMessage("BL", "RequestAction SwitchLight - ident:$ident, value:$value");
 
-        //     return;
-        // }
+            $this->SetBackedValue(
+                $this->SwitchLights($lightNumber)->DisplayVarBacking(), 
+                $value, 
+                $this->IdendTriggerdTurnOnDimValueVar());
+
+            return;
+        }
 
         $lightNumber = DimLight::GetIndexForDisplayIdent($ident);
         if($lightNumber !== false)
@@ -441,11 +490,15 @@ class BetterLight extends BetterBase {
 
     public function TurnOffAll()
     {
-        // for($lightNumber = 0; $lightNumber < self::MaxLights; $lightNumber++)
-        // {
-        //     if($this->LightSwitchIdProperties()->ValueAt($lightNumber) != 0)
-        //         $this->LightSwitchBacking($lightNumber)->SetValue(false);
-        // }
+        for($i = 0; $i < $this->DimLightCount(); $i++)
+        {
+            $this->DimLights($i)->TurnOff();
+        }
+
+        for($i = 0; $i < $this->SwitchLightCount(); $i++)
+        {
+            $this->SwitchLights($i)->TurnOff();
+        }
     }
 
 }

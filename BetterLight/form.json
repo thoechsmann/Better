@@ -28,13 +28,13 @@
 		{ "type": "SelectVariable", "name": "rgbLightProgramId4_0", "caption": "RGB Licht1 (Programm 5)" },
 
 		
-		{ "type": "ValidationTextBox", "name": "switchLightName0", "caption": "Schalt Licht1" },
-		{ "type": "SelectVariable", "name": "switchLightSwitchId0", "caption": "Schalt Licht1 (Schalten)" },
-		{ "type": "SelectVariable", "name": "switchLightStatusId0", "caption": "Schalt Licht1 (Status)" },
+		{ "type": "ValidationTextBox", "name": "SwitchLight0Name", "caption": "Schalt Licht1" },
+		{ "type": "SelectVariable", "name": "SwitchLight0SwitchId", "caption": "Schalt Licht1 (Schalten)" },
+		{ "type": "SelectVariable", "name": "SwitchLight0StatusId", "caption": "Schalt Licht1 (Status)" },
 
-		{ "type": "ValidationTextBox", "name": "switchLightName1", "caption": "Schalt Licht2" },
-		{ "type": "SelectVariable", "name": "switchLightSwitchId1", "caption": "Schalt Licht2 (Schalten)" },
-		{ "type": "SelectVariable", "name": "switchLightStatusId1", "caption": "Schalt Licht2 (Status)" },
+		{ "type": "ValidationTextBox", "name": "switchLight1Name", "caption": "Schalt Licht2" },
+		{ "type": "SelectVariable", "name": "switchLight1SwitchId", "caption": "Schalt Licht2 (Schalten)" },
+		{ "type": "SelectVariable", "name": "switchLight1StatusId", "caption": "Schalt Licht2 (Status)" },
 		
 
 		{ "type": "ValidationTextBox", "name": "Scene0Name", "caption": "Name Szene AUS" },
