@@ -277,7 +277,8 @@ class MotionSensor
         if($id != 0)
         {
             EIB_Switch(IPS_GetParent($id), $value);
-        }
+            $this->LockVar()->SetValue($value);
+        }        
     }
 
     public function TriggerExternMovement()
