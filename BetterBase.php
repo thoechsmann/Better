@@ -87,7 +87,7 @@ class BetterBase extends IPSModule {
         $this->RemoveAllButSchedulers();
 	}
 
-    protected function SetValueForIdent($ident, $value)
+    public function SetValueForIdent($ident, $value)
     {
         $id = $this->GetIDForIdent($ident);
         SetValue($id, $value);
