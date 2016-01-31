@@ -218,7 +218,7 @@ class RGBLight extends Light {
         $getterId = $this->SetValueIdProp()->Value();
         $setterId = $this->SetValueIdProp()->Value();
         $displayIdent = $this->DisplayVar()->Ident();
-        return new Backing($this->module, $displayIdent, $getterId, $setterId, Backing::EIBTypeScale);
+        return new Backing($this->module, $displayIdent, $getterId, $setterId, Backing::EIBTypeRGB);
     }
 
     // Register
@@ -256,8 +256,8 @@ class RGBLight extends Light {
 
     public function RegisterTriggers()
     {
-        // $backing = $this->DisplayVarBacking();
-        // $backing->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
+        $backing = $this->DisplayVarBacking();
+        $backing->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
     }
 
     //

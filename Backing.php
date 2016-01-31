@@ -5,6 +5,7 @@ class Backing  {
 
     const EIBTypeSwitch = 0;
     const EIBTypeScale = 1;
+    const EIBTypeRGB = 2;
 
     private $displayIdent;
     private $getterId;
@@ -39,6 +40,10 @@ class Backing  {
 
             case self::EIBTypeScale:
                 EIB_Scale($parent, $value);
+                break;
+
+            case self::EIBTypeRGB:
+                SetValue($parent, $value);
                 break;
         }
     }
