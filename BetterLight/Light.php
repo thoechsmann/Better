@@ -273,7 +273,7 @@ class RGBLight extends Light {
         }
 
         $id = $this->SetValueIdProp();
-        SetValue($id, $value);
+        SetValue(IPS_GetParent($id), $value);
 
         // $this->DisplayVarBacking()->SetValue($value);
     }

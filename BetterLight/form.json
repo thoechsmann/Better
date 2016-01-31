@@ -12,19 +12,9 @@
 		{ "type": "SelectVariable", "name": "DimLight0StatusValueId", "caption": "Dim Licht1 (Status Wert)" },
 		
 
-		{ "type": "ValidationTextBox", "name": "rgbLightName0", "caption": "RGB Licht1 Name" },
-		{ "type": "SelectVariable", "name": "rgbLightSwitchId0", "caption": "RGB Licht1 (Schalten)" },
-		{ "type": "SelectVariable", "name": "rgbLightSetValueId0", "caption": "RGB Licht1 (RGB Controller)" },
-		{ "type": "ValidationTextBox", "name": "rgbLightProgramName0_0", "caption": "RGB Licht1 (Programm 1 Name)" },
-		{ "type": "SelectVariable", "name": "rgbLightProgramId0_0", "caption": "RGB Licht1 (Programm 1)" },
-		{ "type": "ValidationTextBox", "name": "rgbLightProgramName1_0", "caption": "RGB Licht1 (Programm 2 Name)" },
-		{ "type": "SelectVariable", "name": "rgbLightProgramId1_0", "caption": "RGB Licht1 (Programm 2)" },
-		{ "type": "ValidationTextBox", "name": "rgbLightProgramName2_0", "caption": "RGB Licht1 (Programm 3 Name)" },
-		{ "type": "SelectVariable", "name": "rgbLightProgramId2_0", "caption": "RGB Licht1 (Programm 3)" },
-		{ "type": "ValidationTextBox", "name": "rgbLightProgramName3_0", "caption": "RGB Licht1 (Programm 4 Name)" },
-		{ "type": "SelectVariable", "name": "rgbLightProgramId3_0", "caption": "RGB Licht1 (Programm 4)" },
-		{ "type": "ValidationTextBox", "name": "rgbLightProgramName4_0", "caption": "RGB Licht1 (Programm 5 Name)" },
-		{ "type": "SelectVariable", "name": "rgbLightProgramId4_0", "caption": "RGB Licht1 (Programm 5)" },
+		{ "type": "ValidationTextBox", "name": "RGBLight0Name", "caption": "RGB Licht1 Name" },
+		{ "type": "SelectVariable", "name": "RGBLight0SwitchId", "caption": "RGB Licht1 (Schalten)" },
+		{ "type": "SelectVariable", "name": "RGBLight0SetValueId", "caption": "RGB Licht1 (RGB Controller)" },
 
 		
 		{ "type": "ValidationTextBox", "name": "SwitchLight0Name", "caption": "Schalt Licht1" },
