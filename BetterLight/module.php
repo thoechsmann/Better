@@ -62,7 +62,7 @@ class DimLight {
 
     public function IsDisplayVar($ident)
     {
-        return $ident = $this->DisplayVar()->Ident();
+        return $ident == $this->DisplayVar()->Ident();
     }
 
     private function SceneVars($sceneNumber)
@@ -84,17 +84,7 @@ class DimLight {
         return new Backing($this->module, $displayIdent, $getterId, $setterId, Backing::EIBTypeScale);
     }
 
-    //
-
-    public function Name()
-    {
-        return $this->NameProp()->Value();
-    }
-
-    public function IsDefined()
-    {
-        return $this->Name() != "";
-    }
+    // Register
 
     public function RegisterProperties()
     {
@@ -134,6 +124,23 @@ class DimLight {
         $backing->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
     }
 
+    //
+
+    public function Name()
+    {
+        return $this->NameProp()->Value();
+    }
+
+    public function IsDefined()
+    {
+        return $this->Name() != "";
+    }
+
+    public function TurnOff()
+    {
+        $this->DisplayVarBacking()->SetValue(false);
+    }
+
     public function SaveToScene($sceneNumber)
     {
         $value = $this->DisplayVar()->GetValue();
@@ -144,13 +151,13 @@ class DimLight {
     {
         $value = $this->SceneVars($sceneNumber)->GetValue();
 
-        if($this->IsDisplayVar($identTrigged))
+        if($this->IsDisplayVar($triggerIdent))
         {
             // load value stored in temp var
-            $value = $triggedValue;
+            $value = $triggerValue;
         }
 
-        $this->DisplayVarBacking->SetValue($value);
+        $this->DisplayVarBacking()->SetValue($value);
     }
 }
 
@@ -273,7 +280,6 @@ class MotionSensor
         }
     }
 
-
     public function TriggerExternMovement()
     {
         $id = $this->ExternMovementIdProp()->Value();
@@ -284,6 +290,22 @@ class MotionSensor
         }
     }
 
+    public function SaveToScene($sceneNumber)
+    {
+        $value = $this->LockVar()->GetValue();
+        $this->LockSceneVars($sceneNumber)->SetValue($value);
+    }
+
+    public function LoadFromScene($sceneNumber)
+    {
+        $currentValue = $this->IsLocked();
+        $value = $this->SceneVars($sceneNumber)->GetValue();
+
+        if($currentValue != $value)
+        {
+            $this->SetLock($value);
+        }
+    }
 }
 
 class Scene
@@ -352,7 +374,8 @@ class BetterLight extends BetterBase {
     const PosSaveSceneButton = 5;
     const PosSceneScheduler = 6;
 
-    const SaveSceneIdent = "SaveScene";
+    const SaveSceneStartIdent = "SaveSceneStart";
+    const SaveSceneSelectIdent = "SaveSceneSelect";
     const SceneSchedulerIdent = "SceneScheduler";
 
     // Properties
@@ -376,7 +399,7 @@ class BetterLight extends BetterBase {
 
     private function SaveToSceneVar()
     {
-        return new Variable($this, "SaveToScene");
+        return new Variable($this, self::SaveSceneSelectIdent);
     }
 
     private function IdendTriggerdTurnOnVar()
@@ -457,27 +480,9 @@ class BetterLight extends BetterBase {
         return "BL_saveScenes_" . $this->GetName() . $this->InstanceID;
     }
 
-    private function LoadMSLockFromScene($sceneNumber)
-    {
-        // We just update the displayed var. 
-        // It will not write it to EIB. That was already done in the SetScene method.
-        $value = $this->SceneMSLockVars()->At($sceneNumber)->GetValue();
-        $this->MSLockVar()->SetValue($value);
-    }
-
-    private function SaveMSLockToScene($sceneNumber)
-    {
-        $value = $this->MSLockVar()->GetValue();
-        $this->SceneMSLockVars()->At($sceneNumber)->SetValue($value);
-    }
-
     public function Create() 
     {
         parent::Create();       
-        
-        // $this->MSMainSwitchIdProperty()->Register();
-        // $this->MSLockIdProperty()->Register();
-        // $this->MSExternMovementIdProperty()->Register();
 
         $this->MotionSensor()->RegisterProperties();
 
@@ -491,17 +496,8 @@ class BetterLight extends BetterBase {
             $this->Scenes($i)->RegisterProperties();
         }
 
-        // $this->LightNameProperties()->RegisterAll();
-        // $this->LightSwitchIdProperties()->RegisterAll();
-        // $this->LightDimIdProperties()->RegisterAll();
-        // $this->LightStatusSwitchIdProperties()->RegisterAll();
-        // $this->LightStatusDimIdProperties()->RegisterAll();
-
         $this->SwitchIdProperties()->RegisterAll();
         $this->SwitchSceneProperties()->RegisterAll();
-
-        // $this->SceneNameProperties()->RegisterAll();
-        // $this->SceneColorProperties()->RegisterAll();
     }
     
     public function ApplyChanges() 
@@ -512,7 +508,7 @@ class BetterLight extends BetterBase {
         $this->CreateLights();
         $this->CreateSceneProfiles();
         $this->CreateSceneSelectionVar();
-        // $this->CreateSceneScheduler();
+        $this->CreateSceneScheduler();
         $this->CreateSaveButton();        
 
         $this->IdendTriggerdTurnOnVar()->RegisterVariableString();
@@ -605,34 +601,39 @@ class BetterLight extends BetterBase {
         $saveToScene->EnableAction();
         $saveToScene->SetValue(-1);
 
-        $id = $this->RegisterScript(self::SaveSceneIdent, "Szene speichern", 
+        $id = $this->RegisterScript(self::SaveSceneStartIdent, "Szene speichern", 
             "<? BL_StartSave(" . $this->InstanceID . ");?>",
             self::PosSaveSceneButton);
-        IPS_SetHidden($id, true);
+
+        $this->CancelSave();
     }
 
     public function StartSave()
     {
+        IPS_LogMessage("BL","StartSave() ");
         $this->SaveToSceneVar()->SetHidden(false);
 
-        $id = $this->GetIDForIdent(self::SaveSceneIdent);
+        $id = $this->GetIDForIdent(self::SaveSceneStartIdent);
         IPS_SetHidden($id, true);        
     }
 
     private function SaveToScene($sceneNumber)
     {
+        IPS_LogMessage("BL","SaveToScene(sceneNumber = $sceneNumber) ");
+
         for($i = 0; $i < $this->DimLightCount(); $i++)
         {
             $this->DimLights($i)->SaveToScene($sceneNumber);
         }
-        // $this->SaveMSLockToScene($sceneNumber);
+        
+        $this->MotionSensor()->SaveToScene($sceneNumber);
 
         $this->CancelSave();
     }
 
     private function LoadFromScene($sceneNumber)
     {
-        // IPS_LogMessage("BL","LoadFromScene(sceneNumber = $sceneNumber) ");
+        IPS_LogMessage("BL","LoadFromScene(sceneNumber = $sceneNumber) ");
 
         $triggerIdent = $this->IdendTriggerdTurnOnVar()->GetValue();
         $triggerBoolValue = $this->IdendTriggerdTurnOnDimValueVar()->GetValue();
@@ -641,45 +642,55 @@ class BetterLight extends BetterBase {
         {
             $this->DimLights($i)->LoadFromScene($sceneNumber, $triggerIdent, $triggerBoolValue);
         }
+
+        // Motion Sensor is set in SetScene.
     }
 
     public function SetScene($sceneNumber, $turnOn = false)
     {
-        // IPS_LogMessage("BL","SetScene(sceneNumber = $sceneNumber, turnOn = $turnOn) ");
-        // $this->CurrentSceneVar()->SetValue($sceneNumber);
-        // $this->CancelSave();
-        // $isOn = $this->MainSwitchStatus();
-        // $isMSLocked = $this->IsMSLocked();
+        IPS_LogMessage("BL","SetScene(sceneNumber = $sceneNumber, turnOn = $turnOn) ");
+        $this->CurrentSceneVar()->SetValue($sceneNumber);
+        $this->CancelSave();
+ 
+        $ms = $this->MotionSensor();
+        $isOn = $ms->IsMainSwitchOn();
+        // $isMSLocked = $ms->IsLocked();
         // $shouldBeLocked = $this->SceneMSLockVars()->At($sceneNumber)->GetValue();
 
-        // if($isOn)
-        // {
-        //     if($isMSLocked != $shouldBeLocked)
-        //         $this->SetMSLock($shouldBeLocked);
+        if($isOn || $turnOn)
+        {
+            $ms->LoadFromScene($sceneNumber);
+        }
 
-        //     // Do not load scene when ms is activated nad light is on as turning ms lock on will send light status event.
-        //     // This event will be catched and used to set the current scene.
-        //     if(!$shouldBeLocked)
-        //         $this->LoadFromScene($sceneNumber);
+        if($isOn)
+        {
+            // if($isMSLocked != $shouldBeLocked)
+            //     $this->SetMSLock($shouldBeLocked);
 
-        // }
-        // else if($turnOn)
-        // {
-        //     if($isMSLocked != $shouldBeLocked)
-        //         $this->SetMSLock($shouldBeLocked);
+            // Do not load scene when ms is activated and light is on as turning ms lock on will send light status event.
+            // This event will be catched and used to set the current scene.
+            if(!$ms->IsLocked())
+                $this->LoadFromScene($sceneNumber);
 
-        //     if($shouldBeLocked)
-        //         $this->LoadFromScene($sceneNumber);
+        }
+        else if($turnOn)
+        {
+            // if($isMSLocked != $shouldBeLocked)
+            //     $this->SetMSLock($shouldBeLocked);
 
-        //     $this->SetMSExternMovement();
-        // }
+            if($ms->IsLocked())
+                $this->LoadFromScene($sceneNumber);
+            else
+                $this->SetMSExternMovement();
+        }
     }
 
     public function CancelSave()
     {
+        IPS_LogMessage("BL","CancelSave() ");
         $this->SaveToSceneVar()->SetHidden(true);
 
-        $id = $this->GetIDForIdent(self::SaveSceneIdent);
+        $id = $this->GetIDForIdent(self::SaveSceneStartIdent);
         IPS_SetHidden($id, false);        
     }
 
@@ -713,6 +724,7 @@ class BetterLight extends BetterBase {
 
     public function RequestAction($ident, $value) 
     {
+        IPS_LogMessage("BL", "RequestAction - ident:$ident, value:$value");
         // $lightNumber = $this->LightSwitchVars()->GetIndexForIdent($ident);
         // if($lightNumber !== false)
         // {
@@ -727,6 +739,8 @@ class BetterLight extends BetterBase {
         $lightNumber = DimLight::GetIndexForDisplayIdent($ident);
         if($lightNumber !== false)
         {
+            IPS_LogMessage("BL", "RequestAction DimLight - ident:$ident, value:$value");
+
             $this->SetBackedValue(
                 $this->DimLights($lightNumber)->DisplayVarBacking(), 
                 $value, 
@@ -736,13 +750,8 @@ class BetterLight extends BetterBase {
         }
 
         switch($ident) {
-            case self::SaveSceneIdent:
+            case self::SaveSceneStartIdent:
                 $this->StartSave();
-                break;
-
-            case $this->MSLockVar()->Ident():
-                $this->SetValueForIdent($ident, $value);
-                $this->CancelSave();
                 break;
 
             case $this->CurrentSceneVar()->Ident():
@@ -750,10 +759,12 @@ class BetterLight extends BetterBase {
                 break;
 
             case $this->SaveToSceneVar()->Ident():
+                IPS_LogMessage("BL", "RequestAction SaveToSceneVar - ident:$ident, value:$value");
                 $this->SaveToScene($value);
                 break;
 
             default:
+                IPS_LogMessage("BL", "RequestAction default - ident:$ident, value:$value");
                 $this->SetValueForIdent($ident, $value);
                 $this->CancelSave();
         }
