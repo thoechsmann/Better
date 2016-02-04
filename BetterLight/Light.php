@@ -10,11 +10,13 @@ class Light {
     protected $index;
     protected $module;
     protected $prefix;
+    private $type;
 
-    public function __construct($module, $index, $prefix) {
+    public function __construct($module, $index, $prefix, $type) {
         $this->module = $module;
         $this->index = $index;
         $this->prefix = $prefix;
+        $this->type = $type;
     }
 
     // Properties
@@ -33,9 +35,9 @@ class Light {
 
     protected function DisplayVar()
     {
-        return new Variable($this->module, 
+        return new IPSVar($this->module->InstanceId, 
             $this->prefix . $this->index .
-            "DisplayVar");
+            "DisplayVar", $this->type);
     }
 
     protected function IsDisplayVar($ident)
@@ -45,11 +47,11 @@ class Light {
 
     protected function SceneVars($sceneNumber)
     {
-        return new Variable($this->module, 
+        return new IPSVar($this->module, 
             BetterBase::PersistentPrefix . 
             $this->prefix . $this->index . 
             self::StrScene . $sceneNumber . 
-            "Value");
+            "Value", $this->type);
     }
 
     // Register
@@ -58,6 +60,30 @@ class Light {
     {
         $this->NameProp()->Register();
         $this->SwitchIdProp()->Register();
+    }
+
+    public function RegisterVariables($sceneCount)
+    {    
+        $this->RegisterDisplayVar();
+        $this->RegisterSceneVars($sceneCount);
+    }
+
+    private function RegisterDisplayVar()
+    {
+        $name = $this->Name();
+        $var = $this->DisplayVar();
+        $var->Register($name, ""); //, self::PosLightSwitch);
+        $var->EnableAction();
+    }
+
+    private function RegisterSceneVars($sceneCount)
+    {
+        for($i = 0; $i<$sceneCount; $i++)
+        {
+            $sceneLight = $this->SceneVars($i);
+            $sceneLight->Register();
+            $sceneLight->SetHidden(true);
+        }
     }
 
     //
@@ -103,7 +129,7 @@ class DimLight extends Light {
     }
 
     public function __construct($module, $index) {
-        parent::__construct($module, $index, DimLight::Prefix);
+        parent::__construct($module, $index, DimLight::Prefix, IPSVar::TypeInteger);
     }
 
     // Properties
@@ -140,29 +166,15 @@ class DimLight extends Light {
 
     public function RegisterVariables($sceneCount)
     {
-        $this->RegisterDisplayVar();
-        $this->RegisterSceneVars($sceneCount);
+        parent::RegisterVariables($sceneCount);
+
+        // $this->RegisterDisplayVar();
+
+        $var = $this->DisplayVar();
+        $var->SetProfile("~Intensity.100");
 
         $backing = $this->DisplayVarBacking();
         $backing->Update();
-    }
-
-    private function RegisterDisplayVar()
-    {
-        $name = $this->NameProp()->Value();
-        $var = $this->DisplayVar();
-        $var->RegisterVariableInteger($name, "~Intensity.100"); //, self::PosLightSwitch);
-        $var->EnableAction();
-    }
-
-    private function RegisterSceneVars($sceneCount)
-    {
-        for($i = 0; $i<$sceneCount; $i++)
-        {
-            $sceneLight = $this->SceneVars($i);
-            $sceneLight->RegisterVariableInteger();
-            $sceneLight->SetHidden(true);
-        }
     }
 
     public function RegisterTriggers()
@@ -204,7 +216,7 @@ class RGBLight extends Light {
     }
 
     public function __construct($module, $index) {
-        parent::__construct($module, $index, RGBLight::Prefix);
+        parent::__construct($module, $index, RGBLight::Prefix, IPSVar::TypeInteger);
     }
 
     // Properties
@@ -235,29 +247,13 @@ class RGBLight extends Light {
 
     public function RegisterVariables($sceneCount)
     {
-        $this->RegisterDisplayVar();
-        $this->RegisterSceneVars($sceneCount);
+        parent::RegisterVariables($sceneCount);
+
+        $var = $this->DisplayVar();
+        $var->SetProfile("~HexColor");
 
         $backing = $this->DisplayVarBacking();
         $backing->Update();
-    }
-
-    private function RegisterDisplayVar()
-    {
-        $name = $this->NameProp()->Value();
-        $var = $this->DisplayVar();
-        $var->RegisterVariableInteger($name, "~HexColor"); //, self::PosLightSwitch);
-        $var->EnableAction();
-    }
-
-    private function RegisterSceneVars($sceneCount)
-    {
-        for($i = 0; $i<$sceneCount; $i++)
-        {
-            $sceneLight = $this->SceneVars($i);
-            $sceneLight->RegisterVariableInteger();
-            $sceneLight->SetHidden(true);
-        }
     }
 
     public function RegisterTriggers()
@@ -302,7 +298,7 @@ class SwitchLight extends Light {
     }
 
     public function __construct($module, $index) {
-        parent::__construct($module, $index, SwitchLight::Prefix);
+        parent::__construct($module, $index, SwitchLight::Prefix, IPSVar::TypeBoolean);
     }
 
     // Properties
@@ -333,29 +329,13 @@ class SwitchLight extends Light {
 
     public function RegisterVariables($sceneCount)
     {
-        $this->RegisterDisplayVar();
-        $this->RegisterSceneVars($sceneCount);
+        parent::RegisterVariables($sceneCount);
+
+        $var = $this->DisplayVar();
+        $var->SetProfile("~Switch");
 
         $backing = $this->DisplayVarBacking();
         $backing->Update();
-    }
-
-    private function RegisterDisplayVar()
-    {
-        $name = $this->NameProp()->Value();
-        $var = $this->DisplayVar();
-        $var->RegisterVariableBoolean($name, "~Switch"); //, self::PosLightSwitch);
-        $var->EnableAction();
-    }
-
-    private function RegisterSceneVars($sceneCount)
-    {
-        for($i = 0; $i<$sceneCount; $i++)
-        {
-            $sceneLight = $this->SceneVars($i);
-            $sceneLight->RegisterVariableBoolean();
-            $sceneLight->SetHidden(true);
-        }
     }
 
     public function RegisterTriggers()

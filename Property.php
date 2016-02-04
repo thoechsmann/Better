@@ -50,22 +50,6 @@ class PropertyString extends Property  {
 
 }
 
-class PropertyIntegerIndexed extends PropertyInteger  {
-
-    public function __construct($module, $name, $index) {
-        parent::__construct($module, $name . $index);
-    }
-
-}
-
-class PropertyStringIndexed extends PropertyString  {
-
-    public function __construct($module, $name, $index) {
-        parent::__construct($module, $name . $index);
-    }
-
-}
-
 class PropertyArray {
 
     protected $module;
@@ -109,7 +93,7 @@ class PropertyArrayInteger extends PropertyArray  {
 
         for($i = 0; $i<$count; $i++)
         {
-            $this->properties[$i] = new PropertyIntegerIndexed($this->module, $name, $i);
+            $this->properties[$i] = new PropertyInteger($this->module, $name . $i);
         }       
     }
 
@@ -122,7 +106,7 @@ class PropertyArrayString extends PropertyArray  {
 
         for($i = 0; $i<$count; $i++)
         {
-            $this->properties[$i] = new PropertyStringIndexed($this->module, $name, $i);
+            $this->properties[$i] = new PropertyString($this->module, $name . $i);
         }       
     }
 

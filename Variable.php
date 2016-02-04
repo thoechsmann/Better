@@ -1,49 +1,13 @@
 <?
-class Variable  {
+class IPSObject  {
 
     private $ident;
-    private $module;
     private $id = false;
+    protected $parentId;
 
-    public function __construct($module, $ident) {
-        $this->module = $module;
+    public function __construct($parentId, $ident) {
+        $this->parentId = $parentId;
         $this->ident = $ident;
-    }
-
-    public function RegisterVariableInteger($name = "", $profile = "", $position = 0)
-    {
-        if($name == "")
-            $name = $this->Ident();
-
-        $id = $this->module->RegisterVariableInteger($this->ident, $name, $profile, $position);
-        IPS_SetName($id, $name);
-    }
-
-    public function RegisterVariableBoolean($name = "", $profile = "", $position = 0)
-    {
-        if($name == "")
-            $name = $this->Ident();
-
-        $id = $this->module->RegisterVariableBoolean($this->ident, $name, $profile, $position);
-        IPS_SetName($id, $name);
-    }
-
-    public function RegisterVariableFloat($name = "", $profile = "", $position = 0)
-    {
-        if($name == "")
-            $name = $this->Ident();
-
-        $id = $this->module->RegisterVariableFloat($this->ident, $name, $profile, $position);
-        IPS_SetName($id, $name);
-    }
-
-    public function RegisterVariableString($name = "", $profile = "", $position = 0)
-    {
-        if($name == "")
-            $name = $this->Ident();
-
-        $id = $this->module->RegisterVariableString($this->ident, $name, $profile, $position);
-        IPS_SetName($id, $name);
     }
 
     public function Ident()
@@ -55,7 +19,7 @@ class Variable  {
     {
         if($this->id === false)
         {
-            $this->id = $this->module->GetIDForIdent($this->ident);
+            $this->id = $this->GetIDForIdent($this->ident);
 
             if($this->id === false)
             {
@@ -66,14 +30,44 @@ class Variable  {
         return $this->id;
     }
 
+    public function GetIDForIdent($ident)
+    {
+        $id = @IPS_GetObjectIDByIdent($ident, $this->parentId); 
+        
+        if($id === false)
+            $id = 0;
+        
+        return $id;
+    }  
+
     public function SetHidden($hide)
     {
         IPS_SetHidden($this->Id(), $hide);
     }
 
-    public function EnableAction()
+    public function SetPosition($pos)
     {
-        $this->module->EnableAction($this->ident);
+        IPS_SetPosition($this->Id(), $pos);
+    }
+
+    public function SetIcon($icon)
+    {
+        IPS_SetIcon($this->Id(), $icon);
+    }
+}
+
+class IPSVar extends IPSObject
+{
+    const TypeBoolean = 0;
+    const TypeInteger = 1;
+    const TypeFloat = 2;
+    const TypeString = 3;
+
+    private $type = false;
+
+    public function __construct($parentId, $ident, $type) {
+        parent::__construct($parentId, $ident);
+        $this->type = $type;
     }
 
     public function GetValue()
@@ -86,11 +80,204 @@ class Variable  {
         SetValue($this->Id(), $value);
     }
 
-    public function SetPosition($pos)
+    public function SetProfile($profile)
     {
-        IPS_SetPosition($this->Id(), $pos);
+        IPS_SetVariableCustomProfile($this->Id(), $profile);
+    }
+
+    public function EnableAction() {
+        IPS_EnableAction($this->parentId, $this->Ident());
+    }
+    
+    public function DisableAction() {
+        IPS_DisableAction($this->parentId, $this->Ident());
+    }
+
+    public function Register($name = "", $profile = "", $position = 0) 
+    {
+        if($this->type === false)
+        {
+            throw new Exception("Type not set.");
+        }
+
+        if($name == "")
+            $name = $this->Ident();
+
+        if($profile != "") {
+            if(!IPS_VariableProfileExists($profile)) {
+                throw new Exception("Profile with name ".$profile." does not exist");
+            }
+        }
+
+        $id = $this->GetIDForIdent($this->Ident());
+
+        if($id > 0) {
+            if(!IPS_VariableExists($id))
+                throw new Exception("Ident with name ".$this->Ident()." is used for wrong object type"); //bail out
+            
+            if(IPS_GetVariable($id)["VariableType"] != $this->type) {
+                IPS_DeleteVariable($id);
+                $id = 0;
+            }
+        }
+        
+        if($id == 0)
+        {
+            $id = IPS_CreateVariable($type);
+            
+            IPS_SetParent($id, $this->parentId);
+            IPS_SetIdent($id, $this->Ident());            
+        }
+
+        IPS_SetName($id, $name);        
+        IPS_SetPosition($id, $position);
+        IPS_SetVariableCustomProfile($id, $profile);
+        
+        return $id;            
     }
 }
+
+class IPSVarBoolean extends IPSVar
+{
+    public function __construct($parentId, $ident) {
+        parent::__construct($parentId, $ident, IPSVar::TypeBoolean);
+    }
+}
+
+class IPSVarInteger extends IPSVar
+{
+    public function __construct($parentId, $ident) {
+        parent::__construct($parentId, $ident, IPSVar::TypeInteger);
+    }
+}
+
+class IPSVarFloat extends IPSVar
+{
+    public function __construct($parentId, $ident) {
+        parent::__construct($parentId, $ident, IPSVar::TypeFloat);
+    }
+}
+
+class IPSVarString extends IPSVar
+{
+    public function __construct($parentId, $ident) {
+        parent::__construct($parentId, $ident, IPSVar::TypeString);
+    }
+}
+
+class IPSScript extends IPSObject
+{
+    public function Register($name, $content = "<?\n\n//Autogenerated script\n\n?>", $position = 0) 
+    {        
+        if($name == "")
+            $name = $this->Ident();
+
+        $id = $this->GetIDForIdent($this->Ident());
+
+        if($id == 0)
+        {
+            $id = IPS_CreateScript(0);
+            
+            IPS_SetParent($id, $this->parentId);
+            IPS_SetIdent($id, $this->Ident());            
+        }
+
+        IPS_SetName($id, $name);
+        IPS_SetPosition($id, $position);
+        IPS_SetScriptContent($id, $content);
+        
+        return $id;        
+    }
+}
+
+class IPSEvent extends IPSObject
+{
+    const TypeTrigger = 0;
+    const TypeCyclic = 1;
+    const TypeScheduler = 2;
+
+    private $type;
+
+    public function __construct($parentId, $ident, $type) {
+        parent::__construct($parentId, $ident);
+        $this->type = $type;
+    }
+
+    public function Register($name = "", $position = 0) 
+    { 
+        if($name == "")
+            $name = $this->Ident();
+
+        $id = $this->GetIDForIdent($this->Ident());
+
+        if($id != 0 && IPS_GetEvent($id)['EventType'] <> $this->type) 
+        {
+            IPS_DeleteEvent($id);
+            $id = 0;
+        }
+
+        if($id == 0)
+        {
+            $id = IPS_CreateEvent($this->type);
+            
+            IPS_SetParent($id, $this->parentId);
+            IPS_SetIdent($id, $this->Ident());            
+        }
+
+        IPS_SetName($id, $name);
+        IPS_SetPosition($id, $position);
+        
+        if (!IPS_EventExists($id)) throw new Exception("Event $ident could not be created."); 
+    }
+}
+
+class IPSEventTrigger extends IPSEvent
+{
+    public function __construct($parentId, $ident) {
+        parent::__construct($parentId, $ident, IPSEvent::TypeTrigger);
+    }
+}
+
+class IPSEventCyclic extends IPSEvent
+{
+    public function __construct($parentId, $ident) {
+        parent::__construct($parentId, $ident, IPSEvent::TypeCyclic);
+    }
+}
+
+class IPSEventScheduler extends IPSEvent
+{
+    const DayMonday = 1;
+    const DayTuesday = 2;
+    const DayWednesday = 4;
+    const DayThursday = 8;
+    const DayFriday = 16;
+    const DaySaturday = 32;
+    const DaySunday = 64;
+
+    const DayWeekdays = 31;
+    const DayWeekends = 96;
+    const DayAll = 127;
+
+    public function __construct($parentId, $ident) {
+        parent::__construct($parentId, $ident, IPSEvent::TypeScheduler);
+    }
+
+    public function SetGroup($goupId, $days)
+    {
+        IPS_SetEventScheduleGroup($this->Id(), $groupId, $days);
+    }
+
+    public function SetAction($actionId, $name, $color, $scriptContent)
+    {
+        IPS_SetEventScheduleAction($this->Id(), $actionId, $name, $color, $scriptContent);
+    }
+}
+
+
+
+
+
 
 class VariableArray
 {

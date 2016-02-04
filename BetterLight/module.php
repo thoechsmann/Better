@@ -19,10 +19,6 @@ class BetterLight extends BetterBase {
     const PosSaveSceneButton = 5;
     const PosSceneScheduler = 6;
 
-    const SaveSceneStartIdent = "SaveSceneStart";
-    const SaveSceneSelectIdent = "SaveSceneSelect";
-    const SceneSchedulerIdent = "SceneScheduler";
-
     // Properties
 
     private function SwitchIdProperties()
@@ -39,33 +35,48 @@ class BetterLight extends BetterBase {
 
     private function CurrentSceneVar()
     {
-        return new Variable($this, parent::PersistentPrefix . "CurrentScene");
+        return new IPSVarInteger($this->InstanceID, parent::PersistentPrefix . "CurrentScene");
     }
 
     private function SaveToSceneVar()
     {
-        return new Variable($this, self::SaveSceneSelectIdent);
+        return new IPSVarInteger($this->InstanceID, "SaveSceneSelect");
     }
 
     private function IdendTriggerdTurnOnVar()
     {
-        return new Variable($this, "IdendTriggerdTurnOn");
+        return new IPSVarInteger($this->InstanceID, "IdendTriggerdTurnOn");
     }
 
     private function IdendTriggerdTurnOnBooelanValueVar()
     {
-        return new Variable($this, "IdendTriggerdTurnOnBooelanValue");
-    }
-
-    private function IdendTriggerdTurnOnFloatValueVar()
-    {
-        return new Variable($this, "IdendTriggerdTurnOnFloatValue");
+        return new IPSVarBoolean($this->InstanceID, "IdendTriggerdTurnOnBooelanValue");
     }
 
     private function IdendTriggerdTurnOnIntegerValueVar()
     {
-        return new Variable($this, "IdendTriggerdTurnOnIntegerValue");
+        return new IPSVarInteger($this->InstanceID, "IdendTriggerdTurnOnIntegerValue");
     }
+
+    private function IdendTriggerdTurnOnFloatValueVar()
+    {
+        return new IPSVarFloat($this->InstanceID, "IdendTriggerdTurnOnFloatValue");
+    }
+
+    // Scripts
+
+    private function SaveSceneScript()
+    {
+        return new IPSScript($this->InstanceID, "SaveSceneStart");
+    }
+
+    // Actions
+
+    private function SceneScheduler()
+    {
+        return new IPSEventScheduler($this->InstanceID, parent::PersistentPrefix . "SceneScheduler");
+    }
+
 
     //
     private function DimLights($lightNumber)
@@ -221,17 +232,17 @@ class BetterLight extends BetterBase {
         $this->CreateSceneScheduler();
         $this->CreateSaveButton();        
 
-        $this->IdendTriggerdTurnOnVar()->RegisterVariableString();
+        $this->IdendTriggerdTurnOnVar()->Register();
         $this->IdendTriggerdTurnOnVar()->SetValue("");
         $this->IdendTriggerdTurnOnVar()->SetHidden(true);
 
-        $this->IdendTriggerdTurnOnBooelanValueVar()->RegisterVariableBoolean();
+        $this->IdendTriggerdTurnOnBooelanValueVar()->Register();
         $this->IdendTriggerdTurnOnBooelanValueVar()->SetHidden(true);
 
-        $this->IdendTriggerdTurnOnFloatValueVar()->RegisterVariableFloat();
+        $this->IdendTriggerdTurnOnFloatValueVar()->Register();
         $this->IdendTriggerdTurnOnFloatValueVar()->SetHidden(true);
 
-        $this->IdendTriggerdTurnOnIntegerValueVar()->RegisterVariableInteger();
+        $this->IdendTriggerdTurnOnIntegerValueVar()->Register();
         $this->IdendTriggerdTurnOnIntegerValueVar()->SetHidden(true);
 
         // Set defaults
@@ -308,7 +319,7 @@ class BetterLight extends BetterBase {
     private function CreateSceneSelectionVar() 
     {
         $currentScene = $this->CurrentSceneVar();
-        $currentScene->RegisterVariableInteger("Szene", $this->SetSceneProfileString());
+        $currentScene->Register("Szene", $this->SetSceneProfileString());
         $currentScene->EnableAction();
         $currentScene->SetPosition(self::PosSceneSelection);
     }
@@ -316,17 +327,16 @@ class BetterLight extends BetterBase {
     private function CreateSceneScheduler()
     {
         // Scheduled Event
-        $schedulerId = $this->RegisterScheduler(parent::PersistentPrefix . self::SceneSchedulerIdent, "Szenen Zeiten");
-        IPS_SetIcon($schedulerId, "Calendar");
-        IPS_SetHidden($schedulerId, false);
-        IPS_SetPosition($schedulerId, self::PosSceneScheduler);
-        IPS_SetEventScheduleGroup($schedulerId, 0, 127); //Mo - Fr (1 + 2 + 4 + 8 + 16)
+        $scheduler = $this->SceneScheduler()->Register("Szenen Zeiten", self::PosSceneScheduler);
+        $scheduler->SetIcon("Calendar");
+        $scheduler->SetHidden(false);
+        $scheduler->SetGroup(0, 127); //Mo - Fr (1 + 2 + 4 + 8 + 16)
 
         for($sceneNumber = 0; $sceneNumber<$this->SceneCount(); $sceneNumber++)
         {
             $scene = $this->Scenes($sceneNumber);
             
-            IPS_SetEventScheduleAction($schedulerId, $sceneNumber, $scene->Name(), $scene->Color(), 
+            $scheduler->SetAction($sceneNumber, $scene->Name(), $scene->Color(), 
                 "BL_SetScene(\$_IPS['TARGET'], $sceneNumber);");
         }
     }
@@ -334,13 +344,11 @@ class BetterLight extends BetterBase {
     private function CreateSaveButton() 
     {
         $saveToScene = $this->SaveToSceneVar();
-        $saveToScene->RegisterVariableInteger("Speichern unter:", $this->SaveSceneProfileString(), self::PosSaveSceneButton);
+        $saveToScene->Register("Speichern unter:", $this->SaveSceneProfileString(), self::PosSaveSceneButton);
         $saveToScene->EnableAction();
         $saveToScene->SetValue(-1);
 
-        $id = $this->RegisterScript(self::SaveSceneStartIdent, "Szene speichern", 
-            "<? BL_StartSave(" . $this->InstanceID . ");?>",
-            self::PosSaveSceneButton);
+        $this->SaveSceneScript()->Register("Szene speichern", "<? BL_StartSave(" . $this->InstanceID . ");?>", self::PosSaveSceneButton);
 
         $this->CancelSave();
     }
@@ -349,9 +357,7 @@ class BetterLight extends BetterBase {
     {
         IPS_LogMessage("BL","StartSave() ");
         $this->SaveToSceneVar()->SetHidden(false);
-
-        $id = $this->GetIDForIdent(self::SaveSceneStartIdent);
-        IPS_SetHidden($id, true);        
+        $this->SaveSceneScript()->SetHidden(true);
     }
 
     private function SaveToScene($sceneNumber)
@@ -438,9 +444,7 @@ class BetterLight extends BetterBase {
     {
         IPS_LogMessage("BL","CancelSave() ");
         $this->SaveToSceneVar()->SetHidden(true);
-
-        $id = $this->GetIDForIdent(self::SaveSceneStartIdent);
-        IPS_SetHidden($id, false);        
+        $this->SaveSceneScript()->SetHidden(false);
     }
 
     // FIX: Remove storeVar. Save everything in a string.
@@ -514,9 +518,8 @@ class BetterLight extends BetterBase {
             return;
         }
 
-
         switch($ident) {
-            case self::SaveSceneStartIdent:
+            case $this->SaveSceneScript()->Ident():
                 $this->StartSave();
                 break;
 
