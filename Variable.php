@@ -112,7 +112,7 @@ class IPSVar extends IPSObject
 
     public function Register($name = "", $profile = "", $position = 0) 
     {
-        IPS_LogMessage("IPSVar", "Registering var. $this);
+        IPS_LogMessage("IPSVar", "Registering var - " . $this);
 
         if($this->type === false)
         {
