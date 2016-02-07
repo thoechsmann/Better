@@ -10,7 +10,7 @@ class IPSObject  {
         $this->ident = $ident;
     }
 
-    public string __toString()
+    public function __toString()
     {
         return 
         "Ident: " . $this->Ident() .
