@@ -242,6 +242,8 @@ class IPSEvent extends IPSObject
         IPS_SetPosition($id, $position);
         
         if (!IPS_EventExists($id)) throw new Exception("Event $ident could not be created."); 
+
+        return $id;
     }
 
     public function SetScript($content)
@@ -280,12 +282,15 @@ class IPSEventTrigger extends IPSEvent
 
     public function Register($targetId, $script, $type = IPSEventTrigger::TypeChange, $name = "", $position = "")
     {
-        parent::RegisterEvent($name, $position);
+        $id = parent::RegisterEvent($name, $position);
+        
         $this->Hide();
         $this->SetScript($script);
         $this->SetTrigger($targetId, $type); 
         $this->SetSubsequentExecution(true);
         $this->Activate();
+
+        return $id;
     }
 
     public function SetTrigger($type, $targetId)
@@ -324,6 +329,11 @@ class IPSEventScheduler extends IPSEvent
         parent::__construct($parentId, $ident, IPSEvent::TypeScheduler);
     }
 
+    public function Register($name = "", $position = "")
+    {
+        return parent::RegisterEvent($name, $position);
+    }
+    
     public function SetGroup($goupId, $days)
     {
         IPS_SetEventScheduleGroup($this->Id(), $groupId, $days);
