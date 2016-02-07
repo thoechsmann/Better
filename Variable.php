@@ -94,12 +94,16 @@ class IPSVar extends IPSObject
         {
             case IPSVar::TypeBoolean:
                 $typeName = "Boolean";
+                break;
             case IPSVar::TypeInteger:
                 $typeName = "Integer";
+                break;
             case IPSVar::TypeFloat:
                 $typeName = "Float";
+                break;
             case IPSVar::TypeString:
                 $typeName = "String";
+                break;
         }
 
         return parent::__toString() . " type: $typeName";        
