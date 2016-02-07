@@ -213,7 +213,7 @@ class IPSEvent extends IPSObject
         $this->type = $type;
     }
 
-    public function Register($name = "", $position = 0) 
+    private function RegisterEvent($name = "", $position = 0) 
     { 
         if($name == "")
             $name = $this->Ident();
@@ -276,7 +276,7 @@ class IPSEventTrigger extends IPSEvent
 
     public function Register($targetId, $script, $type = IPSEventTrigger::TypeChange, $name = "", $position = "")
     {
-        parent::Register($name, $position);
+        parent::RegisterEvent($name, $position);
         $this->Hide();
         $this->SetScript($script);
         $this->SetTrigger($targetId, $type); 
