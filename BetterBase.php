@@ -124,7 +124,7 @@ class BetterBase extends IPSModule {
 
     public function RegisterTrigger($ident, $targetId, $script, $triggerType = self::TriggerTypeChange)
     { 
-         IPS_LogMessage("BetterBase", "RegisterTrigger(". 
+         IPS_LogMessage("BetterBase", "OBSOLETE (remove!): RegisterTrigger(". 
             $ident . ", " . 
             $targetId . ", " . 
             $script . ", " . 

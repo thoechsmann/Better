@@ -393,24 +393,24 @@ class MotionSensor
 
     private function LockVar()
     {
-        return new Variable($this->module, self::StrMS . "Lock");
+        return new IPSVarBooelean($this->module, self::StrMS . "Lock");
     
     }
 
     private function LockSceneVars($sceneNumber)
     {
-        return new Variable($this->module, 
+        return new IPSVarBooelean($this->module->InstanceId, 
             BetterBase::PersistentPrefix . 
             self::StrMS .
             self::StrScene . $sceneNumber . 
             "Lock");
     }
 
-    // Idents
+    // Events
 
-    private function MainSwitchTriggerIdent()
+    private function MainSwitchTrigger()
     {
-        return self::StrMS . "MainSwitch" . "Trigger";
+        return new IPSEventTrigger($this->module->InstanceId, self::StrMS . "MainSwitch" . "Trigger");
     }
 
     //
@@ -431,7 +431,7 @@ class MotionSensor
     private function RegisterLockVar()
     {
         $var = $this->LockVar();
-        $var->RegisterVariableBoolean("BM Sperren", "~Lock"); //, self::PosLightSwitch);
+        $var->Register("BM Sperren", "~Lock"); //, self::PosLightSwitch);
         $var->EnableAction();
     }
 
@@ -440,14 +440,17 @@ class MotionSensor
         for($i = 0; $i<$sceneCount; $i++)
         {
             $var = $this->LockSceneVars($i);
-            $var->RegisterVariableBoolean();
+            $var->Register();
             $var->SetHidden(true);
         }
     }
 
     public function RegisterTriggers()
     {
-        $this->module->RegisterTrigger($this->MainSwitchTriggerIdent(), $this->MainSwitchIdProp()->Value(), 'BL_MSMainSwitchEvent($_IPS[\'TARGET\']);', BetterBase::TriggerTypeUpdate);
+        $this->MainSwitchTrigger()->Register(
+            $this->MainSwitchIdProp()->Value(), 
+            'BL_MSMainSwitchEvent($_IPS[\'TARGET\']);', 
+            IPSEventTrigger::TypeUpdate);
     }
 
     public function IsMainSwitchOn()

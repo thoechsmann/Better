@@ -45,6 +45,16 @@ class IPSObject  {
         IPS_SetHidden($this->Id(), $hide);
     }
 
+    public function Hide()
+    {
+        $this->SetHidden(true);
+    }
+
+    public function Show()
+    {
+        $this->SetHidden(false);
+    }
+
     public function SetPosition($pos)
     {
         IPS_SetPosition($this->Id(), $pos);
@@ -208,7 +218,7 @@ class IPSEvent extends IPSObject
         if($name == "")
             $name = $this->Ident();
 
-        $id = $this->GetIDForIdent($this->Ident());
+        $id = $this->Id();
 
         if($id != 0 && IPS_GetEvent($id)['EventType'] <> $this->type) 
         {
@@ -229,12 +239,59 @@ class IPSEvent extends IPSObject
         
         if (!IPS_EventExists($id)) throw new Exception("Event $ident could not be created."); 
     }
+
+    public SetScript($content)
+    {
+        IPS_SetEventScript($this->Id(), "$content;"); 
+    }
+
+    public SetActive($value)
+    {
+        IPS_SetEventActive($this->Id(), $value);
+    }
+
+    public Activate()
+    {
+        $this->SetActive(true);        
+    }
+
+    public Deactivate()
+    {
+        $this->SetActive(false);        
+    }
+
 }
 
 class IPSEventTrigger extends IPSEvent
 {
+    const TypeUpdate = 0;
+    const TypeChange = 1;
+    const TypeBigger = 2;
+    const TypeSmaller = 3;
+    const TypeValue = 4;
+
     public function __construct($parentId, $ident) {
         parent::__construct($parentId, $ident, IPSEvent::TypeTrigger);
+    }
+
+    public function Register($targetId, $script, $type = IPSEventTrigger::TypeChange, $name = "", $position = "")
+    {
+        parent::Register($name, $position);
+        $this->Hide();
+        $this->SetScript($script);
+        $this->SetTrigger($targetId, $type); 
+        $this->SetSubsequentExecution(true);
+        $this->Activate();
+    }
+
+    public SetTrigger($type, $targetId)
+    {
+        IPS_SetEventTrigger($this->Id(), $type, $targetId);
+    }
+
+    public SetSubsequentExecution($value)
+    {
+        IPS_SetEventTriggerSubsequentExecution($this->Id(), $value);
     }
 }
 

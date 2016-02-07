@@ -362,7 +362,7 @@ class BetterLight extends BetterBase {
 
     private function SaveToScene($sceneNumber)
     {
-        IPS_LogMessage("BL","SaveToScene(sceneNumber = $sceneNumber) ");
+        IPS_LogMessage("BL","SaveToScene(sceneNumber = $sceneNumber)");
 
         for($i = 0; $i < $this->DimLightCount(); $i++)
         {
@@ -386,7 +386,7 @@ class BetterLight extends BetterBase {
 
     private function LoadFromScene($sceneNumber)
     {
-        IPS_LogMessage("BL","LoadFromScene(sceneNumber = $sceneNumber) ");
+        IPS_LogMessage("BL","LoadFromScene(sceneNumber = $sceneNumber)");
 
         $triggerIdent = $this->IdendTriggerdTurnOnVar()->GetValue();
         $triggerBoolValue = $this->IdendTriggerdTurnOnFloatValueVar()->GetValue();
@@ -411,7 +411,7 @@ class BetterLight extends BetterBase {
 
     public function SetScene($sceneNumber, $turnOn = false)
     {
-        IPS_LogMessage("BL","SetScene(sceneNumber = $sceneNumber, turnOn = $turnOn) ");
+        IPS_LogMessage("BL","SetScene(sceneNumber = $sceneNumber, turnOn = $turnOn)");
         $this->CurrentSceneVar()->SetValue($sceneNumber);
         $this->CancelSave();
  
