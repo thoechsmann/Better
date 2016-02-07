@@ -240,22 +240,22 @@ class IPSEvent extends IPSObject
         if (!IPS_EventExists($id)) throw new Exception("Event $ident could not be created."); 
     }
 
-    public SetScript($content)
+    public function SetScript($content)
     {
         IPS_SetEventScript($this->Id(), "$content;"); 
     }
 
-    public SetActive($value)
+    public function SetActive($value)
     {
         IPS_SetEventActive($this->Id(), $value);
     }
 
-    public Activate()
+    public function Activate()
     {
         $this->SetActive(true);        
     }
 
-    public Deactivate()
+    public function Deactivate()
     {
         $this->SetActive(false);        
     }
@@ -284,12 +284,12 @@ class IPSEventTrigger extends IPSEvent
         $this->Activate();
     }
 
-    public SetTrigger($type, $targetId)
+    public function SetTrigger($type, $targetId)
     {
         IPS_SetEventTrigger($this->Id(), $type, $targetId);
     }
 
-    public SetSubsequentExecution($value)
+    public function SetSubsequentExecution($value)
     {
         IPS_SetEventTriggerSubsequentExecution($this->Id(), $value);
     }
