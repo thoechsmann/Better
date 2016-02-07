@@ -213,7 +213,7 @@ class IPSEvent extends IPSObject
         $this->type = $type;
     }
 
-    private function RegisterEvent($name = "", $position = 0) 
+    protected function RegisterEvent($name = "", $position = 0) 
     { 
         if($name == "")
             $name = $this->Ident();

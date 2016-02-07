@@ -399,7 +399,7 @@ class MotionSensor
 
     private function LockSceneVars($sceneNumber)
     {
-        return new IPSVarBoolean($this->module->InstanceId, 
+        return new IPSVarBoolean($this->module->InstanceId(), 
             BetterBase::PersistentPrefix . 
             self::StrMS .
             self::StrScene . $sceneNumber . 
@@ -410,7 +410,7 @@ class MotionSensor
 
     private function MainSwitchTrigger()
     {
-        return new IPSEventTrigger($this->module->InstanceId, self::StrMS . "MainSwitch" . "Trigger");
+        return new IPSEventTrigger($this->module->InstanceId(), self::StrMS . "MainSwitch" . "Trigger");
     }
 
     //
