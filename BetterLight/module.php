@@ -327,7 +327,8 @@ class BetterLight extends BetterBase {
     private function CreateSceneScheduler()
     {
         // Scheduled Event
-        $scheduler = $this->SceneScheduler()->Register("Szenen Zeiten", self::PosSceneScheduler);
+        $scheduler = $this->SceneScheduler();
+        $scheduler->Register("Szenen Zeiten", self::PosSceneScheduler);
         $scheduler->SetIcon("Calendar");
         $scheduler->SetHidden(false);
         $scheduler->SetGroup(0, 127); //Mo - Fr (1 + 2 + 4 + 8 + 16)
