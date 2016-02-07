@@ -393,7 +393,7 @@ class MotionSensor
 
     private function LockVar()
     {
-        return new IPSVarBooelean($this->module, self::StrMS . "Lock");
+        return new IPSVarBoolean($this->module, self::StrMS . "Lock");
     
     }
 
