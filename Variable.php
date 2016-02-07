@@ -10,6 +10,13 @@ class IPSObject  {
         $this->ident = $ident;
     }
 
+    public string __toString()
+    {
+        return 
+        "Ident: " . $this->Ident() .
+        " ParentId: " . $this->parentId;
+    }
+
     public function Ident()
     {
         return $this->ident;
@@ -105,7 +112,7 @@ class IPSVar extends IPSObject
 
     public function Register($name = "", $profile = "", $position = 0) 
     {
-        IPS_LogMessage("IPSVar", "Registering var. Ident: ".$this->Ident()." ParentId: ".$this->parentId);
+        IPS_LogMessage("IPSVar", "Registering var. $this);
 
         if($this->type === false)
         {
