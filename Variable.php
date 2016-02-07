@@ -105,8 +105,7 @@ class IPSVar extends IPSObject
 
     public function Register($name = "", $profile = "", $position = 0) 
     {
-        IPS_LogMessage("IPSVar", "Creating var. Ident:".$this->Ident()." ParentId:".$this->parentId );
-
+        IPS_LogMessage("IPSVar", "Registering var. Ident: ".$this->Ident()." ParentId: ".$this->parentId);
 
         if($this->type === false)
         {
@@ -218,6 +217,8 @@ class IPSEvent extends IPSObject
 
     protected function RegisterEvent($name = "", $position = 0) 
     { 
+        IPS_LogMessage("IPSEvent", "Registering event. Ident: ".$this->Ident()." ParentId: ".$this->parentId);
+
         if($name == "")
             $name = $this->Ident();
 
