@@ -334,7 +334,7 @@ class IPSEventScheduler extends IPSEvent
         return parent::RegisterEvent($name, $position);
     }
     
-    public function SetGroup($goupId, $days)
+    public function SetGroup($groupId, $days)
     {
         IPS_SetEventScheduleGroup($this->Id(), $groupId, $days);
     }
