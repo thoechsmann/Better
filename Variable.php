@@ -87,6 +87,24 @@ class IPSVar extends IPSObject
         $this->type = $type;
     }
 
+    public function __toString()
+    {
+        $typeName = "Not set!";
+        switch($this->type)
+        {
+            case IPSVar::TypeBoolean:
+                $typeName = "Boolean";
+            case IPSVar::TypeInteger:
+                $typeName = "Integer";
+            case IPSVar::TypeFloat:
+                $typeName = "Float";
+            case IPSVar::TypeString:
+                $typeName = "String";
+        }
+
+        return parent::__toString() . " type: $typeName";        
+    }
+
     public function GetValue()
     {        
         return GetValue($this->Id());
@@ -224,7 +242,7 @@ class IPSEvent extends IPSObject
 
     protected function RegisterEvent($name = "", $position = 0) 
     { 
-        IPS_LogMessage("IPSEvent", "Registering event. Ident: ".$this->Ident()." ParentId: ".$this->parentId);
+        IPS_LogMessage("IPSEvent", "Registering event - $this");
 
         if($name == "")
             $name = $this->Ident();
