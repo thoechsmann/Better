@@ -105,6 +105,9 @@ class IPSVar extends IPSObject
 
     public function Register($name = "", $profile = "", $position = 0) 
     {
+        IPS_LogMessage("IPSVar", "Creating var. Ident:".$this->Ident()." ParentId:".$this->parentId );
+
+
         if($this->type === false)
         {
             throw new Exception("Type not set.");
