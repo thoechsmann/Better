@@ -47,7 +47,7 @@ class Light {
 
     protected function SceneVars($sceneNumber)
     {
-        return new IPSVar($this->module, 
+        return new IPSVar($this->module->InstanceId(), 
             BetterBase::PersistentPrefix . 
             $this->prefix . $this->index . 
             self::StrScene . $sceneNumber . 
@@ -393,7 +393,7 @@ class MotionSensor
 
     private function LockVar()
     {
-        return new IPSVarBoolean($this->module, self::StrMS . "Lock");
+        return new IPSVarBoolean($this->module->InstanceId(), self::StrMS . "Lock");
     
     }
 
