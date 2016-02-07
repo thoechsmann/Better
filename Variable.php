@@ -133,7 +133,7 @@ class IPSVar extends IPSObject
         
         if($id == 0)
         {
-            $id = IPS_CreateVariable($type);
+            $id = IPS_CreateVariable($this->type);
             
             IPS_SetParent($id, $this->parentId);
             IPS_SetIdent($id, $this->Ident());            
@@ -218,7 +218,7 @@ class IPSEvent extends IPSObject
         if($name == "")
             $name = $this->Ident();
 
-        $id = $this->Id();
+        $id = $this->GetIDForIdent($this->Ident());
 
         if($id != 0 && IPS_GetEvent($id)['EventType'] <> $this->type) 
         {

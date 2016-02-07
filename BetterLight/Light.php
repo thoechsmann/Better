@@ -399,7 +399,7 @@ class MotionSensor
 
     private function LockSceneVars($sceneNumber)
     {
-        return new IPSVarBooelean($this->module->InstanceId, 
+        return new IPSVarBoolean($this->module->InstanceId, 
             BetterBase::PersistentPrefix . 
             self::StrMS .
             self::StrScene . $sceneNumber . 
