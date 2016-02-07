@@ -268,9 +268,9 @@ class IPSEvent extends IPSObject
         }
 
         IPS_LogMessage("IPSEvent", "Registering event [setting name $name for id $id] - $this");
-        IPS_SetName($id, $name);
+        // IPS_SetName($id, $name);
         IPS_LogMessage("IPSEvent", "Registering event [setting position $position for id $id]- $this");
-        IPS_SetPosition($id, $position);
+        // IPS_SetPosition($id, $position);
         
         if (!IPS_EventExists($id)) throw new Exception("Event $ident could not be created."); 
 
