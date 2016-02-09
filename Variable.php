@@ -143,7 +143,7 @@ class IPSVar extends IPSObject
                 break;
         }
 
-        if(!empty(typeName))
+        if(!empty($typeName))
             IPS_LogMessage("IPSVar - SetValue", "value: $value is not of type boolean - " . $this);
     }
 
