@@ -111,12 +111,40 @@ class IPSVar extends IPSObject
 
     public function GetValue()
     {        
+        $this->CheckType($value);        
         return GetValue($this->Id());
     }
 
     public function SetValue($value)
     {
+        $this->CheckType($value);
         SetValue($this->Id(), $value);
+    }
+
+    private function CheckType($value)
+    {
+        switch($this->type)
+        {
+            case IPSVar::TypeBoolean:
+                if(!is_bool($value))
+                    $typeName = "Booelan";
+                break;
+            case IPSVar::TypeInteger:
+                if(!is_integer($value))
+                    $typeName = "Integer";
+                break;
+            case IPSVar::TypeFloat:
+                if(!is_float($value))
+                    $typeName = "Float";
+                break;
+            case IPSVar::TypeString:
+                if(!is_string($value))
+                    $typeName = "String";
+                break;
+        }
+
+        if(!empty(typeName))
+            IPS_LogMessage("IPSVar - SetValue", "value: $value is not of type boolean - " . $this);
     }
 
     public function SetProfile($profile)
