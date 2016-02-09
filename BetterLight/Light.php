@@ -35,6 +35,8 @@ class Light {
 
     protected function DisplayVar()
     {
+        IPS_LogMessage("Light::DisplayVar", "module" . $this->module);
+        IPS_LogMessage("Light::DisplayVar", "module" . $this->module->InstanceId());
         return new IPSVar($this->module->InstanceId(), 
             $this->prefix . $this->index .
             "DisplayVar", $this->type);
