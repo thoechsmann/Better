@@ -294,8 +294,8 @@ class IPSEvent extends IPSObject
             IPS_SetIdent($id, $this->Ident());            
         }
 
-        IPS_SetName($id, $name);
-        IPS_SetPosition($id, $position);
+        // IPS_SetName($id, $name);
+        // IPS_SetPosition($id, $position);
         
         if (!IPS_EventExists($id)) throw new Exception("Event $ident could not be created."); 
 
@@ -340,11 +340,11 @@ class IPSEventTrigger extends IPSEvent
     {
         $id = parent::RegisterEvent($name, $position);
         
-        $this->Hide();
-        $this->SetScript($script);
-        $this->SetTrigger($targetId, $type); 
-        $this->SetSubsequentExecution(true);
-        $this->Activate();
+        // $this->Hide();
+        // $this->SetScript($script);
+        // $this->SetTrigger($targetId, $type); 
+        // $this->SetSubsequentExecution(true);
+        // $this->Activate();
 
         return $id;
     }
