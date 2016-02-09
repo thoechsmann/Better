@@ -111,7 +111,6 @@ class IPSVar extends IPSObject
 
     public function GetValue()
     {        
-        $this->CheckType($value);        
         return GetValue($this->Id());
     }
 
