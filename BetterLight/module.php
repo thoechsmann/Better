@@ -263,7 +263,7 @@ class BetterLight extends BetterBase {
     {
         $sceneCount = $this->SceneCount();
 
-        for($i=0; $i<$this->DimLightCount(); $i++)
+        for($i=0; $i<$this->DimLightCount();  $i++)
         {
             $light = $this->DimLights($i);
 
