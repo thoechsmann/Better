@@ -233,7 +233,7 @@ class BetterLight extends BetterBase {
         $this->CreateSaveButton();        
 
         $this->IdendTriggerdTurnOnVar()->Register();
-        $this->IdendTriggerdTurnOnVar()->SetValue("");
+        $this->IdendTriggerdTurnOnVar()->SetValue(0);
         $this->IdendTriggerdTurnOnVar()->SetHidden(true);
 
         $this->IdendTriggerdTurnOnBooelanValueVar()->Register();
@@ -246,8 +246,8 @@ class BetterLight extends BetterBase {
         $this->IdendTriggerdTurnOnIntegerValueVar()->SetHidden(true);
 
         // Set defaults
-        // $this->MotionSensor()->SetSceneLock(0, 1);
-        // $this->MotionSensor()->SetSceneLock(1, 0);
+        $this->MotionSensor()->SetSceneLock(0, 1);
+        $this->MotionSensor()->SetSceneLock(1, 0);
 
     }
 
