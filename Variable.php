@@ -338,7 +338,7 @@ class IPSEventTrigger extends IPSEvent
         parent::__construct($parentId, $ident, IPSEvent::TypeTrigger);
     }
 
-    public function Register($targetId, $script, $type = IPSEventTrigger::TypeChange, $name = "", $position = "")
+    public function Register($targetId, $script, $type = IPSEventTrigger::TypeChange, $name = "", $position = 0)
     {
         $id = parent::RegisterEvent($name, $position);
         
@@ -387,7 +387,7 @@ class IPSEventScheduler extends IPSEvent
         parent::__construct($parentId, $ident, IPSEvent::TypeScheduler);
     }
 
-    public function Register($name = "", $position = "")
+    public function Register($name = "", $position = 0)
     {
         return parent::RegisterEvent($name, $position);
     }
