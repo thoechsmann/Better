@@ -116,6 +116,8 @@ class IPSVar extends IPSObject
 
     public function SetValue($value)
     {
+        IPS_LogMessage("IPSVar", "SetValue - " . $this . " - value: $value");
+
         SetValue($this->Id(), $value);
     }
 
