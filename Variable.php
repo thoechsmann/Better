@@ -342,9 +342,9 @@ class IPSEventTrigger extends IPSEvent
         
         $this->Hide();
         $this->SetScript($script);
-        $this->SetTrigger($targetId, $type); 
-        // $this->SetSubsequentExecution(true);
-        // $this->Activate();
+        $this->SetTrigger($type, $targetId); 
+        $this->SetSubsequentExecution(true);
+        $this->Activate();
 
         return $id;
     }
