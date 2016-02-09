@@ -35,46 +35,46 @@ class BetterLight extends BetterBase {
 
     private function CurrentSceneVar()
     {
-        return new IPSVarInteger($this->InstanceID, parent::PersistentPrefix . "CurrentScene");
+        return new IPSVarInteger($this->InstanceID(), parent::PersistentPrefix . "CurrentScene");
     }
 
     private function SaveToSceneVar()
     {
-        return new IPSVarInteger($this->InstanceID, "SaveSceneSelect");
+        return new IPSVarInteger($this->InstanceID(), "SaveSceneSelect");
     }
 
     private function IdendTriggerdTurnOnVar()
     {
-        return new IPSVarInteger($this->InstanceID, "IdendTriggerdTurnOn");
+        return new IPSVarInteger($this->InstanceID(), "IdendTriggerdTurnOn");
     }
 
     private function IdendTriggerdTurnOnBooelanValueVar()
     {
-        return new IPSVarBoolean($this->InstanceID, "IdendTriggerdTurnOnBooelanValue");
+        return new IPSVarBoolean($this->InstanceID(), "IdendTriggerdTurnOnBooelanValue");
     }
 
     private function IdendTriggerdTurnOnIntegerValueVar()
     {
-        return new IPSVarInteger($this->InstanceID, "IdendTriggerdTurnOnIntegerValue");
+        return new IPSVarInteger($this->InstanceID(), "IdendTriggerdTurnOnIntegerValue");
     }
 
     private function IdendTriggerdTurnOnFloatValueVar()
     {
-        return new IPSVarFloat($this->InstanceID, "IdendTriggerdTurnOnFloatValue");
+        return new IPSVarFloat($this->InstanceID(), "IdendTriggerdTurnOnFloatValue");
     }
 
     // Scripts
 
     private function SaveSceneScript()
     {
-        return new IPSScript($this->InstanceID, "SaveSceneStart");
+        return new IPSScript($this->InstanceID(), "SaveSceneStart");
     }
 
     // Actions
 
     private function SceneScheduler()
     {
-        return new IPSEventScheduler($this->InstanceID, parent::PersistentPrefix . "SceneScheduler");
+        return new IPSEventScheduler($this->InstanceID(), parent::PersistentPrefix . "SceneScheduler");
     }
 
 
