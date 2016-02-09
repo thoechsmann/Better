@@ -145,10 +145,10 @@ class BetterBase extends IPSModule {
 
         if (!IPS_EventExists($id)) throw new Exception("Ident with name $ident is used for wrong object type"); 
 
-        // IPS_SetName($id, $ident); 
-        // IPS_SetHidden($id, true); 
-        // IPS_SetEventScript($id, "$script;"); 
-        // IPS_SetEventTrigger($id, $triggerType, $targetId);
+        IPS_SetName($id, $ident); 
+        IPS_SetHidden($id, true); 
+        IPS_SetEventScript($id, "$script;"); 
+        IPS_SetEventTrigger($id, $triggerType, $targetId);
         // IPS_SetEventTriggerSubsequentExecution($id, true);
         // IPS_SetEventActive($id, true); 
 
