@@ -264,7 +264,7 @@ class IPSEvent extends IPSObject
     const TypeCyclic = 1;
     const TypeScheduler = 2;
 
-    private $type;
+    private $type = false;
 
     public function __construct($parentId, $ident, $type) {
         parent::__construct($parentId, $ident);
@@ -294,9 +294,7 @@ class IPSEvent extends IPSObject
             IPS_SetIdent($id, $this->Ident());            
         }
 
-        IPS_LogMessage("IPSEvent", "Registering event [setting name $name for id $id] - $this");
         IPS_SetName($id, $name);
-        IPS_LogMessage("IPSEvent", "Registering event [setting position $position for id $id]- $this");
         IPS_SetPosition($id, $position);
         
         if (!IPS_EventExists($id)) throw new Exception("Event $ident could not be created."); 
