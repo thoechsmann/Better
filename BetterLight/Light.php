@@ -120,11 +120,11 @@ class DimLight extends Light {
     const Size = 6;
     const Prefix = "DimLight";
 
-    static public function GetIndexForDisplayIdent($ident)
+    static public function GetIndexForDisplayIdent($module, $ident)
     {
         for($i = 0; $i<self::Size; $i++)
         {
-            $var = new DimLight(0, $i);
+            $var = new DimLight($module, $i);
             if($var->IsDisplayVar($ident))
                 return $i;
         }
@@ -207,11 +207,11 @@ class RGBLight extends Light {
     const Size = 2;
     const Prefix = "RGBLight";
 
-    static public function GetIndexForDisplayIdent($ident)
+    static public function GetIndexForDisplayIdent($module, $ident)
     {
         for($i = 0; $i<self::Size; $i++)
         {
-            $var = new RGBLight(0, $i);
+            $var = new RGBLight($module, $i);
             if($var->IsDisplayVar($ident))
                 return $i;
         }
@@ -289,11 +289,11 @@ class SwitchLight extends Light {
     const Size = 2;
     const Prefix = "SwitchLight";
 
-    static public function GetIndexForDisplayIdent($ident)
+    static public function GetIndexForDisplayIdent($module, $ident)
     {
         for($i = 0; $i<self::Size; $i++)
         {
-            $var = new SwitchLight(0, $i);
+            $var = new SwitchLight($module, $i);
             if($var->IsDisplayVar($ident))
                 return $i;
         }
