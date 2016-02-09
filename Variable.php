@@ -144,7 +144,7 @@ class IPSVar extends IPSObject
         }
 
         if(!empty($typeName))
-            IPS_LogMessage("IPSVar - SetValue", "value: $value is not of type boolean - " . $this);
+            IPS_LogMessage("IPSVar - SetValue", "value: $value is not of type $typeName - " . $this);
     }
 
     public function SetProfile($profile)

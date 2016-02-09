@@ -10,7 +10,7 @@ class Light {
     protected $index;
     protected $module;
     protected $prefix;
-    private $type;
+    private $type = false;
 
     public function __construct($module, $index, $prefix, $type) {
         IPS_LogMessage("Light::Construct", "prefix" . $prefix);
