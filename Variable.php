@@ -273,7 +273,7 @@ class IPSEvent extends IPSObject
 
     protected function RegisterEvent($name = "", $position = 0) 
     { 
-        IPS_LogMessage("IPSEvent", "Registering event of type $type - $this");
+        IPS_LogMessage("IPSEvent", "Registering event of type " . $this->type . " - $this");
 
         if($name == "")
             $name = $this->Ident();
