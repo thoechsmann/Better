@@ -480,7 +480,7 @@ class BetterLight extends BetterBase {
     {
         IPS_LogMessage("BL", "RequestAction - ident:$ident, value:$value");
 
-        $lightNumber = SwitchLight::GetIndexForDisplayIdent($module, $ident);
+        $lightNumber = SwitchLight::GetIndexForDisplayIdent($this->module, $ident);
         if($lightNumber !== false)
         {
             IPS_LogMessage("BL", "RequestAction SwitchLight - ident:$ident, value:$value");
@@ -493,7 +493,7 @@ class BetterLight extends BetterBase {
             return;
         }
 
-        $lightNumber = DimLight::GetIndexForDisplayIdent($module, $ident);
+        $lightNumber = DimLight::GetIndexForDisplayIdent($this->module, $ident);
         if($lightNumber !== false)
         {
             IPS_LogMessage("BL", "RequestAction DimLight - ident:$ident, value:$value");
@@ -506,7 +506,7 @@ class BetterLight extends BetterBase {
             return;
         }
 
-        $lightNumber = RGBLight::GetIndexForDisplayIdent($module, $ident);
+        $lightNumber = RGBLight::GetIndexForDisplayIdent($this->module, $ident);
         if($lightNumber !== false)
         {
             IPS_LogMessage("BL", "RequestAction RGBLight - ident:$ident, value:$value");
