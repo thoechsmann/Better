@@ -159,7 +159,7 @@ class Light {
             "DisplayVar", $this->type);
     }
 
-    protected function IsDisplayVar($ident)
+    public function IsDisplayVar($ident)
     {
         return $ident == $this->DisplayVar()->Ident();
     }
