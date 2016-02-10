@@ -20,7 +20,7 @@ class Backing  {
 
     public function __construct($module, $displayIdent, $getterId, $setterId, $eibType) {
         if($displayIdent == "" || $getterId == 0 || $setterId == 0)
-            throw new Exception("Backing::__construct - Some ids are 0.");
+            throw new Exception("Backing::__construct(module, $displayIdent, $getterId, $setterId, $eibType) - Some ids are 0.");
 
         $this->module = $module;
         $this->displayIdent = $displayIdent;
