@@ -79,7 +79,7 @@ class LightArray {
 
     public function RegisterVariables($sceneCount)
     {
-        for($i=0; $i<$this->size; $i++)
+        for($i=0; $i<$this->Count(); $i++)
         {
             $this->At($i)->RegisterVariables($sceneCount);
         }
@@ -87,7 +87,7 @@ class LightArray {
 
     public function RegisterTriggers()
     {
-        for($i=0; $i<$this->size; $i++)
+        for($i=0; $i<$this->Count(); $i++)
         {
             $this->At($i)->RegisterTriggers();
         }
