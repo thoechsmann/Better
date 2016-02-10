@@ -4,6 +4,121 @@ require_once(__DIR__ . "/../Property.php");
 require_once(__DIR__ . "/../Variable.php");
 require_once(__DIR__ . "/../Backing.php");
 
+class LightArray {
+    const TypeSwitch = 0;
+    const TypeDim = 1;
+    const TypeRGB = 2;
+
+    private $size;
+    private $type;
+    private $module;
+
+    public function __construct($module, $size, $type)
+    {
+        $this->module = $module;
+        $this->size = $size;
+        $this->type = $type;
+    }
+
+    public function Count()
+    {
+        $count = 0;
+        
+        for($i=0; $i<$this->size; $i++)
+        {
+            $light = $this->At($i);
+
+            if(!$light->IsDefined())
+            {
+                return $count;
+            }
+
+            $count++;
+        }
+
+        return $count;
+    }
+
+    public function At($index)
+    {
+        switch($this->type)
+        {
+            case LightArray::TypeSwitch:
+                return new SwitchLight($this->module, $index);
+                break;
+            case LightArray::TypeDim:
+                return new DimLight($this->module, $index);
+                break;
+            case LightArray::TypeRGB:
+                return new RGBLight($this->module, $index);
+                break;
+            default: 
+                IPS_LogMessage("BL", "LightArray::At - Unsupported type: $type");
+        }
+    }
+
+    public function GetIndexForDisplayIdent($ident)
+    {
+        for($i = 0; $i<$this->size; $i++)
+        {
+            $var = $this->At($i);
+            if($var->IsDisplayVar($ident))
+                return $i;
+        }
+
+        return false;
+    }
+
+    public function RegisterProperties()
+    {
+        for($i=0; $i<$this->size; $i++)
+        {
+            $this->At($i)->RegisterProperties();
+        }
+    }
+
+    public function RegisterVariables($sceneCount)
+    {
+        for($i=0; $i<$this->size; $i++)
+        {
+            $this->At($i)->RegisterVariables($sceneCount);
+        }
+    }
+
+    public function RegisterTriggers()
+    {
+        for($i=0; $i<$this->size; $i++)
+        {
+            $this->At($i)->RegisterTriggers();
+        }
+    }
+
+    public function SaveToScene($sceneNumber)
+    {
+        for($i = 0; $i < $this->Count(); $i++)
+        {
+            $this->At($i)->SaveToScene($sceneNumber);
+        }
+    }
+
+    public function LoadFromScene($sceneNumber, $triggerIdent, $triggerBoolValue)
+    {
+        for($i = 0; $i < $this->Count(); $i++)
+        {
+            $this->At($i)->LoadFromScene($sceneNumber, $triggerIdent, $triggerBoolValue);
+        }
+    }
+
+    public function TurnOff()
+    {
+        for($i = 0; $i < $this->Count(); $i++)
+        {
+            $this->At($i)->TurnOff();
+        }
+    }
+
+}
+
 class Light {
     const StrScene = "Scene";
 
@@ -117,20 +232,7 @@ class Light {
 }
 
 class DimLight extends Light {
-    const Size = 6;
     const Prefix = "DimLight";
-
-    static public function GetIndexForDisplayIdent($module, $ident)
-    {
-        for($i = 0; $i<self::Size; $i++)
-        {
-            $var = new DimLight($module, $i);
-            if($var->IsDisplayVar($ident))
-                return $i;
-        }
-
-        return false;
-    }
 
     public function __construct($module, $index) {
         parent::__construct($module, $index, DimLight::Prefix, IPSVar::TypeInteger);
@@ -204,20 +306,7 @@ class DimLight extends Light {
 }
 
 class RGBLight extends Light {
-    const Size = 2;
     const Prefix = "RGBLight";
-
-    static public function GetIndexForDisplayIdent($module, $ident)
-    {
-        for($i = 0; $i<self::Size; $i++)
-        {
-            $var = new RGBLight($module, $i);
-            if($var->IsDisplayVar($ident))
-                return $i;
-        }
-
-        return false;
-    }
 
     public function __construct($module, $index) {
         parent::__construct($module, $index, RGBLight::Prefix, IPSVar::TypeInteger);
@@ -286,20 +375,7 @@ class RGBLight extends Light {
 }
 
 class SwitchLight extends Light {
-    const Size = 2;
     const Prefix = "SwitchLight";
-
-    static public function GetIndexForDisplayIdent($module, $ident)
-    {
-        for($i = 0; $i<self::Size; $i++)
-        {
-            $var = new SwitchLight($module, $i);
-            if($var->IsDisplayVar($ident))
-                return $i;
-        }
-
-        return false;
-    }
 
     public function __construct($module, $index) {
         parent::__construct($module, $index, SwitchLight::Prefix, IPSVar::TypeBoolean);
@@ -361,220 +437,6 @@ class SwitchLight extends Light {
         }
 
         $this->DisplayVarBacking()->SetValue($value);
-    }
-}
-
-
-class MotionSensor 
-{
-    const StrMS = "MS";
-    const StrScene = "Scene";
-
-    private $module;
-
-    public function __construct($module) {
-        $this->module = $module;
-    }
-
-    // Properties
-
-    private function MainSwitchIdProp()
-    {
-        return new PropertyInteger($this->module, self::StrMS . "MainSwitchId");
-    }
-
-    private function LockIdProp()
-    {
-        return new PropertyInteger($this->module, self::StrMS . "LockId");
-    }
-
-    private function ExternMovementIdProp()
-    {
-        return new PropertyInteger($this->module, self::StrMS . "ExternMovementId");
-    }
-
-    // Variables
-
-    private function LockVar()
-    {
-        return new IPSVarBoolean($this->module->InstanceId(), self::StrMS . "Lock");
-    
-    }
-
-    private function LockSceneVars($sceneNumber)
-    {
-        return new IPSVarBoolean($this->module->InstanceId(), 
-            BetterBase::PersistentPrefix . 
-            self::StrMS .
-            self::StrScene . $sceneNumber . 
-            "Lock");
-    }
-
-    // Events
-
-    private function MainSwitchTrigger()
-    {
-        return new IPSEventTrigger($this->module->InstanceId(), self::StrMS . "MainSwitch" . "Trigger");
-    }
-
-    //
-
-    public function RegisterProperties()
-    {
-        $this->MainSwitchIdProp()->Register();
-        $this->LockIdProp()->Register();
-        $this->ExternMovementIdProp()->Register();
-    }
-
-    public function RegisterVariables($sceneCount)
-    {
-        $this->RegisterLockVar();
-        $this->RegisterSceneVars($sceneCount);
-    }
-
-    private function RegisterLockVar()
-    {
-        $var = $this->LockVar();
-        $var->Register("BM Sperren", "~Lock"); //, self::PosLightSwitch);
-        $var->EnableAction();
-    }
-
-    private function RegisterSceneVars($sceneCount)
-    {
-        for($i = 0; $i<$sceneCount; $i++)
-        {
-            $var = $this->LockSceneVars($i);
-            $var->Register();
-            $var->SetHidden(true);
-        }
-    }
-
-    public function RegisterTriggers()
-    {
-        $this->MainSwitchTrigger()->Register(
-            $this->MainSwitchIdProp()->Value(), 
-            'BL_MSMainSwitchEvent($_IPS[\'TARGET\']);', 
-            IPSEventTrigger::TypeUpdate);
-    }
-
-    public function IsMainSwitchOn()
-    {
-        $id = $this->MainSwitchIdProp()->Value();
-
-        if($id == 0)
-            return false;
-
-        return GetValue($id);
-    }
-
-    public function IsLocked()
-    {
-        $id = $this->LockIdProp()->Value();
-
-        if($id == 0)
-            return false;
-
-        return GetValue($id);
-    }
-
-    public function SetLock($value)
-    {
-        $id = $this->LockIdProp()->Value();
-
-        if($id != 0)
-        {
-            EIB_Switch(IPS_GetParent($id), $value);
-            $this->LockVar()->SetValue($value);
-        }        
-    }
-
-    public function SetSceneLock($sceneNumber, $value)
-    {
-        $this->LockSceneVars($sceneNumber)->SetValue($value);
-    }
-
-    public function TriggerExternMovement()
-    {
-        $id = $this->ExternMovementIdProp()->Value();
-
-        if($id != 0)
-        {
-            EIB_Switch(IPS_GetParent($id), true);
-        }
-    }
-
-    public function SaveToScene($sceneNumber)
-    {
-        $value = $this->LockVar()->GetValue();
-        $this->LockSceneVars($sceneNumber)->SetValue($value);
-    }
-
-    public function LoadFromScene($sceneNumber)
-    {
-        $currentValue = $this->IsLocked();
-        $value = $this->LockSceneVars($sceneNumber)->GetValue();
-
-        if($currentValue != $value)
-        {
-            $this->SetLock($value);
-        }
-    }
-}
-
-class Scene
-{
-    private $index;
-    private $module;
-
-    const Size = 4;
-    const StrScene = "Scene";
-
-    public function __construct($module, $index) {
-        $this->module = $module;
-        $this->index = $index;
-    }
-
-    // Properties
-
-    private function NameProp()
-    {        
-        return new PropertyString($this->module, self::StrScene . $this->index . "Name");
-    }   
-
-    private function ColorProp()
-    {        
-        return new PropertyString($this->module, self::StrScene . $this->index . "Color");
-    }
-
-    public function RegisterProperties()
-    {
-        $this->NameProp()->Register();
-        $this->ColorProp()->Register();
-    }
-
-    public function Name()
-    {
-        return $this->NameProp()->Value();
-    }
-
-    public function SetName($value)
-    {
-        $this->NameProp()->SetValue($value);
-    }
-
-    public function Color()
-    {
-        return intval($this->ColorProp()->Value(), 0);
-    }
-
-    public function SetColor($value)
-    {
-        $this->ColorProp()->SetValue($value);
-    }
-
-    public function IsDefined()
-    {
-        return $this->Name() != "";
     }
 }
 
