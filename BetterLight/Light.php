@@ -270,11 +270,9 @@ class DimLight extends Light {
         $this->StatusValueIdProp()->Register();
     }
 
-    public function RegisterVariables($sceneCount)
+    public function RegisterVariables($sceneCount, $position)
     {
-        parent::RegisterVariables($sceneCount);
-
-        // $this->RegisterDisplayVar();
+        parent::RegisterVariables($sceneCount, $position);
 
         $var = $this->DisplayVar();
         $var->SetProfile("~Intensity.100");
@@ -338,9 +336,9 @@ class RGBLight extends Light {
         $this->SetValueIdProp()->Register();
     }
 
-    public function RegisterVariables($sceneCount)
+    public function RegisterVariables($sceneCount, $position)
     {
-        parent::RegisterVariables($sceneCount);
+        parent::RegisterVariables($sceneCount, $position);
 
         $var = $this->DisplayVar();
         $var->SetProfile("~HexColor");
@@ -404,9 +402,9 @@ class SwitchLight extends Light {
         $this->StatusIdProp()->Register();
     }
 
-    public function RegisterVariables($sceneCount)
+    public function RegisterVariables($sceneCount, $position)
     {
-        parent::RegisterVariables($sceneCount);
+        parent::RegisterVariables($sceneCount, $position);
 
         $var = $this->DisplayVar();
         $var->SetProfile("~Switch");
