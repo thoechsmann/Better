@@ -13,7 +13,7 @@ class BetterLight extends BetterBase {
     const MaxDimLights = 6;
     const MaxSwitchLights = 2;
     const MaxRGBLights = 2;
-    const MaxSceneSwitches = 1;
+    const MaxSceneSwitches = 4;
     const MaxScenes = 4;
 
     const StrSwitch = "switch";
