@@ -44,6 +44,14 @@ class SceneSwitchArray {
             $this->At($i)->RegisterProperties();
         }
     }
+
+    public function RegisterTriggers()
+    {
+        for($i=0; $i<$this->Count(); $i++)
+        {
+            $this->At($i)->RegisterTriggers();
+        }
+    }
 }
 
 class SceneSwitch
