@@ -133,9 +133,6 @@ class BetterLight extends BetterBase {
         $this->Scenes()->RegisterProperties();
         $this->SceneSwitches()->RegisterProperties();
 
-        $this->SwitchIdProperties()->RegisterAll();
-        $this->SwitchSceneProperties()->RegisterAll();
-
         // Set default values
         $this->Scenes()->At(0)->SetName("Aus");
         $this->Scenes()->At(0)->SetColor("0x000000");
