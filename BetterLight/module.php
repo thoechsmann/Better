@@ -26,18 +26,6 @@ class BetterLight extends BetterBase {
     const PosSaveSceneButton = 6;
     const PosSceneScheduler = 7;
 
-    // Properties
-
-    private function SwitchIdProperties()
-    {        
-        return new PropertyArrayString($this, self::StrSwitch . "Id", self::MaxSwitches);
-    }
-
-    private function SwitchSceneProperties()
-    {        
-        return new PropertyArrayString($this, self::StrSwitch . "Scene", self::MaxSwitches);
-    }
-
     // Variables
 
     private function CurrentSceneVar()

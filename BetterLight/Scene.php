@@ -7,11 +7,10 @@ class SceneArray {
     private $size;
     private $module;
 
-    public function __construct($module, $size, $type)
+    public function __construct($module, $size)
     {
         $this->module = $module;
         $this->size = $size;
-        $this->type = $type;
     }
 
     public function Count()
