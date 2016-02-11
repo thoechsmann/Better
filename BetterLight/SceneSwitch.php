@@ -3,7 +3,7 @@ require_once(__DIR__ . "/../BetterBase.php");
 require_once(__DIR__ . "/../Property.php");
 require_once(__DIR__ . "/../Variable.php");
 
-class SceneArray {
+class SceneSwitchArray {
     private $size;
     private $module;
 
@@ -35,7 +35,7 @@ class SceneArray {
 
     public function At($index)
     {
-        return new Scene($this->module, $index);
+        return new SceneSwitch($this->module, $index);
     }
 
     public function RegisterProperties()
@@ -47,12 +47,13 @@ class SceneArray {
     }
 }
 
-class Scene
+class SceneSwitch
 {
     private $index;
     private $module;
 
-    const StrScene = "Scene";
+    const Size = 4;
+    const StrPrefix = "SceneSwitch";
 
     public function __construct($module, $index) {
         $this->module = $module;
@@ -61,45 +62,48 @@ class Scene
 
     // Properties
 
-    private function NameProp()
+    private function SwitchIdProp()
     {        
-        return new PropertyString($this->module, self::StrScene . $this->index . "Name");
+        return new PropertyInteger($this->module, self::StrPrefix . $this->index . "SwitchId");
     }   
 
-    private function ColorProp()
+    private function SceneNumberProp()
     {        
-        return new PropertyString($this->module, self::StrScene . $this->index . "Color");
+        return new PropertyInteger($this->module, self::StrPrefix . $this->index . "SceneNumber");
+    }
+
+    // Events
+
+    private function Trigger()
+    {
+        return new IPSEventTrigger($this->module->InstanceId(), self::StrPrefix . $this->index . "Trigger");
     }
 
     public function RegisterProperties()
     {
-        $this->NameProp()->Register();
-        $this->ColorProp()->Register();
+        $this->SwitchIdProp()->Register();
+        $this->SceneNumberProp()->Register();
     }
 
-    public function Name()
+    public function RegisterTriggers()
     {
-        return $this->NameProp()->Value();
+        $script = "BL_SetScene(" . $this->module->InstanceId() . ", " . $this->SceneNumber() . ");";
+        $this->Trigger()->Register($this->SwitchId(), $script, IPSEventTrigger::TypeUpdate);
     }
 
-    public function SetName($value)
+    public function SwitchId()
     {
-        $this->NameProp()->SetValue($value);
+        return $this->SwitchIdProp()->Value();
     }
 
-    public function Color()
+    public function SceneNumber()
     {
-        return intval($this->ColorProp()->Value(), 0);
+        return $this->SceneNumberProp()->Value();
     }
-
-    public function SetColor($value)
-    {
-        $this->ColorProp()->SetValue($value);
-    }
-
+    
     public function IsDefined()
     {
-        return $this->Name() != "";
+        return $this->SwitchId() != 0;
     }
 }
 

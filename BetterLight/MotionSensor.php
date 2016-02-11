@@ -65,16 +65,16 @@ class MotionSensor
         $this->ExternMovementIdProp()->Register();
     }
 
-    public function RegisterVariables($sceneCount)
+    public function RegisterVariables($sceneCount, $position)
     {
-        $this->RegisterLockVar();
+        $this->RegisterLockVar($position);
         $this->RegisterSceneVars($sceneCount);
     }
 
-    private function RegisterLockVar()
+    private function RegisterLockVar($position)
     {
         $var = $this->LockVar();
-        $var->Register("BM Sperren", "~Lock"); //, self::PosLightSwitch);
+        $var->Register("BM Sperren", "~Lock", $position);
         $var->EnableAction();
     }
 

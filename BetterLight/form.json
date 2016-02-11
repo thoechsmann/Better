@@ -94,14 +94,8 @@
 		        { "label": "Grau", "value":    "0x888888" }
 		] },
 
-		{ "type": "SelectVariable", "name": "switch0Id", "caption": "Schalter1 Id" },
-		{ "type": "NumberSpinner", "name": "switchScene0", "caption": "Schalter1 Szenen Id" },
-		{ "type": "SelectVariable", "name": "switchId1", "caption": "Schalter2 Id" },
-		{ "type": "NumberSpinner", "name": "switchScene1", "caption": "Schalter2 Szenen Id" },
-		{ "type": "SelectVariable", "name": "switchId2", "caption": "Schalter3 Id" },
-		{ "type": "NumberSpinner", "name": "switchScene2", "caption": "Schalter3 Szenen Id" },
-		{ "type": "SelectVariable", "name": "switchId3", "caption": "Schalter4 Id" },
-		{ "type": "NumberSpinner", "name": "switchScene3", "caption": "Schalter4 Szenen Id" }
+		{ "type": "SelectVariable", "name": "SceneSwitch0SwitchId", "caption": "Schalter 1 SchalterId" },
+		{ "type": "NumberSpinner", "name": "SceneSwitch0SceneNumber", "caption": "Schalter 1 Szene" },
 
 
 	],

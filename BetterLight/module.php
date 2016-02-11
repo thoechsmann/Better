@@ -1,19 +1,20 @@
 <?
 require_once(__DIR__ . "/Light.php");
 require_once(__DIR__ . "/Scene.php");
+require_once(__DIR__ . "/SceneSwitch.php");
 require_once(__DIR__ . "/MotionSensor.php");
 require_once(__DIR__ . "/../BetterBase.php");
 require_once(__DIR__ . "/../Property.php");
 require_once(__DIR__ . "/../Variable.php");
 require_once(__DIR__ . "/../Backing.php");
 
-
 class BetterLight extends BetterBase {
 
     const MaxDimLights = 6;
     const MaxSwitchLights = 2;
     const MaxRGBLights = 2;
-    const MaxSwitches = 4;
+    const MaxSceneSwitches = 1;
+    const MaxScenes = 4;
 
     const StrSwitch = "switch";
 
@@ -21,8 +22,9 @@ class BetterLight extends BetterBase {
     const PosMSLock = 2;
     const PosLightDim = 3;
     const PosLightSwitch = 4;
-    const PosSaveSceneButton = 5;
-    const PosSceneScheduler = 6;
+    const PosLightRGB = 5;
+    const PosSaveSceneButton = 6;
+    const PosSceneScheduler = 7;
 
     // Properties
 
@@ -41,6 +43,11 @@ class BetterLight extends BetterBase {
     private function CurrentSceneVar()
     {
         return new IPSVarInteger($this->InstanceID(), parent::PersistentPrefix . "CurrentScene");
+
+        // if(!isset($currentSceneVar))
+        //     $currentSceneVar = new IPSVarInteger($this->InstanceID(), parent::PersistentPrefix . "CurrentScene");
+
+        // return $currentSceneVar;
     }
 
     private function SaveToSceneVar()
@@ -99,9 +106,14 @@ class BetterLight extends BetterBase {
         return new LightArray($this, self::MaxRGBLights, LightArray::TypeRGB);
     }
 
-    private function Scenes($sceneNumber)
+    private function Scenes()
     {
-        return new Scene($this, $sceneNumber);
+        return new SceneArray($this, self::MaxScenes);
+    }
+
+    private function SceneSwitches()
+    {
+        return new SceneSwitchArray($this, self::MaxSceneSwitches);
     }
 
     private function MotionSensor()
@@ -109,23 +121,6 @@ class BetterLight extends BetterBase {
         return new MotionSensor($this);
     }
     //
-
-    private function SceneCount()
-    {
-        $count = 0;
-        
-        for($i=0; $i<Scene::Size; $i++)
-        {
-            $scene = $this->Scenes($i);
-
-            if(!$scene->IsDefined())
-            {
-                return $count;
-            }
-
-            $count++;
-        }
-    }
 
     private function SetSceneProfileString()
     {
@@ -147,20 +142,18 @@ class BetterLight extends BetterBase {
         $this->SwitchLights()->RegisterProperties();
         $this->RGBLights()->RegisterProperties();
 
-        for($i=0; $i<Scene::Size; $i++)
-        {
-            $this->Scenes($i)->RegisterProperties();
-        }
+        $this->Scenes()->RegisterProperties();
+        $this->SceneSwitches()->RegisterProperties();
 
         $this->SwitchIdProperties()->RegisterAll();
         $this->SwitchSceneProperties()->RegisterAll();
 
         // Set default values
-        $this->Scenes(0)->SetName("Aus");
-        $this->Scenes(0)->SetColor("0x000000");
+        $this->Scenes()->At(0)->SetName("Aus");
+        $this->Scenes()->At(0)->SetColor("0x000000");
 
-        $this->Scenes(1)->SetName("Standard");
-        $this->Scenes(1)->SetColor("0x00FF00");
+        $this->Scenes()->At(1)->SetName("Standard");
+        $this->Scenes()->At(1)->SetColor("0x00FF00");
     }
     
     public function ApplyChanges() 
@@ -172,6 +165,7 @@ class BetterLight extends BetterBase {
         $this->CreateSceneProfiles();
         $this->CreateSceneSelectionVar();
         $this->CreateSceneScheduler();
+        $this->CreateSceneSwitches();
         $this->CreateSaveButton();        
 
         $this->IdendTriggerdTurnOnVar()->Register();
@@ -196,18 +190,18 @@ class BetterLight extends BetterBase {
     private function CreateMotionSensor()
     {
         $ms = $this->MotionSensor();
-        $ms->RegisterVariables($this->SceneCount());
+        $ms->RegisterVariables($this->Scenes()->CCount(), self::PosMSLock);
         $ms->RegisterTriggers();
 
     }
 
     private function CreateLights()
     {
-        $sceneCount = $this->SceneCount();
+        $sceneCount = $this->Scenes()->Count();
 
-        $this->dimLights()->RegisterVariables($sceneCount);
-        $this->SwitchLights()->RegisterVariables($sceneCount);
-        $this->RGBLights()->RegisterVariables($sceneCount);
+        $this->dimLights()->RegisterVariables($sceneCount, self::PosLightDim);
+        $this->SwitchLights()->RegisterVariables($sceneCount, self::PosLightSwitch);
+        $this->RGBLights()->RegisterVariables($sceneCount, self::PosLightRGB);
 
         $this->dimLights()->RegisterTriggers();      
         $this->SwitchLights()->RegisterTriggers();      
@@ -225,9 +219,9 @@ class BetterLight extends BetterBase {
         @IPS_DeleteVariableProfile($saveProfile);
         IPS_CreateVariableProfile($saveProfile, 1);
         
-        for($sceneNumber = 0; $sceneNumber < $this->SceneCount(); $sceneNumber++)
+        for($sceneNumber = 0; $sceneNumber < $this->Scenes()->Count(); $sceneNumber++)
         {
-            $scene = $this->Scenes($sceneNumber);
+            $scene = $this->Scenes()->At($sceneNumber);
 
             IPS_SetVariableProfileAssociation($setProfile, $sceneNumber, $scene->Name(), "", $scene->Color());
 
@@ -241,9 +235,8 @@ class BetterLight extends BetterBase {
     private function CreateSceneSelectionVar() 
     {
         $currentScene = $this->CurrentSceneVar();
-        $currentScene->Register("Szene", $this->SetSceneProfileString());
+        $currentScene->Register("Szene", $this->SetSceneProfileString(), self::PosSceneSelection);
         $currentScene->EnableAction();
-        $currentScene->SetPosition(self::PosSceneSelection);
     }
 
     private function CreateSceneScheduler()
@@ -255,13 +248,18 @@ class BetterLight extends BetterBase {
         $scheduler->SetHidden(false);
         $scheduler->SetGroup(0, 127); //Mo - Fr (1 + 2 + 4 + 8 + 16)
 
-        for($sceneNumber = 0; $sceneNumber<$this->SceneCount(); $sceneNumber++)
+        for($sceneNumber = 0; $sceneNumber<$this->Scenes()->Count(); $sceneNumber++)
         {
-            $scene = $this->Scenes($sceneNumber);
+            $scene = $this->Scenes()->At($sceneNumber);
             
             $scheduler->SetAction($sceneNumber, $scene->Name(), $scene->Color(), 
                 "BL_SetScene(\$_IPS['TARGET'], $sceneNumber);");
         }
+    }
+
+    private function CreateSceneSwitches()
+    {
+        $this->SceneSwitches()->RegisterTriggers();
     }
 
     private function CreateSaveButton() 

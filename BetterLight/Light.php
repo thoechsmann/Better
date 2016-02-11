@@ -77,11 +77,11 @@ class LightArray {
         }
     }
 
-    public function RegisterVariables($sceneCount)
+    public function RegisterVariables($sceneCount, $position)
     {
         for($i=0; $i<$this->Count(); $i++)
         {
-            $this->At($i)->RegisterVariables($sceneCount);
+            $this->At($i)->RegisterVariables($sceneCount, $position);
         }
     }
 
@@ -181,17 +181,17 @@ class Light {
         $this->SwitchIdProp()->Register();
     }
 
-    public function RegisterVariables($sceneCount)
+    public function RegisterVariables($sceneCount, $position)
     {    
-        $this->RegisterDisplayVar();
+        $this->RegisterDisplayVar($position);
         $this->RegisterSceneVars($sceneCount);
     }
 
-    private function RegisterDisplayVar()
+    private function RegisterDisplayVar($position)
     {
         $name = $this->Name();
         $var = $this->DisplayVar();
-        $var->Register($name, ""); //, self::PosLightSwitch);
+        $var->Register($name, "", $position);
         $var->EnableAction();
     }
 
@@ -366,9 +366,6 @@ class RGBLight extends Light {
             // load value stored in temp var
             $value = $triggerValue;
         }
-
-        // $id = $this->SetValueIdProp();
-        // SetValue(IPS_GetParent($id), $value);
 
         $this->DisplayVarBacking()->SetValue($value);
     }

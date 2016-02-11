@@ -15,7 +15,7 @@ class Backing  {
 
     private function Trigger()
     {
-        return new IPSEventTrigger($this->module->InstanceId(), $this->displayIdent() . "Trigger", IPSEventTrigger::TypeUpdate);
+        return new IPSEventTrigger($this->module->InstanceId(), $this->displayIdent() . "Trigger");
     }
 
     public function __construct($module, $displayIdent, $getterId, $setterId, $eibType) {
@@ -70,7 +70,7 @@ class Backing  {
     {
         $displayId = $this->module->GetIDForIdent($this->displayIdent);
         $script = 'SetValue(' . $displayId . ', $_IPS[\'VALUE\']); ' . $additionalCode;
-        $this->Trigger()->Register($this->getterId, $script, BetterBase::TriggerTypeUpdate);
+        $this->Trigger()->Register($this->getterId, $script, IPSEventTrigger::TypeUpdate);
     }
 
     private function int2hex($value)
