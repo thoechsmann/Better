@@ -37,6 +37,17 @@ class IPSObject  {
         return $this->id;
     }
 
+    protected SetId($id)
+    {
+        if($this->id !== false)
+        {
+            $currentId = $this->id;
+            throw new Exception("Variable::SetId($id) - Id already set to $currentId. Changing is not allowed.");
+        }
+
+        $this->id = $id;
+    }
+
     public function GetIDForIdent($ident)
     {
         $id = @IPS_GetObjectIDByIdent($ident, $this->parentId); 
@@ -192,7 +203,7 @@ class IPSVar extends IPSObject
         if($id == 0)
         {
             $id = IPS_CreateVariable($this->type);
-            
+
             IPS_SetParent($id, $this->parentId);
             IPS_SetIdent($id, $this->Ident());            
         }
@@ -258,6 +269,37 @@ class IPSScript extends IPSObject
     }
 }
 
+class IPSLink extends IPSObject
+{
+    public function Register($tarketId, $name = "", $position = 0) 
+    {        
+        if($name == "")
+            $name = $this->Ident();
+
+        $id = $this->GetIDForIdent($this->Ident());
+
+        if($id == 0)
+        {
+            $id = IPS_CreateLink();
+            
+            IPS_SetParent($id, $this->parentId);
+            IPS_SetIdent($id, $this->Ident());
+        }
+
+        IPS_SetName($id, $name);
+        IPS_SetPosition($id, $position);
+        IPS_SetLinkTargetID($id, $tarketId);
+        
+        return $id;        
+    }
+
+    public function SetTargetId($targetId)
+    {
+        IPS_SetLinkTargetID($this->Id(), $targetId);
+    }
+}
+
+
 class IPSEvent extends IPSObject
 {
     const TypeTrigger = 0;
@@ -322,6 +364,10 @@ class IPSEvent extends IPSObject
         $this->SetActive(false);        
     }
 
+    public function SetLimit($count)
+    {
+        IPS_SetEventLimit($this->Id(), $count);
+    }
 }
 
 class IPSEventTrigger extends IPSEvent
@@ -362,8 +408,51 @@ class IPSEventTrigger extends IPSEvent
 
 class IPSEventCyclic extends IPSEvent
 {
+    const DayMonday = 1;
+    const DayTuesday = 2;
+    const DayWednesday = 4;
+    const DayThursday = 8;
+    const DayFriday = 16;
+    const DaySaturday = 32;
+    const DaySunday = 64;
+
+    const DayWeekdays = 31;
+    const DayWeekends = 96;
+    const DayAll = 127;
+
+    const DateTypeNone = 0;
+    const DateTypeOnce = 1;
+    const DateTypeDay = 2;
+    const DateTypeWeek = 3;
+    const DateTypeMonth = 4;
+    const DateTypeYear = 5;
+
+    const TimeTypeOnce = 0;
+    const TimeTypeSecond = 1;
+    const TimeTypeMinute = 2;
+    const TimeTypeHour = 3;
+
     public function __construct($parentId, $ident) {
         parent::__construct($parentId, $ident, IPSEvent::TypeCyclic);
+    }
+
+    public function Register($script, $name = "", $position = 0)
+    {
+        return parent::RegisterEvent($name, $position);
+        $this->SetScript($script);
+    }
+
+    // Add some nicer functions.
+    public SetCyclic($dateType, $dateInterval, $days, $daysInterval, $timeType, $timeInterval)
+    {
+        IPS_SetEventCyclic($this->Id(), $dateType, $dateInterval, $days, $daysInterval, $timeType, $timeInterval);
+    }
+
+    public StartTimer($seconds)
+    {
+        $this->SetCyclic(self::DateTypeNone, 0, 0, 0, self::TimeTypeSecond, $seconds)
+        $this->SetLimit(1);
+        $this->Activate();
     }
 }
 
@@ -395,11 +484,18 @@ class IPSEventScheduler extends IPSEvent
         IPS_SetEventScheduleGroup($this->Id(), $groupId, $days);
     }
 
+    public function SetGroupPoint($groupId, $pointId, $hour, $minute, $second, $actionId)
+    {
+        IPS_SetEventScheduleGroupPoint($this->Id(), $groupId, $pointId, $hour, $minute, $second, $actionId);
+    }
+
     public function SetAction($actionId, $name, $color, $scriptContent)
     {
         IPS_SetEventScheduleAction($this->Id(), $actionId, $name, $color, $scriptContent);
     }
 }
+
+
 
 
 

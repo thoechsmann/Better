@@ -94,7 +94,18 @@ class SceneSwitch
 
     public function RegisterTriggers()
     {
-        $script = "BL_SetScene(" . $this->module->InstanceId() . ", " . $this->SceneNumber() . ");";
+        $instanceId = $this->module->InstanceId();
+        $sceneNumber = $this->SceneNumber();
+
+        if($sceneNumber == 0)
+        {
+            $script = "BL_TurnOff($instanceId);";
+        }
+        else
+        {
+            $script = "BL_ToggleScene($instanceId, $sceneNumber);";
+        }
+
         $this->Trigger()->Register($this->SwitchId(), $script, IPSEventTrigger::TypeUpdate);
     }
 

@@ -128,8 +128,6 @@ class Light {
     private $type = false;
 
     public function __construct($module, $index, $prefix, $type) {
-        IPS_LogMessage("Light::Construct", "prefix" . $prefix);
-        IPS_LogMessage("Light::Construct", "module" . $module->InstanceId());
         $this->module = $module;
         $this->index = $index;
         $this->prefix = $prefix;
@@ -152,8 +150,6 @@ class Light {
 
     protected function DisplayVar()
     {
-        // IPS_LogMessage("Light::DisplayVar", "module" . $this->module);
-        IPS_LogMessage("Light::DisplayVar", "module" . $this->module->InstanceId());
         return new IPSVar($this->module->InstanceId(), 
             $this->prefix . $this->index .
             "DisplayVar", $this->type);

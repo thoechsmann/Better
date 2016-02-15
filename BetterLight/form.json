@@ -124,7 +124,6 @@
 	"actions":
 	[
 			{ "type": "Button", "label": "Movement Event", "onClick": "BL_MSMainSwitchEvent($id, true);" },
-			{ "type": "Button", "label": "Turn Off All", "onClick": "BL_TurnOffAll($id);" }
 	]	
 
 }

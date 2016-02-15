@@ -26,6 +26,11 @@ class BetterLight extends BetterBase {
     const PosSaveSceneButton = 6;
     const PosSceneScheduler = 7;
 
+    const OffSceneNumber = 0;
+    const DefaultSceneNumber = 1;
+
+    const OffTimerTime = 15;
+
     // Variables
 
     private function CurrentSceneVar()
@@ -70,13 +75,17 @@ class BetterLight extends BetterBase {
         return new IPSScript($this->InstanceID(), "SaveSceneStart");
     }
 
-    // Actions
+    // Events
 
     private function SceneScheduler()
     {
         return new IPSEventScheduler($this->InstanceID(), parent::PersistentPrefix . "SceneScheduler");
     }
 
+    private function OffTimer()
+    {
+        return new IPSEventScheduler($this->InstanceID(), "OffTimer");
+    }
 
     //
     private function DimLights()
@@ -134,11 +143,11 @@ class BetterLight extends BetterBase {
         $this->SceneSwitches()->RegisterProperties();
 
         // Set default values
-        $this->Scenes()->At(0)->SetName("Aus");
-        $this->Scenes()->At(0)->SetColor("0x000000");
+        $this->Scenes()->At(self::OffSceneNumber)->SetName("Aus");
+        $this->Scenes()->At(self::OffSceneNumber)->SetColor("0x000000");
 
-        $this->Scenes()->At(1)->SetName("Standard");
-        $this->Scenes()->At(1)->SetColor("0x00FF00");
+        $this->Scenes()->At(self::DefaultSceneNumber)->SetName("Standard");
+        $this->Scenes()->At(self::DefaultSceneNumber)->SetColor("0x00FF00");
     }
     
     public function ApplyChanges() 
@@ -151,7 +160,8 @@ class BetterLight extends BetterBase {
         $this->CreateSceneSelectionVar();
         $this->CreateSceneScheduler();
         $this->CreateSceneSwitches();
-        $this->CreateSaveButton();        
+        $this->CreateSaveButton();    
+        $this->CreateOffTimer();    
 
         $this->IdendTriggerdTurnOnVar()->Register();
         $this->IdendTriggerdTurnOnVar()->SetValue("");
@@ -167,8 +177,8 @@ class BetterLight extends BetterBase {
         $this->IdendTriggerdTurnOnIntegerValueVar()->SetHidden(true);
 
         // Set defaults
-        $this->MotionSensor()->SetSceneLock(0, true);
-        $this->MotionSensor()->SetSceneLock(1, false);
+        $this->MotionSensor()->SetSceneLock(self::OffSceneNumber, true);
+        $this->MotionSensor()->SetSceneLock(self::DefaultSceneNumber, false);
 
     }
 
@@ -259,6 +269,13 @@ class BetterLight extends BetterBase {
         $this->CancelSave();
     }
 
+    private function CreateOffTimer()
+    {
+        $script = "BL_BackToCurrentScene(" . $this->module->InstanceId() . ");";
+
+        $this->OffTimer()->Register($script);
+    }
+
     public function StartSave()
     {
         IPS_LogMessage("BL","StartSave() ");
@@ -291,6 +308,25 @@ class BetterLight extends BetterBase {
         $this->RGBLights()->LoadFromScene($sceneNumber, $triggerIdent, $triggerBoolValue);
 
         // Motion Sensor is set in SetScene.
+    }
+
+    public function BackToCurrentScene()
+    {
+        $this->SetScene($this->CurrentSceneVar()->GetValue(), false);
+    }
+
+    public function ToggleScene($sceneNumber)
+    {
+        $currentScene = $this->CurrentSceneVar()->GetValue();
+
+        if($currentScene == $sceneNumber)
+        {
+            $this->SetScene(self::DefaultSceneNumber, true);
+        }
+        else
+        {
+            $this->SetScene($sceneNumber, true);
+        }
     }
 
     public function SetScene($sceneNumber, $turnOn = false)
@@ -426,7 +462,6 @@ class BetterLight extends BetterBase {
     public function MSMainSwitchEvent()
     {
         $ms = $this->MotionSensor();
-
         $turnOn = $ms->IsMainSwitchOn();
 
         IPS_LogMessage("BL", "MSMainSwitchEvent - turnOn:$turnOn, isMSLocked:" . $ms->IsLocked());
@@ -443,11 +478,20 @@ class BetterLight extends BetterBase {
         $this->IdendTriggerdTurnOnVar()->SetValue("");
     }
 
-    public function TurnOffAll()
+    private function TurnOffAll()
     {
         $this->DimLights()->TurnOff();
         $this->SwitchLights()->TurnOff();
         $this->RGBLights()->TurnOff();
+    }
+
+    public function TurnOff()
+    {
+        $currentScene = $this->CurrentSceneVar()->GetValue();
+        $this->SetScene(self::OffSceneNumber, true);
+        $this->CurrentSceneVar()->SetValue($currentScene);
+        
+        $this->OffTimer()->StartTimer(self::OffTimerTime);
     }
 
 }
