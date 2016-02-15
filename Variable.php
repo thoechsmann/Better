@@ -450,7 +450,7 @@ class IPSEventCyclic extends IPSEvent
 
     public function StartTimer($seconds)
     {
-        $this->SetCyclic(self::DateTypeNone, 0, 0, 0, self::TimeTypeSecond, $seconds)
+        $this->SetCyclic(self::DateTypeNone, 0, 0, 0, self::TimeTypeSecond, $seconds);
         $this->SetLimit(1);
         $this->Activate();
     }
