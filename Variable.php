@@ -37,7 +37,7 @@ class IPSObject  {
         return $this->id;
     }
 
-    protected SetId($id)
+    protected function SetId($id)
     {
         if($this->id !== false)
         {
