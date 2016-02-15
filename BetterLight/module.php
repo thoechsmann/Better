@@ -84,7 +84,7 @@ class BetterLight extends BetterBase {
 
     private function OffTimer()
     {
-        return new IPSEventScheduler($this->InstanceID(), "OffTimer");
+        return new IPSEventCyclic($this->InstanceID(), "OffTimer");
     }
 
     //
