@@ -165,16 +165,16 @@ class BetterLight extends BetterBase {
 
         $this->IdendTriggerdTurnOnVar()->Register();
         $this->IdendTriggerdTurnOnVar()->SetValue("");
-        $this->IdendTriggerdTurnOnVar()->SetHidden(true);
+        $this->IdendTriggerdTurnOnVar()->Hide();
 
         $this->IdendTriggerdTurnOnBooelanValueVar()->Register();
-        $this->IdendTriggerdTurnOnBooelanValueVar()->SetHidden(true);
+        $this->IdendTriggerdTurnOnBooelanValueVar()->Hide();
 
         $this->IdendTriggerdTurnOnFloatValueVar()->Register();
-        $this->IdendTriggerdTurnOnFloatValueVar()->SetHidden(true);
+        $this->IdendTriggerdTurnOnFloatValueVar()->Hide();
 
         $this->IdendTriggerdTurnOnIntegerValueVar()->Register();
-        $this->IdendTriggerdTurnOnIntegerValueVar()->SetHidden(true);
+        $this->IdendTriggerdTurnOnIntegerValueVar()->Hide();
 
         // Set defaults
         $this->MotionSensor()->SetSceneLock(self::OffSceneNumber, true);
@@ -240,7 +240,7 @@ class BetterLight extends BetterBase {
         $scheduler = $this->SceneScheduler();
         $scheduler->Register("Szenen Zeiten", self::PosSceneScheduler);
         $scheduler->SetIcon("Calendar");
-        $scheduler->SetHidden(false);
+        $scheduler->Show();
         $scheduler->SetGroup(0, 127); //Mo - Fr (1 + 2 + 4 + 8 + 16)
 
         for($sceneNumber = 0; $sceneNumber<$this->Scenes()->Count(); $sceneNumber++)
@@ -274,13 +274,14 @@ class BetterLight extends BetterBase {
         $script = "BL_BackToCurrentScene(" . $this->InstanceId() . ");";
 
         $this->OffTimer()->Register($script);
+        $this->OffTimer()->Hide();
     }
 
     public function StartSave()
     {
         IPS_LogMessage("BL","StartSave() ");
-        $this->SaveToSceneVar()->SetHidden(false);
-        $this->SaveSceneScript()->SetHidden(true);
+        $this->SaveToSceneVar()->Show();
+        $this->SaveSceneScript()->Hide();
     }
 
     private function SaveToScene($sceneNumber)
@@ -363,8 +364,8 @@ class BetterLight extends BetterBase {
     public function CancelSave()
     {
         IPS_LogMessage("BL","CancelSave() ");
-        $this->SaveToSceneVar()->SetHidden(true);
-        $this->SaveSceneScript()->SetHidden(false);
+        $this->SaveToSceneVar()->Hide();
+        $this->SaveSceneScript()->Show();
     }
 
     // FIX: Remove storeVar. Save everything in a string.
