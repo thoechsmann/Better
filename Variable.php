@@ -443,12 +443,12 @@ class IPSEventCyclic extends IPSEvent
     }
 
     // Add some nicer functions.
-    public SetCyclic($dateType, $dateInterval, $days, $daysInterval, $timeType, $timeInterval)
+    public function SetCyclic($dateType, $dateInterval, $days, $daysInterval, $timeType, $timeInterval)
     {
         IPS_SetEventCyclic($this->Id(), $dateType, $dateInterval, $days, $daysInterval, $timeType, $timeInterval);
     }
 
-    public StartTimer($seconds)
+    public function StartTimer($seconds)
     {
         $this->SetCyclic(self::DateTypeNone, 0, 0, 0, self::TimeTypeSecond, $seconds)
         $this->SetLimit(1);
