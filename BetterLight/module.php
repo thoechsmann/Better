@@ -63,11 +63,6 @@ class BetterLight extends BetterBase {
         return new IPSVarInteger($this->InstanceID(), "IdendTriggerdTurnOnIntegerValue");
     }
 
-    private function IdendTriggerdTurnOnFloatValueVar()
-    {
-        return new IPSVarFloat($this->InstanceID(), "IdendTriggerdTurnOnFloatValue");
-    }
-
     // Scripts
 
     private function SaveSceneScript()
@@ -169,9 +164,6 @@ class BetterLight extends BetterBase {
 
         $this->IdendTriggerdTurnOnBooelanValueVar()->Register();
         $this->IdendTriggerdTurnOnBooelanValueVar()->Hide();
-
-        $this->IdendTriggerdTurnOnFloatValueVar()->Register();
-        $this->IdendTriggerdTurnOnFloatValueVar()->Hide();
 
         $this->IdendTriggerdTurnOnIntegerValueVar()->Register();
         $this->IdendTriggerdTurnOnIntegerValueVar()->Hide();
@@ -302,11 +294,15 @@ class BetterLight extends BetterBase {
         IPS_LogMessage("BL","LoadFromScene(sceneNumber = $sceneNumber)");
 
         $triggerIdent = $this->IdendTriggerdTurnOnVar()->GetValue();
-        $triggerBoolValue = $this->IdendTriggerdTurnOnFloatValueVar()->GetValue();
+        
+        $triggerValue = $this->IdendTriggerdTurnOnIntegerValueVar()->GetValue();
+        $this->DimLights()->LoadFromScene($sceneNumber, $triggerIdent, $triggerValue);
 
-        $this->DimLights()->LoadFromScene($sceneNumber, $triggerIdent, $triggerBoolValue);
-        $this->SwitchLights()->LoadFromScene($sceneNumber, $triggerIdent, $triggerBoolValue);
-        $this->RGBLights()->LoadFromScene($sceneNumber, $triggerIdent, $triggerBoolValue);
+        $triggerValue = $this->IdendTriggerdTurnOnBooleanValueVar()->GetValue();
+        $this->SwitchLights()->LoadFromScene($sceneNumber, $triggerIdent, $triggerValue);
+
+        $triggerValue = $this->IdendTriggerdTurnOnIntegerValueVar()->GetValue();
+        $this->RGBLights()->LoadFromScene($sceneNumber, $triggerIdent, $triggerValue);
 
         // Motion Sensor is set in SetScene.
     }
@@ -441,7 +437,7 @@ class BetterLight extends BetterBase {
         {
             IPS_LogMessage("BL", "RequestAction DimLight - ident:$ident, value:$value");
             $light = $this->DimLights($dimLightNumber);
-            $identTrigger = $this->IdendTriggerdTurnOnFloatValueVar();
+            $identTrigger = $this->IdendTriggerdTurnOnIntegerValueVar();
             $this->SetBackedValue($light->DisplayVarBacking(), $value, $identTrigger);
             return true;
         }
