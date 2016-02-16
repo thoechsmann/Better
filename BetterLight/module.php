@@ -426,7 +426,7 @@ class BetterLight extends BetterBase {
         if($switchLightNumber !== false)
         {
             IPS_LogMessage("BL", "RequestAction SwitchLight - ident:$ident, value:$value");
-            $light = $this->SwitchLights($switchLightNumber);
+            $light = $this->SwitchLights()->At($switchLightNumber);
             $identTrigger = $this->IdendTriggerdTurnOnBooleanValueVar();
             $this->SetBackedValue($light->DisplayVarBacking(), $value, $identTrigger);
             return true;
@@ -436,7 +436,7 @@ class BetterLight extends BetterBase {
         if($dimLightNumber !== false)
         {
             IPS_LogMessage("BL", "RequestAction DimLight - ident:$ident, value:$value");
-            $light = $this->DimLights($dimLightNumber);
+            $light = $this->DimLights()->At($dimLightNumber);
             $identTrigger = $this->IdendTriggerdTurnOnIntegerValueVar();
             $this->SetBackedValue($light->DisplayVarBacking(), $value, $identTrigger);
             return true;
@@ -446,7 +446,7 @@ class BetterLight extends BetterBase {
         if($rgbLightNumber !== false)
         {
             IPS_LogMessage("BL", "RequestAction RGBLight - ident:$ident, value:$value");
-            $light = $this->RGBLights($rgbLightNumber);
+            $light = $this->RGBLights()->At($rgbLightNumber);
             $identTrigger = $this->IdendTriggerdTurnOnIntegerValueVar();
             $this->SetBackedValue($light->DisplayVarBacking(), $value, $identTrigger);
             return true;
