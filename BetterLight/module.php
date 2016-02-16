@@ -53,9 +53,9 @@ class BetterLight extends BetterBase {
         return new IPSVarString($this->InstanceID(), "IdendTriggerdTurnOn");
     }
 
-    private function IdendTriggerdTurnOnBooelanValueVar()
+    private function IdendTriggerdTurnOnBooleanValueVar()
     {
-        return new IPSVarBoolean($this->InstanceID(), "IdendTriggerdTurnOnBooelanValue");
+        return new IPSVarBoolean($this->InstanceID(), "IdendTriggerdTurnOnBooleanValue");
     }
 
     private function IdendTriggerdTurnOnIntegerValueVar()
@@ -162,8 +162,8 @@ class BetterLight extends BetterBase {
         $this->IdendTriggerdTurnOnVar()->SetValue("");
         $this->IdendTriggerdTurnOnVar()->Hide();
 
-        $this->IdendTriggerdTurnOnBooelanValueVar()->Register();
-        $this->IdendTriggerdTurnOnBooelanValueVar()->Hide();
+        $this->IdendTriggerdTurnOnBooleanValueVar()->Register();
+        $this->IdendTriggerdTurnOnBooleanValueVar()->Hide();
 
         $this->IdendTriggerdTurnOnIntegerValueVar()->Register();
         $this->IdendTriggerdTurnOnIntegerValueVar()->Hide();
@@ -427,7 +427,7 @@ class BetterLight extends BetterBase {
         {
             IPS_LogMessage("BL", "RequestAction SwitchLight - ident:$ident, value:$value");
             $light = $this->SwitchLights($switchLightNumber);
-            $identTrigger = $this->IdendTriggerdTurnOnBooelanValueVar();
+            $identTrigger = $this->IdendTriggerdTurnOnBooleanValueVar();
             $this->SetBackedValue($light->DisplayVarBacking(), $value, $identTrigger);
             return true;
         }
