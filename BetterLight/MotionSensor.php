@@ -187,6 +187,18 @@ class MotionSensor
         $value = $this->LockSceneVars($sceneNumber)->GetValue();
         $this->SetLockState($value);
     }
+
+    public function RequestAction($ident, $value) 
+    {
+        if($ident == $this->LockVar()->Ident())
+        {
+            $this->SetLockState($value);
+            return true;
+        }
+
+        return false;
+    }
+
 }
 
 ?>

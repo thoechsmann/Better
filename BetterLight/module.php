@@ -409,6 +409,9 @@ class BetterLight extends BetterBase {
         if($this->RequestActionForLight($ident, $value))
             return;
 
+        if($this->MotionSensor()->RequestAction($ident, $value))
+            return;
+
         switch($ident) {
             case $this->SaveSceneScript()->Ident():
                 $this->StartSave();
