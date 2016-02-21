@@ -169,8 +169,8 @@ class BetterLight extends BetterBase {
         $this->IdendTriggerdTurnOnIntegerValueVar()->Hide();
 
         // Set defaults
-        $this->MotionSensor()->SetSceneLock(self::OffSceneNumber, true);
-        $this->MotionSensor()->SetSceneLock(self::DefaultSceneNumber, false);
+        $this->MotionSensor()->SetSceneLock(self::OffSceneNumber, MotionSensor::StateAlwaysOff);
+        $this->MotionSensor()->SetSceneLock(self::DefaultSceneNumber, MotionSensor::StateAuto);
 
     }
 
@@ -344,6 +344,9 @@ class BetterLight extends BetterBase {
             {
                 $this->LoadFromScene($sceneNumber);
             }
+
+            $ms->TriggerExternMovement();
+
         }
 
         return;
