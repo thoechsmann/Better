@@ -500,11 +500,11 @@ class BetterLight extends BetterBase {
 
     public function TurnOff()
     {
-        // $currentScene = $this->CurrentSceneVar()->GetValue();
+        $currentScene = $this->CurrentSceneVar()->GetValue();
         $this->SetScene(self::OffSceneNumber, true);
-        // $this->CurrentSceneVar()->SetValue($currentScene);
+        $this->CurrentSceneVar()->SetValue($currentScene);
         
-        // $this->OffTimer()->StartTimer(self::OffTimerTime);
+        $this->OffTimer()->StartTimer(self::OffTimerTime);
     }
 
 }
