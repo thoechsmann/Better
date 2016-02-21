@@ -335,10 +335,10 @@ class BetterLight extends BetterBase {
         $ms = $this->MotionSensor();
         $isOn = $ms->IsMainSwitchOn();
 
+        $ms->LoadFromScene($sceneNumber);
+
         if($isOn || $turnOn)
         {
-            $ms->LoadFromScene($sceneNumber);
-
             // In lock states Montion sensor sends switch on/off commands. This will handle the setting of scene light vars.
             if($ms->LockState() == MotionSensor::StateAuto)
             {
@@ -346,28 +346,9 @@ class BetterLight extends BetterBase {
             }
 
             $ms->TriggerExternMovement();
-
         }
 
         return;
-
-        // testing if we can remove this complex code.
-
-        if($isOn)
-        {
-            // Do not load scene when ms is activated and light is on as turning ms lock on will send light status event.
-            // This event will be catched and used to set the current scene.
-            if(!$ms->IsLocked())
-                $this->LoadFromScene($sceneNumber);
-
-        }
-        else if($turnOn)
-        {
-            if($ms->IsLocked())
-                $this->LoadFromScene($sceneNumber);
-            else
-                $ms->TriggerExternMovement();
-        }
     }
 
     public function CancelSave()
