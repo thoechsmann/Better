@@ -438,8 +438,10 @@ class IPSEventCyclic extends IPSEvent
 
     public function Register($script, $name = "", $position = 0)
     {
-        return parent::RegisterEvent($name, $position);
+        $id = parent::RegisterEvent($name, $position);
         $this->SetScript($script);
+
+        return $id;
     }
 
     // Add some nicer functions.

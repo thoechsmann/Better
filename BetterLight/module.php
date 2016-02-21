@@ -263,7 +263,8 @@ class BetterLight extends BetterBase {
 
     private function CreateOffTimer()
     {
-        $script = "BL_BackToCurrentScene(" . $this->InstanceId() . ");";
+        $instanceId = $this->InstanceID();
+        $script = "BL_BackToCurrentScene($instanceId);";
 
         $this->OffTimer()->Register($script);
         $this->OffTimer()->Hide();
