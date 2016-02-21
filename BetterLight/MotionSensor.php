@@ -184,13 +184,8 @@ class MotionSensor
 
     public function LoadFromScene($sceneNumber)
     {
-        $currentValue = $this->IsLocked();
         $value = $this->LockSceneVars($sceneNumber)->GetValue();
-
-        if($currentValue != $value)
-        {
-            $this->SetLock($value);
-        }
+        $this->SetLockState($value);
     }
 }
 
