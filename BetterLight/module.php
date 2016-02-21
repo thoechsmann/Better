@@ -381,7 +381,7 @@ class BetterLight extends BetterBase {
 
         $ms = $this->MotionSensor();
         $isOn = $ms->IsMainSwitchOn();
-        $IsMSLocked = $ms->IsLocked();
+        $IsMSLocked = $ms->LockState() == MotionSensor::StateAlwaysOff;
 
         if($IsMSLocked)
         {
@@ -474,7 +474,7 @@ class BetterLight extends BetterBase {
         $ms = $this->MotionSensor();
         $turnOn = $ms->IsMainSwitchOn();
 
-        IPS_LogMessage("BL", "MSMainSwitchEvent - turnOn:$turnOn, isMSLocked:" . $ms->IsLocked());
+        IPS_LogMessage("BL", "MSMainSwitchEvent - turnOn:$turnOn, msLockState:" . $ms->LockState());
 
         if($turnOn)
         {
