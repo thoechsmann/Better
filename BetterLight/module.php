@@ -338,7 +338,17 @@ class BetterLight extends BetterBase {
         if($isOn || $turnOn)
         {
             $ms->LoadFromScene($sceneNumber);
+
+            // In lock states Montion sensor sends switch on/off commands. This will handle the setting of scene light vars.
+            if($ms->LockState() == MotionSensor::StateAuto)
+            {
+                $this->LoadFromScene($sceneNumber);
+            }
         }
+
+        return;
+
+        // testing if we can remove this complex code.
 
         if($isOn)
         {

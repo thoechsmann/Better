@@ -2,7 +2,8 @@
 	"elements":
 	[
 		{ "type": "SelectVariable", "name": "MSMainSwitchId", "caption": "BM (Ausgang Schalten)" },
-		{ "type": "SelectVariable", "name": "MSLockId", "caption": "BM (Sperren)" },
+		{ "type": "SelectVariable", "name": "MSLockOffId", "caption": "BM (Sperren Aus)" },
+		{ "type": "SelectVariable", "name": "MSLockOnId", "caption": "BM (Sperren Ein)" },
 		{ "type": "SelectVariable", "name": "MSExternMovementId", "caption": "BM (Externe Bewegung)" },
 				
 		{ "type": "ValidationTextBox", "name": "SwitchLight0Name", "caption": "Schalt Licht1" },

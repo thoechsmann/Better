@@ -8,6 +8,11 @@ class MotionSensor
 {
     const StrMS = "MS";
     const StrScene = "Scene";
+    const BMProfile = "BL_Zwangsfuehrung";
+
+    const StateAuto = 0;
+    const StateAlwaysOff = 1;
+    const StateAlwaysOn = 2;
 
     private $module;
 
@@ -22,9 +27,14 @@ class MotionSensor
         return new PropertyInteger($this->module, self::StrMS . "MainSwitchId");
     }
 
-    private function LockIdProp()
+    private function LockOffIdProp()
     {
-        return new PropertyInteger($this->module, self::StrMS . "LockId");
+        return new PropertyInteger($this->module, self::StrMS . "LockOffId");
+    }
+
+    private function LockOnIdProp()
+    {
+        return new PropertyInteger($this->module, self::StrMS . "LockOnId");
     }
 
     private function ExternMovementIdProp()
@@ -36,13 +46,12 @@ class MotionSensor
 
     private function LockVar()
     {
-        return new IPSVarBoolean($this->module->InstanceId(), self::StrMS . "Lock");
-    
+        return new IPSVarInteger($this->module->InstanceId(), self::StrMS . "Lock");
     }
 
     private function LockSceneVars($sceneNumber)
     {
-        return new IPSVarBoolean($this->module->InstanceId(), 
+        return new IPSVarInteger($this->module->InstanceId(), 
             BetterBase::PersistentPrefix . 
             self::StrMS .
             self::StrScene . $sceneNumber . 
@@ -61,20 +70,34 @@ class MotionSensor
     public function RegisterProperties()
     {
         $this->MainSwitchIdProp()->Register();
-        $this->LockIdProp()->Register();
+        $this->LockOffIdProp()->Register();
+        $this->LockOnIdProp()->Register();
         $this->ExternMovementIdProp()->Register();
     }
 
     public function RegisterVariables($sceneCount, $position)
     {
-        $this->RegisterLockVar($position);
+        $this->RegisterProfiles();
+
         $this->RegisterSceneVars($sceneCount);
+        $this->RegisterLockVar($position);
+    }
+
+    private function RegisterProfiles()
+    {
+        if(!IPS_VariableProfileExists(self::BMProfile))
+        {
+            IPS_CreateVariableProfile(self::BMProfile, 1);
+            IPS_SetVariableProfileAssociation(self::BMProfile, self::StateAuto, "Bewegung", "", 0);
+            IPS_SetVariableProfileAssociation(self::BMProfile, self::StateAlwaysOff, "Immer Aus", "", 0);
+            IPS_SetVariableProfileAssociation(self::BMProfile, self::StateAlwaysOn, "Immer An", "", 0);
+        }
     }
 
     private function RegisterLockVar($position)
     {
         $var = $this->LockVar();
-        $var->Register("BM Sperren", "~Lock", $position);
+        $var->Register("BM Sperren", self::BMProfile, $position);
         $var->EnableAction();
     }
 
@@ -106,25 +129,36 @@ class MotionSensor
         return GetValue($id);
     }
 
-    public function IsLocked()
+    public function LockState()
     {
-        $id = $this->LockIdProp()->Value();
-
-        if($id == 0)
-            return false;
-
-        return GetValue($id);
+        return $this->LockVar()->GetValue();
     }
 
-    public function SetLock($value)
+    public function SetLockState($value)
     {
-        $id = $this->LockIdProp()->Value();
+        if($this->LockVar() == $value)
+            return;
 
-        if($id != 0)
+        $lockOnId = $this->LockOnIdProp()->Value();
+        $lockOffId = $this->LockOffIdProp()->Value();
+
+        switch($value)
         {
-            EIB_Switch(IPS_GetParent($id), $value);
-            $this->LockVar()->SetValue($value);
-        }        
+            case self::StateAuto:
+                EIB_Switch(IPS_GetParent($lockOnId), false);
+                EIB_Switch(IPS_GetParent($lockOffId), false);
+                break;
+            case self::StateAlwaysOn:
+                EIB_Switch(IPS_GetParent($lockOnId), true);
+                EIB_Switch(IPS_GetParent($lockOffId), false);
+                break;
+            case self::StateAlwaysOff:
+                EIB_Switch(IPS_GetParent($lockOnId), false);
+                EIB_Switch(IPS_GetParent($lockOffId), true);
+                break;
+        }
+
+        $this->LockVar()->SetValue($value);
     }
 
     public function SetSceneLock($sceneNumber, $value)
