@@ -136,7 +136,7 @@ class MotionSensor
 
     public function SetLockState($value)
     {
-        if($this->LockVar() == $value)
+        if($this->LockVar()->GetValue() == $value)
             return;
 
         $lockOnId = $this->LockOnIdProp()->Value();
