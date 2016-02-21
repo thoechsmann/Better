@@ -9,9 +9,9 @@
 		{ "type": "ValidationTextBox", "name": "SwitchLight0Name", "caption": "Schalt Licht1" },
 		{ "type": "SelectVariable", "name": "SwitchLight0SwitchId", "caption": "Schalt Licht1 (Schalten)" },
 		{ "type": "SelectVariable", "name": "SwitchLight0StatusId", "caption": "Schalt Licht1 (Status)" },
-		{ "type": "ValidationTextBox", "name": "switchLight1Name", "caption": "Schalt Licht2" },
-		{ "type": "SelectVariable", "name": "switchLight1SwitchId", "caption": "Schalt Licht2 (Schalten)" },
-		{ "type": "SelectVariable", "name": "switchLight1StatusId", "caption": "Schalt Licht2 (Status)" },
+		{ "type": "ValidationTextBox", "name": "SwitchLight1Name", "caption": "Schalt Licht2" },
+		{ "type": "SelectVariable", "name": "SwitchLight1SwitchId", "caption": "Schalt Licht2 (Schalten)" },
+		{ "type": "SelectVariable", "name": "SwitchLight1StatusId", "caption": "Schalt Licht2 (Status)" },
 
 		{ "type": "ValidationTextBox", "name": "DimLight0Name", "caption": "Dim Licht1 Name" },
 		{ "type": "SelectVariable", "name": "DimLight0SwitchId", "caption": "Dim Licht1 (Schalten)" },
