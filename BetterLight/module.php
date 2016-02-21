@@ -56,7 +56,7 @@ class BetterLight extends BetterBase {
     private function IdendTriggerdTurnOnBooleanValueVar()
     {
         return new IPSVarBoolean($this->InstanceID(), "IdendTriggerdTurnOnBooleanValue");
-    }
+    } 
 
     private function IdendTriggerdTurnOnIntegerValueVar()
     {
