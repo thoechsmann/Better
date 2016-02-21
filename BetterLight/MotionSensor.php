@@ -149,8 +149,8 @@ class MotionSensor
                 EIB_Switch(IPS_GetParent($lockOffId), false);
                 break;
             case self::StateAlwaysOn:
-                EIB_Switch(IPS_GetParent($lockOnId), true);
                 EIB_Switch(IPS_GetParent($lockOffId), false);
+                EIB_Switch(IPS_GetParent($lockOnId), true);
                 break;
             case self::StateAlwaysOff:
                 EIB_Switch(IPS_GetParent($lockOnId), false);
