@@ -29,7 +29,7 @@ class BetterLight extends BetterBase {
     const OffSceneNumber = 0;
     const DefaultSceneNumber = 1;
 
-    const OffTimerTime = 15;
+    const OffTimerTime = 15000;
 
     // Variables
 
@@ -75,11 +75,6 @@ class BetterLight extends BetterBase {
     private function SceneScheduler()
     {
         return new IPSEventScheduler($this->InstanceID(), parent::PersistentPrefix . "SceneScheduler");
-    }
-
-    private function OffTimer()
-    {
-        return new IPSEventCyclic($this->InstanceID(), "OffTimer");
     }
 
     //
@@ -156,7 +151,6 @@ class BetterLight extends BetterBase {
         $this->CreateSceneScheduler();
         $this->CreateSceneSwitches();
         $this->CreateSaveButton();    
-        $this->CreateOffTimer();    
 
         $this->IdendTriggerdTurnOnVar()->Register();
         $this->IdendTriggerdTurnOnVar()->SetValue("");
@@ -260,15 +254,6 @@ class BetterLight extends BetterBase {
         $this->SaveSceneScript()->Register("Szene speichern", "<? BL_StartSave(" . $this->InstanceID . ");?>", self::PosSaveSceneButton);
 
         $this->CancelSave();
-    }
-
-    private function CreateOffTimer()
-    {
-        $instanceId = $this->InstanceID();
-        $script = "BL_BackToCurrentScene($instanceId);";
-
-        $this->OffTimer()->Register($script);
-        $this->OffTimer()->Hide();
     }
 
     public function StartSave()
@@ -487,7 +472,9 @@ class BetterLight extends BetterBase {
         $this->SetScene(self::OffSceneNumber, true);
         $this->CurrentSceneVar()->SetValue($currentScene);
         
-        $this->OffTimer()->StartTimer(self::OffTimerTime);
+        $instanceId = $this->InstanceID();
+        $script = "BL_BackToCurrentScene($instanceId);";
+        $this->RegisterTimer("OffTimer", self::OffTimerTime, $script);
     }
 
 }
