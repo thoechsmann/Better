@@ -77,6 +77,11 @@ class BetterLight extends BetterBase {
         return new IPSEventScheduler($this->InstanceID(), parent::PersistentPrefix . "SceneScheduler");
     }
 
+    private function OffTimer()
+    {
+        return new IPSEventCyclic($this->InstanceID(), "OffTimer");
+    }
+
     //
     private function DimLights()
     {
@@ -474,7 +479,8 @@ class BetterLight extends BetterBase {
         
         $instanceId = $this->InstanceID();
         $script = "BL_BackToCurrentScene($instanceId);";
-        $this->RegisterTimer("OffTimer", self::OffTimerTime, $script);
+
+        $this->OffTimer()->StartTimer(self::OffTimerTime, $script);
     }
 
 }
