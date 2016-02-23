@@ -29,7 +29,7 @@ class BetterLight extends BetterBase {
     const OffSceneNumber = 0;
     const DefaultSceneNumber = 1;
 
-    const OffTimerTime = 15000;
+    const OffTimerTime = 15;
 
     // Variables
 
