@@ -121,6 +121,14 @@
 		{ "type": "NumberSpinner", "name": "SceneSwitch2SceneNumber", "caption": "Schalter 3 Szene" },
 		{ "type": "SelectVariable", "name": "SceneSwitch3SwitchId", "caption": "Schalter 4 SchalterId" },
 		{ "type": "NumberSpinner", "name": "SceneSwitch3SceneNumber", "caption": "Schalter 4 Szene" },
+		{ "type": "SelectVariable", "name": "SceneSwitch4SwitchId", "caption": "Schalter 5 SchalterId" },
+		{ "type": "NumberSpinner", "name": "SceneSwitch4SceneNumber", "caption": "Schalter 5 Szene" },
+		{ "type": "SelectVariable", "name": "SceneSwitch5SwitchId", "caption": "Schalter 6 SchalterId" },
+		{ "type": "NumberSpinner", "name": "SceneSwitch5SceneNumber", "caption": "Schalter 6 Szene" },
+		{ "type": "SelectVariable", "name": "SceneSwitch6SwitchId", "caption": "Schalter 7 SchalterId" },
+		{ "type": "NumberSpinner", "name": "SceneSwitch6SceneNumber", "caption": "Schalter 7 Szene" },
+		{ "type": "SelectVariable", "name": "SceneSwitch7SwitchId", "caption": "Schalter 8 SchalterId" },
+		{ "type": "NumberSpinner", "name": "SceneSwitch7SceneNumber", "caption": "Schalter 8 Szene" },
 	],
 	"actions":
 	[
