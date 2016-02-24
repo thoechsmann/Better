@@ -450,6 +450,11 @@ class IPSEventCyclic extends IPSEvent
         IPS_SetEventCyclic($this->Id(), $dateType, $dateInterval, $days, $daysInterval, $timeType, $timeInterval);
     }
 
+    public function SetTimeFrom($hour, $minute, $second)
+    {
+        IPS_SetEventCyclicTimeFrom($this->Id(), $hour, $minute, $second);
+    }
+
     public function StartTimer($seconds, $script)
     {
         $link = @IPS_GetObjectIDByIdent($ident, $this->InstanceID);
@@ -459,7 +464,11 @@ class IPSEventCyclic extends IPSEvent
         }
 
         $this->Register($script);
-        $this->SetCyclic(self::DateTypeNone, 0, 0, 0, self::TimeTypeSecond, $seconds);
+        // $this->SetCyclic(self::DateTypeNone, 0, 0, 0, self::TimeTypeSecond, $seconds);
+
+        $time = time() + $seconds;
+        $this->SetTimeFrom(date("H", $time), date("i", $time), date("s", $time));
+
         $this->SetLimit(1);
         $this->Activate();
         $this->Hide();
