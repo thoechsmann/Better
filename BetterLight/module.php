@@ -25,6 +25,7 @@ class BetterLight extends BetterBase {
     const PosLightRGB = 5;
     const PosSaveSceneButton = 6;
     const PosSceneScheduler = 7;
+    const PosTurnOffButton = 8;
 
     const OffSceneNumber = 0;
     const DefaultSceneNumber = 1;
@@ -36,11 +37,6 @@ class BetterLight extends BetterBase {
     private function CurrentSceneVar()
     {
         return new IPSVarInteger($this->InstanceID(), parent::PersistentPrefix . "CurrentScene");
-
-        // if(!isset($currentSceneVar))
-        //     $currentSceneVar = new IPSVarInteger($this->InstanceID(), parent::PersistentPrefix . "CurrentScene");
-
-        // return $currentSceneVar;
     }
 
     private function SaveToSceneVar()
@@ -68,6 +64,11 @@ class BetterLight extends BetterBase {
     private function SaveSceneScript()
     {
         return new IPSScript($this->InstanceID(), "SaveSceneStart");
+    }
+
+    private function TurnOffScript()
+    {
+        return new IPSScript($this->InstanceID(), "TurnOff");
     }
 
     // Events
@@ -156,6 +157,7 @@ class BetterLight extends BetterBase {
         $this->CreateSceneScheduler();
         $this->CreateSceneSwitches();
         $this->CreateSaveButton();    
+        $this->CreateTurnOffButton();    
 
         $this->IdendTriggerdTurnOnVar()->Register();
         $this->IdendTriggerdTurnOnVar()->SetValue("");
@@ -170,7 +172,6 @@ class BetterLight extends BetterBase {
         // Set defaults
         $this->MotionSensor()->SetSceneLock(self::OffSceneNumber, MotionSensor::StateAlwaysOff);
         $this->MotionSensor()->SetSceneLock(self::DefaultSceneNumber, MotionSensor::StateAuto);
-
     }
 
     private function CreateMotionSensor()
@@ -178,7 +179,6 @@ class BetterLight extends BetterBase {
         $ms = $this->MotionSensor();
         $ms->RegisterVariables($this->Scenes()->Count(), self::PosMSLock);
         $ms->RegisterTriggers();
-
     }
 
     private function CreateLights()
@@ -259,6 +259,11 @@ class BetterLight extends BetterBase {
         $this->SaveSceneScript()->Register("Szene speichern", "<? BL_StartSave(" . $this->InstanceID . ");?>", self::PosSaveSceneButton);
 
         $this->CancelSave();
+    }
+
+    private function CreateTurnOffButton() 
+    {
+        $this->TurnOffScript()->Register("Ausschalten", "<? BL_TurnOff(" . $this->InstanceID . ");?>", self::PosTurnOffButton);
     }
 
     public function StartSave()
@@ -345,7 +350,6 @@ class BetterLight extends BetterBase {
 
     public function CancelSave()
     {
-        IPS_LogMessage("BL","CancelSave() ");
         $this->SaveToSceneVar()->Hide();
         $this->SaveSceneScript()->Show();
     }
