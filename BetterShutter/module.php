@@ -37,6 +37,10 @@ class BetterShutter extends BetterBase {
         $this->EnableAction("twighlightCheck");
         $this->SetValueForIdent("twighlightCheck", true);
 
+        $this->RegisterVariableBoolean("off", "Aus", "~Switch");
+        $this->EnableAction("off");
+        $this->SetValueForIdent("off", false);
+
         $openOnDawnId = $this->RegisterVariableBoolean("openOnDawn", "Bei Morgendämmerung öffnen");
         IPS_SetHidden($openOnDawnId, true);
 
@@ -226,6 +230,10 @@ class BetterShutter extends BetterBase {
 
         $positionId = $this->ReadPropertyInteger("positionId");
         $positionLimit = $this->ReadPropertyInteger("positionLimit");
+
+        $off = $this->GetValueForIdent("twighlightCheck");
+        if($off) return;
+
         EIB_Scale(IPS_GetParent($positionId), $positionLimit);        
     }
 
@@ -234,6 +242,8 @@ class BetterShutter extends BetterBase {
         IPS_LogMessage("BetterShutter", "MoveShutterToShouldBePosition");
 
         $upDownId = $this->ReadPropertyInteger("upDownId");
+
+        if($off) return;
         EIB_Switch(IPS_GetParent($upDownId), $this->GetValueForIdent("shouldBeDown"));
     }
 
