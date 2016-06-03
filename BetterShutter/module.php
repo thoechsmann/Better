@@ -130,13 +130,19 @@ class BetterShutter extends BetterBase {
         }
 
         $upDownId = $this->ReadPropertyInteger("upDownId");
-        EIB_Switch(IPS_GetParent($upDownId), false);
+        
+        $off = $this->GetValueForIdent("off");
+        if(!$off)
+            EIB_Switch(IPS_GetParent($upDownId), false);
     }
 
     public function ScheduledClose() // called by scheduler
     {   
         $upDownId = $this->ReadPropertyInteger("upDownId");
-        EIB_Switch(IPS_GetParent($upDownId), true);
+        
+        $off = $this->GetValueForIdent("off");
+        if(!$off)
+            EIB_Switch(IPS_GetParent($upDownId), true);
 
         $this->SetValueForIdent("openOnDawn", false);
     }
@@ -149,7 +155,10 @@ class BetterShutter extends BetterBase {
         if($twighlightCheck && $openOnDawn)
         {
             $upDownId = $this->ReadPropertyInteger("upDownId");
-            EIB_Switch(IPS_GetParent($upDownId), false);
+
+            $off = $this->GetValueForIdent("off");
+            if(!$off)
+                EIB_Switch(IPS_GetParent($upDownId), false);
         }
 
         $this->SetValueForIdent("openOnDawn", false);
@@ -169,7 +178,10 @@ class BetterShutter extends BetterBase {
         else
         {
             $upDownId = $this->ReadPropertyInteger("upDownId");
-            EIB_Switch(IPS_GetParent($upDownId), true);
+
+            $off = $this->GetValueForIdent("off");
+            if(!$off)
+                EIB_Switch(IPS_GetParent($upDownId), true);
         }
 
         $this->SetValueForIdent("shouldBeDown", true);
@@ -231,10 +243,9 @@ class BetterShutter extends BetterBase {
         $positionId = $this->ReadPropertyInteger("positionId");
         $positionLimit = $this->ReadPropertyInteger("positionLimit");
 
-        $off = $this->GetValueForIdent("twighlightCheck");
-        if($off) return;
-
-        EIB_Scale(IPS_GetParent($positionId), $positionLimit);        
+        $off = $this->GetValueForIdent("off");
+        if(!$off)
+            EIB_Scale(IPS_GetParent($positionId), $positionLimit);        
     }
 
     private function MoveShutterToShouldBePosition()
@@ -243,8 +254,9 @@ class BetterShutter extends BetterBase {
 
         $upDownId = $this->ReadPropertyInteger("upDownId");
 
-        if($off) return;
-        EIB_Switch(IPS_GetParent($upDownId), $this->GetValueForIdent("shouldBeDown"));
+        $off = $this->GetValueForIdent("off");
+        if(!$off)
+            EIB_Switch(IPS_GetParent($upDownId), $this->GetValueForIdent("shouldBeDown"));
     }
 
 }
