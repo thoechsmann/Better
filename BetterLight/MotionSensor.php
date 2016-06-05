@@ -3,6 +3,7 @@ require_once(__DIR__ . "/../BetterBase.php");
 require_once(__DIR__ . "/../Property.php");
 require_once(__DIR__ . "/../Variable.php");
 require_once(__DIR__ . "/../Backing.php");
+require_once(__DIR__ . "/../IPSObject.php");
 
 class MotionSensor 
 {
@@ -46,7 +47,7 @@ class MotionSensor
 
     private function LockVar()
     {
-        return new IPSVarInteger($this->module->InstanceId(), self::StrMS . "Lock");
+        return new IPSVarIntegerNew($this->module->InstanceId(), self::StrMS . "Lock");
     }
 
     private function LockSceneVars($sceneNumber)
