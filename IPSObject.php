@@ -131,7 +131,7 @@ class IPSObjectNew  {
     }
 }
 
-class IPSVarNew extends IPSObject
+class IPSVarNew extends IPSObjectNew
 {
     public function GetValue()
     {        
