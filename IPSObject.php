@@ -174,20 +174,20 @@ class IPSVarNew extends IPSObjectNew
 
     public function __toString()
     {
-        return parent::__toString() . " type: " . static::GetTypeName();
+        return parent::__toString() . " type: " . static::GetVarTypeName();
     }
 
     public function CheckValue($value)
     {
         if(!static::ValueValid($value))
         {
-            throw new Exception("IPSVar - SetValue", "value: $value is not of type " . static::GetTypeName() . " - " . $this);
+            throw new Exception("IPSVar - SetValue", "value: $value is not of type " . static::GetVarTypeName() . " - " . $this);
         }
     }
 
     protected function CreateObject()
     {
-        IPS_CreateVariable(static::GetTypeId());
+        IPS_CreateVariable(static::GetVarTypeId());
     }
 
     protected function DeleteObject($id)
