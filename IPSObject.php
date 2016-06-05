@@ -234,7 +234,7 @@ class IPSVarBooleanNew extends IPSVarNew
 
     protected function ValueValid()
     {
-        retun is_bool($value);
+        return is_bool($value);
     }
 }
 
@@ -252,7 +252,7 @@ class IPSVarIntegerNew extends IPSVarNew
 
     protected function ValueValid()
     {
-        retun is_integer($value);
+        return is_integer($value);
     }
 }
 
