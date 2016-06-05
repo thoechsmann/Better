@@ -187,7 +187,7 @@ class IPSVarNew extends IPSObjectNew
 
     protected function CreateObject()
     {
-        IPS_CreateVariable(static::GetVarTypeId());
+        return IPS_CreateVariable(static::GetVarTypeId());
     }
 
     protected function DeleteObject($id)
