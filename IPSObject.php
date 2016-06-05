@@ -227,7 +227,7 @@ class IPSVarBooleanNew extends IPSVarNew
         return "Boolean";      
     }
 
-    protected function GetVarTypeId()
+    protected function GetVarTypeId() 
     {
         return 0;
     }
