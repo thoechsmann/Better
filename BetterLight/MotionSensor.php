@@ -47,7 +47,7 @@ class MotionSensor
 
     private function LockVar()
     {
-        return new IPSVarIntegerNew($this->module->InstanceId(), self::StrMS . "Lock");
+        return new IPSVarInteger($this->module->InstanceId(), self::StrMS . "Lock");
     }
 
     private function LockSceneVars($sceneNumber)

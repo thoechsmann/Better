@@ -1,7 +1,6 @@
 <?
 
 class IPSObjectNew  {
-
     private $ident;
     private $id = false;
     protected $parentId;
@@ -86,7 +85,7 @@ class IPSObjectNew  {
 
     protected function _Register($name, $position ) 
     {
-        IPS_LogMessage("IPSObject", "Registering - " . $this);
+        IPS_LogMessage(__CLASS__, "Registering - " . $this);
 
         if($name == "")
             $name = $this->Ident();
@@ -114,145 +113,26 @@ class IPSObjectNew  {
         return $id;            
     }
 
+    // "Abstract" interface
+    public function Register($name = "", $profile = "", $position = 0)
+    {
+        throw new Exception("Register overide missing!");
+    }
+
     // Used e.g. by variables to not delete them if same type. Not sure if there is some benefit in not deleting them always.
     protected function CreateObject()
     {
-        return false;
+        throw new Exception("CreateObject overide missing!");
     }
 
     protected function DeleteObject($id)
     {
-        throw new Exception("DeleteObject overide missing!");        
+        throw new Exception("DeleteObject overide missing!");
     }
 
     protected function IsCorrectObjectType($id)
     {
-        throw new Exception("IsCorrectObjectType overide missing!");        
-    }
-}
-
-class IPSVarNew extends IPSObjectNew
-{
-    public function GetValue()
-    {        
-        return GetValue($this->Id());
-    }
-
-    public function SetValue($value)
-    {
-        $this->CheckType($value);
-        SetValue($this->Id(), $value);
-    }
-
-    public function SetProfile($profile)
-    {
-        IPS_SetVariableCustomProfile($this->Id(), $profile);
-    }
-
-    public function EnableAction() {
-        IPS_EnableAction($this->parentId, $this->Ident());
-    }
-    
-    public function DisableAction() {
-        IPS_DisableAction($this->parentId, $this->Ident());
-    }
-
-    public function Register($name = "", $profile = "", $position = 0) 
-    {
-        $id = $this->_Register($name, $position);
-
-        if($profile != "") {
-            if(!IPS_VariableProfileExists($profile)) {
-                throw new Exception("Profile with name ".$profile." does not exist");
-            }
-        }
-
-        IPS_SetVariableCustomProfile($id, $profile);
-        
-        return $id;            
-    }
-
-    public function __toString()
-    {
-        return parent::__toString() . " type: " . static::GetVarTypeName();
-    }
-
-    public function CheckValue($value)
-    {
-        if(!static::ValueValid($value))
-        {
-            throw new Exception("IPSVar - SetValue", "value: $value is not of type " . static::GetVarTypeName() . " - " . $this);
-        }
-    }
-
-    protected function CreateObject()
-    {
-        return IPS_CreateVariable(static::GetVarTypeId());
-    }
-
-    protected function DeleteObject($id)
-    {
-        IPS_DeleteVariable($id);
-    }
-
-    protected function IsCorrectObjectType($id)
-    {
-        if(!IPS_VariableExists($id))
-            throw new Exception("Ident with name ".$this->Ident()." is used for wrong object type");
-            
-        return IPS_GetVariable($id)["VariableType"] == static::GetObjectType();
-    }
-
-    protected function GetVarTypeName()
-    {
-        throw new Exception("GetVarTypeName overide missing!");        
-    }
-
-    protected function GetVarTypeId()
-    {
-        throw new Exception("GetVarTypeId overide missing!");        
-    }
-
-    protected function ValueValid()
-    {
-        throw new Exception("ValueValid overide missing!");        
-    }
-
-}
-
-class IPSVarBooleanNew extends IPSVarNew
-{
-    protected function GetVarTypeName()
-    {
-        return "Boolean";      
-    }
-
-    protected function GetVarTypeId() 
-    {
-        return 0;
-    }
-
-    protected function ValueValid()
-    {
-        return is_bool($value);
-    }
-}
-
-class IPSVarIntegerNew extends IPSVarNew
-{
-    protected function GetVarTypeName()
-    {
-        return "Integer";      
-    }
-
-    protected function GetVarTypeId()
-    {
-        return 1;
-    }
-
-    protected function ValueValid()
-    {
-        return is_integer($value);
+        return false;        
     }
 }
 
