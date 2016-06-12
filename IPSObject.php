@@ -1,6 +1,6 @@
 <?
 
-class IPSObjectNew  {
+abstract class IPSObjectNew  {
     private $ident;
     private $id = false;
     protected $parentId;
@@ -113,27 +113,17 @@ class IPSObjectNew  {
         return $id;            
     }
 
-    // "Abstract" interface
-    public function Register($name = "", $profile = "", $position = 0)
-    {
-        throw new Exception("Register overide missing!");
-    }
-
-    // Used e.g. by variables to not delete them if same type. Not sure if there is some benefit in not deleting them always.
-    protected function CreateObject()
-    {
-        throw new Exception("CreateObject overide missing!");
-    }
-
-    protected function DeleteObject($id)
-    {
-        throw new Exception("DeleteObject overide missing!");
-    }
-
     protected function IsCorrectObjectType($id)
     {
         return false;        
     }
+
+    abstract public function Register($name = "", $profile = "", $position = 0);
+
+    // Used e.g. by variables to not delete them if same type. Not sure if there is some benefit in not deleting them always.
+    abstract protected function CreateObject();
+    abstract protected function DeleteObject($id);
+
 }
 
 ?>

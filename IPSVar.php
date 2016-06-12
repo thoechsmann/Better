@@ -1,7 +1,7 @@
 <?
 require_once(__DIR__ . "/IPSObject.php");
 
-class IPSVarNew extends IPSObjectNew
+abstract class IPSVarNew extends IPSObjectNew
 {
     public function GetValue()
     {        
@@ -73,21 +73,9 @@ class IPSVarNew extends IPSObjectNew
         return IPS_GetVariable($id)["VariableType"] == static::GetObjectType();
     }
 
-    protected function GetVarTypeName()
-    {
-        throw new Exception("GetVarTypeName overide missing!");        
-    }
-
-    protected function GetVarTypeId()
-    {
-        throw new Exception("GetVarTypeId overide missing!");        
-    }
-
-    protected function ValueValid($value)
-    {
-        throw new Exception("ValueValid overide missing!");        
-    }
-
+    abstract protected function GetVarTypeName();
+    abstract protected function GetVarTypeId();
+    abstract protected function ValueValid($value);
 }
 
 class IPSVarBooleanNew extends IPSVarNew

@@ -3,6 +3,7 @@ require_once(__DIR__ . "/../BetterBase.php");
 require_once(__DIR__ . "/../Property.php");
 require_once(__DIR__ . "/../Variable.php");
 require_once(__DIR__ . "/../Backing.php");
+require_once(__DIR__ . "/../IPSVar.php");
 
 class LightArray {
     const TypeSwitch = 0;
@@ -119,19 +120,17 @@ class LightArray {
 
 }
 
-class Light {
+abstract class Light {
     const StrScene = "Scene";
 
     protected $index;
     protected $module;
     protected $prefix;
-    private $type = false;
 
-    public function __construct($module, $index, $prefix, $type) {
+    public function __construct($module, $index, $prefix) {
         $this->module = $module;
         $this->index = $index;
         $this->prefix = $prefix;
-        $this->type = $type;
     }
 
     // Properties
@@ -148,11 +147,11 @@ class Light {
 
     // Variables
 
-    protected function DisplayVar()
+    abstract protected function DisplayVar();
+
+    protected function DisplayVarName()
     {
-        return new IPSVar($this->module->InstanceId(), 
-            $this->prefix . $this->index .
-            "DisplayVar", $this->type);
+        return $this->prefix . $this->index . "DisplayVar";
     }
 
     public function IsDisplayVar($ident)
@@ -160,13 +159,14 @@ class Light {
         return $ident == $this->DisplayVar()->Ident();
     }
 
-    protected function SceneVars($sceneNumber)
+    abstract protected function SceneVars($sceneNumber);
+
+    protected function SceneVarName($sceneNumber);
     {
-        return new IPSVar($this->module->InstanceId(), 
-            BetterBase::PersistentPrefix . 
+        return BetterBase::PersistentPrefix . 
             $this->prefix . $this->index . 
             self::StrScene . $sceneNumber . 
-            "Value", $this->type);
+            "Value";
     }
 
     // Register
@@ -231,7 +231,7 @@ class DimLight extends Light {
     const Prefix = "DimLight";
 
     public function __construct($module, $index) {
-        parent::__construct($module, $index, DimLight::Prefix, IPSVar::TypeInteger);
+        parent::__construct($module, $index, DimLight::Prefix);
     }
 
     // Properties
@@ -244,6 +244,17 @@ class DimLight extends Light {
     private function StatusValueIdProp()
     {        
         return new PropertyInteger($this->module, $this->prefix . $this->index . "StatusValueId");
+    }
+
+    // Variables
+    protected function DisplayVar()
+    {
+        return new IPSVarIntegerNew($this->module->InstanceId(), $this->DisplayVarName());
+    }
+
+    protected function SceneVars($sceneNumber)
+    {
+        return new IPSVarIntegerNew($this->module->InstanceId(), $this->SceneVarName());
     }
 
     // Backings
@@ -303,18 +314,27 @@ class RGBLight extends Light {
     const Prefix = "RGBLight";
 
     public function __construct($module, $index) {
-        parent::__construct($module, $index, RGBLight::Prefix, IPSVar::TypeInteger);
+        parent::__construct($module, $index, RGBLight::Prefix);
+    }
+
+    // Variables
+    protected function DisplayVar()
+    {
+        return new IPSVarIntegerNew($this->module->InstanceId(), $this->DisplayVarName());
+    }
+
+    protected function SceneVars($sceneNumber)
+    {
+        return new IPSVarIntegerNew($this->module->InstanceId(), $this->SceneVarName());
     }
 
     // Properties
-
     private function SetValueIdProp()
     {        
         return new PropertyInteger($this->module, $this->prefix . $this->index . "SetValueId");
     }
 
     // Backings
-
     public function DisplayVarBacking()
     {
         $getterId = $this->SetValueIdProp()->Value();
@@ -324,7 +344,6 @@ class RGBLight extends Light {
     }
 
     // Register
-
     public function RegisterProperties()
     {
         parent::RegisterProperties();
@@ -369,7 +388,18 @@ class SwitchLight extends Light {
     const Prefix = "SwitchLight";
 
     public function __construct($module, $index) {
-        parent::__construct($module, $index, SwitchLight::Prefix, IPSVar::TypeBoolean);
+        parent::__construct($module, $index, SwitchLight::Prefix);
+    }
+
+    // Variables
+    protected function DisplayVar()
+    {
+        return new IPSVarBooleanNew($this->module->InstanceId(), $this->DisplayVarName());
+    }
+
+    protected function SceneVars($sceneNumber)
+    {
+        return new IPSVarBooleanNew($this->module->InstanceId(), $this->SceneVarName());
     }
 
     // Properties
