@@ -36,27 +36,27 @@ class BetterLight extends BetterBase {
 
     private function CurrentSceneVar()
     {
-        return new IPSVarInteger($this->InstanceID(), parent::PersistentPrefix . "CurrentScene");
+        return new IPSVarIntegerNew($this->InstanceID(), parent::PersistentPrefix . "CurrentScene");
     }
 
     private function SaveToSceneVar()
     {
-        return new IPSVarInteger($this->InstanceID(), "SaveSceneSelect");
+        return new IPSVarIntegerNew($this->InstanceID(), "SaveSceneSelect");
     }
 
     private function IdendTriggerdTurnOnVar()
     {
-        return new IPSVarString($this->InstanceID(), "IdendTriggerdTurnOn");
+        return new IPSVarStringNew($this->InstanceID(), "IdendTriggerdTurnOn");
     }
 
     private function IdendTriggerdTurnOnBooleanValueVar()
     {
-        return new IPSVarBoolean($this->InstanceID(), "IdendTriggerdTurnOnBooleanValue");
+        return new IPSVarBooleanNew($this->InstanceID(), "IdendTriggerdTurnOnBooleanValue");
     } 
 
     private function IdendTriggerdTurnOnIntegerValueVar()
     {
-        return new IPSVarInteger($this->InstanceID(), "IdendTriggerdTurnOnIntegerValue");
+        return new IPSVarIntegerNew($this->InstanceID(), "IdendTriggerdTurnOnIntegerValue");
     }
 
     // Scripts
