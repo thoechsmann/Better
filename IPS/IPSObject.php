@@ -91,6 +91,7 @@ abstract class IPSObjectNew  {
             $name = $this->Ident();
 
         $id = $this->GetIDForIdent($this->Ident());
+        IPS_LogMessage(__CLASS__, "Registering (old id ".$id.") - " . $this);
 
         if($id > 0) {            
             if(!static::IsCorrectObjectType($id)) {
@@ -102,7 +103,9 @@ abstract class IPSObjectNew  {
         
         if($id == 0)
         {
+            IPS_LogMessage(__CLASS__, "Registering (creating new) - " . $this);
             $id = static::CreateObject();
+            IPS_LogMessage(__CLASS__, "Registering (new id ".$id.") - " . $this);
 
             IPS_SetParent($id, $this->parentId);
             IPS_SetIdent($id, $this->Ident());            
