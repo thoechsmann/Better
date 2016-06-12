@@ -36,6 +36,16 @@ abstract class IPSEventNew extends IPSObjectNew
         return IPS_GetVariable($id)["EventType"] == static::GetEventTypeId();
     }
 
+    protected function CreateObject()
+    {
+        return IPS_CreateEvent(static::GetVarTypeId());
+    }
+
+    protected function DeleteObject($id)
+    {
+        IPS_DeleteEvent($id);
+    }
+
     abstract protected function GetVarTypeId();
 }
 
