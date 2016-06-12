@@ -83,7 +83,7 @@ class IPSVarNew extends IPSObjectNew
         throw new Exception("GetVarTypeId overide missing!");        
     }
 
-    protected function ValueValid()
+    protected function ValueValid($value)
     {
         throw new Exception("ValueValid overide missing!");        
     }
@@ -120,7 +120,7 @@ class IPSVarIntegerNew extends IPSVarNew
         return 1;
     }
 
-    protected function ValueValid()
+    protected function ValueValid($value)
     {
         return is_integer($value);
     }
@@ -138,7 +138,7 @@ class IPSVarFloatNew extends IPSVarNew
         return 2;
     }
 
-    protected function ValueValid()
+    protected function ValueValid($value)
     {
         return is_float($value);
     }
@@ -156,7 +156,7 @@ class IPSVarStringNew extends IPSVarNew
         return 3;
     }
 
-    protected function ValueValid()
+    protected function ValueValid($value)
     {
         return is_string($value);
     }

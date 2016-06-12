@@ -85,7 +85,7 @@ class IPSObjectNew  {
 
     protected function _Register($name, $position ) 
     {
-        IPS_LogMessage(__CLASS__, "Registering - " . $this);
+        // IPS_LogMessage(__CLASS__, "Registering - " . $this);
 
         if($name == "")
             $name = $this->Ident();
