@@ -106,7 +106,7 @@ class BetterBase extends IPSModule {
 
     protected function RegisterLink($ident, $name, $targetInstanceID, $position) 
     {
-        IPS_LogMessage("BetterBase", "OBSOLETE (remove!): RegisterLink");
+        // IPS_LogMessage("BetterBase", "OBSOLETE (remove!): RegisterLink");
         
         $link = @IPS_GetObjectIDByIdent($ident, $this->InstanceID);
         if($link !== false)
@@ -126,11 +126,11 @@ class BetterBase extends IPSModule {
 
     public function RegisterTrigger($ident, $targetId, $script, $triggerType = self::TriggerTypeChange)
     { 
-         IPS_LogMessage("BetterBase", "OBSOLETE (remove!): RegisterTrigger(". 
-            $ident . ", " . 
-            $targetId . ", " . 
-            $script . ", " . 
-            $triggerType);
+         // IPS_LogMessage("BetterBase", "OBSOLETE (remove!): RegisterTrigger(". 
+         //    $ident . ", " . 
+         //    $targetId . ", " . 
+         //    $script . ", " . 
+         //    $triggerType);
 
         $id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID); 
 
@@ -159,7 +159,7 @@ class BetterBase extends IPSModule {
 
     protected function RegisterTimer($ident, $interval, $script) 
     { 
-        IPS_LogMessage("BetterBase", "OBSOLETE (remove!): RegisterTimer");
+        // IPS_LogMessage("BetterBase", "OBSOLETE (remove!): RegisterTimer");
         $id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID); 
 
         if ($id && IPS_GetEvent($id)['EventType'] <> 1) { 
@@ -192,7 +192,7 @@ class BetterBase extends IPSModule {
 
     protected function RegisterScheduler($ident, $name = "") 
     { 
-        IPS_LogMessage("BetterBase", "OBSOLETE (remove!): RegisterScheduler");
+        // IPS_LogMessage("BetterBase", "OBSOLETE (remove!): RegisterScheduler");
         if(empty($name))
             $name = $ident;
 

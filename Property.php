@@ -24,7 +24,7 @@ class PropertyInteger extends Property  {
 
     public function Register($value = 0)
     {
-        IPS_LogMessage("PropertyInteger", "Registering property: " . $this->name . " = " . $value);
+        // IPS_LogMessage("PropertyInteger", "Registering property: " . $this->name . " = " . $value);
         $this->module->RegisterPropertyInteger($this->name, $value);
     }
 
@@ -39,7 +39,7 @@ class PropertyString extends Property  {
 
     public function Register($value = "")
     {
-        IPS_LogMessage("PropertyString", "Registering property: " . $this->name . " = " . $value);
+        // IPS_LogMessage("PropertyString", "Registering property: " . $this->name . " = " . $value);
         $this->module->RegisterPropertyString($this->name, $value);
     }
 
