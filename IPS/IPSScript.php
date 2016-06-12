@@ -13,7 +13,7 @@ class IPSScriptNew extends IPSObjectNew
         return $id;        
     }
 
-    public SetContent($content)
+    public function SetContent($content)
     {
         IPS_SetScriptContent($this->Id(), $content);
     }
