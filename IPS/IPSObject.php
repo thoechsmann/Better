@@ -85,7 +85,7 @@ abstract class IPSObjectNew  {
 
     protected function _Register($name, $position ) 
     {
-        // IPS_LogMessage(__CLASS__, "Registering - " . $this);
+        IPS_LogMessage(__CLASS__, "Registering - " . $this);
 
         if($name == "")
             $name = $this->Ident();
@@ -94,6 +94,7 @@ abstract class IPSObjectNew  {
 
         if($id > 0) {            
             if(!static::IsCorrectObjectType($id)) {
+                IPS_LogMessage(__CLASS__, "Registering (deleting old) - " . $this);
                 static::DeleteObject($id);
                 $id = 0;
             }

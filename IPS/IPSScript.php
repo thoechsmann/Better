@@ -1,5 +1,4 @@
 <?
-
 require_once(__DIR__ . "/IPSObject.php");
 
 class IPSScriptNew extends IPSObjectNew
@@ -26,6 +25,14 @@ class IPSScriptNew extends IPSObjectNew
     protected function DeleteObject($id)
     {
         IPS_DeleteScript($id);
+    }
+
+    protected function IsCorrectObjectType($id)
+    {
+        if(!IPS_VariableExists($id))
+            throw new Exception("Ident with name ".$this->Ident()." is used for wrong object type");
+            
+        return true;
     }
 }
 
