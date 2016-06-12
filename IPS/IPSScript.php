@@ -29,5 +29,4 @@ class IPSScriptNew extends IPSObjectNew
     }
 }
 
-
 ?>

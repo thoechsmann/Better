@@ -38,7 +38,7 @@ abstract class IPSEventNew extends IPSObjectNew
 
     protected function CreateObject()
     {
-        return IPS_CreateEvent(static::GetVarTypeId());
+        return IPS_CreateEvent(static::GetEventTypeId());
     }
 
     protected function DeleteObject($id)
@@ -46,7 +46,7 @@ abstract class IPSEventNew extends IPSObjectNew
         IPS_DeleteEvent($id);
     }
 
-    abstract protected function GetVarTypeId();
+    abstract protected function GetEventTypeId();
 }
 
 class IPSEventTriggerNew extends IPSEventNew
@@ -80,7 +80,7 @@ class IPSEventTriggerNew extends IPSEventNew
         IPS_SetEventTriggerSubsequentExecution($this->Id(), $value);
     }
 
-    protected function GetVarTypeId() 
+    protected function GetEventTypeId() 
     {
         return 0;
     }
@@ -152,7 +152,7 @@ class IPSEventCyclicNew extends IPSEventNew
         $this->Hide();
     }
 
-    protected function GetVarTypeId() 
+    protected function GetEventTypeId() 
     {
         return 1;
     }
@@ -192,7 +192,7 @@ class IPSEventSchedulerNew extends IPSEventNew
         IPS_SetEventScheduleAction($this->Id(), $actionId, $name, $color, $scriptContent);
     }
 
-    protected function GetVarTypeId() 
+    protected function GetEventTypeId() 
     {
         return 2;
     }
