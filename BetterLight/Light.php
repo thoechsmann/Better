@@ -161,7 +161,7 @@ abstract class Light {
 
     abstract protected function SceneVars($sceneNumber);
 
-    protected function SceneVarName($sceneNumber);
+    protected function SceneVarName($sceneNumber)
     {
         return BetterBase::PersistentPrefix . 
             $this->prefix . $this->index . 
