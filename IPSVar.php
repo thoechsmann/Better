@@ -102,7 +102,7 @@ class IPSVarBooleanNew extends IPSVarNew
         return 0;
     }
 
-    protected function ValueValid()
+    protected function ValueValid($value)
     {
         return is_bool($value);
     }
