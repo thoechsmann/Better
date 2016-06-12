@@ -65,12 +65,12 @@ class BetterLight extends BetterBase {
 
     private function SaveSceneScript()
     {
-        return new IPSScriptNew($this->InstanceID(), "SaveSceneStart");
+        return new IPSScript($this->InstanceID(), "SaveSceneStart");
     }
 
     private function TurnOffScript()
     {
-        return new IPSScriptNew($this->InstanceID(), "TurnOff");
+        return new IPSScript($this->InstanceID(), "TurnOff");
     }
 
     // Events
