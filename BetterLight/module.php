@@ -69,7 +69,7 @@ class BetterLight extends BetterBase {
 
     private function TurnOffScript()
     {
-        return new IPSScript($this->InstanceID(), "TurnOff");
+        return new IPSScriptNew($this->InstanceID(), "TurnOff");
     }
 
     // Events
