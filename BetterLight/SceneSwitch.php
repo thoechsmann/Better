@@ -3,6 +3,8 @@ require_once(__DIR__ . "/../BetterBase.php");
 require_once(__DIR__ . "/../Property.php");
 require_once(__DIR__ . "/../Variable.php");
 
+require_once(__DIR__ . "/../IPS/IPS.php");
+
 class SceneSwitchArray {
     private $size;
     private $module;
@@ -83,7 +85,7 @@ class SceneSwitch
 
     private function Trigger()
     {
-        return new IPSEventTrigger($this->module->InstanceId(), self::StrPrefix . $this->index . "Trigger");
+        return new IPSEventTriggerNew($this->module->InstanceId(), self::StrPrefix . $this->index . "Trigger");
     }
 
     public function RegisterProperties()
@@ -106,7 +108,7 @@ class SceneSwitch
             $script = "BL_ToggleScene($instanceId, $sceneNumber);";
         }
 
-        $this->Trigger()->Register($this->SwitchId(), $script, IPSEventTrigger::TypeUpdate);
+        $this->Trigger()->Register("", $this->SwitchId(), $script, IPSEventTrigger::TypeUpdate);
     }
 
     public function SwitchId()

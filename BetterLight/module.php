@@ -8,6 +8,8 @@ require_once(__DIR__ . "/../Property.php");
 require_once(__DIR__ . "/../Variable.php");
 require_once(__DIR__ . "/../Backing.php");
 
+require_once(__DIR__ . "/../IPS/IPS.php");
+
 class BetterLight extends BetterBase {
 
     const MaxDimLights = 6;
@@ -63,27 +65,27 @@ class BetterLight extends BetterBase {
 
     private function SaveSceneScript()
     {
-        return new IPSScript($this->InstanceID(), "SaveSceneStart");
+        return new IPSScriptNew($this->InstanceID(), "SaveSceneStart");
     }
 
     private function TurnOffScript()
     {
-        return new IPSScript($this->InstanceID(), "TurnOff");
+        return new IPSScriptNew($this->InstanceID(), "TurnOff");
     }
 
     // Events
 
     private function SceneScheduler()
     {
-        return new IPSEventScheduler($this->InstanceID(), parent::PersistentPrefix . "SceneScheduler");
+        return new IPSEventSchedulerNew($this->InstanceID(), parent::PersistentPrefix . "SceneScheduler");
     }
 
     private function OffTimer()
     {
-        return new IPSEventCyclic($this->InstanceID(), "OffTimer");
+        return new IPSEventCyclicNew($this->InstanceID(), "OffTimer");
     }
 
-    //
+    // Lights
     private function DimLights()
     {
         return new LightArray($this, self::MaxDimLights, LightArray::TypeDim);

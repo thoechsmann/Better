@@ -1,51 +1,8 @@
 <?
-
 require_once(__DIR__ . "/IPSObject.php");
 
-class IPSEventNew extends IPSObjectNew
+abstract class IPSEventNew extends IPSObjectNew
 {
-    const TypeTrigger = 0;
-    const TypeCyclic = 1;
-    const TypeScheduler = 2;
-
-    private $type = false;
-
-    public function __construct($parentId, $ident, $type) {
-        parent::__construct($parentId, $ident);
-        $this->type = $type;
-    }
-
-    protected function RegisterEvent($name = "", $position = 0) 
-    { 
-        IPS_LogMessage("IPSEvent", "Registering event of type " . $this->type . " - $this");
-
-        if($name == "")
-            $name = $this->Ident();
-
-        $id = $this->GetIDForIdent($this->Ident());
-
-        if($id != 0 && IPS_GetEvent($id)['EventType'] <> $this->type) 
-        {
-            IPS_DeleteEvent($id);
-            $id = 0;
-        }
-
-        if($id == 0)
-        {
-            $id = IPS_CreateEvent($this->type);
-            
-            IPS_SetParent($id, $this->parentId);
-            IPS_SetIdent($id, $this->Ident());            
-        }
-
-        IPS_SetName($id, $name);
-        IPS_SetPosition($id, $position);
-        
-        if (!IPS_EventExists($id)) throw new Exception("Event $ident could not be created."); 
-
-        return $id;
-    }
-
     public function SetScript($content)
     {
         IPS_SetEventScript($this->Id(), "$content;"); 
@@ -70,6 +27,16 @@ class IPSEventNew extends IPSObjectNew
     {
         IPS_SetEventLimit($this->Id(), $count);
     }
+
+    protected function IsCorrectObjectType($id)
+    {
+        if(!IPS_EventExists($id))
+            throw new Exception("Ident with name ".$this->Ident()." is used for wrong object type");
+            
+        return IPS_GetVariable($id)["EventType"] == static::GetEventTypeId();
+    }
+
+    abstract protected function GetVarTypeId();
 }
 
 class IPSEventTrigger extends IPSEvent
@@ -80,13 +47,9 @@ class IPSEventTrigger extends IPSEvent
     const TypeSmaller = 3;
     const TypeValue = 4;
 
-    public function __construct($parentId, $ident) {
-        parent::__construct($parentId, $ident, IPSEvent::TypeTrigger);
-    }
-
-    public function Register($targetId, $script, $type = IPSEventTrigger::TypeChange, $name = "", $position = 0)
+    public function Register($name, $targetId, $script, $type = IPSEventTrigger::TypeChange, $position = 0)
     {
-        $id = parent::RegisterEvent($name, $position);
+        $this->_Register($name, $position);
         
         $this->Hide();
         $this->SetScript($script);
@@ -94,7 +57,7 @@ class IPSEventTrigger extends IPSEvent
         $this->SetSubsequentExecution(true);
         $this->Activate();
 
-        return $id;
+        return $this->Id();
     }
 
     public function SetTrigger($type, $targetId)
@@ -105,6 +68,11 @@ class IPSEventTrigger extends IPSEvent
     public function SetSubsequentExecution($value)
     {
         IPS_SetEventTriggerSubsequentExecution($this->Id(), $value);
+    }
+
+    protected function GetVarTypeId() 
+    {
+        return 0;
     }
 }
 
@@ -134,16 +102,14 @@ class IPSEventCyclicNew extends IPSEventNew
     const TimeTypeMinute = 2;
     const TimeTypeHour = 3;
 
-    public function __construct($parentId, $ident) {
-        parent::__construct($parentId, $ident, IPSEvent::TypeCyclic);
-    }
-
-    public function Register($script, $name = "", $position = 0)
+    // Changed order or args
+    public function Register($name, $script, $position = 0)
     {
-        $id = parent::RegisterEvent($name, $position);
+        $this->_Register($name, $position);
+
         $this->SetScript($script);
 
-        return $id;
+        return $this->Id();
     }
 
     // Add some nicer functions.
@@ -165,7 +131,7 @@ class IPSEventCyclicNew extends IPSEventNew
             IPS_DeleteEvent($link);
         }
 
-        $this->Register($script);
+        $this->Register("", $script);
         // $this->SetCyclic(self::DateTypeNone, 0, 0, 0, self::TimeTypeSecond, $seconds);
 
         $time = time() + $seconds;
@@ -174,6 +140,11 @@ class IPSEventCyclicNew extends IPSEventNew
         $this->SetLimit(1);
         $this->Activate();
         $this->Hide();
+    }
+
+    protected function GetVarTypeId() 
+    {
+        return 1;
     }
 }
 
@@ -191,13 +162,9 @@ class IPSEventSchedulerNew extends IPSEventNew
     const DayWeekends = 96;
     const DayAll = 127;
 
-    public function __construct($parentId, $ident) {
-        parent::__construct($parentId, $ident, IPSEvent::TypeScheduler);
-    }
-
     public function Register($name = "", $position = 0)
     {
-        return parent::RegisterEvent($name, $position);
+        return parent::_Register($name, $position);
     }
     
     public function SetGroup($groupId, $days)
@@ -213,6 +180,11 @@ class IPSEventSchedulerNew extends IPSEventNew
     public function SetAction($actionId, $name, $color, $scriptContent)
     {
         IPS_SetEventScheduleAction($this->Id(), $actionId, $name, $color, $scriptContent);
+    }
+
+    protected function GetVarTypeId() 
+    {
+        return 2;
     }
 }
 

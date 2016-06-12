@@ -1,5 +1,6 @@
 <?
 require_once(__DIR__ . "/BetterBase.php");
+require_once(__DIR__ . "/IPSEvent.php");
 
 class Backing  {
 
@@ -13,9 +14,10 @@ class Backing  {
     private $setterId;
     private $eibType;
 
+    // Events
     private function Trigger()
     {
-        return new IPSEventTrigger($this->module->InstanceId(), $this->displayIdent() . "Trigger");
+        return new IPSEventTriggerNew($this->module->InstanceId(), $this->displayIdent() . "Trigger");
     }
 
     public function __construct($module, $displayIdent, $getterId, $setterId, $eibType) {
@@ -70,7 +72,7 @@ class Backing  {
     {
         $displayId = $this->module->GetIDForIdent($this->displayIdent);
         $script = 'SetValue(' . $displayId . ', $_IPS[\'VALUE\']); ' . $additionalCode;
-        $this->Trigger()->Register($this->getterId, $script, IPSEventTrigger::TypeUpdate);
+        $this->Trigger()->Register("", $this->getterId, $script, IPSEventTrigger::TypeUpdate);
     }
 
     private function int2hex($value)

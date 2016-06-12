@@ -3,7 +3,8 @@ require_once(__DIR__ . "/../BetterBase.php");
 require_once(__DIR__ . "/../Property.php");
 require_once(__DIR__ . "/../Variable.php");
 require_once(__DIR__ . "/../Backing.php");
-require_once(__DIR__ . "/../IPSVar.php");
+
+require_once(__DIR__ . "/../IPS/IPS.php");
 
 class MotionSensor 
 {
@@ -63,7 +64,7 @@ class MotionSensor
 
     private function MainSwitchTrigger()
     {
-        return new IPSEventTrigger($this->module->InstanceId(), self::StrMS . "MainSwitch" . "Trigger");
+        return new IPSEventTriggerNew($this->module->InstanceId(), self::StrMS . "MainSwitch" . "Trigger");
     }
 
     //
@@ -114,7 +115,7 @@ class MotionSensor
 
     public function RegisterTriggers()
     {
-        $this->MainSwitchTrigger()->Register(
+        $this->MainSwitchTrigger()->Register("",
             $this->MainSwitchIdProp()->Value(), 
             'BL_MSMainSwitchEvent($_IPS[\'TARGET\']);', 
             IPSEventTrigger::TypeUpdate);

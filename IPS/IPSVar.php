@@ -3,6 +3,21 @@ require_once(__DIR__ . "/IPSObject.php");
 
 abstract class IPSVarNew extends IPSObjectNew
 {
+    public function Register($name = "", $profile = "", $position = 0) 
+    {
+        $this->_Register($name, $position);
+
+        if($profile != "") {
+            if(!IPS_VariableProfileExists($profile)) {
+                throw new Exception("Profile with name ".$profile." does not exist");
+            }
+        }
+
+        $this->SetProfile($profile);
+        
+        return $this->Id();
+    }
+
     public function GetValue()
     {        
         return GetValue($this->Id());
@@ -25,21 +40,6 @@ abstract class IPSVarNew extends IPSObjectNew
     
     public function DisableAction() {
         IPS_DisableAction($this->parentId, $this->Ident());
-    }
-
-    public function Register($name = "", $profile = "", $position = 0) 
-    {
-        $id = $this->_Register($name, $position);
-
-        if($profile != "") {
-            if(!IPS_VariableProfileExists($profile)) {
-                throw new Exception("Profile with name ".$profile." does not exist");
-            }
-        }
-
-        IPS_SetVariableCustomProfile($id, $profile);
-        
-        return $id;            
     }
 
     public function __toString()

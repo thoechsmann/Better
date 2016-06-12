@@ -118,8 +118,6 @@ abstract class IPSObjectNew  {
         return false;        
     }
 
-    abstract public function Register($name = "", $profile = "", $position = 0);
-
     // Used e.g. by variables to not delete them if same type. Not sure if there is some benefit in not deleting them always.
     abstract protected function CreateObject();
     abstract protected function DeleteObject($id);
