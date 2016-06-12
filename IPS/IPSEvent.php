@@ -39,7 +39,7 @@ abstract class IPSEventNew extends IPSObjectNew
     abstract protected function GetVarTypeId();
 }
 
-class IPSEventTrigger extends IPSEvent
+class IPSEventTriggerNew extends IPSEventNew
 {
     const TypeUpdate = 0;
     const TypeChange = 1;
