@@ -1,6 +1,6 @@
 <?
 require_once(__DIR__ . "/BetterBase.php");
-require_once(__DIR__ . "/IPSEvent.php");
+require_once(__DIR__ . "/IPS/IPS.php");
 
 class Backing  {
 
