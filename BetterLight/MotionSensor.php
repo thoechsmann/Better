@@ -3,7 +3,7 @@ require_once(__DIR__ . "/../BetterBase.php");
 require_once(__DIR__ . "/../Property.php");
 require_once(__DIR__ . "/../Variable.php");
 require_once(__DIR__ . "/../Backing.php");
-require_once(__DIR__ . "/../IPSObject.php");
+require_once(__DIR__ . "/../IPSVar.php");
 
 class MotionSensor 
 {
