@@ -254,7 +254,7 @@ class DimLight extends Light {
 
     protected function SceneVars($sceneNumber)
     {
-        return new IPSVarIntegerNew($this->module->InstanceId(), $this->SceneVarName());
+        return new IPSVarIntegerNew($this->module->InstanceId(), $this->SceneVarName($sceneNumber));
     }
 
     // Backings
@@ -325,7 +325,7 @@ class RGBLight extends Light {
 
     protected function SceneVars($sceneNumber)
     {
-        return new IPSVarIntegerNew($this->module->InstanceId(), $this->SceneVarName());
+        return new IPSVarIntegerNew($this->module->InstanceId(), $this->SceneVarName($sceneNumber));
     }
 
     // Properties
@@ -399,7 +399,7 @@ class SwitchLight extends Light {
 
     protected function SceneVars($sceneNumber)
     {
-        return new IPSVarBooleanNew($this->module->InstanceId(), $this->SceneVarName());
+        return new IPSVarBooleanNew($this->module->InstanceId(), $this->SceneVarName($sceneNumber));
     }
 
     // Properties
