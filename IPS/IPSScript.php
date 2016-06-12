@@ -6,11 +6,11 @@ class IPSScriptNew extends IPSObjectNew
 {
     public function Register($name, $content = "<?\n?>", $position = 0)    
     {        
-        $id = $this->_Register($name, $position);
+        $this->_Register($name, $position);
             
-        IPS_SetScriptContent($id, $content);
+        $this->SetContent($content);
         
-        return $id;        
+        return $this->Id();        
     }
 
     public function SetContent($content)
