@@ -70,7 +70,7 @@ abstract class IPSVarNew extends IPSObjectNew
         if(!IPS_VariableExists($id))
             throw new Exception("Ident with name ".$this->Ident()." is used for wrong object type");
             
-        return IPS_GetVariable($id)["VariableType"] == static::GetObjectType();
+        return IPS_GetVariable($id)["VariableType"] == static::GetVarTypeId();
     }
 
     abstract protected function GetVarTypeName();
