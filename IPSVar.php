@@ -10,7 +10,7 @@ class IPSVarNew extends IPSObjectNew
 
     public function SetValue($value)
     {
-        $this->CheckType($value);
+        $this->CheckValue($value);
         SetValue($this->Id(), $value);
     }
 
