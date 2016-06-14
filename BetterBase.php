@@ -74,7 +74,6 @@ class BetterBase extends IPSModule {
         return $this->InstanceID;
     }
 
-
 	public function Create() 
     {
 		//Never delete this line!
@@ -291,5 +290,16 @@ class BetterBase extends IPSModule {
         return $this->IsTodayWeekend();
     }
 
+    protected function Log($text)
+    {
+        IPS_LogMessage(static::GetModuleName() . "(" . $this->InstanceID() . ")" ,"SetScene(sceneNumber = $sceneNumber, turnOn = $turnOn)");
+    }
+
+    protected function GetModuleName()
+    {
+        return "BetterBase";
+    }
+
 }
+
 ?>
