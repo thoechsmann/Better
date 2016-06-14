@@ -250,12 +250,12 @@ class DimLight extends Light {
     // Variables
     protected function DisplayVar()
     {
-        return new IPSVarIntegerNew($this->module->InstanceId(), $this->DisplayVarName());
+        return new IPSVarInteger($this->module->InstanceId(), $this->DisplayVarName());
     }
 
     protected function SceneVars($sceneNumber)
     {
-        return new IPSVarIntegerNew($this->module->InstanceId(), $this->SceneVarName($sceneNumber));
+        return new IPSVarInteger($this->module->InstanceId(), $this->SceneVarName($sceneNumber));
     }
 
     // Backings
@@ -321,12 +321,12 @@ class RGBLight extends Light {
     // Variables
     protected function DisplayVar()
     {
-        return new IPSVarIntegerNew($this->module->InstanceId(), $this->DisplayVarName());
+        return new IPSVarInteger($this->module->InstanceId(), $this->DisplayVarName());
     }
 
     protected function SceneVars($sceneNumber)
     {
-        return new IPSVarIntegerNew($this->module->InstanceId(), $this->SceneVarName($sceneNumber));
+        return new IPSVarInteger($this->module->InstanceId(), $this->SceneVarName($sceneNumber));
     }
 
     // Properties
@@ -395,12 +395,12 @@ class SwitchLight extends Light {
     // Variables
     protected function DisplayVar()
     {
-        return new IPSVarBooleanNew($this->module->InstanceId(), $this->DisplayVarName());
+        return new IPSVarBoolean($this->module->InstanceId(), $this->DisplayVarName());
     }
 
     protected function SceneVars($sceneNumber)
     {
-        return new IPSVarBooleanNew($this->module->InstanceId(), $this->SceneVarName($sceneNumber));
+        return new IPSVarBoolean($this->module->InstanceId(), $this->SceneVarName($sceneNumber));
     }
 
     // Properties

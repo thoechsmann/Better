@@ -38,50 +38,50 @@ class BetterLight extends BetterBase {
 
     private function CurrentSceneVar()
     {
-        return new IPSVarIntegerNew($this->InstanceID(), parent::PersistentPrefix . "CurrentScene");
+        return new IPSVarInteger($this->InstanceID(), parent::PersistentPrefix . "CurrentScene");
     }
 
     private function SaveToSceneVar()
     {
-        return new IPSVarIntegerNew($this->InstanceID(), "SaveSceneSelect");
+        return new IPSVarInteger($this->InstanceID(), "SaveSceneSelect");
     }
 
     private function IdendTriggerdTurnOnVar()
     {
-        return new IPSVarStringNew($this->InstanceID(), "IdendTriggerdTurnOn");
+        return new IPSVarString($this->InstanceID(), "IdendTriggerdTurnOn");
     }
 
     private function IdendTriggerdTurnOnBooleanValueVar()
     {
-        return new IPSVarBooleanNew($this->InstanceID(), "IdendTriggerdTurnOnBooleanValue");
+        return new IPSVarBoolean($this->InstanceID(), "IdendTriggerdTurnOnBooleanValue");
     } 
 
     private function IdendTriggerdTurnOnIntegerValueVar()
     {
-        return new IPSVarIntegerNew($this->InstanceID(), "IdendTriggerdTurnOnIntegerValue");
+        return new IPSVarInteger($this->InstanceID(), "IdendTriggerdTurnOnIntegerValue");
     }
 
     // Scripts
     private function SaveSceneScript()
     {
-        return new IPSScriptNew($this->InstanceID(), "SaveSceneStart");
+        return new IPSScript($this->InstanceID(), "SaveSceneStart");
     }
 
     private function TurnOffScript()
     {
-        return new IPSScriptNew($this->InstanceID(), "TurnOff");
+        return new IPSScript($this->InstanceID(), "TurnOff");
     }
 
     // Events
 
     private function SceneScheduler()
     {
-        return new IPSEventSchedulerNew($this->InstanceID(), parent::PersistentPrefix . "SceneScheduler");
+        return new IPSEventScheduler($this->InstanceID(), parent::PersistentPrefix . "SceneScheduler");
     }
 
     private function OffTimer()
     {
-        return new IPSEventCyclicNew($this->InstanceID(), "OffTimer");
+        return new IPSEventCyclic($this->InstanceID(), "OffTimer");
     }
 
     // Lights

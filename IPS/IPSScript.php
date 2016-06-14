@@ -1,7 +1,7 @@
 <?
 require_once(__DIR__ . "/IPSObject.php");
 
-class IPSScriptNew extends IPSObjectNew
+class IPSScript extends IPSObject
 {
     public function Register($name, $content = "<?\n?>", $position = 0)    
     {        

@@ -1,6 +1,6 @@
 <?
 
-abstract class IPSObjectNew  {
+abstract class IPSObject  {
     private $ident;
     private $id = false;
     protected $parentId;

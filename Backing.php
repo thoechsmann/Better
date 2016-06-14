@@ -17,7 +17,7 @@ class Backing  {
     // Events
     private function Trigger()
     {
-        return new IPSEventTriggerNew($this->module->InstanceId(), $this->displayIdent() . "Trigger");
+        return new IPSEventTrigger($this->module->InstanceId(), $this->displayIdent() . "Trigger");
     }
 
     public function __construct($module, $displayIdent, $getterId, $setterId, $eibType) {

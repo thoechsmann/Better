@@ -85,7 +85,7 @@ class SceneSwitch
 
     private function Trigger()
     {
-        return new IPSEventTriggerNew($this->module->InstanceId(), self::StrPrefix . $this->index . "Trigger");
+        return new IPSEventTrigger($this->module->InstanceId(), self::StrPrefix . $this->index . "Trigger");
     }
 
     public function RegisterProperties()

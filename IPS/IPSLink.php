@@ -2,7 +2,7 @@
 
 require_once(__DIR__ . "/IPSObject.php");
 
-class IPSLinkNew extends IPSObjectNew
+class IPSLink extends IPSObject
 {
     /// Parameter order changed!
     public function Register($name, $targetId, $position = 0) 

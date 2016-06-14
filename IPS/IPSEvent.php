@@ -1,7 +1,7 @@
 <?
 require_once(__DIR__ . "/IPSObject.php");
 
-abstract class IPSEventNew extends IPSObjectNew
+abstract class IPSEvent extends IPSObject
 {
     public function SetScript($content)
     {
@@ -49,7 +49,7 @@ abstract class IPSEventNew extends IPSObjectNew
     abstract protected function GetEventTypeId();
 }
 
-class IPSEventTriggerNew extends IPSEventNew
+class IPSEventTrigger extends IPSEvent
 {
     const TypeUpdate = 0;
     const TypeChange = 1;
@@ -86,7 +86,7 @@ class IPSEventTriggerNew extends IPSEventNew
     }
 }
 
-class IPSEventCyclicNew extends IPSEventNew
+class IPSEventCyclic extends IPSEvent
 {
     const DayMonday = 1;
     const DayTuesday = 2;
@@ -158,7 +158,7 @@ class IPSEventCyclicNew extends IPSEventNew
     }
 }
 
-class IPSEventSchedulerNew extends IPSEventNew
+class IPSEventScheduler extends IPSEvent
 {
     const DayMonday = 1;
     const DayTuesday = 2;

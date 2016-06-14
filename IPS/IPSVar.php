@@ -1,7 +1,7 @@
 <?
 require_once(__DIR__ . "/IPSObject.php");
 
-abstract class IPSVarNew extends IPSObjectNew
+abstract class IPSVar extends IPSObject
 {
     public function Register($name = "", $profile = "", $position = 0) 
     {
@@ -78,7 +78,7 @@ abstract class IPSVarNew extends IPSObjectNew
     abstract protected function ValueValid($value);
 }
 
-class IPSVarBooleanNew extends IPSVarNew
+class IPSVarBoolean extends IPSVar
 {
     protected function GetVarTypeName()
     {
@@ -96,7 +96,7 @@ class IPSVarBooleanNew extends IPSVarNew
     }
 }
 
-class IPSVarIntegerNew extends IPSVarNew
+class IPSVarInteger extends IPSVar
 {
     protected function GetVarTypeName()
     {
@@ -114,7 +114,7 @@ class IPSVarIntegerNew extends IPSVarNew
     }
 }
 
-class IPSVarFloatNew extends IPSVarNew
+class IPSVarFloatNew extends IPSVar
 {
     protected function GetVarTypeName()
     {
@@ -132,7 +132,7 @@ class IPSVarFloatNew extends IPSVarNew
     }
 }
 
-class IPSVarStringNew extends IPSVarNew
+class IPSVarString extends IPSVar
 {
     protected function GetVarTypeName()
     {
