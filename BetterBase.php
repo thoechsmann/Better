@@ -292,7 +292,7 @@ class BetterBase extends IPSModule {
 
     protected function Log($text)
     {
-        IPS_LogMessage(static::GetModuleName() . "(" . $this->InstanceID() . ")" ,"SetScene(sceneNumber = $sceneNumber, turnOn = $turnOn)");
+        IPS_LogMessage(static::GetModuleName() . "(" . $this->InstanceID() . ")", $text);
     }
 
     protected function GetModuleName()
