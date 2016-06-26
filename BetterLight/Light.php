@@ -59,13 +59,13 @@ class LightArray {
         }
     }
 
-    public function GetIndexForDisplayIdent($ident)
+    public function GetLightForDisplayIdent($ident)
     {
         for($i = 0; $i<$this->size; $i++)
         {
             $var = $this->At($i);
             if($var->IsDisplayVar($ident))
-                return $i;
+                return $var;
         }
 
         return false;

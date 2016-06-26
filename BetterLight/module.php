@@ -5,7 +5,6 @@ require_once(__DIR__ . "/SceneSwitch.php");
 require_once(__DIR__ . "/MotionSensor.php");
 require_once(__DIR__ . "/../BetterBase.php");
 require_once(__DIR__ . "/../Property.php");
-require_once(__DIR__ . "/../Variable.php");
 require_once(__DIR__ . "/../Backing.php");
 
 require_once(__DIR__ . "/../IPS/IPS.php");
@@ -56,15 +55,10 @@ class BetterLight extends BetterBase {
         return new IPSVarString($this->InstanceID(), "IdendTriggerdTurnOn");
     }
 
-    private function IdendTriggerdTurnOnBooleanValueVar()
+    private function IdendTriggerdTurnOnValueVar()
     {
-        return new IPSVarBoolean($this->InstanceID(), "IdendTriggerdTurnOnBooleanValue");
+        return new IPSVarBoolean($this->InstanceID(), "IdendTriggerdTurnOnValue");
     } 
-
-    private function IdendTriggerdTurnOnIntegerValueVar()
-    {
-        return new IPSVarInteger($this->InstanceID(), "IdendTriggerdTurnOnIntegerValue");
-    }
 
     // Scripts
     private function SaveSceneScript()
@@ -169,11 +163,8 @@ class BetterLight extends BetterBase {
         $this->IdendTriggerdTurnOnVar()->SetValue("");
         $this->IdendTriggerdTurnOnVar()->Hide();
 
-        $this->IdendTriggerdTurnOnBooleanValueVar()->Register();
-        $this->IdendTriggerdTurnOnBooleanValueVar()->Hide();
-
-        $this->IdendTriggerdTurnOnIntegerValueVar()->Register();
-        $this->IdendTriggerdTurnOnIntegerValueVar()->Hide();
+        $this->IdendTriggerdTurnOnValueVar()->Register();
+        $this->IdendTriggerdTurnOnValueVar()->Hide();
 
         // Set defaults
         $this->MotionSensor()->SetSceneLock(self::OffSceneNumber, MotionSensor::StateAlwaysOff);
@@ -296,15 +287,11 @@ class BetterLight extends BetterBase {
     {
         $this->Log("LoadFromScene(sceneNumber = $sceneNumber)");
 
-        $triggerIdent = $this->IdendTriggerdTurnOnVar()->GetValue();
-        
-        $triggerValue = $this->IdendTriggerdTurnOnIntegerValueVar()->GetValue();
+        $triggerIdent = $this->IdendTriggerdTurnOnVar()->GetValue();        
+        $triggerValue = $this->IdendTriggerdTurnOnValueVar()->GetValue();
+
         $this->DimLights()->LoadFromScene($sceneNumber, $triggerIdent, $triggerValue);
-
-        $triggerValue = $this->IdendTriggerdTurnOnBooleanValueVar()->GetValue();
         $this->SwitchLights()->LoadFromScene($sceneNumber, $triggerIdent, $triggerValue);
-
-        $triggerValue = $this->IdendTriggerdTurnOnIntegerValueVar()->GetValue();
         $this->RGBLights()->LoadFromScene($sceneNumber, $triggerIdent, $triggerValue);
 
         // Motion Sensor is set in SetScene.
@@ -430,33 +417,19 @@ class BetterLight extends BetterBase {
     }
 
     private function RequestActionForLight($ident, $value)
-    {
-        $switchLightNumber = $this->SwitchLights()->GetIndexForDisplayIdent($ident);
-        if($switchLightNumber !== false)
-        {
-            $this->Log("RequestAction SwitchLight - ident:$ident, value:$value");
-            $light = $this->SwitchLights()->At($switchLightNumber);
-            $identTrigger = $this->IdendTriggerdTurnOnBooleanValueVar();
-            $this->SetBackedValue($light->DisplayVarBacking(), $value, $identTrigger);
-            return true;
-        }
+    {        
+        $light = $this->SwitchLights()->GetLightForDisplayIdent($ident);
 
-        $dimLightNumber = $this->DimLights()->GetIndexForDisplayIdent($ident);
-        if($dimLightNumber !== false)
-        {
-            $this->Log("RequestAction DimLight - ident:$ident, value:$value");
-            $light = $this->DimLights()->At($dimLightNumber);
-            $identTrigger = $this->IdendTriggerdTurnOnIntegerValueVar();
-            $this->SetBackedValue($light->DisplayVarBacking(), $value, $identTrigger);
-            return true;
-        }
+        if($light === false)
+            $light = $this->DimLights()->GetLightForDisplayIdent($ident);
 
-        $rgbLightNumber = $this->RGBLights()->GetIndexForDisplayIdent($ident);
-        if($rgbLightNumber !== false)
-        {
-            $this->Log("RequestAction RGBLight - ident:$ident, value:$value");
-            $light = $this->RGBLights()->At($rgbLightNumber);
-            $identTrigger = $this->IdendTriggerdTurnOnIntegerValueVar();
+        if($light === false)
+            $light = $this->RGBLights()->GetLightForDisplayIdent($ident);
+
+        if($light !== false)
+        {        
+            $this->Log("RequestAction Light - ident:$ident, value:$value");
+            $identTrigger = $this->IdendTriggerdTurnOnValueVar();
             $this->SetBackedValue($light->DisplayVarBacking(), $value, $identTrigger);
             return true;
         }
@@ -506,6 +479,5 @@ class BetterLight extends BetterBase {
 
         $this->OffTimer()->StartTimer(self::OffTimerTime, $script);
     }
-
 }
 ?>
