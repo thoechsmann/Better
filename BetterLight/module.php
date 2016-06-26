@@ -372,7 +372,7 @@ class BetterLight extends BetterBase {
     // FIX: Remove storeVar. Save everything in a string.
     private function SetBackedValue($backing, $value, $storeVar)
     {
-        $this->Log("SetBackedValue(backing=$backing, value=$value, storeVar=$storeVar)");
+        $this->Log("SetBackedValue(value=$value, storeVar=$storeVar)");
         $this->CancelSave();            
 
         $ms = $this->MotionSensor();
