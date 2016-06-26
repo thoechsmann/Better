@@ -1,7 +1,5 @@
 <?
 require_once(__DIR__ . "/../BetterBase.php");
-require_once(__DIR__ . "/../Property.php");
-require_once(__DIR__ . "/../Variable.php");
 require_once(__DIR__ . "/../Backing.php");
 
 require_once(__DIR__ . "/../IPS/IPS.php");
@@ -138,12 +136,12 @@ abstract class Light {
 
     protected function NameProp()
     {        
-        return new PropertyString($this->module, $this->prefix . $this->index . "Name");
+        return new IPSPropertyString($this->module, $this->prefix . $this->index . "Name");
     }   
 
     protected function SwitchIdProp()
     {        
-        return new PropertyInteger($this->module, $this->prefix . $this->index . "SwitchId");
+        return new IPSPropertyInteger($this->module, $this->prefix . $this->index . "SwitchId");
     }
 
     // Variables
@@ -271,12 +269,12 @@ class DimLight extends Light {
     // Properties
     private function SetValueIdProp()
     {        
-        return new PropertyInteger($this->module, $this->prefix . $this->index . "SetValueId");
+        return new IPSPropertyInteger($this->module, $this->prefix . $this->index . "SetValueId");
     }
 
     private function StatusValueIdProp()
     {        
-        return new PropertyInteger($this->module, $this->prefix . $this->index . "StatusValueId");
+        return new IPSPropertyInteger($this->module, $this->prefix . $this->index . "StatusValueId");
     }
 
     // Variables
@@ -337,7 +335,7 @@ class RGBLight extends Light {
     // Properties
     private function SetValueIdProp()
     {        
-        return new PropertyInteger($this->module, $this->prefix . $this->index . "SetValueId");
+        return new IPSPropertyInteger($this->module, $this->prefix . $this->index . "SetValueId");
     }
 
     // Backings
@@ -385,7 +383,7 @@ class SwitchLight extends Light {
 
     private function StatusIdProp()
     {        
-        return new PropertyInteger($this->module, $this->prefix . $this->index . "StatusId");
+        return new IPSPropertyInteger($this->module, $this->prefix . $this->index . "StatusId");
     }
 
     // Backings

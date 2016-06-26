@@ -1,7 +1,5 @@
 <?
 require_once(__DIR__ . "/../BetterBase.php");
-require_once(__DIR__ . "/../Property.php");
-require_once(__DIR__ . "/../Variable.php");
 
 require_once(__DIR__ . "/../IPS/IPS.php");
 
@@ -73,12 +71,12 @@ class SceneSwitch
 
     private function SwitchIdProp()
     {        
-        return new PropertyInteger($this->module, self::StrPrefix . $this->index . "SwitchId");
+        return new IPSPropertyInteger($this->module, self::StrPrefix . $this->index . "SwitchId");
     }   
 
     private function SceneNumberProp()
     {        
-        return new PropertyInteger($this->module, self::StrPrefix . $this->index . "SceneNumber");
+        return new IPSPropertyInteger($this->module, self::StrPrefix . $this->index . "SceneNumber");
     }
 
     // Events

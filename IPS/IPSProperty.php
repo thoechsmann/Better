@@ -1,6 +1,5 @@
 <?
-class Property  {
-
+abstract class IPSProperty  {
     protected $name;
     protected $module;
 
@@ -18,9 +17,12 @@ class Property  {
     {
         IPS_SetProperty($this->module->InstanceId(), $this->name, $value);
     }
+
+    public abstract function Value();
+    public abstract function Register($value);
 }
 
-class PropertyInteger extends Property  {
+class IPSPropertyInteger extends Property  {
 
     public function Register($value = 0)
     {
@@ -35,7 +37,7 @@ class PropertyInteger extends Property  {
 
 }
 
-class PropertyString extends Property  {
+class IPSPropertyString extends Property  {
 
     public function Register($value = "")
     {
@@ -50,8 +52,7 @@ class PropertyString extends Property  {
 
 }
 
-class PropertyArray {
-
+abstract class PropertyArray {
     protected $module;
     protected $count;
     protected $properties = array();
@@ -60,6 +61,11 @@ class PropertyArray {
         $this->module = $module;
         $this->name = $name;
         $this->count = $count; 
+
+        for($i = 0; $i<$count; $i++)
+        {
+            $this->properties[$i] = static::CreateProperty($name . $i);
+        }       
     }
 
     public function RegisterAll()
@@ -84,32 +90,22 @@ class PropertyArray {
     {
         return $this->properties[$index]->Name();
     }
+
+    abstract protected function CreateProperty($name);
 }
 
 class PropertyArrayInteger extends PropertyArray  {
-
-    public function __construct($module, $name, $count) {
-        parent::__construct($module, $name, $count);
-
-        for($i = 0; $i<$count; $i++)
-        {
-            $this->properties[$i] = new PropertyInteger($this->module, $name . $i);
-        }       
+    protected function CreateProperty($name)
+    {
+        return new IPSPropertyInteger($this->module, $name);
     }
-
 }
 
 class PropertyArrayString extends PropertyArray  {
-
-    public function __construct($module, $name,  $count) {
-        parent::__construct($module, $name, $count);
-
-        for($i = 0; $i<$count; $i++)
-        {
-            $this->properties[$i] = new PropertyString($this->module, $name . $i);
-        }       
+    protected function CreateProperty($name)
+    {
+        return new IPSPropertyString($this->module, $name);
     }
-
 }
 
 ?>

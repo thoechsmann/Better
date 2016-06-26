@@ -4,7 +4,6 @@ require_once(__DIR__ . "/Scene.php");
 require_once(__DIR__ . "/SceneSwitch.php");
 require_once(__DIR__ . "/MotionSensor.php");
 require_once(__DIR__ . "/../BetterBase.php");
-require_once(__DIR__ . "/../Property.php");
 require_once(__DIR__ . "/../Backing.php");
 
 require_once(__DIR__ . "/../IPS/IPS.php");
@@ -39,7 +38,6 @@ class BetterLight extends BetterBase {
     }
 
     // Variables
-
     private function CurrentSceneVar()
     {
         return new IPSVarInteger($this->InstanceID(), parent::PersistentPrefix . "CurrentScene");

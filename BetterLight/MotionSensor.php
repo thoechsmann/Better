@@ -1,7 +1,5 @@
 <?
 require_once(__DIR__ . "/../BetterBase.php");
-require_once(__DIR__ . "/../Property.php");
-require_once(__DIR__ . "/../Variable.php");
 require_once(__DIR__ . "/../Backing.php");
 
 require_once(__DIR__ . "/../IPS/IPS.php");
@@ -26,22 +24,22 @@ class MotionSensor
 
     private function MainSwitchIdProp()
     {
-        return new PropertyInteger($this->module, self::StrMS . "MainSwitchId");
+        return new IPSPropertyInteger($this->module, self::StrMS . "MainSwitchId");
     }
 
     private function LockOffIdProp()
     {
-        return new PropertyInteger($this->module, self::StrMS . "LockOffId");
+        return new IPSPropertyInteger($this->module, self::StrMS . "LockOffId");
     }
 
     private function LockOnIdProp()
     {
-        return new PropertyInteger($this->module, self::StrMS . "LockOnId");
+        return new IPSPropertyInteger($this->module, self::StrMS . "LockOnId");
     }
 
     private function ExternMovementIdProp()
     {
-        return new PropertyInteger($this->module, self::StrMS . "ExternMovementId");
+        return new IPSPropertyInteger($this->module, self::StrMS . "ExternMovementId");
     }
 
     // Variables

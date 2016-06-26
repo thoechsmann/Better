@@ -1,7 +1,5 @@
 <?
 require_once(__DIR__ . "/../BetterBase.php");
-require_once(__DIR__ . "/../Property.php");
-require_once(__DIR__ . "/../Variable.php");
 
 require_once(__DIR__ . "/../IPS/IPS.php");
 
@@ -64,12 +62,12 @@ class Scene
 
     private function NameProp()
     {        
-        return new PropertyString($this->module, self::StrScene . $this->index . "Name");
+        return new IPSPropertyString($this->module, self::StrScene . $this->index . "Name");
     }   
 
     private function ColorProp()
     {        
-        return new PropertyString($this->module, self::StrScene . $this->index . "Color");
+        return new IPSPropertyString($this->module, self::StrScene . $this->index . "Color");
     }
 
     public function RegisterProperties()
