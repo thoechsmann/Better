@@ -122,6 +122,7 @@ class MotionSensor
     public function IsMainSwitchOn()
     {
         $id = $this->MainSwitchIdProp()->Value();
+        IPS_LogMessage("MotionSensor", "IsMainSwitchOn(): id=$id");
 
         if($id == 0)
         {
