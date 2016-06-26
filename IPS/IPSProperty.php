@@ -22,7 +22,7 @@ abstract class IPSProperty  {
     public abstract function Register($value);
 }
 
-class IPSPropertyInteger extends Property  {
+class IPSPropertyInteger extends IPSProperty  {
 
     public function Register($value = 0)
     {
@@ -37,7 +37,7 @@ class IPSPropertyInteger extends Property  {
 
 }
 
-class IPSPropertyString extends Property  {
+class IPSPropertyString extends IPSProperty  {
 
     public function Register($value = "")
     {
