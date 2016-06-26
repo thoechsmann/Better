@@ -200,7 +200,6 @@ abstract class Light {
     {
         $this->RegisterDisplayVar($position);
         $this->RegisterSceneVars($sceneCount);
-        $this->RegisterVariables($sceneCount, $position);
 
         $var = static::DisplayVar();
         $var->SetProfile(static::DisplayVarProfile());
