@@ -75,7 +75,10 @@ abstract class IPSVar extends IPSObject
 
     abstract protected function GetVarTypeName();
     abstract protected function GetVarTypeId();
-    abstract protected function ValueValid($value);
+    protected function ValueValid($value)
+    {
+        return true;
+    }
 }
 
 class IPSVarBoolean extends IPSVar
@@ -90,10 +93,10 @@ class IPSVarBoolean extends IPSVar
         return 0;
     }
 
-    protected function ValueValid($value)
-    {
-        return is_bool($value);
-    }
+    // protected function ValueValid($value)
+    // {
+    //     return is_bool($value);
+    // }
 }
 
 class IPSVarInteger extends IPSVar
@@ -108,10 +111,10 @@ class IPSVarInteger extends IPSVar
         return 1;
     }
 
-    protected function ValueValid($value)
-    {
-        return is_integer($value);
-    }
+    // protected function ValueValid($value)
+    // {
+    //     return is_int($value) || ctype_digit($value);
+    // }
 }
 
 class IPSVarFloatNew extends IPSVar
@@ -126,10 +129,10 @@ class IPSVarFloatNew extends IPSVar
         return 2;
     }
 
-    protected function ValueValid($value)
-    {
-        return is_float($value);
-    }
+    // protected function ValueValid($value)
+    // {
+    //     return $value == (string)(float)$value;
+    // }
 }
 
 class IPSVarString extends IPSVar
@@ -144,10 +147,10 @@ class IPSVarString extends IPSVar
         return 3;
     }
 
-    protected function ValueValid($value)
-    {
-        return is_string($value);
-    }
+    // protected function ValueValid($value)
+    // {
+    //     return true;
+    // }
 }
 
 ?>
