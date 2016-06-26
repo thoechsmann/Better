@@ -148,7 +148,9 @@ abstract class Light {
 
     // Variables
 
-    abstract protected function DisplayVar();
+    protected abstract function SceneVars($sceneNumber);
+    protected abstract function DisplayVarProfile();
+    protected abstract function DisplayVar();
 
     protected function DisplayVarName()
     {
@@ -157,10 +159,8 @@ abstract class Light {
 
     public function IsDisplayVar($ident)
     {
-        return $ident == $this->DisplayVar()->Ident();
+        return $ident == static::DisplayVar()->Ident();
     }
-
-    abstract protected function SceneVars($sceneNumber);
 
     protected function SceneVarName($sceneNumber)
     {
@@ -172,22 +172,16 @@ abstract class Light {
 
     // Register
 
-    public function RegisterProperties()
+    protected function _RegisterProperties()
     {
         $this->NameProp()->Register();
         $this->SwitchIdProp()->Register();
     }
 
-    public function RegisterVariables($sceneCount, $position)
-    {    
-        $this->RegisterDisplayVar($position);
-        $this->RegisterSceneVars($sceneCount);
-    }
-
     private function RegisterDisplayVar($position)
     {
         $name = $this->Name();
-        $var = $this->DisplayVar();
+        $var = static::DisplayVar();
         $var->Register($name, "", $position);
         $var->EnableAction();
     }
@@ -196,13 +190,36 @@ abstract class Light {
     {
         for($i = 0; $i<$sceneCount; $i++)
         {
-            $sceneLight = $this->SceneVars($i);
+            $sceneLight = static::SceneVars($i);
             $sceneLight->Register();
             $sceneLight->SetHidden(true);
         }
     }
 
+    public function RegisterVariables($sceneCount, $position)
+    {
+        $this->RegisterDisplayVar($position);
+        $this->RegisterSceneVars($sceneCount);
+        $this->RegisterVariables($sceneCount, $position);
+
+        $var = static::DisplayVar();
+        $var->SetProfile(static::DisplayVarProfile());
+
+        $backing = static::DisplayVarBacking();
+        $backing->Update();
+    }
+
+    public function RegisterTriggers()
+    {
+        $backing = static::DisplayVarBacking();
+        $backing->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
+    }
+
+    public abstract function RegisterProperties();
+
     //
+
+    public abstract function DisplayVarBacking();
 
     public function Name()
     {
@@ -222,10 +239,22 @@ abstract class Light {
 
     public function SaveToScene($sceneNumber)
     {
-        $value = $this->DisplayVar()->GetValue();
-        $this->SceneVars($sceneNumber)->SetValue($value);
+        $value = static::DisplayVar()->GetValue();
+        static::SceneVars($sceneNumber)->SetValue($value);
     }
 
+    public function LoadFromScene($sceneNumber, $triggerIdent = "", $triggerValue = 0)
+    {
+        $value = static::SceneVars($sceneNumber)->GetValue();
+
+        if($this->IsDisplayVar($triggerIdent))
+        {
+            // load value stored in temp var
+            $value = $triggerValue;
+        }
+
+        static::DisplayVarBacking()->SetValue($value);
+    }
 }
 
 class DimLight extends Light {
@@ -235,8 +264,12 @@ class DimLight extends Light {
         parent::__construct($module, $index, DimLight::Prefix);
     }
 
-    // Properties
+    protected function DisplayVarProfile()
+    {
+        return "~Intensity.100";
+    }
 
+    // Properties
     private function SetValueIdProp()
     {        
         return new PropertyInteger($this->module, $this->prefix . $this->index . "SetValueId");
@@ -272,42 +305,10 @@ class DimLight extends Light {
 
     public function RegisterProperties()
     {
-        parent::RegisterProperties();
+        $this->_RegisterProperties();
 
         $this->SetValueIdProp()->Register();
         $this->StatusValueIdProp()->Register();
-    }
-
-    public function RegisterVariables($sceneCount, $position)
-    {
-        parent::RegisterVariables($sceneCount, $position);
-
-        $var = $this->DisplayVar();
-        $var->SetProfile("~Intensity.100");
-
-        $backing = $this->DisplayVarBacking();
-        $backing->Update();
-    }
-
-    public function RegisterTriggers()
-    {
-        $backing = $this->DisplayVarBacking();
-        $backing->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
-    }
-
-    //
-
-    public function LoadFromScene($sceneNumber, $triggerIdent = "", $triggerValue = 0)
-    {
-        $value = $this->SceneVars($sceneNumber)->GetValue();
-
-        if($this->IsDisplayVar($triggerIdent))
-        {
-            // load value stored in temp var
-            $value = $triggerValue;
-        }
-
-        $this->DisplayVarBacking()->SetValue($value);
     }
 }
 
@@ -316,6 +317,11 @@ class RGBLight extends Light {
 
     public function __construct($module, $index) {
         parent::__construct($module, $index, RGBLight::Prefix);
+    }
+
+    protected function DisplayVarProfile()
+    {
+        return "~HexColor";
     }
 
     // Variables
@@ -347,41 +353,9 @@ class RGBLight extends Light {
     // Register
     public function RegisterProperties()
     {
-        parent::RegisterProperties();
+        $this->_RegisterProperties();
 
         $this->SetValueIdProp()->Register();
-    }
-
-    public function RegisterVariables($sceneCount, $position)
-    {
-        parent::RegisterVariables($sceneCount, $position);
-
-        $var = $this->DisplayVar();
-        $var->SetProfile("~HexColor");
-
-        $backing = $this->DisplayVarBacking();
-        $backing->Update();
-    }
-
-    public function RegisterTriggers()
-    {
-        $backing = $this->DisplayVarBacking();
-        $backing->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
-    }
-
-    //
-
-    public function LoadFromScene($sceneNumber, $triggerIdent = "", $triggerValue = 0)
-    {
-        $value = $this->SceneVars($sceneNumber)->GetValue();
-
-        if($this->IsDisplayVar($triggerIdent))
-        {
-            // load value stored in temp var
-            $value = $triggerValue;
-        }
-
-        $this->DisplayVarBacking()->SetValue($value);
     }
 }
 
@@ -390,6 +364,11 @@ class SwitchLight extends Light {
 
     public function __construct($module, $index) {
         parent::__construct($module, $index, SwitchLight::Prefix);
+    }
+
+    protected function DisplayVarProfile()
+    {
+        return "~Switch";
     }
 
     // Variables
@@ -424,41 +403,9 @@ class SwitchLight extends Light {
 
     public function RegisterProperties()
     {
-        parent::RegisterProperties();
+        $this->_RegisterProperties();
 
         $this->StatusIdProp()->Register();
-    }
-
-    public function RegisterVariables($sceneCount, $position)
-    {
-        parent::RegisterVariables($sceneCount, $position);
-
-        $var = $this->DisplayVar();
-        $var->SetProfile("~Switch");
-
-        $backing = $this->DisplayVarBacking();
-        $backing->Update();
-    }
-
-    public function RegisterTriggers()
-    {
-        $backing = $this->DisplayVarBacking();
-        $backing->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
-    }
-
-    //
-
-    public function LoadFromScene($sceneNumber, $triggerIdent = "", $triggerValue = 0)
-    {
-        $value = $this->SceneVars($sceneNumber)->GetValue();
-
-        if($this->IsDisplayVar($triggerIdent))
-        {
-            // load value stored in temp var
-            $value = $triggerValue;
-        }
-
-        $this->DisplayVarBacking()->SetValue($value);
     }
 }
 
