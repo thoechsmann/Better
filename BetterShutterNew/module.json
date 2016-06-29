@@ -1,0 +1,14 @@
+{
+    "id": "{5B245BF6-5C02-4C68-9A0B-5CF08E6BEA87}",
+    "name": "BetterShutterNew",
+    "type": 3,
+    "vendor": "Thomas",
+    "aliases": 
+    [
+        "BetterShutterNew"
+    ],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "BSN"
+}

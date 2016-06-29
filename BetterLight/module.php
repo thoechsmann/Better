@@ -9,7 +9,6 @@ require_once(__DIR__ . "/../Backing.php");
 require_once(__DIR__ . "/../IPS/IPS.php");
 
 class BetterLight extends BetterBase {
-
     const MaxDimLights = 6;
     const MaxSwitchLights = 2;
     const MaxRGBLights = 2;

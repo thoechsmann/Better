@@ -73,6 +73,11 @@ abstract class IPSObject  {
         $this->SetHidden(false);
     }
 
+    public function SetName($name)
+    {
+        IPS_SetName($this->Id(), $name);
+    }
+
     public function SetPosition($pos)
     {
         IPS_SetPosition($this->Id(), $pos);
@@ -87,8 +92,12 @@ abstract class IPSObject  {
     {
         // IPS_LogMessage(__CLASS__, "Registering - " . $this);
 
+        $hide = false;
         if($name == "")
+        {
             $name = $this->Ident();
+            $hide = true;
+        }
 
         $id = $this->GetIDForIdent($this->Ident());
 
@@ -107,9 +116,10 @@ abstract class IPSObject  {
             IPS_SetIdent($id, $this->Ident());            
         }
 
-        IPS_SetName($id, $name);        
-        IPS_SetPosition($id, $position);
-        
+        $this->SetName($name);
+        $this->SetPosition($position);        
+        $this->SetHidden($hide);
+
         return $id;            
     }
 

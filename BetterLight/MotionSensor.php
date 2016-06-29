@@ -130,7 +130,7 @@ class MotionSensor
             return false;
         }
 
-        return GetValue($id);
+        return GetValueBoolean($id);
     }
 
     public function LockState()

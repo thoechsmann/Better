@@ -1,0 +1,13 @@
+{
+	"elements":
+	[
+		{ "type": "SelectVariable", "name": "PositionIdProp", "caption": "Position" },
+		{ "type": "SelectVariable", "name": "UpDownIdProp", "caption": "Hoch/Runter" },
+		{ "type": "SelectVariable", "name": "StopIdProp", "caption": "Stopp" },
+		{ "type": "SelectVariable", "name": "WindowIdProp", "caption": "Fensterkontakt" },
+	],
+	"actions":
+	[
+	]	
+
+}
