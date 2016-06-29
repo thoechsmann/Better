@@ -10,66 +10,54 @@ class BetterShutterNew extends BetterBase {
     }
 
     // Properties
-    private function PositionIdProp()
-    {        
-        return new IPSPropertyInteger($this->module, "PositionIdPropX2");
+    private function PositionIdProp() {        
+        return new IPSPropertyInteger($this, __FUNCTION__);
     }   
 
-    private function UpDownIdProp()
-    {        
-        return new IPSPropertyInteger($this->module, "UpDownIdProp");
+    private function UpDownIdProp() {        
+        return new IPSPropertyInteger($this, __FUNCTION__);
     }   
 
-    private function StopIdProp()
-    {        
-        return new IPSPropertyInteger($this->module, "StopIdProp");
+    private function StopIdProp() {        
+        return new IPSPropertyInteger($this, __FUNCTION__);
     }   
 
-    private function WindowStatusIdProp()
-    {        
-        return new IPSPropertyInteger($this->module, "WindowStatusIdProp");
+    private function WindowStatusIdProp() {        
+        return new IPSPropertyInteger($this, __FUNCTION__);
     }   
 
     // Variables
-    private function PositionLimit()
-    {
+    private function PositionLimit() {
         return new IPSVarInteger($this->InstanceID(), parent::PersistentPrefix . __FUNCTION__);
     }
 
-    private function ShouldBeDown()
-    {
+    private function ShouldBeDown() {
         return new IPSVarBool($this->InstanceID(), parent::PersistentPrefix . __FUNCTION__);
     }
 
     // Links
-    private function PositionLink()
-    {
+    private function PositionLink() {
         return new IPSLink($this->InstanceID(), __FUNCTION__);
     }
 
-    private function UpDownLink()
-    {
+    private function UpDownLink() {
         return new IPSLink($this->InstanceID(), __FUNCTION__);
     }
 
-    private function StopLink()
-    {
+    private function StopLink() {
         return new IPSLink($this->InstanceID(), __FUNCTION__);
     }
 
-    private function WindowStatusLink()
-    {
+    private function WindowStatusLink() {
         return new IPSLink($this->InstanceID(), __FUNCTION__);
     }
 
     // Triggers
-    private function UpDownTrigger()
-    {
+    private function UpDownTrigger() {
         return new IPSTrigger($this->InstanceID(), __FUNCTION__);
     }
 
-    private function WindowTrigger()
-    {
+    private function WindowTrigger() {
         return new IPSTrigger($this->InstanceID(), __FUNCTION__);
     }
 
