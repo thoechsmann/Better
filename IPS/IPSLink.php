@@ -9,7 +9,7 @@ class IPSLink extends IPSObject
     {        
         $id = $this->_Register($name, $position);
             
-        IPS_SetLinkTargetID($id, $tarketId);
+        $this->SetTargetId($targetId);
         
         return $id;        
     }
