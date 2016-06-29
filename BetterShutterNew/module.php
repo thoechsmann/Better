@@ -12,22 +12,22 @@ class BetterShutterNew extends BetterBase {
     // Properties
     private function PositionIdProp()
     {        
-        return new IPSPropertyInteger($this->module, __FUNCTION__);
+        return new IPSPropertyInteger($this->module, "PositionIdProp");
     }   
 
     private function UpDownIdProp()
     {        
-        return new IPSPropertyInteger($this->module, __FUNCTION__);
+        return new IPSPropertyInteger($this->module, "UpDownIdProp");
     }   
 
     private function StopIdProp()
     {        
-        return new IPSPropertyInteger($this->module, __FUNCTION__);
+        return new IPSPropertyInteger($this->module, "StopIdProp");
     }   
 
     private function WindowStatusIdProp()
     {        
-        return new IPSPropertyInteger($this->module, __FUNCTION__);
+        return new IPSPropertyInteger($this->module, "WindowStatusIdProp");
     }   
 
     // Variables
