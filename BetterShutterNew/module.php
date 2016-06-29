@@ -81,6 +81,8 @@ class BetterShutterNew extends BetterBase {
         $this->WindowStatusLink()->Register("Fenster Status", $this->WindowStatusIdProp()->Value());
 
         $this->PositionLimit()->Register("Positions Limit");
+        $this->PositionLimit()->EnableAction();
+
         $this->ShouldBeDown()->Register();
 
         $this->UpDownTrigger()->Register("", $this->UpDownIdProp()->Value(), 'BSN_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeUpdate);
@@ -90,6 +92,10 @@ class BetterShutterNew extends BetterBase {
     public function RequestAction($Ident, $Value) 
     {    
         switch($Ident) {
+            case $this->PositionLimit()->Ident():
+                $this->PositionLimit()->SetValue($Value);
+                break;
+
             default:
                 throw new Exception("Invalid Ident");
         }
