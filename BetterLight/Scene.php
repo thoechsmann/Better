@@ -59,7 +59,6 @@ class Scene
     }
 
     // Properties
-
     private function NameProp()
     {        
         return new IPSPropertyString($this->module, self::StrScene . $this->index . "Name");

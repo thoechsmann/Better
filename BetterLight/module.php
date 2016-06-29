@@ -284,8 +284,8 @@ class BetterLight extends BetterBase {
     {
         $this->Log("LoadFromScene(sceneNumber = $sceneNumber)");
 
-        $triggerIdent = $this->IdendTriggerdTurnOnVar()->GetValue();        
-        $triggerValue = $this->IdendTriggerdTurnOnValueVar()->GetValue();
+        $triggerIdent = $this->IdendTriggerdTurnOnVar()->Value();        
+        $triggerValue = $this->IdendTriggerdTurnOnValueVar()->Value();
 
         $this->DimLights()->LoadFromScene($sceneNumber, $triggerIdent, $triggerValue);
         $this->SwitchLights()->LoadFromScene($sceneNumber, $triggerIdent, $triggerValue);
@@ -297,13 +297,13 @@ class BetterLight extends BetterBase {
     public function BackToCurrentScene()
     {
         $this->Log("BackToCurrentScene()");
-        $this->SetScene($this->CurrentSceneVar()->GetValue(), false);
+        $this->SetScene($this->CurrentSceneVar()->Value(), false);
     }
 
     public function ToggleScene($sceneNumber)
     {
         $this->Log("ToggleScene(sceneNumber = $sceneNumber)");
-        $currentScene = $this->CurrentSceneVar()->GetValue();
+        $currentScene = $this->CurrentSceneVar()->Value();
 
         if($currentScene == $sceneNumber)
         {
@@ -367,7 +367,7 @@ class BetterLight extends BetterBase {
         {
             // if MS is locked we do not get a turn on event.
             $backing->SetValue($value);
-            $this->SetScene($this->CurrentSceneVar()->GetValue());
+            $this->SetScene($this->CurrentSceneVar()->Value());
         }
         else
         {
@@ -444,7 +444,7 @@ class BetterLight extends BetterBase {
 
         if($turnOn)
         {
-            $this->LoadFromScene($this->CurrentSceneVar()->GetValue());
+            $this->LoadFromScene($this->CurrentSceneVar()->Value());
         }
         else
         {
@@ -467,7 +467,7 @@ class BetterLight extends BetterBase {
     {
         $this->Log("TurnOff()");
 
-        $currentScene = $this->CurrentSceneVar()->GetValue();
+        $currentScene = $this->CurrentSceneVar()->Value();
         $this->SetScene(self::OffSceneNumber, true);
         $this->CurrentSceneVar()->SetValue($currentScene);
         

@@ -236,13 +236,13 @@ abstract class Light {
 
     public function SaveToScene($sceneNumber)
     {
-        $value = static::DisplayVar()->GetValue();
+        $value = static::DisplayVar()->Value();
         static::SceneVars($sceneNumber)->SetValue($value);
     }
 
     public function LoadFromScene($sceneNumber, $triggerIdent = "", $triggerValue = 0)
     {
-        $value = static::SceneVars($sceneNumber)->GetValue();
+        $value = static::SceneVars($sceneNumber)->Value();
 
         if($this->IsDisplayVar($triggerIdent))
         {

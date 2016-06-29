@@ -135,12 +135,12 @@ class MotionSensor
 
     public function LockState()
     {
-        return $this->LockVar()->GetValue();
+        return $this->LockVar()->Value();
     }
 
     public function SetLockState($value)
     {
-        if($this->LockVar()->GetValue() == $value)
+        if($this->LockVar()->Value() == $value)
             return;
 
         $lockOnId = $this->LockOnIdProp()->Value();
@@ -182,13 +182,13 @@ class MotionSensor
 
     public function SaveToScene($sceneNumber)
     {
-        $value = $this->LockVar()->GetValue();
+        $value = $this->LockVar()->Value();
         $this->LockSceneVars($sceneNumber)->SetValue($value);
     }
 
     public function LoadFromScene($sceneNumber)
     {
-        $value = $this->LockSceneVars($sceneNumber)->GetValue();
+        $value = $this->LockSceneVars($sceneNumber)->Value();
         $this->SetLockState($value);
     }
 

@@ -33,7 +33,7 @@ class Backing  {
 
     public function Update()
     {
-        $this->module->SetValueForIdent($this->displayIdent, $this->GetValue());
+        $this->module->SetValueForIdent($this->displayIdent, $this->Value());
     }
 
     public function DisplayIdent()
@@ -63,7 +63,7 @@ class Backing  {
         }
     }
 
-    public function GetValue()
+    public function Value()
     {
         return GetValue($this->getterId);
     }

@@ -18,7 +18,7 @@ abstract class IPSVar extends IPSObject
         return $this->Id();
     }
 
-    public function GetValue()
+    public function Value()
     {        
         return GetValue($this->Id());
     }
