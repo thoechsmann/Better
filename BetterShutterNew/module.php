@@ -32,7 +32,7 @@ class BetterShutterNew extends BetterBase {
     }
 
     private function ShouldBeDown() {
-        return new IPSVarBool($this->InstanceID(), parent::PersistentPrefix . __FUNCTION__);
+        return new IPSVarBoolean($this->InstanceID(), parent::PersistentPrefix . __FUNCTION__);
     }
 
     // Links
