@@ -54,11 +54,11 @@ class BetterShutterNew extends BetterBase {
 
     // Triggers
     private function UpDownTrigger() {
-        return new IPSTrigger($this->InstanceID(), __FUNCTION__);
+        return new IPSEventTrigger($this->InstanceID(), __FUNCTION__);
     }
 
     private function WindowTrigger() {
-        return new IPSTrigger($this->InstanceID(), __FUNCTION__);
+        return new IPSEventTrigger($this->InstanceID(), __FUNCTION__);
     }
 
 	public function Create() 
