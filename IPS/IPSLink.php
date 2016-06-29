@@ -21,7 +21,7 @@ class IPSLink extends IPSObject
 
     protected function CreateObject()
     {
-        return IPS_CreateLink(0);
+        return IPS_CreateLink();
     }
 
     protected function DeleteObject($id)
