@@ -83,8 +83,8 @@ class BetterShutterNew extends BetterBase {
         $this->PositionLimit()->Register("Positions Limit");
         $this->ShouldBeDown()->Register();
 
-        $this->UpDownTrigger()->Register("", $this->UpDownIdProp()->Value(), 'BS_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeUpdate);
-        $this->WindowTrigger()->Register("", $this->WindowStatusIdProp()->Value(), 'BS_WindowEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeChange);
+        $this->UpDownTrigger()->Register("", $this->UpDownIdProp()->Value(), 'BSN_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeUpdate);
+        $this->WindowTrigger()->Register("", $this->WindowStatusIdProp()->Value(), 'BSN_WindowEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeChange);
 	}
 
     public function RequestAction($Ident, $Value) 
