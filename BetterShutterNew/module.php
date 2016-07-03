@@ -4,6 +4,10 @@ require_once(__DIR__ . "/../IPS/IPS.php");
 
 class BetterShutterNew extends BetterBase {
 
+    const MoveControlUp = 1;
+    const MoveControlStop = 2;
+    const MoveControlDown = 3;
+
     protected function GetModuleName()
     {
         return "BSN";
@@ -31,6 +35,10 @@ class BetterShutterNew extends BetterBase {
         return new IPSVarBoolean($this->InstanceID(), __FUNCTION__);
     }   
 
+    private function MoveControl() {        
+        return new IPSVarInteger($this->InstanceID(), __FUNCTION__);
+    }   
+
     private function PositionLimit() {
         return new IPSVarInteger($this->InstanceID(), parent::PersistentPrefix . __FUNCTION__);
     }
@@ -40,18 +48,6 @@ class BetterShutterNew extends BetterBase {
     }
 
     // Links
-    private function PositionLink() {
-        return new IPSLink($this->InstanceID(), __FUNCTION__);
-    }
-
-    private function UpDownLink() {
-        return new IPSLink($this->InstanceID(), __FUNCTION__);
-    }
-
-    private function StopLink() {
-        return new IPSLink($this->InstanceID(), __FUNCTION__);
-    }
-
     private function WindowStatusLink() {
         return new IPSLink($this->InstanceID(), __FUNCTION__);
     }
@@ -69,9 +65,6 @@ class BetterShutterNew extends BetterBase {
     {
 		parent::Create();		
 
-        $this->PositionIdProp()->Register();
-        $this->UpDownIdProp()->Register();
-        $this->StopIdProp()->Register();
         $this->WindowStatusIdProp()->Register();
 	}
 	
@@ -79,9 +72,6 @@ class BetterShutterNew extends BetterBase {
     {
 		parent::ApplyChanges();
 		
-        $this->PositionLink()->Register("Position", $this->PositionIdProp()->Value());
-        $this->UpDownLink()->Register("Hoch/Runter", $this->UpDownIdProp()->Value());
-        $this->StopLink()->Register("Stopp", $this->StopIdProp()->Value());
         $this->WindowStatusLink()->Register("Fenster Status", $this->WindowStatusIdProp()->Value());
 
         $this->PositionLimit()->Register("Positions Limit", "~Shutter");
@@ -90,6 +80,9 @@ class BetterShutterNew extends BetterBase {
         $this->Enabled()->Register("Aktiviert", "~Switch");
         $this->Enabled()->EnableAction();
         $this->Enabled()->SetValue(true);
+
+        $this->MoveControl()->Register("Bewegen", "BS_MoveControl");
+        $this->MoveControl()->EnableAction();
 
         $this->ShouldBeDown()->Register();
 
@@ -103,6 +96,11 @@ class BetterShutterNew extends BetterBase {
             case $this->Enabled()->Ident():
                 $this->Enabled()->SetValue($Value);
                 break;
+
+            case $this->MoveControl()->Ident():
+                $this->MoveShutter($Value);
+                break;
+
             case $this->PositionLimit()->Ident():
                 $this->PositionLimit()->SetValue($Value);
                 break;
@@ -145,22 +143,60 @@ class BetterShutterNew extends BetterBase {
         }
     }
 
+    private function MoveShutter($moveControl)
+    {
+        switch($moveControl)
+        {
+            case MoveControlUp:
+                $this->MoveUp();
+                break;
+            case MoveControlStop:
+                $this->Stop();
+                break;
+            case MoveControlDown:
+                $this->MoveDown();
+                break;
+        }
+    }
+
     private function MoveShutterToLimitedDown()
     {
         $this->Log("MoveShutterToLimitedDown");
-
-        $positionId = $this->PositionIdProp()->Value();
-
-        EIB_Scale(IPS_GetParent($positionId), $this->PositionLimit()->Value());
+        $this->MoveTo($this->PositionLimit()->Value());
     }
 
     private function MoveShutterToShouldBePosition()
     {
         $this->Log("MoveShutterToShouldBePosition, shouldBeDown:" . $this->ShouldBeDown()->Value());
+        $this->Move($this->ShouldBeDown()->Value());
+    }
 
+    private function MoveUp()
+    {
+        $this->Move(false);
+    }
+
+    private function MoveDown()
+    {
+        $this->Move(true);
+    }
+
+    private function Move($down)
+    {
         $upDownId = $this->UpDownIdProp()->Value();
+        EIB_Switch(IPS_GetParent($upDownId), $down);
+    }
 
-        EIB_Switch(IPS_GetParent($upDownId), $this->ShouldBeDown()->Value());
+    private function MoveTo($pos)
+    {
+        $positionId = $this->PositionIdProp()->Value();
+        EIB_Scale(IPS_GetParent($positionId), $pos);
+    }
+
+    private function Stop()
+    {
+        $stopId = $this->StopIdProp()->Value();
+        EIB_Switch(IPS_GetParent($stopId), true);
     }
 
     private function IsWindowOpen()
@@ -168,5 +204,6 @@ class BetterShutterNew extends BetterBase {
         $windowId = $this->WindowStatusIdProp()->Value();
         return GetValue($windowId);
     }
+
 }
 ?>
