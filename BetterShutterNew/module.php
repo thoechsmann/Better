@@ -28,7 +28,7 @@ class BetterShutterNew extends BetterBase {
 
     // Variables
     private function Enabled() {        
-        return new IPSVarBoolean($this, __FUNCTION__);
+        return new IPSVarBoolean($this->InstanceID(), __FUNCTION__);
     }   
 
     private function PositionLimit() {
@@ -88,6 +88,8 @@ class BetterShutterNew extends BetterBase {
         $this->PositionLimit()->EnableAction();
 
         $this->Enabled()->Register("Aktiviert", "~Switch");
+        $this->Enabled()->EnableAction();
+
         $this->ShouldBeDown()->Register();
 
         $this->UpDownTrigger()->Register("", $this->UpDownIdProp()->Value(), 'BSN_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeUpdate);
