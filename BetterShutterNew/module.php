@@ -89,6 +89,7 @@ class BetterShutterNew extends BetterBase {
 
         $this->Enabled()->Register("Aktiviert", "~Switch");
         $this->Enabled()->EnableAction();
+        $this->Enabled()->SetValue(true);
 
         $this->ShouldBeDown()->Register();
 
@@ -100,7 +101,7 @@ class BetterShutterNew extends BetterBase {
     {
         switch($Ident) {
             case $this->Enabled()->Ident():
-                $this->Endbaled()->SetValue($Value);
+                $this->Enabled()->SetValue($Value);
                 break;
             case $this->PositionLimit()->Ident():
                 $this->PositionLimit()->SetValue($Value);
