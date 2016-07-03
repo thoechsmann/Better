@@ -105,7 +105,7 @@ class BetterShutterNew extends BetterBase {
                 break;
 
             case $this->PositionLimit()->Ident():
-                $this->PositionLimit()->SetValue($Value);
+                $this->UpdatePositionLimit($Value);
                 break;
 
             default:
@@ -207,6 +207,17 @@ class BetterShutterNew extends BetterBase {
         $windowId = $this->WindowStatusIdProp()->Value();
         return GetValue($windowId);
     }
+
+    private function UpdatePositionLimit($value)
+    {
+        $this->PositionLimit()->SetValue($value);
+
+        if($this->IsWindowOpen() && $this->ShouldBeDown()->Value() == true)
+        {
+            $this->MoveShutterToLimitedDown();;
+        }
+    }
+}
 
 }
 ?>
