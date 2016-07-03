@@ -65,6 +65,9 @@ class BetterShutterNew extends BetterBase {
     {
 		parent::Create();		
 
+        $this->PositionIdProp()->Register();
+        $this->UpDownIdProp()->Register();
+        $this->StopIdProp()->Register();
         $this->WindowStatusIdProp()->Register();
 	}
 	
