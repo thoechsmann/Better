@@ -27,6 +27,10 @@ class BetterShutterNew extends BetterBase {
     }   
 
     // Variables
+    private function Enabled() {        
+        return new IPSVarBoolean($this, __FUNCTION__);
+    }   
+
     private function PositionLimit() {
         return new IPSVarInteger($this->InstanceID(), parent::PersistentPrefix . __FUNCTION__);
     }
@@ -80,9 +84,10 @@ class BetterShutterNew extends BetterBase {
         $this->StopLink()->Register("Stopp", $this->StopIdProp()->Value());
         $this->WindowStatusLink()->Register("Fenster Status", $this->WindowStatusIdProp()->Value());
 
-        $this->PositionLimit()->Register("Positions Limit");
+        $this->PositionLimit()->Register("Positions Limit", "~Shutter");
         $this->PositionLimit()->EnableAction();
 
+        $this->Enabled()->Register("Aktiviert", "~Switch");
         $this->ShouldBeDown()->Register();
 
         $this->UpDownTrigger()->Register("", $this->UpDownIdProp()->Value(), 'BSN_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeUpdate);
@@ -90,8 +95,11 @@ class BetterShutterNew extends BetterBase {
 	}
 
     public function RequestAction($Ident, $Value) 
-    {    
+    {
         switch($Ident) {
+            case $this->Enabled()->Ident():
+                $this->Endbaled()->SetValue($Value);
+                break;
             case $this->PositionLimit()->Ident():
                 $this->PositionLimit()->SetValue($Value);
                 break;
@@ -103,6 +111,9 @@ class BetterShutterNew extends BetterBase {
 
     public function UpDownEvent($moveDown)
     {
+        if(!$this->Enabled()->Value())
+            return;
+
         $this->Log("UpDownEvent(moveDown:$moveDown)");
 
         if($moveDown && $this->IsWindowOpen()) // window open
@@ -115,6 +126,9 @@ class BetterShutterNew extends BetterBase {
 
     public function WindowEvent($open)
     {
+        if(!$this->Enabled()->Value())
+            return;
+
         $this->Log("WindowEvent(open:$open)");
 
         if($open)
