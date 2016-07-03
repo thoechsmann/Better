@@ -214,10 +214,9 @@ class BetterShutterNew extends BetterBase {
 
         if($this->IsWindowOpen() && $this->ShouldBeDown()->Value() == true)
         {
-            $this->MoveShutterToLimitedDown();;
+            $this->MoveShutterToLimitedDown();
         }
     }
 }
 
-}
 ?>
