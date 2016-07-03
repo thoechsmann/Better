@@ -150,13 +150,13 @@ class BetterShutterNew extends BetterBase {
     {
         switch($moveControl)
         {
-            case MoveControlUp:
+            case BetterShutterNew::MoveControlUp:
                 $this->MoveUp();
                 break;
-            case MoveControlStop:
+            case BetterShutterNew::MoveControlStop:
                 $this->Stop();
                 break;
-            case MoveControlDown:
+            case BetterShutterNew::MoveControlDown:
                 $this->MoveDown();
                 break;
         }
