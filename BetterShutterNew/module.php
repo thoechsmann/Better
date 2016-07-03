@@ -43,10 +43,6 @@ class BetterShutterNew extends BetterBase {
         return new IPSVarInteger($this->InstanceID(), parent::PersistentPrefix . __FUNCTION__);
     }
 
-    private function ShouldBeDown() {
-        return new IPSVarBoolean($this->InstanceID(), parent::PersistentPrefix . __FUNCTION__);
-    }
-
     // Links
     private function WindowStatusLink() {
         return new IPSLink($this->InstanceID(), __FUNCTION__);
@@ -87,8 +83,6 @@ class BetterShutterNew extends BetterBase {
         $this->MoveControl()->Register("Bewegen", "BS_MoveControl");
         $this->MoveControl()->EnableAction();
 
-        $this->ShouldBeDown()->Register();
-
         $this->UpDownTrigger()->Register("", $this->UpDownIdProp()->Value(), 'BSN_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeUpdate);
         $this->WindowTrigger()->Register("", $this->WindowStatusIdProp()->Value(), 'BSN_WindowEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeChange);
 	}
@@ -125,7 +119,10 @@ class BetterShutterNew extends BetterBase {
             $this->MoveShutterToLimitedDown();
         }
 
-        $this->ShouldBeDown()->SetValue($moveDown);
+        if($moveDown)
+            $this->MoveControl()->SetValue(BetterShutterNew::MoveControlDown);
+        else
+            $this->MoveControl()->SetValue(BetterShutterNew::MoveControlUp);
     }
 
     public function WindowEvent($open)
@@ -135,14 +132,16 @@ class BetterShutterNew extends BetterBase {
 
         $this->Log("WindowEvent(open:$open)");
 
-        if($open)
+        if($this->MoveControl()->Value() == BetterShutterNew::MoveControlDown)
         {
-            if($this->ShouldBeDown()->Value() == true)
+            if($open)
+            {
                 $this->MoveShutterToLimitedDown();
-        }
-        else
-        {
-            $this->MoveShutterToShouldBePosition();
+            }
+            else
+            {
+                $this->MoveShutterToShouldBePosition();
+            }
         }
     }
 
@@ -170,8 +169,8 @@ class BetterShutterNew extends BetterBase {
 
     private function MoveShutterToShouldBePosition()
     {
-        $this->Log("MoveShutterToShouldBePosition, shouldBeDown:" . $this->ShouldBeDown()->Value());
-        $this->Move($this->ShouldBeDown()->Value());
+        $this->Log("MoveShutterToShouldBePosition, MoveControlValue:" . $this->MoveControl()->Value());
+        $this->Move($this->MoveControl()->Value());
     }
 
     private function MoveUp()
@@ -212,7 +211,7 @@ class BetterShutterNew extends BetterBase {
     {
         $this->PositionLimit()->SetValue($value);
 
-        if($this->IsWindowOpen() && $this->ShouldBeDown()->Value() == true)
+        if($this->IsWindowOpen() && $this->MoveControl()->Value() == BetterShutterNew::MoveControlDown)
         {
             $this->MoveShutterToLimitedDown();
         }
