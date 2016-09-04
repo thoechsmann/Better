@@ -188,6 +188,7 @@ class BetterShutterNew extends BetterBase {
         if(!$this->Enabled()->Value())
             return;
 
+        $instanceId = $this->InstanceID();
         $script = "BSN_UpdateTargetPosition($instanceId);";
         $this->CheckPositionTimer()->StartTimer(0.5, $script);
     }
