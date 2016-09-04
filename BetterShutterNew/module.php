@@ -229,10 +229,10 @@ class BetterShutterNew extends BetterBase {
     }
 
     private function PositionStatus()
-    (
+    {
         $posStatusId = $this->PositionStatusIdProp()->Value();
         return GetValue($posStatusId);
-    )
+    }
 
     private function UpdatePositionLimit($value)
     {
