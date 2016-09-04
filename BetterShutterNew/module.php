@@ -144,11 +144,6 @@ class BetterShutterNew extends BetterBase {
         {
             $this->MoveToLimitedDown();
         }
-
-        if($moveDown)
-            $this->MoveShutter(BetterShutterNew::MoveControlDown);
-        else
-            $this->MoveShutter(BetterShutterNew::MoveControlUp);
     }
 
     public function WindowEvent($open)
