@@ -62,6 +62,10 @@ class BetterShutterNew extends BetterBase {
         return new IPSLink($this->InstanceID(), __FUNCTION__);
     }
 
+    private function PositionStatusLink() {
+        return new IPSLink($this->InstanceID(), __FUNCTION__);
+    }
+
     // Triggers
     private function UpDownTrigger() {
         return new IPSEventTrigger($this->InstanceID(), __FUNCTION__);
@@ -87,6 +91,8 @@ class BetterShutterNew extends BetterBase {
 		parent::ApplyChanges();
 		
         $this->WindowStatusLink()->Register("Fenster Status", $this->WindowStatusIdProp()->Value());
+
+        $this->PositionStatusLink()->Register("Positions Status", $this->PositionStatusIdProp()->Value());
 
         $this->PositionLimit()->Register("Positions Limit", "~Shutter");
         $this->PositionLimit()->EnableAction();
