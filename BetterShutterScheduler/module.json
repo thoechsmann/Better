@@ -1,0 +1,14 @@
+{
+    "id": "{6B245BF6-5C02-4C68-9A0B-5CF08E6BEA87}",
+    "name": "BetterShutterScheduler",
+    "type": 3,
+    "vendor": "Thomas",
+    "aliases": 
+    [
+        "BetterShutterScheduler"
+    ],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "BSS"
+}

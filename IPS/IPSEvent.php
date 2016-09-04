@@ -168,8 +168,8 @@ class IPSEventScheduler extends IPSEvent
     const DaySaturday = 32;
     const DaySunday = 64;
 
-    const DayWeekdays = 31;
-    const DayWeekends = 96;
+    const DayWeekday = 31;
+    const DayWeekend = 96;
     const DayAll = 127;
 
     public function Register($name = "", $position = 0)

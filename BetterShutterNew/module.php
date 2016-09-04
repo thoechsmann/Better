@@ -1,4 +1,10 @@
 <?
+
+// TODO: 
+// - Highlight correct movement button.
+//   Simplest solution might be to poll for position status and check if it
+//   moved in a defined delta time.
+
 require_once(__DIR__ . "/../BetterBase.php");
 require_once(__DIR__ . "/../IPS/IPS.php");
 
@@ -14,6 +20,10 @@ class BetterShutterNew extends BetterBase {
     }
 
     // Properties
+    private function PositionStatusIdProp() {        
+        return new IPSPropertyInteger($this, __FUNCTION__);
+    }   
+
     private function PositionIdProp() {        
         return new IPSPropertyInteger($this, __FUNCTION__);
     }   
@@ -43,6 +53,10 @@ class BetterShutterNew extends BetterBase {
         return new IPSVarInteger($this->InstanceID(), parent::PersistentPrefix . __FUNCTION__);
     }
 
+    private function IsAtLimitedPosition() {
+        return new IPSVarBoolean($this->InstanceID(), parent::PersistentPrefix . __FUNCTION__);
+    }
+
     // Links
     private function WindowStatusLink() {
         return new IPSLink($this->InstanceID(), __FUNCTION__);
@@ -62,6 +76,7 @@ class BetterShutterNew extends BetterBase {
 		parent::Create();		
 
         $this->PositionIdProp()->Register();
+        $this->PositionStatusIdProp()->Register();
         $this->UpDownIdProp()->Register();
         $this->StopIdProp()->Register();
         $this->WindowStatusIdProp()->Register();
@@ -76,6 +91,8 @@ class BetterShutterNew extends BetterBase {
         $this->PositionLimit()->Register("Positions Limit", "~Shutter");
         $this->PositionLimit()->EnableAction();
 
+        $this->IsAtLimitedPosition()->Register();
+
         $this->Enabled()->Register("Aktiviert", "~Switch");
         $this->Enabled()->EnableAction();
         $this->Enabled()->SetValue(true);
@@ -85,7 +102,16 @@ class BetterShutterNew extends BetterBase {
 
         $this->UpDownTrigger()->Register("", $this->UpDownIdProp()->Value(), 'BSN_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeUpdate);
         $this->WindowTrigger()->Register("", $this->WindowStatusIdProp()->Value(), 'BSN_WindowEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeChange);
+
+        $this->InitValues();
 	}
+
+    private function InitValues()
+    {
+        $this->MoveControl()->SetValue(-1);
+
+        $this->IsAtLimitedPosition()->SetValue($this->PositionStatus() == $this->PositionLimit()->Value());
+    }
 
     public function RequestAction($Ident, $Value) 
     {
@@ -116,13 +142,13 @@ class BetterShutterNew extends BetterBase {
 
         if($moveDown && $this->IsWindowOpen()) // window open
         {
-            $this->MoveShutterToLimitedDown();
+            $this->MoveToLimitedDown();
         }
 
         if($moveDown)
-            $this->MoveControl()->SetValue(BetterShutterNew::MoveControlDown);
+            $this->MoveShutter(BetterShutterNew::MoveControlDown);
         else
-            $this->MoveControl()->SetValue(BetterShutterNew::MoveControlUp);
+            $this->MoveShutter(BetterShutterNew::MoveControlUp);
     }
 
     public function WindowEvent($open)
@@ -132,17 +158,13 @@ class BetterShutterNew extends BetterBase {
 
         $this->Log("WindowEvent(open:$open)");
 
-        if($this->MoveControl()->Value() == BetterShutterNew::MoveControlDown)
+        if($open)
         {
-            if($open)
-            {
-                $this->MoveShutterToLimitedDown();
-            }
-            else
-            {
-                $this->MoveShutterToShouldBePosition();
-            }
+            if($this->PositionStatus() > $this->PositionLimit()->Value())
+                $this->MoveToLimitedDown();
         }
+        else if($this->IsAtLimitedPosition()->Value())
+            $this->MoveDown();
     }
 
     private function MoveShutter($moveControl)
@@ -161,16 +183,11 @@ class BetterShutterNew extends BetterBase {
         }
     }
 
-    private function MoveShutterToLimitedDown()
+    private function MoveToLimitedDown()
     {
-        $this->Log("MoveShutterToLimitedDown");
+        $this->Log("MoveToLimitedDown");
         $this->MoveTo($this->PositionLimit()->Value());
-    }
-
-    private function MoveShutterToShouldBePosition()
-    {
-        $this->Log("MoveShutterToShouldBePosition, MoveControlValue:" . $this->MoveControl()->Value());
-        $this->Move($this->MoveControl()->Value());
+        $this->IsAtLimitedPosition()->SetValue(true);
     }
 
     private function MoveUp()
@@ -185,18 +202,22 @@ class BetterShutterNew extends BetterBase {
 
     private function Move($down)
     {
+        $this->Log("Move(down:$down)");
         $upDownId = $this->UpDownIdProp()->Value();
         EIB_Switch(IPS_GetParent($upDownId), $down);
+        $this->IsAtLimitedPosition()->SetValue(false);
     }
 
     private function MoveTo($pos)
     {
+        $this->Log("MoveTo(pos:$pos)");
         $positionId = $this->PositionIdProp()->Value();
         EIB_Scale(IPS_GetParent($positionId), $pos);
     }
 
     private function Stop()
     {
+        $this->Log("Stop()");
         $stopId = $this->StopIdProp()->Value();
         EIB_Switch(IPS_GetParent($stopId), true);
     }
@@ -207,13 +228,19 @@ class BetterShutterNew extends BetterBase {
         return GetValue($windowId);
     }
 
+    private function PositionStatus()
+    (
+        $posStatusId = $this->PositionStatusIdProp()->Value();
+        return GetValue($posStatusId);
+    )
+
     private function UpdatePositionLimit($value)
     {
         $this->PositionLimit()->SetValue($value);
 
-        if($this->IsWindowOpen() && $this->MoveControl()->Value() == BetterShutterNew::MoveControlDown)
+        if($this->IsWindowOpen() && $this->IsAtLimitedPosition()->Value())
         {
-            $this->MoveShutterToLimitedDown();
+            $this->MoveToLimitedDown();
         }
     }
 }

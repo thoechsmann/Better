@@ -2,7 +2,6 @@
 	"elements":
 	[
 		{ "type": "SelectVariable", "name": "PositionIdProp", "caption": "Position" },
-		{ "type": "SelectVariable", "name": "PositionStatusIdProp", "caption": "Position Status" },
 		{ "type": "SelectVariable", "name": "UpDownIdProp", "caption": "Hoch/Runter" },
 		{ "type": "SelectVariable", "name": "StopIdProp", "caption": "Stopp" },
 		{ "type": "SelectVariable", "name": "WindowStatusIdProp", "caption": "Fensterkontakt" },
