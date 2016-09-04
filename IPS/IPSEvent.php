@@ -88,6 +88,8 @@ class IPSEventTrigger extends IPSEvent
 
 class IPSEventCyclic extends IPSEvent
 {
+    // TODO: Duplicate. Move const days to IPSEvent.
+
     const DayMonday = 1;
     const DayTuesday = 2;
     const DayWednesday = 4;
@@ -96,8 +98,8 @@ class IPSEventCyclic extends IPSEvent
     const DaySaturday = 32;
     const DaySunday = 64;
 
-    const DayWeekdays = 31;
-    const DayWeekends = 96;
+    const DayWeekday = 31;
+    const DayWeekend = 96;
     const DayAll = 127;
 
     const DateTypeNone = 0;

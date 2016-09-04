@@ -226,8 +226,8 @@ class BetterLight extends BetterBase {
         $scheduler->Register("Szenen Zeiten", self::PosSceneScheduler);
         $scheduler->SetIcon("Calendar");
         $scheduler->Show();
-        $scheduler->SetGroup(0, IPSEventScheduler::DayWeekdays);
-        $scheduler->SetGroup(1, IPSEventScheduler::DayWeekends);
+        $scheduler->SetGroup(0, IPSEventScheduler::DayWeekday);
+        $scheduler->SetGroup(1, IPSEventScheduler::DayWeekend);
 
         for($sceneNumber = 0; $sceneNumber<$this->Scenes()->Count(); $sceneNumber++)
         {
