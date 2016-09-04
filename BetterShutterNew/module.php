@@ -54,11 +54,17 @@ class BetterShutterNew extends BetterBase {
     }
 
     private function IsAtLimitedPosition() {
-        return new IPSVarBoolean($this->InstanceID(), parent::PersistentPrefix . __FUNCTION__);
+        return new IPSVarBoolean($this->InstanceID(), __FUNCTION__);
     }
 
     private function TargetPosition() {
-        return new IPSVarInteger($this->InstanceID(), parent::PersistentPrefix . __FUNCTION__);
+        return new IPSVarInteger($this->InstanceID(), __FUNCTION__);
+    }
+
+    // Events
+    private function CheckPositionTimer()
+    {
+        return new IPSEventCyclic($this->InstanceID(), __FUNCTION__);
     }
 
     // Links
@@ -159,10 +165,10 @@ class BetterShutterNew extends BetterBase {
 
     public function UpDownEvent($moveDown)
     {
+        $this->Log("UpDownEvent(moveDown:$moveDown)");
+
         if(!$this->Enabled()->Value())
             return;
-
-        $this->Log("UpDownEvent(moveDown:$moveDown)");
 
         if($moveDown)
             $this->TargetPosition()->SetValue(100);
@@ -177,20 +183,27 @@ class BetterShutterNew extends BetterBase {
 
     public function StopEvent()
     {
+        $this->Log("StopEvent()");
+
         if(!$this->Enabled()->Value())
             return;
 
-        $this->Log("StopEvent()");
+        $script = "BSN_UpdateTargetPosition($instanceId);";
+        $this->CheckPositionTimer()->StartTimer(0.5, $script);
+    }
 
+    public function UpdateTargetPosition()
+    {
+        $this->Log("UpdateTargetPosition()");
         $this->TargetPosition()->SetValue($this->PositionStatus());
     }
 
     public function WindowEvent($open)
     {
+        $this->Log("WindowEvent(open:$open)");
+
         if(!$this->Enabled()->Value())
             return;
-
-        $this->Log("WindowEvent(open:$open)");
 
         if($open)
         {
