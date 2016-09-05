@@ -49,6 +49,10 @@ class BetterShutterNew extends BetterBase {
         return new IPSVarBoolean($this->InstanceID(), __FUNCTION__);
     }   
 
+    private function PositionIsLimited() {        
+        return new IPSVarBoolean($this->InstanceID(), __FUNCTION__);
+    }   
+
     private function MoveControl() {        
         return new IPSVarInteger($this->InstanceID(), __FUNCTION__);
     }   
@@ -112,6 +116,7 @@ class BetterShutterNew extends BetterBase {
         $this->PositionLimit()->EnableAction();
 
         $this->TargetPosition()->Register();
+        $this->PositionIsLimited()->Register();
 
         $this->Enabled()->Register("Aktiviert", "~Switch");
         $this->Enabled()->EnableAction();
@@ -135,9 +140,15 @@ class BetterShutterNew extends BetterBase {
 
         // If at the limit position, assume it should be at 100.
         if($this->PositionStatus() == $this->PositionLimit()->Value())
+        {
+            $this->PositionIsLimited()->SetValue(true);
             $this->TargetPosition()->SetValue(100);
+        }
         else 
+        {
+            $this->PositionIsLimited()->SetValue(false);
             $this->TargetPosition()->SetValue($this->PositionStatus());
+        }
     }
 
     public function RequestAction($Ident, $Value) 
@@ -176,6 +187,10 @@ class BetterShutterNew extends BetterBase {
         {
             $this->MoveToLimitedDown();
         }
+        else
+        {
+            $this->PositionIsLimited()->SetValue(false);
+        }
     }
 
     public function StopEvent()
@@ -208,8 +223,10 @@ class BetterShutterNew extends BetterBase {
             if($this->TargetPosition()->Value() > $this->PositionLimit()->Value())
                 $this->MoveToLimitedDown();
         }
-        else if($this->PositionStatus() == $this->PositionLimit()->Value())
+        else if($this->PositionIsLimited()->Value())
+        {
             $this->MoveToTarget();
+        }
     }
 
     private function MoveShutter($moveControl)
@@ -231,12 +248,14 @@ class BetterShutterNew extends BetterBase {
     private function MoveToLimitedDown()
     {
         $this->Log("MoveToLimitedDown");
+        $this->PositionIsLimited()->SetValue(true);
         $this->MoveTo($this->PositionLimit()->Value());
     }
 
     private function MoveToTarget()
     {
         $this->Log("MoveToTarget");
+        $this->PositionIsLimited()->SetValue(false);
         $this->MoveTo($this->TargetPosition()->Value());
     }
 
