@@ -1,8 +1,6 @@
 <?
 
 // TODO: 
-// P0: Closing while shutter is still 
-//     moving to limited open position does NOT move shutter to targetPos!
 // P1: On StopEvent: Take care we are not stoping in a position bigger 
 //     than the limit with open window.
 // P2: Highlight correct movement button.
@@ -209,6 +207,12 @@ class BetterShutterNew extends BetterBase {
     {
         $this->Log("UpdateTargetPosition()");
         $this->TargetPosition()->SetValue($this->PositionStatus());
+
+        // do not stop if moving to limited down.        
+        if($this->PositionIsLimited()->Value())
+        {
+            $this->MoveToLimitedDown();
+        }
     }
 
     public function WindowEvent($open)
