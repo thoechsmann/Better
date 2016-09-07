@@ -97,9 +97,6 @@ class ShutterControl
 
     public function RegisterTriggers()
     {
-        $instanceId = $this->module->InstanceId();
-        $sceneNumber = $this->SceneNumber();
-
         $this->UpDownTrigger()->Register("", $this->UpDownId(), 'BSN_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeUpdate);
 
         $this->StopTrigger()->Register("", $this->StopId(), 'BSN_StopEvent($_IPS[\'TARGET\']);', IPSEventTrigger::TypeUpdate);

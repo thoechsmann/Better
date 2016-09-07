@@ -2,7 +2,7 @@
 require_once(__DIR__ . "/../BetterBase.php");
 require_once(__DIR__ . "/../IPS/IPS.php");
 
-class BetterShutterNew extends BetterBase {
+class BetterShutterScheduler extends BetterBase {
     protected function GetModuleName()
     {
         return "BSS";
