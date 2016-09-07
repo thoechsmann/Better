@@ -56,8 +56,8 @@ class BetterShutterScheduler extends BetterBase {
         $this->OpenForDayDone()->Register();
 		
         $twilightCheck = $this->TwilightCheck();
-        $enabled->Register("Dämmerungsautomatik", "~Switch");
-        $enabled->EnableAction();
+        $twilightCheck->Register("Dämmerungsautomatik", "~Switch");
+        $twilightCheck->EnableAction();
 
         $this->IsDayTrigger()->Register("", $this->IsDayIdProp()->Value(), 'BSS_IsDayChanged($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeChange);
 
