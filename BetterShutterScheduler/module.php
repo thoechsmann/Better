@@ -1,4 +1,11 @@
 <?
+
+/* TODOs
+
+    P2: When turning on twighlightCheck check if shutters must be moved up or down.
+
+*/
+
 require_once(__DIR__ . "/../BetterBase.php");
 require_once(__DIR__ . "/../IPS/IPS.php");
 
@@ -79,7 +86,7 @@ class BetterShutterScheduler extends BetterBase {
     {
         switch($ident) {
             case $this->TwilightCheck()->Ident():
-                $this->SetValueForIdent($Ident, $Value);
+                $this->SetValueForIdent($ident, $value);
                 break;
 
             default:
