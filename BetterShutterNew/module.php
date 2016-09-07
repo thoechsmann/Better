@@ -30,16 +30,16 @@ class BetterShutterNew extends BetterBase {
         return new IPSPropertyInteger($this, __FUNCTION__);
     }   
 
+    private function WindowStatusIdProp() {        
+        return new IPSPropertyInteger($this, __FUNCTION__);
+    }   
+
     private function UpDownIdsProp() {        
         return new IPSPropertyArrayInteger($this, __FUNCTION__, BetterShutterNew::MaxUpDownIds);
     }   
 
     private function StopIdsProp() {        
         return new IPSPropertyArrayInteger($this, __FUNCTION__, BetterShutterNew::MaxUpDownIds);
-    }   
-
-    private function WindowStatusIdProp() {        
-        return new IPSPropertyInteger($this, __FUNCTION__);
     }   
 
     // Variables
@@ -125,7 +125,7 @@ class BetterShutterNew extends BetterBase {
 
         $upDownIds = $this->UpDownIdsProp();
         $stopIds = $this->StopIdsProp();
-        for($i = 0; $i<BetterShutterNew::MaxUpDownIds)
+        for($i = 0; $i<BetterShutterNew::MaxUpDownIds; $i++)
         {
             $upDownId = $upDownIds->ValueAt($i);
             $stopId = $stopIds->ValueAt($i);
