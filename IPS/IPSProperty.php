@@ -52,7 +52,7 @@ class IPSPropertyString extends IPSProperty  {
 
 }
 
-abstract class PropertyArray {
+abstract class IPSPropertyArray {
     protected $module;
     protected $count;
     protected $properties = array();
@@ -66,6 +66,11 @@ abstract class PropertyArray {
         {
             $this->properties[$i] = static::CreateProperty($name . $i);
         }       
+    }
+
+    public function Count()
+    {
+        return $this->count;
     }
 
     public function RegisterAll()
@@ -94,14 +99,14 @@ abstract class PropertyArray {
     abstract protected function CreateProperty($name);
 }
 
-class PropertyArrayInteger extends PropertyArray  {
+class IPSPropertyArrayInteger extends IPSPropertyArray  {
     protected function CreateProperty($name)
     {
         return new IPSPropertyInteger($this->module, $name);
     }
 }
 
-class PropertyArrayString extends PropertyArray  {
+class IPSPropertyArrayString extends IPSPropertyArray  {
     protected function CreateProperty($name)
     {
         return new IPSPropertyString($this->module, $name);
