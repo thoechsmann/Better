@@ -1,10 +1,8 @@
 {
 	"elements":
 	[
-		{ "type": "SelectVariable", "name": "PositionIdProp", "caption": "Position" },
-		{ "type": "SelectVariable", "name": "UpDownIdProp", "caption": "Hoch/Runter" },
-		{ "type": "SelectVariable", "name": "StopIdProp", "caption": "Stopp" },
-		{ "type": "SelectVariable", "name": "WindowStatusIdProp", "caption": "Fensterkontakt" },
+		{ "type": "SelectVariable", "name": "ShutterGroupUpDownIdProp", "caption": "Hoch/Runter Id" },
+		{ "type": "SelectVariable", "name": "IsDayIdProp", "caption": "IsDay Id" },
 	],
 	"actions":
 	[
