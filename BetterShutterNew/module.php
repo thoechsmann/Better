@@ -7,10 +7,11 @@
 
 require_once(__DIR__ . "/../BetterBase.php");
 require_once(__DIR__ . "/../IPS/IPS.php");
+require_once(__DIR__ . "/ShutterControl.php");
 
 class BetterShutterNew extends BetterBase {
 
-    const MaxUpDownIds = 3;
+    const ShutterControlCount = 3;
 
     const MoveControlUp = 1;
     const MoveControlStop = 2;
@@ -19,6 +20,11 @@ class BetterShutterNew extends BetterBase {
     protected function GetModuleName()
     {
         return "BSN";
+    }
+
+    private function ShutterControls()
+    {
+        return new ShutterControlArray($this, BetterShutterNew::ShutterControlCount);
     }
 
     // Properties
@@ -32,14 +38,6 @@ class BetterShutterNew extends BetterBase {
 
     private function WindowStatusIdProp() {        
         return new IPSPropertyInteger($this, __FUNCTION__);
-    }   
-
-    private function UpDownIdsProp() {        
-        return new IPSPropertyArrayInteger($this, __FUNCTION__, BetterShutterNew::MaxUpDownIds);
-    }   
-
-    private function StopIdsProp() {        
-        return new IPSPropertyArrayInteger($this, __FUNCTION__, BetterShutterNew::MaxUpDownIds);
     }   
 
     // Variables
@@ -79,14 +77,6 @@ class BetterShutterNew extends BetterBase {
     }
 
     // Triggers
-    private function UpDownTrigger() {
-        return new IPSEventTrigger($this->InstanceID(), __FUNCTION__);
-    }
-
-    private function StopTrigger() {
-        return new IPSEventTrigger($this->InstanceID(), __FUNCTION__);
-    }
-
     private function WindowTrigger() {
         return new IPSEventTrigger($this->InstanceID(), __FUNCTION__);
     }
@@ -98,8 +88,8 @@ class BetterShutterNew extends BetterBase {
         $this->PositionIdProp()->Register();
         $this->PositionStatusIdProp()->Register();
         $this->WindowStatusIdProp()->Register();
-        $this->UpDownIdsProp()->RegisterAll();
-        $this->StopIdsProp()->RegisterAll();
+
+        $this->ShutterControls()->RegisterProperties();
 	}
 	
 	public function ApplyChanges() 
@@ -123,25 +113,9 @@ class BetterShutterNew extends BetterBase {
         $this->MoveControl()->Register("Bewegen", "BS_MoveControl");
         $this->MoveControl()->EnableAction();
 
-        $upDownIds = $this->UpDownIdsProp();
-        $stopIds = $this->StopIdsProp();
-        for($i = 0; $i<BetterShutterNew::MaxUpDownIds; $i++)
-        {
-            $upDownId = $upDownIds->ValueAt($i);
-            $stopId = $stopIds->ValueAt($i);
-
-            if($upDownId > 0)
-            {
-                $this->UpDownTrigger()->Register("", $upDownId, 'BSN_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeUpdate);
-            }
-
-            if($stopId > 0)
-            {
-                $this->StopTrigger()->Register("", $stopId, 'BSN_StopEvent($_IPS[\'TARGET\']);', IPSEventTrigger::TypeUpdate);
-            }
-        }
-
         $this->WindowTrigger()->Register("", $this->WindowStatusIdProp()->Value(), 'BSN_WindowEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeChange);
+
+        $this->ShutterControls()->RegisterTriggers();
 
         $this->InitValues();
 	}
@@ -289,8 +263,8 @@ class BetterShutterNew extends BetterBase {
 
     private function Move($down)
     {
-        $this->Log("Move(down:$down)");
-        $upDownId = $this->UpDownIdsProp()->ValueAt(0);
+        $this->Log("Move(down:$down)");        
+        $upDownId = $this->ShutterControls()->At(0)->UpDownId();
         EIB_Switch(IPS_GetParent($upDownId), $down);
     }
 
@@ -304,7 +278,7 @@ class BetterShutterNew extends BetterBase {
     private function Stop()
     {
         $this->Log("Stop()");
-        $stopId = $this->StopIdsProp()->ValueAt(0);
+        $stopId = $this->ShutterControls()->At(0)->StopId();
         EIB_Switch(IPS_GetParent($stopId), true);
     }
 
