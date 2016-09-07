@@ -92,7 +92,7 @@ class ShutterControl
     public function RegisterProperties()
     {
         $this->UpDownIdProp()->Register();
-        $this->StopProp()->Register();
+        $this->StopIdProp()->Register();
     }
 
     public function RegisterTriggers()
@@ -107,7 +107,7 @@ class ShutterControl
 
     public function UpDownId()
     {
-        return $this->UpDownId()->Value();
+        return $this->UpDownIdProp()->Value();
     }
 
     public function StopId()
