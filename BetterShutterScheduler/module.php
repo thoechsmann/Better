@@ -29,11 +29,11 @@ class BetterShutterScheduler extends BetterBase {
         return new IPSVarBoolean($this->InstanceID(), __FUNCTION__);
     }   
 
-    private function CloseForDayDone() {        
+    private function OpenOnDawn() {        
         return new IPSVarBoolean($this->InstanceID(), __FUNCTION__);
     }   
 
-    private function OpenForDayDone() {        
+    private function CloseForDayDone() {        
         return new IPSVarBoolean($this->InstanceID(), __FUNCTION__);
     }   
 
@@ -59,14 +59,14 @@ class BetterShutterScheduler extends BetterBase {
     {
 		parent::ApplyChanges();
 
+        $this->OpenOnDawn()->Register();
         $this->CloseForDayDone()->Register();
-        $this->OpenForDayDone()->Register();
 		
         $twilightCheck = $this->TwilightCheck();
         $twilightCheck->Register("Dämmerungsautomatik", "~Switch");
         $twilightCheck->EnableAction();
 
-        $this->IsDayTrigger()->Register("", $this->IsDayIdProp()->Value(), 'BSS_IsDayChanged($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeChange);
+        $this->IsDayTrigger()->Register("", $this->IsDayIdProp()->Value(), 'BSS_DayChanged($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeChange);
 
         $scheduler = $this->Scheduler();
         $scheduler->Register("Wochenplan");
@@ -78,15 +78,15 @@ class BetterShutterScheduler extends BetterBase {
         $scheduler->SetGroup(1, IPSEventScheduler::DayFriday);
         $scheduler->SetGroup(2, IPSEventScheduler::DaySaturday);
         $scheduler->SetGroup(3, IPSEventScheduler::DaySunday);
-        $scheduler->SetAction(0, "Auf", 0x00FF00, "BSS_EarlierstOpen(\$_IPS['TARGET']);");        
-        $scheduler->SetAction(1, "Zu", 0x0000FF, "BSS_LatestClose(\$_IPS['TARGET']);");
+
+        $this->SetTwilightCheck($this->TwilightCheck()->Value());
 	}
 
     public function RequestAction($ident, $value) 
     {
         switch($ident) {
             case $this->TwilightCheck()->Ident():
-                $this->SetValueForIdent($ident, $value);
+                $this->SetTwilightCheck($value);
                 break;
 
             default:
@@ -94,9 +94,27 @@ class BetterShutterScheduler extends BetterBase {
         }
     }
 
-    public function IsDayChanged($isDay)
+    private SetTwilightCheck($value)
     {
-        $this->Log("IsDayChanged(isDay:$isDay)");
+        $this->TwilightCheck()->SetValue($value);
+
+        $scheduler = $this->Scheduler();
+        
+        if($value)
+        {
+            $scheduler->SetAction(0, "spätestes Öffnen", 0x00FF00, "BSS_EarliestOpen(\$_IPS['TARGET']);");        
+            $scheduler->SetAction(1, "frühstes Schliessen", 0x0000FF, "BSS_LatestClose(\$_IPS['TARGET']);");
+        }
+        else
+        {
+            $scheduler->SetAction(0, "Öffnen", 0x00FF00, "BSS_MoveUp(\$_IPS['TARGET']);");        
+            $scheduler->SetAction(1, "Schliessen", 0x0000FF, "BSS_MoveDown(\$_IPS['TARGET']);");
+        }
+    }
+
+    public function DayChanged($isDay)
+    {
+        $this->Log("DayChanged(isDay:$isDay)");
 
         if($isDay)
             $this->OnDawn();
@@ -106,38 +124,73 @@ class BetterShutterScheduler extends BetterBase {
 
     private function OnDawn()
     {        
-        $closeForDayDone = $this->CloseForDayDone();
+        if(!$this->TwilightCheck()->Value())
+            return;
 
-        if($this->TwilightCheck()->Value() && $closeForDayDone->Value())
+        if($this->$OpenOnDawn()->Value())
         {
             $this->MoveUp();
-        }
 
-        $closeForDayDone->SetValue(false);
+            // reset value
+            $this->$OpenOnDawn()->SetValue(false);
+        }
     }
 
     private function OnSunset()
     {
-        $upDownId = $this->ReadPropertyInteger("upDownId");
-        
+        if(!$this->TwilightCheck()->Value())
+            return;
+
+        if($this->CloseForDayDone()->Value() == false)
+        {
+            $this->MoveDown();
+
+            $this->CloseForDayDone()->SetValue(true);
+        }
+        else
+        {
+            // reset value
+            $this->CloseForDayDone()->SetValue(false);
+        }
     }
 
-    public function EarlierstOpen()
+    public function EarliestOpen()
     {
-        $this->Log("EarlierstOpen");
+        $this->Log("EarliestOpen");
+
+        if($this->IsDay())
+        {
+            $this->OpenOnDawn()->SetValue(false);
+            $this->MoveUp();
+        }
+        else
+        {
+            $this->OpenOnDawn()->SetValue(true);
+        }
     }
 
     public function LatestClose()
     {
         $this->Log("LatestClose");
+
+        if($this->IsDay() == false && $this->CloseForDayDone()->Value() == false)
+        {
+            $this->CloseForDayDone()->SetValue(true);
+            $this->MoveDown();
+        }
     }
 
-    private function MoveUp()
+    private function IsDay()
+    {
+        return GetValue($this->IsDayIdProp()->Value());
+    }
+
+    public function MoveUp()
     {
         $this->Move(false);
     }
 
-    private function MoveDown()
+    public function MoveDown()
     {
         $this->Move(true);
     }

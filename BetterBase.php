@@ -83,7 +83,7 @@ class BetterBase extends IPSModule {
 	public function ApplyChanges() 
     {
 		parent::ApplyChanges();
-        $this->RemoveAllButSchedulers();
+        //$this->RemoveAllButSchedulers();
 	}
 
     public function SetValueForIdent($ident, $value)
