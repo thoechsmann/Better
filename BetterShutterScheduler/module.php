@@ -94,7 +94,7 @@ class BetterShutterScheduler extends BetterBase {
         }
     }
 
-    private SetTwilightCheck($value)
+    private function SetTwilightCheck($value)
     {
         $this->TwilightCheck()->SetValue($value);
 
