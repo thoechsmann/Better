@@ -85,10 +85,6 @@ class BetterShutterScheduler extends BetterBase {
     public function RequestAction($ident, $value) 
     {
         switch($ident) {
-            case $this->IsDayTest()->Ident():
-                $this->SetValueForIdent($ident, $value);
-                break;
-
             case $this->TwilightCheck()->Ident():
                 $this->SetTwilightCheck($value);
                 break;
