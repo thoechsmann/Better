@@ -130,9 +130,6 @@ class BetterShutterScheduler extends BetterBase {
         if($this->$OpenOnDawn()->Value())
         {
             $this->MoveUp();
-
-            // reset value
-            $this->$OpenOnDawn()->SetValue(false);
         }
     }
 
@@ -144,13 +141,6 @@ class BetterShutterScheduler extends BetterBase {
         if($this->CloseForDayDone()->Value() == false)
         {
             $this->MoveDown();
-
-            $this->CloseForDayDone()->SetValue(true);
-        }
-        else
-        {
-            // reset value
-            $this->CloseForDayDone()->SetValue(false);
         }
     }
 
@@ -160,7 +150,6 @@ class BetterShutterScheduler extends BetterBase {
 
         if($this->IsDay())
         {
-            $this->OpenOnDawn()->SetValue(false);
             $this->MoveUp();
         }
         else
@@ -173,11 +162,7 @@ class BetterShutterScheduler extends BetterBase {
     {
         $this->Log("LatestClose");
 
-        if($this->IsDay() == false && $this->CloseForDayDone()->Value() == false)
-        {
-            $this->CloseForDayDone()->SetValue(true);
-            $this->MoveDown();
-        }
+        $this->MoveDown();
     }
 
     private function IsDay()
@@ -188,11 +173,17 @@ class BetterShutterScheduler extends BetterBase {
     public function MoveUp()
     {
         $this->Move(false);
+        $this->CloseForDayDone()->SetValue(false);
+        $this->OpenOnDawn()->SetValue(false);
     }
 
     public function MoveDown()
     {
-        $this->Move(true);
+        if($this->CloseForDayDone()->Value() == false)
+            $this->Move(true);
+        
+        $this->CloseForDayDone()->SetValue(true);
+        $this->OpenOnDawn()->SetValue(false);
     }
 
     private function Move($down)
