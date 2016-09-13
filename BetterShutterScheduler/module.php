@@ -25,6 +25,10 @@ class BetterShutterScheduler extends BetterBase {
     }   
 
     // Variables
+    private function IsDayTest() {        
+        return new IPSVarBoolean($this->InstanceID(), __FUNCTION__);
+    }   
+
     private function TwilightCheck() {        
         return new IPSVarBoolean($this->InstanceID(), __FUNCTION__);
     }   
@@ -59,6 +63,8 @@ class BetterShutterScheduler extends BetterBase {
     {
 		parent::ApplyChanges();
 
+        $this->IsDayTest()->Register();
+
         $this->OpenOnDawn()->Register();
         $this->CloseForDayDone()->Register();
 		
@@ -85,6 +91,10 @@ class BetterShutterScheduler extends BetterBase {
     public function RequestAction($ident, $value) 
     {
         switch($ident) {
+            case $this->IsDayTest()->Ident():
+                $this->SetValueForIdent($ident, $value);
+                break;
+
             case $this->TwilightCheck()->Ident():
                 $this->SetTwilightCheck($value);
                 break;
@@ -127,7 +137,7 @@ class BetterShutterScheduler extends BetterBase {
         if(!$this->TwilightCheck()->Value())
             return;
 
-        if($this->$OpenOnDawn()->Value())
+        if($this->OpenOnDawn()->Value())
         {
             $this->MoveUp();
         }
