@@ -25,10 +25,6 @@ class BetterShutterScheduler extends BetterBase {
     }   
 
     // Variables
-    private function IsDayTest() {        
-        return new IPSVarBoolean($this->InstanceID(), __FUNCTION__);
-    }   
-
     private function TwilightCheck() {        
         return new IPSVarBoolean($this->InstanceID(), __FUNCTION__);
     }   
@@ -63,9 +59,6 @@ class BetterShutterScheduler extends BetterBase {
     {
 		parent::ApplyChanges();
 
-        $this->IsDayTest()->Register("DayTest", "~Switch");
-        $this->IsDayTest()->EnableAction();
-
         $this->OpenOnDawn()->Register();
         $this->CloseForDayDone()->Register();
 		
@@ -81,10 +74,10 @@ class BetterShutterScheduler extends BetterBase {
         $scheduler->SetGroup(0, IPSEventScheduler::DayMonday +
             IPSEventScheduler::DayTuesday + 
             IPSEventScheduler::DayWednesday + 
-            IPSEventScheduler::DayThursday);
-        $scheduler->SetGroup(1, IPSEventScheduler::DayFriday);
-        $scheduler->SetGroup(2, IPSEventScheduler::DaySaturday);
-        $scheduler->SetGroup(3, IPSEventScheduler::DaySunday);
+            IPSEventScheduler::DayThursday + 
+            IPSEventScheduler::DayFriday);
+        $scheduler->SetGroup(1, IPSEventScheduler::DaySaturday +
+            IPSEventScheduler::DaySunday);
 
         $this->SetTwilightCheck($this->TwilightCheck()->Value());
 	}
@@ -113,8 +106,8 @@ class BetterShutterScheduler extends BetterBase {
         
         if($value)
         {
-            $scheduler->SetAction(0, "spätestes Öffnen", 0x00FF00, "BSS_EarliestOpen(\$_IPS['TARGET']);");        
-            $scheduler->SetAction(1, "frühstes Schliessen", 0x0000FF, "BSS_LatestClose(\$_IPS['TARGET']);");
+            $scheduler->SetAction(0, "frühstes Öffnen", 0x00FF00, "BSS_EarliestOpen(\$_IPS['TARGET']);");        
+            $scheduler->SetAction(1, "spätestes Schliessen", 0x0000FF, "BSS_LatestClose(\$_IPS['TARGET']);");
         }
         else
         {

@@ -29,7 +29,7 @@ class IPSScript extends IPSObject
 
     protected function IsCorrectObjectType($id)
     {
-        if(!IPS_VariableExists($id))
+        if(!IPS_ScriptExists($id))
             throw new Exception("Ident with name ".$this->Ident()." is used for wrong object type");
             
         return true;
