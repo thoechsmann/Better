@@ -63,7 +63,7 @@ class BetterShutterScheduler extends BetterBase {
     {
 		parent::ApplyChanges();
 
-        $this->IsDayTest()->Register();
+        $this->IsDayTest()->Register("Dämmerungsautomatik", "~Switch");
 
         $this->OpenOnDawn()->Register();
         $this->CloseForDayDone()->Register();
