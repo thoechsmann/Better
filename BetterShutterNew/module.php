@@ -124,6 +124,9 @@ class BetterShutterNew extends BetterBase {
     {
         $this->MoveControl()->SetValue(-1);
 
+        if($this->PositionStatusIdProp()->Value() == 0)
+            return;
+        
         // If at the limit position, assume it should be at 100.
         if($this->PositionStatus() == $this->PositionLimit()->Value())
         {
