@@ -133,7 +133,7 @@ class BetterHeatingNew extends BetterBase {
             $this->Boost()->EnableAction();
             $this->Boost()->SetIcon("Flame");
                                     
-            $this->BoostTime()->Register("BoostTime")
+            $this->BoostTime()->Register("BoostTime");
             $this->Boost()->Hide();
         }
 
