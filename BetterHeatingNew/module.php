@@ -159,11 +159,11 @@ class BetterHeatingNew extends BetterBase {
             $windowId = $this->WindowStatusIds()->ValueAt($i);
             if($windowId != 0)
             {
-                $this->WindowStatusTrigger($i)->Register($windowId, 'BHN_UpdateWindow($_IPS[\'TARGET\']);', IPSEventTrigger::TypeChange);
+                $this->WindowStatusTrigger($i)->Register("", $windowId, 'BHN_UpdateWindow($_IPS[\'TARGET\']);', IPSEventTrigger::TypeChange);
             }
         }
 
-        $this->ModeTrigger()->Register($this->ModeId()->Value(), 'BHN_UpdateHeatingMode($_IPS[\'TARGET\']);', IPSEventTrigger::TypeUpdate);
+        $this->ModeTrigger()->Register("", $this->ModeId()->Value(), 'BHN_UpdateHeatingMode($_IPS[\'TARGET\']);', IPSEventTrigger::TypeUpdate);
 
         $this->UpdateWindow();
         $this->UpdateHeatingMode();
