@@ -129,7 +129,7 @@ class BetterHeatingNew extends BetterBase {
             IPS_SetVariableProfileAssociation($profileName, true, 'AN', '', 0xFF0000); 
             IPS_SetVariableProfileAssociation($profileName, false, 'AUS', '', -1); 
 
-            $this->Boost()->Register("Boost", $profileName)
+            $this->Boost()->Register("Boost", $profileName);
             $this->Boost()->EnableAction();
             $this->Boost()->SetIcon("Flame");
                                     
