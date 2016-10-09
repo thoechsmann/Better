@@ -154,7 +154,7 @@ class BetterHeatingNew extends BetterBase {
         $scheduler->SetAction(0, "Nacht", 0xFF0000, "BHN_SetMode(\$_IPS['TARGET'], 3);");
 
         // Window triggers
-        for($i = 1; $i <= BetterHeatingNew::WindowStatusCount; $i++)
+        for($i = 0; $i < BetterHeatingNew::WindowStatusCount; $i++)
         {
             $windowId = $this->WindowStatusIds()->ValueAt($i);
             if($windowId != 0)
@@ -175,7 +175,7 @@ class BetterHeatingNew extends BetterBase {
     {
         $openWindowCount = 0;
 
-        for($i = 1; $i <= BetterHeatingNew::WindowStatusCount; $i++)
+        for($i = 0; $i < BetterHeatingNew::WindowStatusCount; $i++)
         {
             $id = $this->WindowStatusIds()->ValueAt($i);
             if($id!=0 && GetValue($id) === true)
