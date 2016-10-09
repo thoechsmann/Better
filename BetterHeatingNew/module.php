@@ -163,8 +163,7 @@ class BetterHeatingNew extends BetterBase {
             }
         }
 
-        // Mode trigger
-        $this->ModeTrigger()->Register($this->ReadPropertyInteger("modeInstanceID"), 'BHN_UpdateHeatingMode($_IPS[\'TARGET\']);');
+        $this->ModeTrigger()->Register($this->ModeId()->Value(), 'BHN_UpdateHeatingMode($_IPS[\'TARGET\']);');
 
         $this->UpdateWindow();
         $this->UpdateHeatingMode();
