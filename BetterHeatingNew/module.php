@@ -82,7 +82,7 @@ class BetterHeatingNew extends BetterBase {
     }
 
     private function BoostTimer() {
-        return new IPSEventScheduler($this->InstanceID(), __FUNCTION__);
+        return new IPSEventCyclic($this->InstanceID(), __FUNCTION__);
     }
 
     // Trigger
