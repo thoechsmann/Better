@@ -156,7 +156,7 @@ class BetterHeatingNew extends BetterBase {
         // Window triggers
         for($i = 1; $i <= BetterHeatingNew::WindowStatusCount; $i++)
         {
-            $windowId = $this->WindowStatusIds($i)->Value();
+            $windowId = $this->WindowStatusIds()->ValueAt($i);
             if($windowId != 0)
             {
                 $this->WindowStatusTrigger($i).Register($windowId, 'BHN_UpdateWindow($_IPS[\'TARGET\']);');
@@ -177,7 +177,7 @@ class BetterHeatingNew extends BetterBase {
 
         for($i = 1; $i <= BetterHeatingNew::WindowStatusCount; $i++)
         {
-            $id = $this->WindowStatusIds()->At($i);
+            $id = $this->WindowStatusIds()->ValueAt($i);
             if($id!=0 && GetValue($id) === true)
             {
                 $openWindowCount++;
