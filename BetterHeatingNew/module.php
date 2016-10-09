@@ -134,7 +134,7 @@ class BetterHeatingNew extends BetterBase {
             $this->Boost()->SetIcon("Flame");
                                     
             $this->BoostTime()->Register("BoostTime");
-            $this->Boost()->Hide();
+            $this->BoostTime()->Hide();
         }
 
         // Scheduled Event
