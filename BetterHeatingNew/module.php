@@ -64,7 +64,7 @@ class BetterHeatingNew extends BetterBase {
         return new IPSLink($this->InstanceID(), __FUNCTION__);
     }
 
-    private function TargetComfortTempLink() {
+    private function TargetTempComfortLink() {
         return new IPSLink($this->InstanceID(), __FUNCTION__);
     }
 
@@ -116,8 +116,8 @@ class BetterHeatingNew extends BetterBase {
 
         $this->CurrentTempLink()->Register("Temperatur", $this->CurrentTempId()->Value());
         $this->ModeLink()->Register("Modus", $this->ModeId()->Value());
-        $this->TargetComfortTempLink()->Register("Soll Temperatur (Komfort)", 
-            $this->TargetComfortTempId()->Value());
+        $this->TargetTempComfortLink()->Register("Soll Temperatur (Komfort)", 
+            $this->TargetTempComfortId()->Value());
         $this->CurrentTargetTempLink()->Register("Soll Temperatur", $this->CurrentTargetTempId()->Value());
         $this->ControlValueLink()->Register("Stellwert", $this->ControlValueId()->Value());
 
