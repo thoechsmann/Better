@@ -137,11 +137,7 @@ class IPSEventCyclic extends IPSEvent
 
     public function StartTimer($seconds, $script)
     {
-        $link = @IPS_GetObjectIDByIdent($ident, $this->InstanceID);
-        if($link !== false)
-        {
-            IPS_DeleteEvent($link);
-        }
+        $this->StopTimer();
 
         $this->Register("", $script);
         // $this->SetCyclic(self::DateTypeNone, 0, 0, 0, self::TimeTypeSecond, $seconds);
@@ -152,6 +148,15 @@ class IPSEventCyclic extends IPSEvent
         $this->SetLimit(1);
         $this->Activate();
         $this->Hide();
+    }
+
+    public function StopTimer()
+    {
+        $link = @IPS_GetObjectIDByIdent($ident, $this->InstanceID);
+        if($link !== false)
+        {
+            IPS_DeleteEvent($link);
+        }
     }
 
     protected function GetEventTypeId() 

@@ -1,14 +1,14 @@
 {
-    "id": "{5B245BF6-5C02-4C68-9A0B-5CF08E6BEA86}",
-    "name": "BetterShutter",
+    "id": "{2234658E-130D-4237-8A26-7C45C9731138}",
+    "name": "BetterHeatingNew",
     "type": 3,
     "vendor": "Thomas",
     "aliases": 
     [
-        "BetterShutter"
+        "BetterHeatingNew"
     ],
     "parentRequirements": [],
     "childRequirements": [],
     "implemented": [],
-    "prefix": "BS"
+    "prefix": "BHN"
 }

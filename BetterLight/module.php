@@ -29,7 +29,7 @@ class BetterLight extends BetterBase {
     const OffSceneNumber = 0;
     const DefaultSceneNumber = 1;
 
-    const OffTimerTime = 15;
+    const OffTimerTime = 20;
 
     protected function GetModuleName()
     {
@@ -69,7 +69,6 @@ class BetterLight extends BetterBase {
     }
 
     // Events
-
     private function SceneScheduler()
     {
         return new IPSEventScheduler($this->InstanceID(), parent::PersistentPrefix . "SceneScheduler");
