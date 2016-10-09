@@ -114,12 +114,12 @@ class BetterHeatingNew extends BetterBase {
         
         $this->WindowOpenInfo()->Register("Fenster ist geöffnet -> Heizung aus");
 
-        $this->CurrentTempLink()->Register("Temperatur", $this->CurrentTempId()->Value());
-        $this->ModeLink()->Register("Modus", $this->ModeId()->Value());
+        $this->CurrentTempLink()->Register("Temperatur", $this->CurrentTempId()->Value(), 1);
+        $this->ModeLink()->Register("Modus", $this->ModeId()->Value(), 2);
         $this->TargetTempComfortLink()->Register("Soll Temperatur (Komfort)", 
-            $this->TargetTempComfortId()->Value());
-        $this->CurrentTargetTempLink()->Register("Soll Temperatur", $this->CurrentTargetTempId()->Value());
-        $this->ControlValueLink()->Register("Stellwert", $this->ControlValueId()->Value());
+            $this->TargetTempComfortId()->Value(), 3);
+        $this->CurrentTargetTempLink()->Register("Soll Temperatur", $this->CurrentTargetTempId()->Value(), 3);
+        $this->ControlValueLink()->Register("Stellwert", $this->ControlValueId()->Value(), 10);
 
         if($this->HasBoostSetting())
         {
@@ -129,7 +129,7 @@ class BetterHeatingNew extends BetterBase {
             IPS_SetVariableProfileAssociation($profileName, true, 'AN', '', 0xFF0000); 
             IPS_SetVariableProfileAssociation($profileName, false, 'AUS', '', -1); 
 
-            $this->Boost()->Register("Boost", $profileName);
+            $this->Boost()->Register("Boost", $profileName, 4);
             $this->Boost()->EnableAction();
             $this->Boost()->SetIcon("Flame");
                                     
@@ -139,7 +139,7 @@ class BetterHeatingNew extends BetterBase {
 
         // Scheduled Event
         $scheduler = $this->ModeScheduler();
-        $scheduler->Register("Wochenplan");
+        $scheduler->Register("Wochenplan", 5);
         $scheduler->SetIcon("Calendar");
         $scheduler->SetGroup(0, IPSEventScheduler::DayMonday +
             IPSEventScheduler::DayTuesday + 
