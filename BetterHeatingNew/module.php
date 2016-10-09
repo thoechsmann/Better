@@ -150,8 +150,8 @@ class BetterHeatingNew extends BetterBase {
             IPSEventScheduler::DaySunday);
 
         $scheduler->SetAction(0, "Komfort", 0xFF0000, "BHN_SetMode(\$_IPS['TARGET'], 1);");
-        $scheduler->SetAction(0, "Standby", 0xFF0000, "BHN_SetMode(\$_IPS['TARGET'], 2);");
-        $scheduler->SetAction(0, "Nacht", 0xFF0000, "BHN_SetMode(\$_IPS['TARGET'], 3);");
+        $scheduler->SetAction(1, "Standby", 0xFFFF00, "BHN_SetMode(\$_IPS['TARGET'], 2);");
+        $scheduler->SetAction(2, "Nacht", 0x0000FF, "BHN_SetMode(\$_IPS['TARGET'], 3);");
 
         // Window triggers
         for($i = 0; $i < BetterHeatingNew::WindowStatusCount; $i++)
