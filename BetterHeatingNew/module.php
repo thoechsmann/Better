@@ -2,7 +2,8 @@
 require_once(__DIR__ . "/../BetterBase.php");
 require_once(__DIR__ . "/../IPS/IPS.php");
 
-class BetterHeatingNew extends BetterBase {
+class BetterHeatingNew extends BetterBase
+{
 
     const WindowStatusCount = 7;
     const BoostIncreaseMinutes = 30;
@@ -14,89 +15,109 @@ class BetterHeatingNew extends BetterBase {
     }
 
     // Properties
-    private function CurrentTempId() {
+    private function CurrentTempId()
+    {
         return new IPSPropertyInteger($this, __FUNCTION__);
     }
 
-    private function CurrentTargetTempId() {
+    private function CurrentTargetTempId()
+    {
         return new IPSPropertyInteger($this, __FUNCTION__);
     }
 
-    private function ControlValueId() { // Stellwert
+    private function ControlValueId()
+    {
+ // Stellwert
         return new IPSPropertyInteger($this, __FUNCTION__);
     }
 
-    private function TargetTempComfortId() {
+    private function TargetTempComfortId()
+    {
         return new IPSPropertyInteger($this, __FUNCTION__);
     }
 
-    private function ModeId() {
+    private function ModeId()
+    {
         return new IPSPropertyInteger($this, __FUNCTION__);
     }
 
-    private function BoostId() {
+    private function BoostId()
+    {
         return new IPSPropertyInteger($this, __FUNCTION__);
     }
 
-    private function WindowStatusIds() {
+    private function WindowStatusIds()
+    {
         return new IPSPropertyArrayInteger($this, __FUNCTION__, BetterHeatingNew::WindowStatusCount);
     }
 
     // Variables
-    private function WindowOpenInfo() {
+    private function WindowOpenInfo()
+    {
         return new IPSVarString($this->InstanceID(), __FUNCTION__);
-    }   
+    }
 
-    private function Boost() {
+    private function Boost()
+    {
         return new IPSVarBoolean($this->InstanceID(), __FUNCTION__);
-    }   
+    }
 
-    private function BoostTime() {
+    private function BoostTime()
+    {
         return new IPSVarInteger($this->InstanceID(), __FUNCTION__);
-    }   
+    }
 
     // Links
-    private function CurrentTempLink() {
+    private function CurrentTempLink()
+    {
         return new IPSLink($this->InstanceID(), __FUNCTION__);
     }
 
-    private function ModeLink() {
+    private function ModeLink()
+    {
         return new IPSLink($this->InstanceID(), __FUNCTION__);
     }
 
-    private function TargetTempComfortLink() {
+    private function TargetTempComfortLink()
+    {
         return new IPSLink($this->InstanceID(), __FUNCTION__);
     }
 
-    private function CurrentTargetTempLink() {
+    private function CurrentTargetTempLink()
+    {
         return new IPSLink($this->InstanceID(), __FUNCTION__);
     }
 
-    private function ControlValueLink() {
+    private function ControlValueLink()
+    {
         return new IPSLink($this->InstanceID(), __FUNCTION__);
     }
 
     // Events
-    private function ModeScheduler() {
+    private function ModeScheduler()
+    {
         return new IPSEventScheduler($this->InstanceID(), __FUNCTION__);
     }
 
-    private function BoostTimer() {
+    private function BoostTimer()
+    {
         return new IPSEventCyclic($this->InstanceID(), __FUNCTION__);
     }
 
     // Trigger
-    private function WindowStatusTrigger($i) {
-        return new IPSEventTrigger($this->InstanceID(), __FUNCTION__ . $i);
-    }   
-
-    private function ModeTrigger() {
-        return new IPSEventTrigger($this->InstanceID(), __FUNCTION__);
-    }   
-
-    public function Create() 
+    private function WindowStatusTrigger($i)
     {
-        parent::Create();       
+        return new IPSEventTrigger($this->InstanceID(), __FUNCTION__ . $i);
+    }
+
+    private function ModeTrigger()
+    {
+        return new IPSEventTrigger($this->InstanceID(), __FUNCTION__);
+    }
+
+    public function Create()
+    {
+        parent::Create();
 
         $this->CurrentTempId()->Register();
         $this->CurrentTargetTempId()->Register();
@@ -105,10 +126,24 @@ class BetterHeatingNew extends BetterBase {
         $this->ModeId()->Register();
         $this->BoostId()->Register();
 
-        $this->WindowStatusIds()->RegisterAll();        
+        $this->WindowStatusIds()->RegisterAll();
     }
     
-    public function ApplyChanges() 
+    public function GetConfigurationForm()
+    {
+        $retVal = "{\"elements\":[";
+
+        $propArray = array($this->CurrentTempId()->GetConfigurationFormEntry(),
+            $this->CurrentTargetTempId()->GetConfigurationFormEntry(),
+            $this->ControlValueId()->GetConfigurationFormEntry(),
+            $this->TargetTempComfortId()->GetConfigurationFormEntry(),
+            $this->ModeId()->GetConfigurationFormEntry(),
+            $this->BoostId()->GetConfigurationFormEntry());
+
+           
+    }
+
+    public function ApplyChanges()
     {
         parent::ApplyChanges();
         
@@ -116,18 +151,17 @@ class BetterHeatingNew extends BetterBase {
 
         $this->CurrentTempLink()->Register("Temperatur", $this->CurrentTempId()->Value(), 1);
         $this->ModeLink()->Register("Modus", $this->ModeId()->Value(), 2);
-        $this->TargetTempComfortLink()->Register("Soll Temperatur (Komfort)", 
+        $this->TargetTempComfortLink()->Register("Soll Temperatur (Komfort)",
             $this->TargetTempComfortId()->Value(), 3);
         $this->CurrentTargetTempLink()->Register("Soll Temperatur", $this->CurrentTargetTempId()->Value(), 3);
         $this->ControlValueLink()->Register("Stellwert", $this->ControlValueId()->Value(), 10);
 
-        if($this->HasBoostSetting())
-        {
+        if ($this->HasBoostSetting()) {
             $profileName = "BHN_Boost";
             @IPS_DeleteVariableProfile($profileName);
             IPS_CreateVariableProfile($profileName, 0);
-            IPS_SetVariableProfileAssociation($profileName, true, 'AN', '', 0xFF0000); 
-            IPS_SetVariableProfileAssociation($profileName, false, 'AUS', '', -1); 
+            IPS_SetVariableProfileAssociation($profileName, true, 'AN', '', 0xFF0000);
+            IPS_SetVariableProfileAssociation($profileName, false, 'AUS', '', -1);
 
             $this->Boost()->Register("Boost", $profileName, 4);
             $this->Boost()->EnableAction();
@@ -142,9 +176,9 @@ class BetterHeatingNew extends BetterBase {
         $scheduler->Register("Wochenplan", 5);
         $scheduler->SetIcon("Calendar");
         $scheduler->SetGroup(0, IPSEventScheduler::DayMonday +
-            IPSEventScheduler::DayTuesday + 
-            IPSEventScheduler::DayWednesday + 
-            IPSEventScheduler::DayThursday + 
+            IPSEventScheduler::DayTuesday +
+            IPSEventScheduler::DayWednesday +
+            IPSEventScheduler::DayThursday +
             IPSEventScheduler::DayFriday);
         $scheduler->SetGroup(1, IPSEventScheduler::DaySaturday +
             IPSEventScheduler::DaySunday);
@@ -154,11 +188,9 @@ class BetterHeatingNew extends BetterBase {
         $scheduler->SetAction(2, "Nacht", 0x0000FF, "BHN_SetMode(\$_IPS['TARGET'], 3);");
 
         // Window triggers
-        for($i = 0; $i < BetterHeatingNew::WindowStatusCount; $i++)
-        {
+        for ($i = 0; $i < BetterHeatingNew::WindowStatusCount; $i++) {
             $windowId = $this->WindowStatusIds()->ValueAt($i);
-            if($windowId != 0)
-            {
+            if ($windowId != 0) {
                 $this->WindowStatusTrigger($i)->Register("", $windowId, 'BHN_UpdateWindow($_IPS[\'TARGET\']);', IPSEventTrigger::TypeChange);
             }
         }
@@ -170,15 +202,13 @@ class BetterHeatingNew extends BetterBase {
         $this->UpdateBoost();
     }
 
-    public function UpdateWindow() 
+    public function UpdateWindow()
     {
         $openWindowCount = 0;
 
-        for($i = 0; $i < BetterHeatingNew::WindowStatusCount; $i++)
-        {
+        for ($i = 0; $i < BetterHeatingNew::WindowStatusCount; $i++) {
             $id = $this->WindowStatusIds()->ValueAt($i);
-            if($id!=0 && GetValue($id) === true)
-            {
+            if ($id!=0 && GetValue($id) === true) {
                 $openWindowCount++;
             }
         }
@@ -186,7 +216,7 @@ class BetterHeatingNew extends BetterBase {
         $this->WindowOpenInfo()->SetHidden($openWindowCount == 0);
     }
 
-    public function UpdateHeatingMode() 
+    public function UpdateHeatingMode()
     {
         $mode = GetValue($this->ModeId()->Value());
         $this->CurrentTargetTempLink()->SetHidden($mode == 1);
@@ -198,14 +228,15 @@ class BetterHeatingNew extends BetterBase {
         EIB_Scale(IPS_GetParent($this->ModeId()->Value()), $mode);
     }
 
-    public function RequestAction($ident, $value) 
-    {    
-        switch($ident) {
+    public function RequestAction($ident, $value)
+    {
+        switch ($ident) {
             case $this->Boost()->Ident():
-                if($value == false)
+                if ($value == false) {
                     $this->DeactivateBoost();
-                else
+                } else {
                     $this->IncreaseBoost();
+                }
                 break;
 
             default:
@@ -223,21 +254,19 @@ class BetterHeatingNew extends BetterBase {
         EIB_Switch(IPS_GetParent($this->BoostId()->Value()), $value);
     }
 
-    public function UpdateBoost() 
+    public function UpdateBoost()
     {
-        if(!$this->HasBoostSetting())
+        if (!$this->HasBoostSetting()) {
             return;
+        }
         
         $boostTime = $this->BoostTime()->Value();
         $boostTime--;
         $this->BoostTime()->SetValue($boostTime);
 
-        if($boostTime <= 0)
-        {
+        if ($boostTime <= 0) {
             $this->DeactivateBoost();
-        }
-        else
-        {
+        } else {
             $boostId = $this->SetName("Boost ($boostTime Minuten)");
         }
     }
@@ -268,4 +297,3 @@ class BetterHeatingNew extends BetterBase {
         $this->BoostTimer()->StartTimer(60 * $boostTime + 1, 'BHN_UpdateBoost($_IPS[\'TARGET\']);');
     }
 }
-?>

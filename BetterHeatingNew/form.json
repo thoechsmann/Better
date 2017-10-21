@@ -1,7 +1,7 @@
 {
 	"elements":
 	[
-		{ "type": "SelectVariable", "name": "CurrentTempId", "caption": "Aktuelle Temperatur" },
+		{ "type": "SelectVariable", "name": "CurrentTempId", "caption": "Test Aktuelle Temperatur" },
 		{ "type": "SelectVariable", "name": "CurrentTargetTempId", "caption": "Aktuelle Soll Temperatur" },
 		{ "type": "SelectVariable", "name": "ControlValueId", "caption": "Aktueller Stellwert" },
 		{ "type": "SelectVariable", "name": "TargetTempComfortId", "caption": "Soll Temperatur Komfort" },
@@ -15,9 +15,10 @@
 		{ "type": "SelectVariable", "name": "WindowStatusIds3", "caption": "Fenster4" },
 		{ "type": "SelectVariable", "name": "WindowStatusIds4", "caption": "Fenster5" },
 		{ "type": "SelectVariable", "name": "WindowStatusIds5", "caption": "Fenster6" },
-		{ "type": "SelectVariable", "name": "WindowStatusIds6", "caption": "Fenster7" },
+		{ "type": "SelectVariable", "name": "WindowStatusIds6", "caption": "Fenster7" }
 	],
 	"actions":
 	[
+		{ "type": "Button", "label": "Reload", "onClick": "MC_ReloadModule($id,'BHN');" }
 	]	
 }

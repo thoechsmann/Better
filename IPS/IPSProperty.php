@@ -1,11 +1,15 @@
 <?
-abstract class IPSProperty  {
+abstract class IPSProperty
+{
     protected $name;
     protected $module;
+    protected $caption;
 
-    public function __construct($module, $name) {
+    public function __construct($module, $name, $caption = "")
+    {
         $this->module = $module;
         $this->name = $name;
+        $this->caption = $caption;
     }
 
     public function Name()
@@ -18,12 +22,19 @@ abstract class IPSProperty  {
         IPS_SetProperty($this->module->InstanceId(), $this->name, $value);
     }
 
-    public abstract function Value();
-    public abstract function Register($value);
+    public function GetConfigurationFormEntry()
+    {
+        return "{ \"type\": \"SelectVariable\", 
+                  \"name\": \"". $this->name . "\", 
+                  \"caption\": \"" . $this->caption . "\" }";
+    }
+
+    abstract public function Value();
+    abstract public function Register($value);
 }
 
-class IPSPropertyInteger extends IPSProperty  {
-
+class IPSPropertyInteger extends IPSProperty
+{
     public function Register($value = 0)
     {
         // IPS_LogMessage("PropertyInteger", "Registering property: " . $this->name . " = " . $value);
@@ -33,11 +44,11 @@ class IPSPropertyInteger extends IPSProperty  {
     public function Value()
     {
         return $this->module->ReadPropertyInteger($this->name);
-    }
-
+    }    
 }
 
-class IPSPropertyString extends IPSProperty  {
+class IPSPropertyString extends IPSProperty
+{
 
     public function Register($value = "")
     {
@@ -49,23 +60,23 @@ class IPSPropertyString extends IPSProperty  {
     {
         return $this->module->ReadPropertyString($this->name);
     }
-
 }
 
-abstract class IPSPropertyArray {
+abstract class IPSPropertyArray
+{
     protected $module;
     protected $count;
     protected $properties = array();
 
-    public function __construct($module, $name, $count) {
+    public function __construct($module, $name, $count)
+    {
         $this->module = $module;
         $this->name = $name;
-        $this->count = $count; 
+        $this->count = $count;
 
-        for($i = 0; $i<$count; $i++)
-        {
+        for ($i = 0; $i<$count; $i++) {
             $this->properties[$i] = static::CreateProperty($name . $i);
-        }       
+        }
     }
 
     public function Count()
@@ -75,10 +86,9 @@ abstract class IPSPropertyArray {
 
     public function RegisterAll()
     {
-        for($i = 0; $i<$this->count; $i++)
-        {
+        for ($i = 0; $i<$this->count; $i++) {
             $this->properties[$i]->Register();
-        }       
+        }
     }
 
     public function At($index)
@@ -99,18 +109,18 @@ abstract class IPSPropertyArray {
     abstract protected function CreateProperty($name);
 }
 
-class IPSPropertyArrayInteger extends IPSPropertyArray  {
+class IPSPropertyArrayInteger extends IPSPropertyArray
+{
     protected function CreateProperty($name)
     {
         return new IPSPropertyInteger($this->module, $name);
     }
 }
 
-class IPSPropertyArrayString extends IPSPropertyArray  {
+class IPSPropertyArrayString extends IPSPropertyArray
+{
     protected function CreateProperty($name)
     {
         return new IPSPropertyString($this->module, $name);
     }
 }
-
-?>
