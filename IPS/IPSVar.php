@@ -3,7 +3,7 @@ require_once(__DIR__ . "/IPSObject.php");
 
 abstract class IPSVar extends IPSObject
 {
-    public function Register($name = "", $profile = "", $position = 0) 
+    public function Register($name = "", $profile = "", $position = 0)
     {
         $this->_Register($name, $position);
 
@@ -14,12 +14,12 @@ abstract class IPSVar extends IPSObject
         }
 
         $this->SetProfile($profile);
-        
+
         return $this->Id();
     }
 
     public function Value()
-    {        
+    {
         return GetValue($this->Id());
     }
 
@@ -35,11 +35,11 @@ abstract class IPSVar extends IPSObject
     }
 
     public function EnableAction() {
-        IPS_EnableAction($this->parentId, $this->Ident());
+//        IPS_EnableAction($this->parentId, $this->Ident());
     }
-    
+
     public function DisableAction() {
-        IPS_DisableAction($this->parentId, $this->Ident());
+//        IPS_DisableAction($this->parentId, $this->Ident());
     }
 
     public function __toString()
@@ -69,7 +69,7 @@ abstract class IPSVar extends IPSObject
     {
         if(!IPS_VariableExists($id))
             throw new Exception("Ident with name ".$this->Ident()." is used for wrong object type");
-            
+
         return IPS_GetVariable($id)["VariableType"] == static::GetVarTypeId();
     }
 
@@ -85,10 +85,10 @@ class IPSVarBoolean extends IPSVar
 {
     protected function GetVarTypeName()
     {
-        return "Boolean";      
+        return "Boolean";
     }
 
-    protected function GetVarTypeId() 
+    protected function GetVarTypeId()
     {
         return 0;
     }
@@ -103,7 +103,7 @@ class IPSVarInteger extends IPSVar
 {
     protected function GetVarTypeName()
     {
-        return "Integer";      
+        return "Integer";
     }
 
     protected function GetVarTypeId()
@@ -121,7 +121,7 @@ class IPSVarFloatNew extends IPSVar
 {
     protected function GetVarTypeName()
     {
-        return "Float";      
+        return "Float";
     }
 
     protected function GetVarTypeId()
@@ -139,7 +139,7 @@ class IPSVarString extends IPSVar
 {
     protected function GetVarTypeName()
     {
-        return "String";      
+        return "String";
     }
 
     protected function GetVarTypeId()
