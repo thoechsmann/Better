@@ -17,38 +17,38 @@ class BetterHeatingNew extends BetterBase
     // Properties
     private function CurrentTempId()
     {
-        return new IPSPropertyInteger($this, __FUNCTION__);
+        return new IPSPropertyInteger($this, __FUNCTION__, "Aktuelle Temperatur");
     }
 
     private function CurrentTargetTempId()
     {
-        return new IPSPropertyInteger($this, __FUNCTION__);
+        return new IPSPropertyInteger($this, __FUNCTION__, "Aktuelle Soll Temperatur");
     }
 
     private function ControlValueId()
     {
- // Stellwert
-        return new IPSPropertyInteger($this, __FUNCTION__);
+        // Stellwert
+        return new IPSPropertyInteger($this, __FUNCTION__, "Aktueller Stellwert");
     }
 
     private function TargetTempComfortId()
     {
-        return new IPSPropertyInteger($this, __FUNCTION__);
+        return new IPSPropertyInteger($this, __FUNCTION__, "Soll Temperatur Komfort");
     }
 
     private function ModeId()
     {
-        return new IPSPropertyInteger($this, __FUNCTION__);
+        return new IPSPropertyInteger($this, __FUNCTION__, "Heizmodus");
     }
 
     private function BoostId()
     {
-        return new IPSPropertyInteger($this, __FUNCTION__);
+        return new IPSPropertyInteger($this, __FUNCTION__, "Boost");
     }
 
     private function WindowStatusIds()
     {
-        return new IPSPropertyArrayInteger($this, __FUNCTION__, BetterHeatingNew::WindowStatusCount);
+        return new IPSPropertyArrayInteger($this, __FUNCTION__, BetterHeatingNew::WindowStatusCount, "Fenster Kontakt");
     }
 
     // Variables
@@ -128,7 +128,7 @@ class BetterHeatingNew extends BetterBase
 
         $this->WindowStatusIds()->RegisterAll();
     }
-    
+
     public function GetConfigurationForm()
     {
         $retVal = "{\"elements\":[";
@@ -140,13 +140,19 @@ class BetterHeatingNew extends BetterBase
             $this->ModeId()->GetConfigurationFormEntry(),
             $this->BoostId()->GetConfigurationFormEntry());
 
-           
+        $propArray = array_merge($propArray, $this->WindowStatusIds()->GetAllConfigurationFormEntries());
+
+        $retVal .= implode(",", $propArray);
+
+        $retVal .= "]}";
+
+        return $retVal;
     }
 
     public function ApplyChanges()
     {
         parent::ApplyChanges();
-        
+
         $this->WindowOpenInfo()->Register("Fenster ist geöffnet -> Heizung aus");
 
         $this->CurrentTempLink()->Register("Temperatur", $this->CurrentTempId()->Value(), 1);
@@ -166,7 +172,7 @@ class BetterHeatingNew extends BetterBase
             $this->Boost()->Register("Boost", $profileName, 4);
             $this->Boost()->EnableAction();
             $this->Boost()->SetIcon("Flame");
-                                    
+
             $this->BoostTime()->Register("BoostTime");
             $this->BoostTime()->Hide();
         }
@@ -259,7 +265,7 @@ class BetterHeatingNew extends BetterBase
         if (!$this->HasBoostSetting()) {
             return;
         }
-        
+
         $boostTime = $this->BoostTime()->Value();
         $boostTime--;
         $this->BoostTime()->SetValue($boostTime);
