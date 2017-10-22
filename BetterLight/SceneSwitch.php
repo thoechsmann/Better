@@ -16,7 +16,7 @@ class SceneSwitchArray {
     public function Count()
     {
         $count = 0;
-        
+
         for($i=0; $i<$this->size; $i++)
         {
             $light = $this->At($i);
@@ -70,12 +70,12 @@ class SceneSwitch
     // Properties
 
     private function SwitchIdProp()
-    {        
+    {
         return new IPSPropertyInteger($this->module, self::StrPrefix . $this->index . "SwitchId");
-    }   
+    }
 
     private function SceneNumberProp()
-    {        
+    {
         return new IPSPropertyInteger($this->module, self::StrPrefix . $this->index . "SceneNumber");
     }
 
@@ -118,7 +118,7 @@ class SceneSwitch
     {
         return $this->SceneNumberProp()->Value();
     }
-    
+
     public function IsDefined()
     {
         return $this->SwitchId() != 0;

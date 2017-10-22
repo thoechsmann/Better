@@ -55,7 +55,7 @@ class BetterLight extends BetterBase {
     private function IdendTriggerdTurnOnValueVar()
     {
         return new IPSVarString($this->InstanceID(), "IdendTriggerdTurnOnValue");
-    } 
+    }
 
     // Scripts
     private function SaveSceneScript()
@@ -66,6 +66,11 @@ class BetterLight extends BetterBase {
     private function TurnOffScript()
     {
         return new IPSScript($this->InstanceID(), "TurnOff");
+    }
+
+    private function AlexaScript()
+    {
+        return new IPSScript($this->InstanceID(), "Alexa");
     }
 
     // Events
@@ -121,9 +126,9 @@ class BetterLight extends BetterBase {
         return "BL_saveScenes_" . $this->GetName() . $this->InstanceID;
     }
 
-    public function Create() 
+    public function Create()
     {
-        parent::Create();       
+        parent::Create();
 
         $this->MotionSensor()->RegisterProperties();
 
@@ -141,19 +146,20 @@ class BetterLight extends BetterBase {
         $this->Scenes()->At(self::DefaultSceneNumber)->SetName("Standard");
         $this->Scenes()->At(self::DefaultSceneNumber)->SetColor("0x00FF00");
     }
-    
-    public function ApplyChanges() 
+
+    public function ApplyChanges()
     {
         parent::ApplyChanges();
-        
+
         $this->CreateMotionSensor();
         $this->CreateLights();
         $this->CreateSceneProfiles();
         $this->CreateSceneSelectionVar();
         $this->CreateSceneScheduler();
         $this->CreateSceneSwitches();
-        $this->CreateSaveButton();    
-        $this->CreateTurnOffButton();    
+        $this->CreateSaveButton();
+        $this->CreateTurnOffButton();
+        $this->CreateAlexaScript();
 
         $this->IdendTriggerdTurnOnVar()->Register();
         $this->IdendTriggerdTurnOnVar()->SetValue("");
@@ -182,13 +188,13 @@ class BetterLight extends BetterBase {
         $this->SwitchLights()->RegisterVariables($sceneCount, self::PosLightSwitch);
         $this->RGBLights()->RegisterVariables($sceneCount, self::PosLightRGB);
 
-        $this->dimLights()->RegisterTriggers();      
-        $this->SwitchLights()->RegisterTriggers();      
+        $this->dimLights()->RegisterTriggers();
+        $this->SwitchLights()->RegisterTriggers();
         $this->RGBLights()->RegisterTriggers();
     }
 
     private function CreateSceneProfiles()
-    {   
+    {
         $setProfile = $this->SetSceneProfileString();
         $saveProfile = $this->SaveSceneProfileString();
 
@@ -197,7 +203,7 @@ class BetterLight extends BetterBase {
 
         @IPS_DeleteVariableProfile($saveProfile);
         IPS_CreateVariableProfile($saveProfile, 1);
-        
+
         for($sceneNumber = 0; $sceneNumber < $this->Scenes()->Count(); $sceneNumber++)
         {
             $scene = $this->Scenes()->At($sceneNumber);
@@ -211,7 +217,7 @@ class BetterLight extends BetterBase {
         }
     }
 
-    private function CreateSceneSelectionVar() 
+    private function CreateSceneSelectionVar()
     {
         $currentScene = $this->CurrentSceneVar();
         $currentScene->Register("Szene", $this->SetSceneProfileString(), self::PosSceneSelection);
@@ -231,8 +237,8 @@ class BetterLight extends BetterBase {
         for($sceneNumber = 0; $sceneNumber<$this->Scenes()->Count(); $sceneNumber++)
         {
             $scene = $this->Scenes()->At($sceneNumber);
-            
-            $scheduler->SetAction($sceneNumber, $scene->Name(), $scene->Color(), 
+
+            $scheduler->SetAction($sceneNumber, $scene->Name(), $scene->Color(),
                 "BL_SetSceneFromScheduler(\$_IPS['TARGET'], $sceneNumber);");
         }
     }
@@ -242,7 +248,7 @@ class BetterLight extends BetterBase {
         $this->SceneSwitches()->RegisterTriggers();
     }
 
-    private function CreateSaveButton() 
+    private function CreateSaveButton()
     {
         $saveToScene = $this->SaveToSceneVar();
         $saveToScene->Register("Speichern unter:", $this->SaveSceneProfileString(), self::PosSaveSceneButton);
@@ -254,9 +260,33 @@ class BetterLight extends BetterBase {
         $this->CancelSave();
     }
 
-    private function CreateTurnOffButton() 
+    private function CreateTurnOffButton()
     {
         $this->TurnOffScript()->Register("Ausschalten", "<? BL_TurnOff(" . $this->InstanceID . ");?>", self::PosTurnOffButton);
+    }
+
+    private function CreateAlexaScript()
+    {
+        $this->AlexaScript()->Register("Alexa",
+        ' <?
+            if($_IPS[\'SENDER\'] == "AlexaSmartHome") {
+                IPS_LogMessage("AlexaTest", "test1");
+                BL_Alexa('.$this->InstanceID.',$_IPS[\'Variable\'],$_IPS[\'VALUE\'],$_IPS[\'REQUEST\']);
+            }
+        ?>'
+        );
+    }
+
+    public function Alexa($var, $value, $request)
+    {
+        $objectList = IQL4SH_GetObjectList(15209);
+        
+        foreach($objectList as &$object)
+        {
+             IPS_LogMessage("AlexaTest", json_encode($object));
+             if($object['amzID'] == $var)
+                $this->Log($object['Name']);
+        }
     }
 
     public function StartSave()
@@ -273,7 +303,7 @@ class BetterLight extends BetterBase {
         $this->DimLights()->SaveToScene($sceneNumber);
         $this->SwitchLights()->SaveToScene($sceneNumber);
         $this->RGBLights()->SaveToScene($sceneNumber);
-        
+
         $this->MotionSensor()->SaveToScene($sceneNumber);
 
         $this->CancelSave();
@@ -283,7 +313,7 @@ class BetterLight extends BetterBase {
     {
         $this->Log("LoadFromScene(sceneNumber = $sceneNumber)");
 
-        $triggerIdent = $this->IdendTriggerdTurnOnVar()->Value();        
+        $triggerIdent = $this->IdendTriggerdTurnOnVar()->Value();
         $triggerValue = $this->IdendTriggerdTurnOnValueVar()->Value();
 
         $this->DimLights()->LoadFromScene($sceneNumber, $triggerIdent, $triggerValue);
@@ -320,13 +350,13 @@ class BetterLight extends BetterBase {
         $this->SetScene($sceneNumber);
     }
 
-    private function SetScene($sceneNumber, $turnOn = false)
+    public function SetScene($sceneNumber, $turnOn = false)
     {
         $this->Log("SetScene(sceneNumber = $sceneNumber, turnOn = $turnOn)");
 
         $this->CurrentSceneVar()->SetValue($sceneNumber);
         $this->CancelSave();
- 
+
         $ms = $this->MotionSensor();
         $isOn = $ms->IsMainSwitchOn();
 
@@ -356,7 +386,7 @@ class BetterLight extends BetterBase {
     private function SetBackedValue($backing, $value, $storeVar)
     {
         $this->Log("SetBackedValue(value=$value, storeVar=$storeVar)");
-        $this->CancelSave();            
+        $this->CancelSave();
 
         $ms = $this->MotionSensor();
         $isOn = $ms->IsMainSwitchOn();
@@ -381,7 +411,7 @@ class BetterLight extends BetterBase {
         }
     }
 
-    public function RequestAction($ident, $value) 
+    public function RequestAction($ident, $value)
     {
         $this->Log("RequestAction - ident:$ident, value:$value");
 
@@ -413,7 +443,7 @@ class BetterLight extends BetterBase {
     }
 
     private function RequestActionForLight($ident, $value)
-    {        
+    {
         $light = $this->SwitchLights()->GetLightForDisplayIdent($ident);
 
         if($light === false)
@@ -423,7 +453,7 @@ class BetterLight extends BetterBase {
             $light = $this->RGBLights()->GetLightForDisplayIdent($ident);
 
         if($light !== false)
-        {        
+        {
             $this->Log("RequestAction Light - ident:$ident, value:$value");
             $identTrigger = $this->IdendTriggerdTurnOnValueVar();
             $this->SetBackedValue($light->DisplayVarBacking(), $value, $identTrigger);
@@ -469,7 +499,7 @@ class BetterLight extends BetterBase {
         $currentScene = $this->CurrentSceneVar()->Value();
         $this->SetScene(self::OffSceneNumber, true);
         $this->CurrentSceneVar()->SetValue($currentScene);
-        
+
         $instanceId = $this->InstanceID();
         $script = "BL_BackToCurrentScene($instanceId);";
 
