@@ -289,7 +289,9 @@ class BetterLight extends BetterBase
                 $this->SetScene(1, true);
             }
         } elseif ($name === "Standard Licht" ||
-                  $name === "Normales Licht") {
+                  $name === "Standard Beleuchtung" ||
+                  $name === "Normales Licht" ||
+                  $name === "Normale Beleuchtung") {
             if ($request === "TurnOnRequest") {
                 $this->SetScene(1, true);
             } elseif ($request === "TurnOffRequest") {
