@@ -229,7 +229,7 @@ class BetterHeatingNew extends BetterBase
         $this->TargetTempComfortLink()->SetHidden($mode != 1);
     }
 
-    public function SetMode($mode)
+    public function SetMode(int $mode)
     {
         EIB_Scale(IPS_GetParent($this->ModeId()->Value()), $mode);
     }
