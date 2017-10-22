@@ -296,7 +296,9 @@ class BetterLight extends BetterBase
                 $this->TurnOff();
             }
         } elseif ($name === "Helles Licht" ||
-                  $name === "Helle Beleuchtung") {
+                  $name === "Helle Beleuchtung" ||
+                  $name === "Volles Licht" ||
+                  $name === "Volle Beleuchtung") {
             if ($request === "TurnOnRequest") {
                 $this->SetScene(3, true);
             } elseif ($request === "TurnOffRequest") {
