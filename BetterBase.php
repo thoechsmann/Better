@@ -306,8 +306,8 @@ class BetterBase extends IPSModule {
         
         foreach($objectList as &$object)
         {
-             if($object['amzID'] == $var)
-                return $this->Log($object['Name']);    
+             if($object['amzID'] == $id)
+                return $object['Name'];    
         }
 
         unset($object);

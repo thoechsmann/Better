@@ -8,7 +8,8 @@ require_once(__DIR__ . "/../Backing.php");
 
 require_once(__DIR__ . "/../IPS/IPS.php");
 
-class BetterLight extends BetterBase {
+class BetterLight extends BetterBase
+{
     const MaxDimLights = 6;
     const MaxSwitchLights = 2;
     const MaxRGBLights = 2;
@@ -204,14 +205,12 @@ class BetterLight extends BetterBase {
         @IPS_DeleteVariableProfile($saveProfile);
         IPS_CreateVariableProfile($saveProfile, 1);
 
-        for($sceneNumber = 0; $sceneNumber < $this->Scenes()->Count(); $sceneNumber++)
-        {
+        for ($sceneNumber = 0; $sceneNumber < $this->Scenes()->Count(); $sceneNumber++) {
             $scene = $this->Scenes()->At($sceneNumber);
 
             IPS_SetVariableProfileAssociation($setProfile, $sceneNumber, $scene->Name(), "", $scene->Color());
 
-            if($sceneNumber != 0)
-            {
+            if ($sceneNumber != 0) {
                 IPS_SetVariableProfileAssociation($saveProfile, $sceneNumber, $scene->Name(), "", $scene->Color());
             }
         }
@@ -234,8 +233,7 @@ class BetterLight extends BetterBase {
         $scheduler->SetGroup(0, IPSEventScheduler::DayWeekday);
         $scheduler->SetGroup(1, IPSEventScheduler::DayWeekend);
 
-        for($sceneNumber = 0; $sceneNumber<$this->Scenes()->Count(); $sceneNumber++)
-        {
+        for ($sceneNumber = 0; $sceneNumber<$this->Scenes()->Count(); $sceneNumber++) {
             $scene = $this->Scenes()->At($sceneNumber);
 
             $scheduler->SetAction($sceneNumber, $scene->Name(), $scene->Color(),
@@ -281,20 +279,30 @@ class BetterLight extends BetterBase {
     {
         $name = $this->GetNameForAlexaId($var);
 
-        if($name == "Fernsehlicht" || 
-           $name == "TV Licht" ||
-           $name == "Fernseh Beleuchtung" || 
-           $name == "TV Beleuchtung")
-           {
-               if($request == "TurnOnRequest")
-               {
-                   $this->SetScene(2, true);
-               }
-               else if($request == "TurnOffRequest")
-               {
-                   $this->SetScene(1, true);
-               }
-           }
+        if ($name === "Fernsehlicht" ||
+            $name === "Fernsehbeleuchtung" ||
+            $name === "TV Licht" ||
+            $name === "TV Beleuchtung") {
+            if ($request === "TurnOnRequest") {
+                $this->SetScene(2, true);
+            } elseif ($request === "TurnOffRequest") {
+                $this->SetScene(1, true);
+            }
+        } elseif ($name === "Standard Licht" ||
+                  $name === "Normales Licht") {
+            if ($request === "TurnOnRequest") {
+                $this->SetScene(1, true);
+            } elseif ($request === "TurnOffRequest") {
+                $this->TurnOff();
+            }
+        } elseif ($name === "Helles Licht" ||
+                  $name === "Helle Beleuchtung") {
+            if ($request === "TurnOnRequest") {
+                $this->SetScene(3, true);
+            } elseif ($request === "TurnOffRequest") {
+                $this->SetScene(1, true);
+            }
+        }
     }
 
     public function StartSave()
@@ -342,12 +350,9 @@ class BetterLight extends BetterBase {
         $this->Log("ToggleScene(sceneNumber = $sceneNumber)");
         $currentScene = $this->CurrentSceneVar()->Value();
 
-        if($currentScene == $sceneNumber)
-        {
+        if ($currentScene == $sceneNumber) {
             $this->SetScene(self::DefaultSceneNumber, true);
-        }
-        else
-        {
+        } else {
             $this->SetScene($sceneNumber, true);
         }
     }
@@ -370,11 +375,9 @@ class BetterLight extends BetterBase {
 
         $ms->LoadFromScene($sceneNumber);
 
-        if($isOn || $turnOn)
-        {
+        if ($isOn || $turnOn) {
             // In lock states Montion sensor sends switch on/off commands. This will handle the setting of scene light vars.
-            if($ms->LockState() == MotionSensor::StateAuto)
-            {
+            if ($ms->LockState() == MotionSensor::StateAuto) {
                 $this->LoadFromScene($sceneNumber);
             }
 
@@ -400,16 +403,12 @@ class BetterLight extends BetterBase {
         $isOn = $ms->IsMainSwitchOn();
         $IsMSLocked = $ms->LockState() == MotionSensor::StateAlwaysOff;
 
-        if($IsMSLocked)
-        {
+        if ($IsMSLocked) {
             // if MS is locked we do not get a turn on event.
             $backing->SetValue($value);
             $this->SetScene($this->CurrentSceneVar()->Value());
-        }
-        else
-        {
-            if(!$isOn)
-            {
+        } else {
+            if (!$isOn) {
                 $this->IdendTriggerdTurnOnVar()->SetValue($backing->DisplayIdent());
                 $storeVar->SetValue($value);
                 $ms->TriggerExternMovement();
@@ -423,13 +422,15 @@ class BetterLight extends BetterBase {
     {
         $this->Log("RequestAction - ident:$ident, value:$value");
 
-        if($this->RequestActionForLight($ident, $value))
+        if ($this->RequestActionForLight($ident, $value)) {
             return;
+        }
 
-        if($this->MotionSensor()->RequestAction($ident, $value))
+        if ($this->MotionSensor()->RequestAction($ident, $value)) {
             return;
+        }
 
-        switch($ident) {
+        switch ($ident) {
             case $this->SaveSceneScript()->Ident():
                 $this->StartSave();
                 break;
@@ -454,14 +455,15 @@ class BetterLight extends BetterBase {
     {
         $light = $this->SwitchLights()->GetLightForDisplayIdent($ident);
 
-        if($light === false)
+        if ($light === false) {
             $light = $this->DimLights()->GetLightForDisplayIdent($ident);
+        }
 
-        if($light === false)
+        if ($light === false) {
             $light = $this->RGBLights()->GetLightForDisplayIdent($ident);
+        }
 
-        if($light !== false)
-        {
+        if ($light !== false) {
             $this->Log("RequestAction Light - ident:$ident, value:$value");
             $identTrigger = $this->IdendTriggerdTurnOnValueVar();
             $this->SetBackedValue($light->DisplayVarBacking(), $value, $identTrigger);
@@ -479,12 +481,9 @@ class BetterLight extends BetterBase {
         // FIXME: Why is $turnOn not set if it should be actually false?
         $this->Log("MSMainSwitchEvent - turnOn:$turnOn, msLockState:" . $ms->LockState());
 
-        if($turnOn)
-        {
+        if ($turnOn) {
             $this->LoadFromScene($this->CurrentSceneVar()->Value());
-        }
-        else
-        {
+        } else {
             $this->TurnOffAll();
         }
 
@@ -514,4 +513,3 @@ class BetterLight extends BetterBase {
         $this->OffTimer()->StartTimer(self::OffTimerTime, $script);
     }
 }
-?>
