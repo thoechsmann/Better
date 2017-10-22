@@ -271,7 +271,7 @@ class BetterLight extends BetterBase {
         ' <?
             if($_IPS[\'SENDER\'] == "AlexaSmartHome") {
                 IPS_LogMessage("AlexaTest", "test1");
-                BL_Alexa('.$this->InstanceID.',$_IPS[\'Variable\'],$_IPS[\'VALUE\'],$_IPS[\'REQUEST\']);
+                BL_Alexa('.$this->InstanceID.',$_IPS[\'VARIABLE\'],$_IPS[\'VALUE\'],$_IPS[\'REQUEST\']);
             }
         ?>'
         );
@@ -279,14 +279,22 @@ class BetterLight extends BetterBase {
 
     public function Alexa($var, $value, $request)
     {
-        $objectList = IQL4SH_GetObjectList(15209);
-        
-        foreach($objectList as &$object)
-        {
-             IPS_LogMessage("AlexaTest", json_encode($object));
-             if($object['amzID'] == $var)
-                $this->Log($object['Name']);
-        }
+        $name = $this->GetNameForAlexaId($var);
+
+        if($name == "Fernsehlicht" || 
+           $name == "TV Licht" ||
+           $name == "Fernseh Beleuchtung" || 
+           $name == "TV Beleuchtung")
+           {
+               if($request == "TurnOnRequest")
+               {
+                   $this->SetScene(2, true);
+               }
+               else if($request == "TurnOffRequest")
+               {
+                   $this->SetScene(1, true);
+               }
+           }
     }
 
     public function StartSave()

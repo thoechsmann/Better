@@ -300,6 +300,18 @@ class BetterBase extends IPSModule {
         return "BetterBase";
     }
 
+    protected function GetNameForAlexaId($id)
+    {
+        $objectList = IQL4SH_GetObjectList(15209);
+        
+        foreach($objectList as &$object)
+        {
+             if($object['amzID'] == $var)
+                return $this->Log($object['Name']);    
+        }
+
+        unset($object);
+    }
 }
 
 ?>
