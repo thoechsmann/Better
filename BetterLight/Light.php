@@ -286,6 +286,10 @@ class DimLight extends Light {
     // Variables
     protected function DisplayVar()
     {
+        $id = $this->module->InstanceId();
+        $n = $this->DisplayVarName();
+        IPS_LogMessage("BL", "DisplayVar: $id, $n");
+
         return new IPSVarInteger($this->module->InstanceId(), $this->DisplayVarName());
     }
 
