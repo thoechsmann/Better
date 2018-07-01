@@ -6,7 +6,7 @@
 		{ "type": "SelectVariable", "name": "MSLockOnId", "caption": "BM (Sperren Ein)" },
 		{ "type": "SelectVariable", "name": "MSExternMovementId", "caption": "BM (Externe Bewegung)" },
 				
-		
+
 		{ "type": "ValidationTextBox", "name": "SwitchLight0Name", "caption": "Schalt Licht1" },
 		{ "type": "SelectVariable", "name": "SwitchLight0SwitchId", "caption": "Schalt Licht1 (Schalten)" },
 		{ "type": "SelectVariable", "name": "SwitchLight0StatusId", "caption": "Schalt Licht1 (Status)" },
@@ -105,6 +105,23 @@
 
 		{ "type": "ValidationTextBox", "name": "Scene3Name", "caption": "Name Szene 3" },
 		{ "type": "Select", "name": "Scene3Color", "caption": "Farbe Scene 3",
+    		"options": [
+		        { "label": "Rot", "value":     "0xFF0000" },
+		        { "label": "Grün", "value":    "0x00FF00" },
+		        { "label": "Blau", "value":    "0x0000FF" },
+		        { "label": "Gelb", "value":    "0xFFFF00" },
+		        { "label": "Rosa", "value":    "0xFF00FF" },
+		        { "label": "Türkis", "value":  "0x00FFFF" },
+		        { "label": "Lila", "value":    "0x942192" },
+		        { "label": "Orange", "value":  "0xFF9300" },
+		        { "label": "Magenta", "value": "0xff40ff" },
+		        { "label": "Schwarz", "value": "0x000000" },
+		        { "label": "Weiss", "value":   "0xffffff" },
+		        { "label": "Grau", "value":    "0x888888" }
+		] },
+
+		{ "type": "ValidationTextBox", "name": "Scene3Name", "caption": "Name Szene 4" },
+		{ "type": "Select", "name": "Scene4Color", "caption": "Farbe Scene 4",
     		"options": [
 		        { "label": "Rot", "value":     "0xFF0000" },
 		        { "label": "Grün", "value":    "0x00FF00" },
