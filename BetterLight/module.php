@@ -273,6 +273,7 @@ class BetterLight extends BetterBase
             }
         ?>'
         );
+        $this->AlexaScript()->Hide();
     }
 
     public function Alexa($var, $value, $request)
