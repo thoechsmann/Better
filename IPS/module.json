@@ -1,0 +1,14 @@
+{
+    "id": "{5B245BF6-5C02-4C68-9A0B-5CF08E6BEA87}",
+    "name": "BetterIPS",
+    "type": 3,
+    "vendor": "Thomas",
+    "aliases": 
+    [
+        "BetterIPS"
+    ],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "BIPS"
+}
