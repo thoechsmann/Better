@@ -279,8 +279,8 @@ class BetterLight extends BetterBase
     {
         $name = $this->GetNameForAlexaId($var);
 
-        if ($name === "Fernsehlicht" ||
-            $name === "Fernsehbeleuchtung" ||
+        if ($name === "Fernseh Licht" ||
+            $name === "Fernseh Beleuchtung" ||
             $name === "TV Licht" ||
             $name === "TV Beleuchtung") {
             if ($request === "TurnOnRequest") {
@@ -305,8 +305,16 @@ class BetterLight extends BetterBase
                 $this->SetScene(3, true);
             } elseif ($request === "TurnOffRequest") {
                 $this->SetScene(1, true);
-            }
-            
+            }            
+        } elseif ($name === "Essens Licht" ||
+                  $name === "Essens Beleuchtung" ||
+                  $name === "Dinner Licht" ||
+                  $name === "Dinner Beleuchtung") {
+            if ($request === "TurnOnRequest") {
+                $this->SetScene(4, true);
+            } elseif ($request === "TurnOffRequest") {
+                $this->SetScene(1, true);
+            }            
         }
     }
 
