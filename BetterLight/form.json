@@ -120,7 +120,7 @@
 		        { "label": "Grau", "value":    "0x888888" }
 		] },
 
-		{ "type": "ValidationTextBox", "name": "Scene3Name", "caption": "Name Szene 4" },
+		{ "type": "ValidationTextBox", "name": "Scene4Name", "caption": "Name Szene 4" },
 		{ "type": "Select", "name": "Scene4Color", "caption": "Farbe Scene 4",
     		"options": [
 		        { "label": "Rot", "value":     "0xFF0000" },
