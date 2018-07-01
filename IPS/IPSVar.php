@@ -34,14 +34,6 @@ abstract class IPSVar extends IPSObject
         IPS_SetVariableCustomProfile($this->Id(), $profile);
     }
 
-    public function EnableAction() {
-//        IPS_EnableAction($this->parentId, $this->Ident());
-    }
-
-    public function DisableAction() {
-//        IPS_DisableAction($this->parentId, $this->Ident());
-    }
-
     public function __toString()
     {
         return parent::__toString() . " type: " . static::GetVarTypeName();

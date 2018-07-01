@@ -98,7 +98,7 @@ class MotionSensor
     {
         $var = $this->LockVar();
         $var->Register("BM Sperren", self::BMProfile, $position);
-        $var->EnableAction();
+        $this->EnableAction($var->Ident());
     }
 
     private function RegisterSceneVars($sceneCount)

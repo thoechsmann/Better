@@ -181,11 +181,9 @@ abstract class Light {
     private function RegisterDisplayVar($position)
     {
         $name = $this->Name();
-        IPS_LogMessage("BL", "RegisterDisplayVar: $name");
         $var = static::DisplayVar();
         $var->Register($name, "", $position);
-        $var->EnableAction();
-        IPS_LogMessage("BL", "EnableAction: $name");
+        $this->module->EnableAction($var->Ident());
     }
 
     private function RegisterSceneVars($sceneCount)
@@ -201,7 +199,6 @@ abstract class Light {
     public function RegisterVariables($sceneCount, $position)
     {
         $name = $this->Name();
-        IPS_LogMessage("BL", "RegisterVariables: $name");
         $this->RegisterDisplayVar($position);
         $this->RegisterSceneVars($sceneCount);
 
@@ -286,10 +283,6 @@ class DimLight extends Light {
     // Variables
     protected function DisplayVar()
     {
-        $id = $this->module->InstanceId();
-        $n = $this->DisplayVarName();
-        IPS_LogMessage("BL", "DisplayVar: $id, $n");
-
         return new IPSVarInteger($this->module->InstanceId(), $this->DisplayVarName());
     }
 

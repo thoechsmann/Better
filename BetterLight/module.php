@@ -220,7 +220,7 @@ class BetterLight extends BetterBase
     {
         $currentScene = $this->CurrentSceneVar();
         $currentScene->Register("Szene", $this->SetSceneProfileString(), self::PosSceneSelection);
-        $currentScene->EnableAction();
+        $this->EnableAction($currentScene->Ident());
     }
 
     private function CreateSceneScheduler()
@@ -250,8 +250,8 @@ class BetterLight extends BetterBase
     {
         $saveToScene = $this->SaveToSceneVar();
         $saveToScene->Register("Speichern unter:", $this->SaveSceneProfileString(), self::PosSaveSceneButton);
-        $saveToScene->EnableAction();
         $saveToScene->SetValue(-1);
+        $this->EnableAction($saveToScene->Ident());
 
         $this->SaveSceneScript()->Register("Szene speichern", "<? BL_StartSave(" . $this->InstanceID . ");?>", self::PosSaveSceneButton);
 

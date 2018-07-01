@@ -101,17 +101,17 @@ class BetterShutterNew extends BetterBase {
         $this->PositionStatusLink()->Register("Positions Status", $this->PositionStatusIdProp()->Value());
 
         $this->PositionLimit()->Register("Positions Limit", "~Shutter");
-        $this->PositionLimit()->EnableAction();
+        $this->EnableAction($this->PositionLimit()->Ident());
 
         $this->TargetPosition()->Register();
         $this->PositionIsLimited()->Register();
 
         $this->Enabled()->Register("Aktiviert", "~Switch");
-        $this->Enabled()->EnableAction();
         $this->Enabled()->SetValue(true);
+        $this->EnableAction($this->Enabled()->Ident());
 
         $this->MoveControl()->Register("Bewegen", "BS_MoveControl");
-        $this->MoveControl()->EnableAction();
+        $this->EnableAction($this->MoveControl()->Ident());
 
         $this->WindowTrigger()->Register("", $this->WindowStatusIdProp()->Value(), 'BSN_WindowEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeChange);
 
