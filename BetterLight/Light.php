@@ -79,6 +79,9 @@ class LightArray {
 
     public function RegisterVariables($sceneCount, $position)
     {
+        $n = $this->Name();
+        IPS_LogMessage("BL", "RegisterVariablessss: $n");
+
         for($i=0; $i<$this->Count(); $i++)
         {
             $this->At($i)->RegisterVariables($sceneCount, $position);
@@ -179,9 +182,11 @@ abstract class Light {
     private function RegisterDisplayVar($position)
     {
         $name = $this->Name();
+        IPS_LogMessage("BL", "RegisterDisplayVar: $name");
         $var = static::DisplayVar();
         $var->Register($name, "", $position);
         $var->EnableAction();
+        IPS_LogMessage("BL", "EnableAction: $name");
     }
 
     private function RegisterSceneVars($sceneCount)
@@ -196,6 +201,8 @@ abstract class Light {
 
     public function RegisterVariables($sceneCount, $position)
     {
+        $name = $this->Name();
+        IPS_LogMessage("BL", "RegisterVariables: $name");
         $this->RegisterDisplayVar($position);
         $this->RegisterSceneVars($sceneCount);
 
