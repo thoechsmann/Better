@@ -79,8 +79,7 @@ class LightArray {
 
     public function RegisterVariables($sceneCount, $position)
     {
-        $n = $this->Name();
-        IPS_LogMessage("BL", "RegisterVariablessss: $n");
+        IPS_LogMessage("BL", "RegisterVariablessss");
 
         for($i=0; $i<$this->Count(); $i++)
         {
