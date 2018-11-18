@@ -44,6 +44,15 @@ class SceneArray {
             $this->At($i)->RegisterProperties();
         }
     }
+
+    public function RegisterAlexaScripts()
+    {
+        for($i=0; $i<$this->size; $i++)
+        {
+            $this->At($i)->RegisterAlexaScript();
+        }
+    }
+
 }
 
 class Scene
@@ -69,10 +78,33 @@ class Scene
         return new IPSPropertyString($this->module, self::StrScene . $this->index . "Color");
     }
 
+    // Scripts
+    private function AlexaScript()
+    {
+        return new IPSScript($this->module, self::StrScene . $this->index . "Alexa");
+    }
+
     public function RegisterProperties()
     {
         $this->NameProp()->Register();
         $this->ColorProp()->Register();
+        $this->CreateAlexaScript();
+    }
+
+    public function RegisterAlexaScript()
+    {
+        $this->NameProp()->Register();
+        $this->ColorProp()->Register();
+
+        $this->AlexaScript()->Register("Alexa",
+            ' <?
+                if($_IPS[\'SENDER\'] == "AlexaSmartHome") {
+                    IPS_LogMessage("AlexaScript", "test1");
+                    BL_SetScene('$this->module','$this->$index');
+                }
+            ?>'
+        );
+        $this->AlexaScript()->Hide();
     }
 
     public function Name()

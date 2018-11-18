@@ -73,11 +73,6 @@ class BetterLight extends BetterBase
         return new IPSScript($this->InstanceID(), "TurnOff");
     }
 
-    private function AlexaScript()
-    {
-        return new IPSScript($this->InstanceID(), "Alexa");
-    }
-
     // Events
     private function SceneScheduler()
     {
@@ -164,7 +159,6 @@ class BetterLight extends BetterBase
         $this->CreateSceneSwitches();
         $this->CreateSaveButton();
         $this->CreateTurnOffButton();
-        $this->CreateAlexaScript();
 
         $this->IdendTriggerdTurnOnVar()->Register();
         $this->IdendTriggerdTurnOnVar()->SetValue("");
@@ -265,62 +259,6 @@ class BetterLight extends BetterBase
     private function CreateTurnOffButton()
     {
         $this->TurnOffScript()->Register("Ausschalten", "<? BL_TurnOff(" . $this->InstanceID . ");?>", self::PosTurnOffButton);
-    }
-
-    private function CreateAlexaScript()
-    {
-        $this->AlexaScript()->Register("Alexa",
-        ' <?
-            if($_IPS[\'SENDER\'] == "AlexaSmartHome") {
-                IPS_LogMessage("AlexaTest", "test1");
-                BL_Alexa('.$this->InstanceID.',$_IPS[\'VARIABLE\'],$_IPS[\'VALUE\'],$_IPS[\'REQUEST\']);
-            }
-        ?>'
-        );
-        $this->AlexaScript()->Hide();
-    }
-
-    public function Alexa($var, $value, $request)
-    {
-        $name = $this->GetNameForAlexaId($var);
-
-        if ($name === "Fernseh Licht" ||
-            $name === "Fernseh Beleuchtung" ||
-            $name === "TV Licht" ||
-            $name === "TV Beleuchtung") {
-            if ($request === "TurnOnRequest") {
-                $this->SetScene(2, true);
-            } elseif ($request === "TurnOffRequest") {
-                $this->SetScene(1, true);
-            }
-        } elseif ($name === "Standard Licht" ||
-                  $name === "Standard Beleuchtung" ||
-                  $name === "Normales Licht" ||
-                  $name === "Normale Beleuchtung") {
-            if ($request === "TurnOnRequest") {
-                $this->SetScene(1, true);
-            } elseif ($request === "TurnOffRequest") {
-                $this->TurnOff();
-            } 
-        } elseif ($name === "Helles Licht" ||
-                  $name === "Helle Beleuchtung" ||
-                  $name === "Volles Licht" ||
-                  $name === "Volle Beleuchtung") {
-            if ($request === "TurnOnRequest") {
-                $this->SetScene(3, true);
-            } elseif ($request === "TurnOffRequest") {
-                $this->SetScene(1, true);
-            }            
-        } elseif ($name === "Essens Licht" ||
-                  $name === "Essens Beleuchtung" ||
-                  $name === "Dinner Licht" ||
-                  $name === "Dinner Beleuchtung") {
-            if ($request === "TurnOnRequest") {
-                $this->SetScene(4, true);
-            } elseif ($request === "TurnOffRequest") {
-                $this->SetScene(1, true);
-            }            
-        }
     }
 
     public function StartSave()
