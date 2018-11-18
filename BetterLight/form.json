@@ -11,48 +11,98 @@
 			"type": "ExpansionPanel",
 			"caption": "Schalt-Lichter",
 			"items": [
-				{ "type": "ValidationTextBox", "name": "SwitchLight0Name", "caption": "Schalt Licht1" },
-				{ "type": "SelectVariable", "name": "SwitchLight0SwitchId", "caption": "Schalt Licht1 (Schalten)" },
-				{ "type": "SelectVariable", "name": "SwitchLight0StatusId", "caption": "Schalt Licht1 (Status)" },
-				{ "type": "ValidationTextBox", "name": "SwitchLight1Name", "caption": "Schalt Licht2" },
-				{ "type": "SelectVariable", "name": "SwitchLight1SwitchId", "caption": "Schalt Licht2 (Schalten)" },
-				{ "type": "SelectVariable", "name": "SwitchLight1StatusId", "caption": "Schalt Licht2 (Status)" },
-				{ "type": "ValidationTextBox", "name": "SwitchLight2Name", "caption": "Schalt Licht3" },
-				{ "type": "SelectVariable", "name": "SwitchLight2SwitchId", "caption": "Schalt Licht3 (Schalten)" },
-				{ "type": "SelectVariable", "name": "SwitchLight2StatusId", "caption": "Schalt Licht3 (Status)" },
-				{ "type": "ValidationTextBox", "name": "SwitchLight3Name", "caption": "Schalt Licht4" },
-				{ "type": "SelectVariable", "name": "SwitchLight3SwitchId", "caption": "Schalt Licht4 (Schalten)" },
-				{ "type": "SelectVariable", "name": "SwitchLight3StatusId", "caption": "Schalt Licht4 (Status)" }
+				{ 
+					"type": "RowLayout",
+					"items": [
+						{ "type": "ValidationTextBox", "name": "SwitchLight0Name", "caption": "Schalt Licht1" },
+						{ "type": "SelectVariable", "name": "SwitchLight0SwitchId", "caption": "Schalt Licht1 (Schalten)" },
+						{ "type": "SelectVariable", "name": "SwitchLight0StatusId", "caption": "Schalt Licht1 (Status)" }
+					]
+				},
+				{ 
+					"type": "RowLayout",
+					"items": [
+						{ "type": "ValidationTextBox", "name": "SwitchLight1Name", "caption": "Schalt Licht2" },
+						{ "type": "SelectVariable", "name": "SwitchLight1SwitchId", "caption": "Schalt Licht2 (Schalten)" },
+						{ "type": "SelectVariable", "name": "SwitchLight1StatusId", "caption": "Schalt Licht2 (Status)" }
+					]
+				},
+				{ 
+					"type": "RowLayout",
+					"items": [
+						{ "type": "ValidationTextBox", "name": "SwitchLight2Name", "caption": "Schalt Licht3" },
+						{ "type": "SelectVariable", "name": "SwitchLight2SwitchId", "caption": "Schalt Licht3 (Schalten)" },
+						{ "type": "SelectVariable", "name": "SwitchLight2StatusId", "caption": "Schalt Licht3 (Status)" }
+					]
+				},
+				{ 
+					"type": "RowLayout",
+					"items": [
+						{ "type": "ValidationTextBox", "name": "SwitchLight3Name", "caption": "Schalt Licht4" },
+						{ "type": "SelectVariable", "name": "SwitchLight3SwitchId", "caption": "Schalt Licht4 (Schalten)" },
+						{ "type": "SelectVariable", "name": "SwitchLight3StatusId", "caption": "Schalt Licht4 (Status)" }
+					]
+				}
 			]
 		},
 		{
 			"type": "ExpansionPanel",
 			"caption": "Dim-Lichter",
 			"items": [
-				{ "type": "ValidationTextBox", "name": "DimLight0Name", "caption": "Dim Licht1 Name" },
-				{ "type": "SelectVariable", "name": "DimLight0SwitchId", "caption": "Dim Licht1 (Schalten)" },
-				{ "type": "SelectVariable", "name": "DimLight0SetValueId", "caption": "Dim Licht1 (Wert setzen)" },
-				{ "type": "SelectVariable", "name": "DimLight0StatusValueId", "caption": "Dim Licht1 (Status Wert)" },				
-				{ "type": "ValidationTextBox", "name": "DimLight1Name", "caption": "Dim Licht2 Name" },
-				{ "type": "SelectVariable", "name": "DimLight1SwitchId", "caption": "Dim Licht2 (Schalten)" },
-				{ "type": "SelectVariable", "name": "DimLight1SetValueId", "caption": "Dim Licht2 (Wert setzen)" },
-				{ "type": "SelectVariable", "name": "DimLight1StatusValueId", "caption": "Dim Licht2 (Status Wert)" },				
-				{ "type": "ValidationTextBox", "name": "DimLight2Name", "caption": "Dim Licht3 Name" },
-				{ "type": "SelectVariable", "name": "DimLight2SwitchId", "caption": "Dim Licht3 (Schalten)" },
-				{ "type": "SelectVariable", "name": "DimLight2SetValueId", "caption": "Dim Licht3 (Wert setzen)" },
-				{ "type": "SelectVariable", "name": "DimLight2StatusValueId", "caption": "Dim Licht3 (Status Wert)" },				
-				{ "type": "ValidationTextBox", "name": "DimLight3Name", "caption": "Dim Licht4 Name" },
-				{ "type": "SelectVariable", "name": "DimLight3SwitchId", "caption": "Dim Licht4 (Schalten)" },
-				{ "type": "SelectVariable", "name": "DimLight3SetValueId", "caption": "Dim Licht4 (Wert setzen)" },
-				{ "type": "SelectVariable", "name": "DimLight3StatusValueId", "caption": "Dim Licht4 (Status Wert)" },				
-				{ "type": "ValidationTextBox", "name": "DimLight4Name", "caption": "Dim Licht5 Name" },
-				{ "type": "SelectVariable", "name": "DimLight4SwitchId", "caption": "Dim Licht5 (Schalten)" },
-				{ "type": "SelectVariable", "name": "DimLight4SetValueId", "caption": "Dim Licht5 (Wert setzen)" },
-				{ "type": "SelectVariable", "name": "DimLight4StatusValueId", "caption": "Dim Licht5 (Status Wert)" },				
-				{ "type": "ValidationTextBox", "name": "DimLight5Name", "caption": "Dim Licht6 Name" },
-				{ "type": "SelectVariable", "name": "DimLight5SwitchId", "caption": "Dim Licht6 (Schalten)" },
-				{ "type": "SelectVariable", "name": "DimLight5SetValueId", "caption": "Dim Licht6 (Wert setzen)" },
-				{ "type": "SelectVariable", "name": "DimLight5StatusValueId", "caption": "Dim Licht6 (Status Wert)" }	
+				{ 
+					"type": "RowLayout",
+					"items": [
+						{ "type": "ValidationTextBox", "name": "DimLight0Name", "caption": "Dim Licht1 Name" },
+						{ "type": "SelectVariable", "name": "DimLight0SwitchId", "caption": "Dim Licht1 (Schalten)" },
+						{ "type": "SelectVariable", "name": "DimLight0SetValueId", "caption": "Dim Licht1 (Wert setzen)" },
+						{ "type": "SelectVariable", "name": "DimLight0StatusValueId", "caption": "Dim Licht1 (Status Wert)" }
+					]
+				},
+				{ 
+					"type": "RowLayout",
+					"items": [
+						{ "type": "ValidationTextBox", "name": "DimLight1Name", "caption": "Dim Licht2 Name" },
+						{ "type": "SelectVariable", "name": "DimLight1SwitchId", "caption": "Dim Licht2 (Schalten)" },
+						{ "type": "SelectVariable", "name": "DimLight1SetValueId", "caption": "Dim Licht2 (Wert setzen)" },
+						{ "type": "SelectVariable", "name": "DimLight1StatusValueId", "caption": "Dim Licht2 (Status Wert)" }
+					]
+				},
+				{ 
+					"type": "RowLayout",
+					"items": [
+						{ "type": "ValidationTextBox", "name": "DimLight2Name", "caption": "Dim Licht3 Name" },
+						{ "type": "SelectVariable", "name": "DimLight2SwitchId", "caption": "Dim Licht3 (Schalten)" },
+						{ "type": "SelectVariable", "name": "DimLight2SetValueId", "caption": "Dim Licht3 (Wert setzen)" },
+						{ "type": "SelectVariable", "name": "DimLight2StatusValueId", "caption": "Dim Licht3 (Status Wert)" }
+					]
+				},
+				{ 
+					"type": "RowLayout",
+					"items": [
+						{ "type": "ValidationTextBox", "name": "DimLight3Name", "caption": "Dim Licht4 Name" },
+						{ "type": "SelectVariable", "name": "DimLight3SwitchId", "caption": "Dim Licht4 (Schalten)" },
+						{ "type": "SelectVariable", "name": "DimLight3SetValueId", "caption": "Dim Licht4 (Wert setzen)" },
+						{ "type": "SelectVariable", "name": "DimLight3StatusValueId", "caption": "Dim Licht4 (Status Wert)" }
+					]
+				},
+				{ 
+					"type": "RowLayout",
+					"items": [
+						{ "type": "ValidationTextBox", "name": "DimLight4Name", "caption": "Dim Licht5 Name" },
+						{ "type": "SelectVariable", "name": "DimLight4SwitchId", "caption": "Dim Licht5 (Schalten)" },
+						{ "type": "SelectVariable", "name": "DimLight4SetValueId", "caption": "Dim Licht5 (Wert setzen)" },
+						{ "type": "SelectVariable", "name": "DimLight4StatusValueId", "caption": "Dim Licht5 (Status Wert)" }
+					]
+				},
+				{ 
+					"type": "RowLayout",
+					"items": [
+						{ "type": "ValidationTextBox", "name": "DimLight5Name", "caption": "Dim Licht6 Name" },
+						{ "type": "SelectVariable", "name": "DimLight5SwitchId", "caption": "Dim Licht6 (Schalten)" },
+						{ "type": "SelectVariable", "name": "DimLight5SetValueId", "caption": "Dim Licht6 (Wert setzen)" },
+						{ "type": "SelectVariable", "name": "DimLight5StatusValueId", "caption": "Dim Licht6 (Status Wert)" }	
+					]
+				}
 			]
 		},
 		{
