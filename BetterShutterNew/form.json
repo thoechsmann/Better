@@ -4,12 +4,22 @@
 		{ "type": "SelectVariable", "name": "PositionIdProp", "caption": "Position" },
 		{ "type": "SelectVariable", "name": "PositionStatusIdProp", "caption": "Position Status" },
 		{ "type": "SelectVariable", "name": "WindowStatusIdProp", "caption": "Fensterkontakt" },
-		{ "type": "SelectVariable", "name": "ShutterControl0UpDownIdProp", "caption": "Hoch/Runter" },
-		{ "type": "SelectVariable", "name": "ShutterControl1UpDownIdProp", "caption": "Hoch/Runter 2" },
-		{ "type": "SelectVariable", "name": "ShutterControl2UpDownIdProp", "caption": "Hoch/Runter 3" },
-		{ "type": "SelectVariable", "name": "ShutterControl0StopIdProp", "caption": "Stopp" },
-		{ "type": "SelectVariable", "name": "ShutterControl1StopIdProp", "caption": "Stopp 2" },
-		{ "type": "SelectVariable", "name": "ShutterControl2StopIdProp", "caption": "Stopp 3" },
+		{ 
+			"type": "RowLayout",
+			"items": [
+				{ "type": "SelectVariable", "name": "ShutterControl0UpDownIdProp", "caption": "Hoch/Runter" },
+				{ "type": "SelectVariable", "name": "ShutterControl1UpDownIdProp", "caption": "Hoch/Runter 2" },
+				{ "type": "SelectVariable", "name": "ShutterControl2UpDownIdProp", "caption": "Hoch/Runter 3" }
+			]
+		},
+		{ 
+			"type": "RowLayout",
+			"items": [
+				{ "type": "SelectVariable", "name": "ShutterControl0StopIdProp", "caption": "Stopp" },
+				{ "type": "SelectVariable", "name": "ShutterControl1StopIdProp", "caption": "Stopp 2" },
+				{ "type": "SelectVariable", "name": "ShutterControl2StopIdProp", "caption": "Stopp 3" }
+			]
+		}
 	],
 	"actions":
 	[

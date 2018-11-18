@@ -2,7 +2,7 @@
 	"elements":
 	[
 		{ "type": "SelectVariable", "name": "ShutterGroupUpDownIdProp", "caption": "Hoch/Runter Id" },
-		{ "type": "SelectVariable", "name": "IsDayIdProp", "caption": "IsDay Id" },
+		{ "type": "SelectVariable", "name": "IsDayIdProp", "caption": "IsDay Id" }
 	],
 	"actions":
 	[
