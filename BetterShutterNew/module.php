@@ -122,7 +122,7 @@ class BetterShutterNew extends BetterBase {
 
     private function InitValues()
     {
-        $this->MoveControl()->SetValue(-1);
+        $this->MoveControl()->SetValue(BetterShutterNew::MoveControlStop);
 
         if($this->PositionStatusIdProp()->Value() == 0)
             return;
