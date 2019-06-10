@@ -77,8 +77,12 @@ class MotionSensor
 
     public function RegisterVariables($sceneCount, $position)
     {
-        $this->RegisterProfiles();
+        if($this->MainSwitchIdProp()->Value() == 0)
+        {
+            return;
+        }
 
+        $this->RegisterProfiles();
         $this->RegisterSceneVars($sceneCount);
         $this->RegisterLockVar($position);
     }
@@ -113,6 +117,11 @@ class MotionSensor
 
     public function RegisterTriggers()
     {
+        if($this->MainSwitchIdProp()->Value() == 0)
+        {
+            return;
+        }
+
         $this->MainSwitchTrigger()->Register("",
             $this->MainSwitchIdProp()->Value(), 
             'BL_MSMainSwitchEvent($_IPS[\'TARGET\']);', 
@@ -121,13 +130,9 @@ class MotionSensor
 
     public function IsMainSwitchOn()
     {
-        $id = $this->MainSwitchIdProp()->Value();
-        IPS_LogMessage("MotionSensor", "IsMainSwitchOn(): id=$id");
-
-        if($id == 0)
+        if($this->MainSwitchIdProp()->Value() == 0)
         {
-            IPS_LogMessage("MotionSensor", "IsMainSwitchOn(): id==0");
-            return false;
+            return true;
         }
 
         return GetValueBoolean($id);
@@ -135,11 +140,21 @@ class MotionSensor
 
     public function LockState()
     {
+        if($this->MainSwitchIdProp()->Value() == 0)
+        {
+            return false;
+        }
+
         return $this->LockVar()->Value();
     }
 
     public function SetLockState($value)
     {
+        if($this->MainSwitchIdProp()->Value() == 0)
+        {
+            return;
+        }
+
         if($this->LockVar()->Value() == $value)
             return;
 
@@ -167,6 +182,11 @@ class MotionSensor
 
     public function SetSceneLock($sceneNumber, $value)
     {
+        if($this->MainSwitchIdProp()->Value() == 0)
+        {
+            return;
+        }
+
         $this->LockSceneVars($sceneNumber)->SetValue($value);
     }
 
@@ -182,12 +202,22 @@ class MotionSensor
 
     public function SaveToScene($sceneNumber)
     {
+        if($this->MainSwitchIdProp()->Value() == 0)
+        {
+            return;
+        }
+
         $value = $this->LockVar()->Value();
         $this->LockSceneVars($sceneNumber)->SetValue($value);
     }
 
     public function LoadFromScene($sceneNumber)
     {
+        if($this->MainSwitchIdProp()->Value() == 0)
+        {
+            return;
+        }
+
         $value = $this->LockSceneVars($sceneNumber)->Value();
         $this->SetLockState($value);
     }
