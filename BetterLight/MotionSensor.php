@@ -77,7 +77,7 @@ class MotionSensor
 
     public function RegisterVariables($sceneCount, $position)
     {
-        if(!$this->IsDefined()->Value())
+        if(!$this->IsDefined())
         {
             return;
         }
@@ -117,7 +117,7 @@ class MotionSensor
 
     public function RegisterTriggers()
     {
-        if(!$this->IsDefined()->Value())
+        if(!$this->IsDefined())
         {
             return;
         }
@@ -140,7 +140,7 @@ class MotionSensor
 
     public function LockState()
     {
-        if(!$this->IsDefined()->Value())
+        if(!$this->IsDefined())
         {
             return false;
         }
@@ -150,7 +150,7 @@ class MotionSensor
 
     public function SetLockState($value)
     {
-        if(!$this->IsDefined()->Value())
+        if(!$this->IsDefined())
         {
             return;
         }
@@ -182,7 +182,7 @@ class MotionSensor
 
     public function SetSceneLock($sceneNumber, $value)
     {
-        if(!$this->IsDefined()->Value())
+        if(!$this->IsDefined())
         {
             return;
         }
@@ -202,7 +202,7 @@ class MotionSensor
 
     public function SaveToScene($sceneNumber)
     {
-        if(!$this->IsDefined()->Value())
+        if(!$this->IsDefined())
         {
             return;
         }
@@ -213,7 +213,7 @@ class MotionSensor
 
     public function LoadFromScene($sceneNumber)
     {
-        if(!$this->IsDefined()->Value())
+        if(!$this->IsDefined())
         {
             return;
         }
