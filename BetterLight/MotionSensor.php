@@ -135,6 +135,7 @@ class MotionSensor
 
     public function IsMainSwitchOn()
     {
+        $id = $this->MainSwitchIdProp()->Value();
         return GetValueBoolean($id);
     }
 
