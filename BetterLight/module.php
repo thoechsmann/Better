@@ -329,7 +329,7 @@ class BetterLight extends BetterBase
         $this->CancelSave();
 
         $ms = $this->MotionSensor();
-        $isOn = $ms->IsMainSwitchOn();
+        $isOn = $ms->IsMainSwitchOn() && $ms->IsDefined();
 
         $ms->LoadFromScene($sceneNumber);
 
@@ -358,7 +358,7 @@ class BetterLight extends BetterBase
         $this->CancelSave();
 
         $ms = $this->MotionSensor();
-        $isOn = $ms->IsMainSwitchOn();
+        $isOn = $ms->IsMainSwitchOn() && $ms->IsDefined();
         $IsMSLocked = $ms->LockState() == MotionSensor::StateAlwaysOff;
 
         if ($IsMSLocked) {

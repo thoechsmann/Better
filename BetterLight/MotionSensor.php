@@ -77,7 +77,7 @@ class MotionSensor
 
     public function RegisterVariables($sceneCount, $position)
     {
-        if($this->MainSwitchIdProp()->Value() == 0)
+        if(!$this->IsDefined()->Value())
         {
             return;
         }
@@ -117,7 +117,7 @@ class MotionSensor
 
     public function RegisterTriggers()
     {
-        if($this->MainSwitchIdProp()->Value() == 0)
+        if(!$this->IsDefined()->Value())
         {
             return;
         }
@@ -128,19 +128,19 @@ class MotionSensor
             IPSEventTrigger::TypeUpdate);
     }
 
+    public function IsDefined()
+    {
+        return $this->MainSwitchIdProp()->Value() > 0;
+    }
+
     public function IsMainSwitchOn()
     {
-        if($this->MainSwitchIdProp()->Value() == 0)
-        {
-            return true;
-        }
-
         return GetValueBoolean($id);
     }
 
     public function LockState()
     {
-        if($this->MainSwitchIdProp()->Value() == 0)
+        if(!$this->IsDefined()->Value())
         {
             return false;
         }
@@ -150,7 +150,7 @@ class MotionSensor
 
     public function SetLockState($value)
     {
-        if($this->MainSwitchIdProp()->Value() == 0)
+        if(!$this->IsDefined()->Value())
         {
             return;
         }
@@ -182,7 +182,7 @@ class MotionSensor
 
     public function SetSceneLock($sceneNumber, $value)
     {
-        if($this->MainSwitchIdProp()->Value() == 0)
+        if(!$this->IsDefined()->Value())
         {
             return;
         }
@@ -202,7 +202,7 @@ class MotionSensor
 
     public function SaveToScene($sceneNumber)
     {
-        if($this->MainSwitchIdProp()->Value() == 0)
+        if(!$this->IsDefined()->Value())
         {
             return;
         }
@@ -213,7 +213,7 @@ class MotionSensor
 
     public function LoadFromScene($sceneNumber)
     {
-        if($this->MainSwitchIdProp()->Value() == 0)
+        if(!$this->IsDefined()->Value())
         {
             return;
         }
