@@ -81,30 +81,22 @@ class Scene
     // Scripts
     private function AlexaScript()
     {
-        return new IPSScript($this->module, self::StrScene . $this->index . "Alexa");
+        return new IPSScript($this->module->InstanceId(), self::StrScene . $this->index . "Alexa");
     }
 
     public function RegisterProperties()
     {
         $this->NameProp()->Register();
         $this->ColorProp()->Register();
-        $this->CreateAlexaScript();
     }
 
     public function RegisterAlexaScript()
     {
-        $this->NameProp()->Register();
-        $this->ColorProp()->Register();
-
-        $this->AlexaScript()->Register("Alexa",
-            ' <?
-                if($_IPS[\'SENDER\'] == "AlexaSmartHome") {
-                    IPS_LogMessage("AlexaScript", "test1");
-                    BL_SetScene('$this->module','$this->$index');
-                }
-            ?>'
-        );
-        $this->AlexaScript()->Hide();
+        if($this->IsDefined())
+        {
+            $this->AlexaScript()->Register("", "<? BL_SetScene(" . $this->module->InstanceId() . "," . $this->index . ", true); ?>");        
+            $this->AlexaScript()->Hide();
+        }
     }
 
     public function Name()

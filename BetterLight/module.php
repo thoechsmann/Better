@@ -160,6 +160,8 @@ class BetterLight extends BetterBase
         $this->CreateSaveButton();
         $this->CreateTurnOffButton();
 
+        $this->Scenes()->RegisterAlexaScripts();
+
         $this->IdendTriggerdTurnOnVar()->Register();
         $this->IdendTriggerdTurnOnVar()->SetValue("");
         $this->IdendTriggerdTurnOnVar()->Hide();
@@ -331,9 +333,9 @@ class BetterLight extends BetterBase
 
         $ms->LoadFromScene($sceneNumber);
 
-        if ($isOn || $turnOn) {
+        if ($isOn || $turnOn || $ms->LockState() == MotionSensor::StateAlwaysOn) {
             // In lock states Montion sensor sends switch on/off commands. This will handle the setting of scene light vars.
-            if ($ms->LockState() == MotionSensor::StateAuto) {
+            if ($ms->LockState() == MotionSensor::StateAuto || $ms->LockState() == MotionSensor::StateAlwaysOn) {
                 $this->LoadFromScene($sceneNumber);
             }
 
