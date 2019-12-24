@@ -25,6 +25,7 @@ abstract class IPSProperty
     public function GetConfigurationFormEntry()
     {
         return "{ \"type\": \"SelectVariable\",
+                  \"width\": \"100%\",
                   \"name\": \"". $this->name . "\",
                   \"caption\": \"" . $this->caption . "\" }";
     }
