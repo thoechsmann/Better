@@ -133,10 +133,11 @@ class BetterHeatingNew extends BetterBase
     {
         $retVal = "{\"elements\":[";
 
-        $propArray = array($this->CurrentTempId()->GetConfigurationFormEntry(),
+        $propArray = array(
             $this->CurrentTargetTempId()->GetConfigurationFormEntry(),
-            $this->TargetTempComfortId()->GetConfigurationFormEntry(),
             $this->ModeId()->GetConfigurationFormEntry(),
+            $this->TargetTempComfortId()->GetConfigurationFormEntry(),
+            $this->CurrentTempId()->GetConfigurationFormEntry(),
             $this->ControlValueId()->GetConfigurationFormEntry(),
             $this->BoostId()->GetConfigurationFormEntry());
 
