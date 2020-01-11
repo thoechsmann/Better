@@ -135,9 +135,9 @@ class BetterHeatingNew extends BetterBase
 
         $propArray = array($this->CurrentTempId()->GetConfigurationFormEntry(),
             $this->CurrentTargetTempId()->GetConfigurationFormEntry(),
-            $this->ControlValueId()->GetConfigurationFormEntry(),
             $this->TargetTempComfortId()->GetConfigurationFormEntry(),
             $this->ModeId()->GetConfigurationFormEntry(),
+            $this->ControlValueId()->GetConfigurationFormEntry(),
             $this->BoostId()->GetConfigurationFormEntry());
 
         $propArray = array_merge($propArray, $this->WindowStatusIds()->GetAllConfigurationFormEntries());
@@ -225,7 +225,7 @@ class BetterHeatingNew extends BetterBase
     public function UpdateHeatingMode()
     {
         if($this->ModeId()->Value() == 0) return;
-        
+
         $mode = GetValue($this->ModeId()->Value());
         $this->CurrentTargetTempLink()->SetHidden($mode == 1);
         $this->TargetTempComfortLink()->SetHidden($mode != 1);
