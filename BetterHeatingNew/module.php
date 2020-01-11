@@ -224,6 +224,8 @@ class BetterHeatingNew extends BetterBase
 
     public function UpdateHeatingMode()
     {
+        if($this->ModeId()->Value() == 0) return;
+        
         $mode = GetValue($this->ModeId()->Value());
         $this->CurrentTargetTempLink()->SetHidden($mode == 1);
         $this->TargetTempComfortLink()->SetHidden($mode != 1);
