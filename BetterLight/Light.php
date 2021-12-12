@@ -11,9 +11,9 @@ class LightArray {
 
     private int $size;
     private int $type;
-    private $module;
+    private BetterBase $module;
 
-    public function __construct($module, int $size, int $type)
+    public function __construct(BetterBase $module, int $size, int $type)
     {
         $this->module = $module;
         $this->size = $size;
@@ -125,10 +125,10 @@ abstract class Light {
     const StrScene = "Scene";
 
     protected int $index;
-    protected $module;
+    protected BetterBase $module;
     protected string $prefix;
 
-    public function __construct($module, int $index, string $prefix) {
+    public function __construct(BetterBase $module, int $index, string $prefix) {
         $this->module = $module;
         $this->index = $index;
         $this->prefix = $prefix;

@@ -14,9 +14,9 @@ class MotionSensor
     const StateAlwaysOff = 1;
     const StateAlwaysOn = 2;
 
-    private $module;
+    private BetterBase $module;
 
-    public function __construct($module) {
+    public function __construct(BetterBase $module) {
         $this->module = $module;
     }
 

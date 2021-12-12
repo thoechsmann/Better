@@ -2,10 +2,10 @@
 abstract class IPSProperty
 {
     protected string $name;
-    protected $module;
+    protected BetterBase $module;
     protected string $caption;
 
-    public function __construct($module, string $name, string $caption = "")
+    public function __construct(BetterBase $module, string $name, string $caption = "")
     {
         $this->module = $module;
         $this->name = $name;
@@ -65,12 +65,12 @@ class IPSPropertyString extends IPSProperty
 
 abstract class IPSPropertyArray
 {
-    protected $module;
-    protected $count;
-    protected $caption;
-    protected $properties = array();
+    protected BetterBase $module;
+    protected int $count;
+    protected string $caption;
+    protected array $properties = array();
 
-    public function __construct($module, string $name, int $count, string $caption="")
+    public function __construct(BetterBase $module, string $name, int $count, string $caption="")
     {
         $this->module = $module;
         $this->name = $name;

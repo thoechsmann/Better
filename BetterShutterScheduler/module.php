@@ -82,7 +82,7 @@ class BetterShutterScheduler extends BetterBase {
         $this->SetTwilightCheck($this->TwilightCheck()->Value());
 	}
 
-    public function RequestAction(string $ident, $value) 
+    public function RequestAction($ident, $value) 
     {
         switch($ident) {
             case $this->TwilightCheck()->Ident():

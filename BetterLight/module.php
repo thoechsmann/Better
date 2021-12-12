@@ -376,7 +376,7 @@ class BetterLight extends BetterBase
         }
     }
 
-    public function RequestAction(string $ident, $value)
+    public function RequestAction($ident, $value)
     {
         $this->Log("RequestAction - ident:$ident, value:$value");
 

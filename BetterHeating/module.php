@@ -148,7 +148,7 @@ class BetterHeating extends BetterBase {
 
 	}
 
-    public function RequestAction(string $Ident, $Value) 
+    public function RequestAction($Ident, $Value) 
     {    
         switch($Ident) {
             case "Boost":

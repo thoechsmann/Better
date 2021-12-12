@@ -8,11 +8,11 @@ class Backing  {
     const EIBTypeScale = 1;
     const EIBTypeRGB = 2;
 
-    private $module;
-    private $displayIdent;
-    private $getterId;
-    private $setterId;
-    private $eibType;
+    private BetterBase $module;
+    private string $displayIdent;
+    private int $getterId;
+    private int $setterId;
+    private int $eibType;
 
     // Events
     private function Trigger()
@@ -20,7 +20,7 @@ class Backing  {
         return new IPSEventTrigger($this->module->InstanceId(), $this->displayIdent() . "Trigger");
     }
 
-    public function __construct($module, string $displayIdent, int $getterId, int $setterId, $eibType) {
+    public function __construct(BetterBase $module, string $displayIdent, int $getterId, int $setterId, $eibType) {
         if($displayIdent == "" || $getterId == 0 || $setterId == 0)
             throw new Exception("Backing::__construct(module, $displayIdent, $getterId, $setterId, $eibType) - Some ids are 0.");
 

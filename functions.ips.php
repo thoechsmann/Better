@@ -1072,80 +1072,80 @@ function ZW_UserCodeLearn(int $InstanceID, bool $Enabled) { return true; }
 function ZW_UserCodeRemove(int $InstanceID, int $Identifier) { return true; }
 function ZW_WakeUpSetInterval(int $InstanceID, int $Seconds) { return true; }
 
-class IPSModule {
-    protected $InstanceID;
-    public function __construct($InstanceID) {}
-    public function Create() { return true; }
-    public function Destroy() { return true; }
-    protected function GetIDForIdent(string $Ident) { return 0; }
-    protected function RegisterPropertyBoolean(string $Name, bool $DefaultValue) { return true; }
-    protected function RegisterPropertyInteger(string $Name, int $DefaultValue) { return true; }
-    protected function RegisterPropertyFloat(string $Name, float $DefaultValue) { return true; }
-    protected function RegisterPropertyString(string $Name, string $DefaultValue) { return true; }
-    protected function RegisterAttributeBoolean(string $Name, bool $DefaultValue) { return true; }
-    protected function RegisterAttributeInteger(string $Name, int $DefaultValue) { return true; }
-    protected function RegisterAttributeFloat(string $Name, float $DefaultValue) { return true; }
-    protected function RegisterAttributeString(string $Name, string $DefaultValue) { return true; }
-    protected function RegisterTimer(string $Ident, int $Milliseconds, string $ScriptText) { return 0; }
-    protected function RegisterOnceTimer(string $Ident, string $ScriptText) { return true; }
-    protected function SetTimerInterval(string $Ident, int $Milliseconds) { return true; }
-    protected function GetTimerInterval(string $Name) { return 0; }
-    protected function RegisterScript(string $Ident, string $Name, string $Content = '', int $Position = 0) { return 0; }
-    protected function RegisterVariableBoolean(string $Ident, string $Name, string $Profile = '', int $Position = 0) { return 0; }
-    protected function RegisterVariableInteger(string $Ident, string $Name, string $Profile = '', int $Position = 0) { return 0; }
-    protected function RegisterVariableFloat(string $Ident, string $Name, string $Profile = '', int $Position = 0) { return 0; }
-    protected function RegisterVariableString(string $Ident, string $Name, string $Profile = '', int $Position = 0) { return 0; }
-    protected function UnregisterVariable(string $Ident) { return true; }
-    protected function MaintainVariable(string $Ident, string $Name, int $Type, string $Profile, int $Position, bool $Keep) { return true; }
-    protected function EnableAction(string $Ident) { return true; }
-    protected function DisableAction(string $Ident) { return true; }
-    protected function MaintainAction(string $Ident, bool $Keep) { return true; }
-    protected function GetValue(string $Ident) { return ''; }
-    protected function SetValue(string $Ident, $Value) { return true; }
-    protected function ReadPropertyBoolean(string $Name) { return true; }
-    protected function ReadPropertyInteger(string $Name) { return 0; }
-    protected function ReadPropertyFloat(string $Name) { return 0.0; }
-    protected function ReadPropertyString(string $Name) { return ''; }
-    protected function ReadAttributeBoolean(string $Name) { return true; }
-    protected function ReadAttributeInteger(string $Name) { return 0; }
-    protected function ReadAttributeFloat(string $Name) { return 0.0; }
-    protected function ReadAttributeString(string $Name) { return ''; }
-    protected function WriteAttributeBoolean(string $Name, bool $Value) { return true; }
-    protected function WriteAttributeInteger(string $Name, int $Value) { return true; }
-    protected function WriteAttributeFloat(string $Name, float $Value) { return true; }
-    protected function WriteAttributeString(string $Name, string $Value) { return true; }
-    protected function SendDataToParent(string $Data) { return ''; }
-    protected function SendDataToChildren(string $Data) { return true; }
-    protected function ConnectParent(string $ModuleID) { return true; }
-    protected function RequireParent(string $ModuleID) { return true; }
-    protected function ForceParent(string $ModuleID) { return true; }
-    protected function SetStatus(int $Status) { return true; }
-    protected function GetStatus() { return 0; }
-    protected function SetSummary(string $Summary) { return true; }
-    protected function SetBuffer(string $Name, string $Data) { return true; }
-    protected function GetBuffer(string $Name) { return ''; }
-    protected function GetBufferList() { return []; }
-    protected function SendDebug(string $Message, string $Data, int $Format) { return true; }
-    protected function RegisterMessage(int $SenderID, int $Message) { return true; }
-    protected function UnregisterMessage(int $SenderID, int $Message) { return true; }
-    protected function GetMessageList() { return []; }
-    protected function RegisterReference(int $ID) { return true; }
-    protected function UnregisterReference(int $ID) { return true; }
-    protected function GetReferenceList() { return []; }
-    protected function UpdateFormField(string $Name, string $Parameter, $Value) { return true; }
-    protected function ReloadForm() { return true; }
-    protected function HasActiveParent() { return true; }
-    public function MessageSink($TimeStamp, $SenderID, $Message, $Data) { return true; }
-    public function ApplyChanges() { return true; }
-    protected function LogMessage(string $Message, int $Type) { return true; }
-    protected function SetReceiveDataFilter(string $RequiredRegexMatch) { return true; }
-    public function ReceiveData($JSONString) { return true; }
-    protected function SetForwardDataFilter(string $RequiredRegexMatch) { return true; }
-    public function ForwardData($JSONString) { return ''; }
-    public function RequestAction(string $Ident, $Value) { return true; }
-    public function GetConfigurationForm() { return ''; }
-    public function GetConfigurationForParent() { return ''; }
-    public function Translate(string $Text) { return ''; }
-}
+// class IPSModule {
+//     protected $InstanceID;
+//     public function __construct($InstanceID) {}
+//     public function Create() { return true; }
+//     public function Destroy() { return true; }
+//     protected function GetIDForIdent($Ident) { return 0; }
+//     protected function RegisterPropertyBoolean(string $Name, bool $DefaultValue) { return true; }
+//     protected function RegisterPropertyInteger(string $Name, int $DefaultValue) { return true; }
+//     protected function RegisterPropertyFloat(string $Name, float $DefaultValue) { return true; }
+//     protected function RegisterPropertyString(string $Name, string $DefaultValue) { return true; }
+//     protected function RegisterAttributeBoolean(string $Name, bool $DefaultValue) { return true; }
+//     protected function RegisterAttributeInteger(string $Name, int $DefaultValue) { return true; }
+//     protected function RegisterAttributeFloat(string $Name, float $DefaultValue) { return true; }
+//     protected function RegisterAttributeString(string $Name, string $DefaultValue) { return true; }
+//     protected function RegisterTimer(string $Ident, int $Milliseconds, string $ScriptText) { return 0; }
+//     protected function RegisterOnceTimer(string $Ident, string $ScriptText) { return true; }
+//     protected function SetTimerInterval(string $Ident, int $Milliseconds) { return true; }
+//     protected function GetTimerInterval(string $Name) { return 0; }
+//     protected function RegisterScript(string $Ident, string $Name, string $Content = '', int $Position = 0) { return 0; }
+//     protected function RegisterVariableBoolean(string $Ident, string $Name, string $Profile = '', int $Position = 0) { return 0; }
+//     protected function RegisterVariableInteger(string $Ident, string $Name, string $Profile = '', int $Position = 0) { return 0; }
+//     protected function RegisterVariableFloat(string $Ident, string $Name, string $Profile = '', int $Position = 0) { return 0; }
+//     protected function RegisterVariableString(string $Ident, string $Name, string $Profile = '', int $Position = 0) { return 0; }
+//     protected function UnregisterVariable(string $Ident) { return true; }
+//     protected function MaintainVariable(string $Ident, string $Name, int $Type, string $Profile, int $Position, bool $Keep) { return true; }
+//     protected function EnableAction(string $Ident) { return true; }
+//     protected function DisableAction(string $Ident) { return true; }
+//     protected function MaintainAction(string $Ident, bool $Keep) { return true; }
+//     protected function GetValue(string $Ident) { return ''; }
+//     protected function SetValue(string $Ident, $Value) { return true; }
+//     protected function ReadPropertyBoolean(string $Name) { return true; }
+//     protected function ReadPropertyInteger(string $Name) { return 0; }
+//     protected function ReadPropertyFloat(string $Name) { return 0.0; }
+//     protected function ReadPropertyString(string $Name) { return ''; }
+//     protected function ReadAttributeBoolean(string $Name) { return true; }
+//     protected function ReadAttributeInteger(string $Name) { return 0; }
+//     protected function ReadAttributeFloat(string $Name) { return 0.0; }
+//     protected function ReadAttributeString(string $Name) { return ''; }
+//     protected function WriteAttributeBoolean(string $Name, bool $Value) { return true; }
+//     protected function WriteAttributeInteger(string $Name, int $Value) { return true; }
+//     protected function WriteAttributeFloat(string $Name, float $Value) { return true; }
+//     protected function WriteAttributeString(string $Name, string $Value) { return true; }
+//     protected function SendDataToParent(string $Data) { return ''; }
+//     protected function SendDataToChildren(string $Data) { return true; }
+//     protected function ConnectParent(string $ModuleID) { return true; }
+//     protected function RequireParent(string $ModuleID) { return true; }
+//     protected function ForceParent(string $ModuleID) { return true; }
+//     protected function SetStatus(int $Status) { return true; }
+//     protected function GetStatus() { return 0; }
+//     protected function SetSummary(string $Summary) { return true; }
+//     protected function SetBuffer(string $Name, string $Data) { return true; }
+//     protected function GetBuffer(string $Name) { return ''; }
+//     protected function GetBufferList() { return []; }
+//     protected function SendDebug(string $Message, string $Data, int $Format) { return true; }
+//     protected function RegisterMessage(int $SenderID, int $Message) { return true; }
+//     protected function UnregisterMessage(int $SenderID, int $Message) { return true; }
+//     protected function GetMessageList() { return []; }
+//     protected function RegisterReference(int $ID) { return true; }
+//     protected function UnregisterReference(int $ID) { return true; }
+//     protected function GetReferenceList() { return []; }
+//     protected function UpdateFormField(string $Name, string $Parameter, $Value) { return true; }
+//     protected function ReloadForm() { return true; }
+//     protected function HasActiveParent() { return true; }
+//     public function MessageSink($TimeStamp, $SenderID, $Message, $Data) { return true; }
+//     public function ApplyChanges() { return true; }
+//     protected function LogMessage(string $Message, int $Type) { return true; }
+//     protected function SetReceiveDataFilter(string $RequiredRegexMatch) { return true; }
+//     public function ReceiveData($JSONString) { return true; }
+//     protected function SetForwardDataFilter(string $RequiredRegexMatch) { return true; }
+//     public function ForwardData($JSONString) { return ''; }
+//     public function RequestAction(string $Ident, $Value) { return true; }
+//     public function GetConfigurationForm() { return ''; }
+//     public function GetConfigurationForParent() { return ''; }
+//     public function Translate(string $Text) { return ''; }
+// }
 
 function IQL4SH_GetObjectList(int $InstanceID) {return Array();}

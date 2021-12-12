@@ -140,7 +140,7 @@ class BetterShutterNew extends BetterBase {
         }
     }
 
-    public function RequestAction(string $Ident, $Value) 
+    public function RequestAction($Ident, $Value) 
     {
         switch($Ident) {
             case $this->Enabled()->Ident():
