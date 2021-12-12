@@ -3,7 +3,7 @@ require_once(__DIR__ . "/IPSObject.php");
 
 class IPSScript extends IPSObject
 {
-    public function Register($name, $content = "<?\n?>", $position = 0)    
+    public function Register(string $name, string $content = "<?\n?>", int $position = 0)    
     {        
         $this->_Register($name, $position);
             
@@ -12,7 +12,7 @@ class IPSScript extends IPSObject
         return $this->Id();        
     }
 
-    public function SetContent($content)
+    public function SetContent(string $content)
     {
         IPS_SetScriptContent($this->Id(), $content);
     }
@@ -22,12 +22,12 @@ class IPSScript extends IPSObject
         return IPS_CreateScript(0);
     }
 
-    protected function DeleteObject($id)
+    protected function DeleteObject(int $id)
     {
-        IPS_DeleteScript($id);
+        IPS_DeleteScript($id, true);
     }
 
-    protected function IsCorrectObjectType($id)
+    protected function IsCorrectObjectType(int $id)
     {
         if(!IPS_ScriptExists($id))
             throw new Exception("Ident with name ".$this->Ident()." is used for wrong object type");

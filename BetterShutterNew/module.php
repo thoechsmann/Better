@@ -140,7 +140,7 @@ class BetterShutterNew extends BetterBase {
         }
     }
 
-    public function RequestAction($Ident, $Value) 
+    public function RequestAction(string $Ident, $Value) 
     {
         switch($Ident) {
             case $this->Enabled()->Ident():
@@ -160,7 +160,7 @@ class BetterShutterNew extends BetterBase {
         }
     }
 
-    public function UpDownEvent($moveDown)
+    public function UpDownEvent(bool $moveDown)
     {
         $this->Log("UpDownEvent(moveDown:$moveDown)");
 
@@ -206,7 +206,7 @@ class BetterShutterNew extends BetterBase {
         }
     }
 
-    public function WindowEvent($open)
+    public function WindowEvent(bool $open)
     {
         $this->Log("WindowEvent(open:$open)");
 
@@ -224,7 +224,7 @@ class BetterShutterNew extends BetterBase {
         }
     }
 
-    private function MoveShutter($moveControl)
+    private function MoveShutter(int $moveControl)
     {
         switch($moveControl)
         {
@@ -264,14 +264,14 @@ class BetterShutterNew extends BetterBase {
         $this->Move(true);
     }
 
-    private function Move($down)
+    private function Move(int $down)
     {
         $this->Log("Move(down:$down)");        
         $upDownId = $this->ShutterControls()->At(0)->UpDownId();
         EIB_Switch(IPS_GetParent($upDownId), $down);
     }
 
-    private function MoveTo($pos)
+    private function MoveTo(int $pos)
     {
         $this->Log("MoveTo(pos:$pos)");
         $positionId = $this->PositionIdProp()->Value();
@@ -297,7 +297,7 @@ class BetterShutterNew extends BetterBase {
         return GetValue($posStatusId);
     }
 
-    private function UpdatePositionLimit($value)
+    private function UpdatePositionLimit(int $value)
     {
         $this->PositionLimit()->SetValue($value);
 

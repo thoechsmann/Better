@@ -16,55 +16,55 @@ class BetterBase extends IPSModule {
     const PersistentPrefix = "persistent_";
 
     // Make same stuff public. Required by property class.
-    public function RegisterPropertyInteger($name, $value)
+    public function RegisterPropertyInteger(string $name, int $value)
     {
         parent::RegisterPropertyInteger($name, $value);
     }
 
-    public function RegisterPropertyString($name, $value)
+    public function RegisterPropertyString(string $name, string $value)
     {
         parent::RegisterPropertyString($name, $value);
     }
 
-    public function ReadPropertyInteger($name)
+    public function ReadPropertyInteger(string $name)
     {
         return parent::ReadPropertyInteger($name);
     }
 
-    public function ReadPropertyString($name)
+    public function ReadPropertyString(string $name)
     {
         return parent::ReadPropertyString($name);
     }
 
-    public function RegisterVariableBoolean($Ident, $Name, $Profile = "", $Position = 0) {
+    public function RegisterVariableBoolean(string $Ident, string $Name, string $Profile = "", int $Position = 0) {
         return parent::RegisterVariableBoolean($Ident, $Name, $Profile, $Position);
     }
 
-    public function RegisterVariableInteger($Ident, $Name, $Profile = "", $Position = 0) {
+    public function RegisterVariableInteger(string $Ident, string $Name, string $Profile = "", int $Position = 0) {
         return parent::RegisterVariableInteger($Ident, $Name, $Profile, $Position);
     }
 
-    public function RegisterVariableFloat($Ident, $Name, $Profile = "", $Position = 0) {
+    public function RegisterVariableFloat(string $Ident, string $Name, string $Profile = "", int $Position = 0) {
         return parent::RegisterVariableFloat($Ident, $Name, $Profile, $Position);
     }
 
-    public function RegisterVariableString($Ident, $Name, $Profile = "", $Position = 0) {
+    public function RegisterVariableString(string $Ident, string $Name, string $Profile = "", int $Position = 0) {
         return parent::RegisterVariableString($Ident, $Name, $Profile, $Position);
     }
     
-    public function UnregisterVariable($Ident) {
+    public function UnregisterVariable(string $Ident) {
         parent::UnregisterVariable($Ident);
     }
 
-    public function GetIDForIdent($Ident) {
+    public function GetIDForIdent(string $Ident) {
         return parent::GetIDForIdent($Ident);
     }
     
-    public function EnableAction($Ident) {
+    public function EnableAction(string $Ident) {
         parent::EnableAction($Ident);
     }
         
-    public function DisableAction($Ident) {
+    public function DisableAction(string $Ident) {
         parent::DisableAction($Ident);
     }        
     //
@@ -86,13 +86,13 @@ class BetterBase extends IPSModule {
         //$this->RemoveAllButSchedulers();
 	}
 
-    public function SetValueForIdent($ident, $value)
+    public function SetValueForIdent(string $ident, $value)
     {
         $id = $this->GetIDForIdent($ident);
         SetValue($id, $value);
     }
 
-    protected function GetValueForIdent($ident)
+    protected function GetValueForIdent(string $ident)
     { 
         $id = $this->GetIDForIdent($ident);
         return GetValue($id);
@@ -103,7 +103,7 @@ class BetterBase extends IPSModule {
         IPS_GetName($this->InstanceID);
     }
 
-    protected function RegisterLink($ident, $name, $targetInstanceID, $position) 
+    protected function RegisterLink(string $ident, string $name, int $targetInstanceID, int $position) 
     {
         // IPS_LogMessage("BetterBase", "OBSOLETE (remove!): RegisterLink");
         
@@ -123,7 +123,7 @@ class BetterBase extends IPSModule {
         return $link;
     }
 
-    public function RegisterTrigger($ident, $targetId, $script, $triggerType = self::TriggerTypeChange)
+    public function RegisterTrigger(string $ident, int $targetId, string $script, int $triggerType = self::TriggerTypeChange)
     { 
          // IPS_LogMessage("BetterBase", "OBSOLETE (remove!): RegisterTrigger(". 
          //    $ident . ", " . 
@@ -156,7 +156,7 @@ class BetterBase extends IPSModule {
         return $id;
     }
 
-    protected function RegisterTimer($ident, $interval, $script) 
+    protected function RegisterTimer(string $ident, int $interval, string $script) 
     { 
         // IPS_LogMessage("BetterBase", "OBSOLETE (remove!): RegisterTimer");
         $id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID); 
@@ -189,7 +189,7 @@ class BetterBase extends IPSModule {
         return $id;
     }
 
-    protected function RegisterScheduler($ident, $name = "") 
+    protected function RegisterScheduler(string $ident, string $name = "") 
     { 
         // IPS_LogMessage("BetterBase", "OBSOLETE (remove!): RegisterScheduler");
         if(empty($name))
@@ -215,7 +215,7 @@ class BetterBase extends IPSModule {
         return $id;
     }
 
-    protected function DeleteObject($ObjectId) { 
+    protected function DeleteObject(int $ObjectId) { 
         $Object     = IPS_GetObject($ObjectId); 
         $ObjectType = $Object['ObjectType']; 
         switch ($ObjectType) { 
@@ -290,7 +290,7 @@ class BetterBase extends IPSModule {
         return $this->IsTodayWeekend();
     }
 
-    protected function Log($text)
+    protected function Log(string $text)
     {
         IPS_LogMessage($this->GetModuleName() . "(" . $this->InstanceID() . ")", $text);
     }
@@ -300,7 +300,7 @@ class BetterBase extends IPSModule {
         return "BetterBase";
     }
 
-    protected function GetNameForAlexaId($id)
+    protected function GetNameForAlexaId(int $id)
     {
         $objectList = IQL4SH_GetObjectList(15209);
         

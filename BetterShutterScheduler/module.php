@@ -82,7 +82,7 @@ class BetterShutterScheduler extends BetterBase {
         $this->SetTwilightCheck($this->TwilightCheck()->Value());
 	}
 
-    public function RequestAction($ident, $value) 
+    public function RequestAction(string $ident, $value) 
     {
         switch($ident) {
             case $this->TwilightCheck()->Ident():
@@ -94,7 +94,7 @@ class BetterShutterScheduler extends BetterBase {
         }
     }
 
-    private function SetTwilightCheck($value)
+    private function SetTwilightCheck(bool $value)
     {
         $this->TwilightCheck()->SetValue($value);
 
@@ -112,7 +112,7 @@ class BetterShutterScheduler extends BetterBase {
         }
     }
 
-    public function DayChanged($isDay)
+    public function DayChanged(bool $isDay)
     {
         $this->Log("DayChanged(isDay:$isDay)");
 
@@ -186,7 +186,7 @@ class BetterShutterScheduler extends BetterBase {
         $this->OpenOnDawn()->SetValue(false);
     }
 
-    private function Move($down)
+    private function Move(bool $down)
     {
         $upDownId = $this->ShutterGroupUpDownIdProp()->Value();
         EIB_Switch(IPS_GetParent($upDownId), $down);

@@ -3,7 +3,7 @@ require_once(__DIR__ . "/IPSObject.php");
 
 abstract class IPSVar extends IPSObject
 {
-    public function Register($name = "", $profile = "", $position = 0)
+    public function Register(string $name = "", string $profile = "", int $position = 0)
     {
         $this->_Register($name, $position);
 
@@ -29,7 +29,7 @@ abstract class IPSVar extends IPSObject
         SetValue($this->Id(), $value);
     }
 
-    public function SetProfile($profile)
+    public function SetProfile(string $profile)
     {
         IPS_SetVariableCustomProfile($this->Id(), $profile);
     }
@@ -57,7 +57,7 @@ abstract class IPSVar extends IPSObject
         IPS_DeleteVariable($id);
     }
 
-    protected function IsCorrectObjectType($id)
+    protected function IsCorrectObjectType(int $id)
     {
         if(!IPS_VariableExists($id))
             throw new Exception("Ident with name ".$this->Ident()." is used for wrong object type");

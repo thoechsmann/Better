@@ -9,11 +9,11 @@ class LightArray {
     const TypeDim = 1;
     const TypeRGB = 2;
 
-    private $size;
-    private $type;
+    private int $size;
+    private int $type;
     private $module;
 
-    public function __construct($module, $size, $type)
+    public function __construct($module, int $size, int $type)
     {
         $this->module = $module;
         $this->size = $size;
@@ -39,7 +39,7 @@ class LightArray {
         return $count;
     }
 
-    public function At($index)
+    public function At(int $index)
     {
         switch($this->type)
         {
@@ -57,7 +57,7 @@ class LightArray {
         }
     }
 
-    public function GetLightForDisplayIdent($ident)
+    public function GetLightForDisplayIdent(string $ident)
     {
         for($i = 0; $i<$this->size; $i++)
         {
@@ -77,7 +77,7 @@ class LightArray {
         }
     }
 
-    public function RegisterVariables($sceneCount, $position)
+    public function RegisterVariables(int $sceneCount, int $position)
     {
         IPS_LogMessage("BL", "RegisterVariablessss");
 
@@ -95,7 +95,7 @@ class LightArray {
         }
     }
 
-    public function SaveToScene($sceneNumber)
+    public function SaveToScene(int $sceneNumber)
     {
         for($i = 0; $i < $this->Count(); $i++)
         {
@@ -103,7 +103,7 @@ class LightArray {
         }
     }
 
-    public function LoadFromScene($sceneNumber, $triggerIdent, $triggerBoolValue)
+    public function LoadFromScene(int $sceneNumber, string $triggerIdent, bool $triggerBoolValue)
     {
         for($i = 0; $i < $this->Count(); $i++)
         {
@@ -124,11 +124,11 @@ class LightArray {
 abstract class Light {
     const StrScene = "Scene";
 
-    protected $index;
+    protected int $index;
     protected $module;
-    protected $prefix;
+    protected string $prefix;
 
-    public function __construct($module, $index, $prefix) {
+    public function __construct($module, int $index, string $prefix) {
         $this->module = $module;
         $this->index = $index;
         $this->prefix = $prefix;
@@ -148,7 +148,7 @@ abstract class Light {
 
     // Variables
 
-    protected abstract function SceneVars($sceneNumber);
+    protected abstract function SceneVars(int $sceneNumber);
     protected abstract function DisplayVarProfile();
     protected abstract function DisplayVar();
 
@@ -157,12 +157,12 @@ abstract class Light {
         return $this->prefix . $this->index . "DisplayVar";
     }
 
-    public function IsDisplayVar($ident)
+    public function IsDisplayVar(string $ident)
     {
         return $ident == $this->DisplayVar()->Ident();
     }
 
-    protected function SceneVarName($sceneNumber)
+    protected function SceneVarName(int $sceneNumber)
     {
         return BetterBase::PersistentPrefix . 
             $this->prefix . $this->index . 
@@ -178,7 +178,7 @@ abstract class Light {
         $this->SwitchIdProp()->Register();
     }
 
-    private function RegisterDisplayVar($position)
+    private function RegisterDisplayVar(int $position)
     {
         $name = $this->Name();
         $var = $this->DisplayVar();
@@ -186,7 +186,7 @@ abstract class Light {
         $this->module->EnableAction($var->Ident());
     }
 
-    private function RegisterSceneVars($sceneCount)
+    private function RegisterSceneVars(int $sceneCount)
     {
         for($i = 0; $i<$sceneCount; $i++)
         {
@@ -196,7 +196,7 @@ abstract class Light {
         }
     }
 
-    public function RegisterVariables($sceneCount, $position)
+    public function RegisterVariables(int $sceneCount, int $position)
     {
         $name = $this->Name();
         $this->RegisterDisplayVar($position);
@@ -237,13 +237,13 @@ abstract class Light {
         EIB_Switch(IPS_GetParent($id), false);
     }
 
-    public function SaveToScene($sceneNumber)
+    public function SaveToScene(int $sceneNumber)
     {
         $value = $this->DisplayVar()->Value();
         $this->SceneVars($sceneNumber)->SetValue($value);
     }
 
-    public function LoadFromScene($sceneNumber, $triggerIdent = "", $triggerValue = 0)
+    public function LoadFromScene(int $sceneNumber, string $triggerIdent = "", int $triggerValue = 0)
     {
         $value = $this->SceneVars($sceneNumber)->Value();
 
@@ -260,7 +260,7 @@ abstract class Light {
 class DimLight extends Light {
     const Prefix = "DimLight";
 
-    public function __construct($module, $index) {
+    public function __construct($module, int $index) {
         parent::__construct($module, $index, DimLight::Prefix);
     }
 
@@ -286,7 +286,7 @@ class DimLight extends Light {
         return new IPSVarInteger($this->module->InstanceId(), $this->DisplayVarName());
     }
 
-    protected function SceneVars($sceneNumber)
+    protected function SceneVars(int $sceneNumber)
     {
         return new IPSVarInteger($this->module->InstanceId(), $this->SceneVarName($sceneNumber));
     }
@@ -315,7 +315,7 @@ class DimLight extends Light {
 class RGBLight extends Light {
     const Prefix = "RGBLight";
 
-    public function __construct($module, $index) {
+    public function __construct($module, int $index) {
         parent::__construct($module, $index, RGBLight::Prefix);
     }
 
@@ -330,7 +330,7 @@ class RGBLight extends Light {
         return new IPSVarInteger($this->module->InstanceId(), $this->DisplayVarName());
     }
 
-    protected function SceneVars($sceneNumber)
+    protected function SceneVars(int $sceneNumber)
     {
         return new IPSVarInteger($this->module->InstanceId(), $this->SceneVarName($sceneNumber));
     }
@@ -362,7 +362,7 @@ class RGBLight extends Light {
 class SwitchLight extends Light {
     const Prefix = "SwitchLight";
 
-    public function __construct($module, $index) {
+    public function __construct($module, int $index) {
         parent::__construct($module, $index, SwitchLight::Prefix);
     }
 
@@ -377,7 +377,7 @@ class SwitchLight extends Light {
         return new IPSVarBoolean($this->module->InstanceId(), $this->DisplayVarName());
     }
 
-    protected function SceneVars($sceneNumber)
+    protected function SceneVars(int $sceneNumber)
     {
         return new IPSVarBoolean($this->module->InstanceId(), $this->SceneVarName($sceneNumber));
     }

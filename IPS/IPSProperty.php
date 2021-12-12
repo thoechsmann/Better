@@ -1,11 +1,11 @@
 <?
 abstract class IPSProperty
 {
-    protected $name;
+    protected string $name;
     protected $module;
-    protected $caption;
+    protected string $caption;
 
-    public function __construct($module, $name, $caption = "")
+    public function __construct($module, string $name, string $caption = "")
     {
         $this->module = $module;
         $this->name = $name;
@@ -70,7 +70,7 @@ abstract class IPSPropertyArray
     protected $caption;
     protected $properties = array();
 
-    public function __construct($module, $name, $count, $caption="")
+    public function __construct($module, string $name, int $count, string $caption="")
     {
         $this->module = $module;
         $this->name = $name;
@@ -104,27 +104,27 @@ abstract class IPSPropertyArray
         return $retArray;
     }
 
-    public function At($index)
+    public function At(int $index)
     {
         return $this->properties[$index];
     }
 
-    public function ValueAt($index)
+    public function ValueAt(int $index)
     {
         return $this->properties[$index]->Value();
     }
 
-    public function NameAt($index)
+    public function NameAt(int $index)
     {
         return $this->properties[$index]->Name();
     }
 
-    abstract protected function CreateProperty($name, $caption);
+    abstract protected function CreateProperty(string $name, string $caption);
 }
 
 class IPSPropertyArrayInteger extends IPSPropertyArray
 {
-    protected function CreateProperty($name, $caption="")
+    protected function CreateProperty(string $name, string $caption="")
     {
         return new IPSPropertyInteger($this->module, $name, $caption);
     }
@@ -132,7 +132,7 @@ class IPSPropertyArrayInteger extends IPSPropertyArray
 
 class IPSPropertyArrayString extends IPSPropertyArray
 {
-    protected function CreateProperty($name, $caption="")
+    protected function CreateProperty(string $name, string $caption="")
     {
         return new IPSPropertyString($this->module, $name, $caption);
     }

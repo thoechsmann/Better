@@ -75,7 +75,7 @@ class MotionSensor
         $this->ExternMovementIdProp()->Register();
     }
 
-    public function RegisterVariables($sceneCount, $position)
+    public function RegisterVariables(int $sceneCount, int $position)
     {
         if(!$this->IsDefined())
         {
@@ -98,14 +98,14 @@ class MotionSensor
         }
     }
 
-    private function RegisterLockVar($position)
+    private function RegisterLockVar(int $position)
     {
         $var = $this->LockVar();
         $var->Register("BM Sperren", self::BMProfile, $position);
         $this->module->EnableAction($var->Ident());
     }
 
-    private function RegisterSceneVars($sceneCount)
+    private function RegisterSceneVars(int $sceneCount)
     {
         for($i = 0; $i<$sceneCount; $i++)
         {
@@ -149,7 +149,7 @@ class MotionSensor
         return $this->LockVar()->Value();
     }
 
-    public function SetLockState($value)
+    public function SetLockState(bool $value)
     {
         if(!$this->IsDefined())
         {
@@ -181,7 +181,7 @@ class MotionSensor
         $this->LockVar()->SetValue($value);
     }
 
-    public function SetSceneLock($sceneNumber, $value)
+    public function SetSceneLock(int $sceneNumber, bool $value)
     {
         if(!$this->IsDefined())
         {
@@ -201,7 +201,7 @@ class MotionSensor
         }
     }
 
-    public function SaveToScene($sceneNumber)
+    public function SaveToScene(int $sceneNumber)
     {
         if(!$this->IsDefined())
         {
@@ -212,7 +212,7 @@ class MotionSensor
         $this->LockSceneVars($sceneNumber)->SetValue($value);
     }
 
-    public function LoadFromScene($sceneNumber)
+    public function LoadFromScene(int $sceneNumber)
     {
         if(!$this->IsDefined())
         {
@@ -223,7 +223,7 @@ class MotionSensor
         $this->SetLockState($value);
     }
 
-    public function RequestAction($ident, $value) 
+    public function RequestAction(string $ident, $value) 
     {
         if($ident == $this->LockVar()->Ident())
         {

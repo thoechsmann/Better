@@ -1142,7 +1142,7 @@ class IPSModule {
     public function ReceiveData($JSONString) { return true; }
     protected function SetForwardDataFilter(string $RequiredRegexMatch) { return true; }
     public function ForwardData($JSONString) { return ''; }
-    public function RequestAction($Ident, $Value) { return true; }
+    public function RequestAction(string $Ident, $Value) { return true; }
     public function GetConfigurationForm() { return ''; }
     public function GetConfigurationForParent() { return ''; }
     public function Translate(string $Text) { return ''; }

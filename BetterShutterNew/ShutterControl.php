@@ -3,10 +3,10 @@ require_once(__DIR__ . "/../BetterBase.php");
 require_once(__DIR__ . "/../IPS/IPS.php");
 
 class ShutterControlArray {
-    private $size;
+    private int $size;
     private $module;
 
-    public function __construct($module, $size)
+    public function __construct($module, int $size)
     {
         $this->module = $module;
         $this->size = $size;
@@ -31,7 +31,7 @@ class ShutterControlArray {
         return $count;
     }
 
-    public function At($index)
+    public function At(int $index)
     {
         return new ShutterControl($this->module, $index);
     }
@@ -57,10 +57,10 @@ class ShutterControl
 {
     const StrPrefix = "ShutterControl";
 
-    private $index;
+    private int $index;
     private $module;
 
-    public function __construct($module, $index) {
+    public function __construct($module, int $index) {
         $this->module = $module;
         $this->index = $index;
     }

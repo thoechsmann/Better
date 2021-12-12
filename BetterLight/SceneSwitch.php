@@ -4,10 +4,10 @@ require_once(__DIR__ . "/../BetterBase.php");
 require_once(__DIR__ . "/../IPS/IPS.php");
 
 class SceneSwitchArray {
-    private $size;
+    private int $size;
     private $module;
 
-    public function __construct($module, $size)
+    public function __construct($module, int $size)
     {
         $this->module = $module;
         $this->size = $size;
@@ -32,7 +32,7 @@ class SceneSwitchArray {
         return $count;
     }
 
-    public function At($index)
+    public function At(int $index)
     {
         return new SceneSwitch($this->module, $index);
     }
@@ -56,13 +56,13 @@ class SceneSwitchArray {
 
 class SceneSwitch
 {
-    private $index;
+    private int $index;
     private $module;
 
     const Size = 4;
     const StrPrefix = "SceneSwitch";
 
-    public function __construct($module, $index) {
+    public function __construct($module, int $index) {
         $this->module = $module;
         $this->index = $index;
     }

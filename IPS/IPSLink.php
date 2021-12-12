@@ -5,7 +5,7 @@ require_once(__DIR__ . "/IPSObject.php");
 class IPSLink extends IPSObject
 {
     /// Parameter order changed!
-    public function Register($name, $targetId, $position = 0) 
+    public function Register(string $name, int $targetId, int $position = 0) 
     {        
         $id = $this->_Register($name, $position);
             
@@ -14,7 +14,7 @@ class IPSLink extends IPSObject
         return $id;        
     }
 
-    public function SetTargetId($targetId)
+    public function SetTargetId(int $targetId)
     {
         IPS_SetLinkTargetID($this->Id(), $targetId);
     }
@@ -24,7 +24,7 @@ class IPSLink extends IPSObject
         return IPS_CreateLink();
     }
 
-    protected function DeleteObject($id)
+    protected function DeleteObject(int $id)
     {
         IPS_DeleteLink($id);
     }

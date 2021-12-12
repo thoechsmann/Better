@@ -20,7 +20,7 @@ class Backing  {
         return new IPSEventTrigger($this->module->InstanceId(), $this->displayIdent() . "Trigger");
     }
 
-    public function __construct($module, $displayIdent, $getterId, $setterId, $eibType) {
+    public function __construct($module, string $displayIdent, int $getterId, int $setterId, $eibType) {
         if($displayIdent == "" || $getterId == 0 || $setterId == 0)
             throw new Exception("Backing::__construct(module, $displayIdent, $getterId, $setterId, $eibType) - Some ids are 0.");
 
@@ -68,14 +68,14 @@ class Backing  {
         return GetValue($this->getterId);
     }
 
-    public function RegisterTrigger($additionalCode)
+    public function RegisterTrigger(string $additionalCode)
     {
         $displayId = $this->module->GetIDForIdent($this->displayIdent);
         $script = 'SetValue(' . $displayId . ', $_IPS[\'VALUE\']); ' . $additionalCode;
         $this->Trigger()->Register("", $this->getterId, $script, IPSEventTrigger::TypeUpdate);
     }
 
-    private function int2hex($value)
+    private function int2hex(int $value)
     {
         return sprintf("%06X", $value);
     }

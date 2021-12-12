@@ -58,7 +58,7 @@ class BetterHeating extends BetterBase {
     {
     }
 
-    public function SetMode($mode)
+    public function SetMode(int $mode)
     {
         EIB_Scale(IPS_GetParent($this->ReadPropertyInteger("modeInstanceID")), $mode);
     }
@@ -148,7 +148,7 @@ class BetterHeating extends BetterBase {
 
 	}
 
-    public function RequestAction($Ident, $Value) 
+    public function RequestAction(string $Ident, $Value) 
     {    
         switch($Ident) {
             case "Boost":

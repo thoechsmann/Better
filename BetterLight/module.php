@@ -270,7 +270,7 @@ class BetterLight extends BetterBase
         $this->SaveSceneScript()->Hide();
     }
 
-    private function SaveToScene($sceneNumber)
+    private function SaveToScene(int $sceneNumber)
     {
         $this->Log("SaveToScene(sceneNumber = $sceneNumber)");
 
@@ -283,7 +283,7 @@ class BetterLight extends BetterBase
         $this->CancelSave();
     }
 
-    private function LoadFromScene($sceneNumber)
+    private function LoadFromScene(int $sceneNumber)
     {
         $this->Log("LoadFromScene(sceneNumber = $sceneNumber)");
 
@@ -303,7 +303,7 @@ class BetterLight extends BetterBase
         $this->SetScene($this->CurrentSceneVar()->Value(), false);
     }
 
-    public function ToggleScene($sceneNumber)
+    public function ToggleScene(int $sceneNumber)
     {
         $this->Log("ToggleScene(sceneNumber = $sceneNumber)");
         $currentScene = $this->CurrentSceneVar()->Value();
@@ -315,13 +315,13 @@ class BetterLight extends BetterBase
         }
     }
 
-    public function SetSceneFromScheduler($sceneNumber)
+    public function SetSceneFromScheduler(int $sceneNumber)
     {
         $this->Log("SetSceneFromScheduler(sceneNumber = $sceneNumber)");
         $this->SetScene($sceneNumber);
     }
 
-    public function SetScene($sceneNumber, $turnOn = false)
+    public function SetScene(int $sceneNumber, bool $turnOn = false)
     {
         $this->Log("SetScene(sceneNumber = $sceneNumber, turnOn = $turnOn)");
 
@@ -352,7 +352,7 @@ class BetterLight extends BetterBase
     }
 
     // FIX: Remove storeVar. Save everything in a string.
-    private function SetBackedValue($backing, $value, $storeVar)
+    private function SetBackedValue(Backing $backing, $value, $storeVar)
     {
         $this->Log("SetBackedValue(value=$value, storeVar=$storeVar)");
         $this->CancelSave();
@@ -376,7 +376,7 @@ class BetterLight extends BetterBase
         }
     }
 
-    public function RequestAction($ident, $value)
+    public function RequestAction(string $ident, $value)
     {
         $this->Log("RequestAction - ident:$ident, value:$value");
 
@@ -409,7 +409,7 @@ class BetterLight extends BetterBase
         }
     }
 
-    private function RequestActionForLight($ident, $value)
+    private function RequestActionForLight(string $ident, $value)
     {
         $light = $this->SwitchLights()->GetLightForDisplayIdent($ident);
 

@@ -105,7 +105,7 @@ class BetterHeatingNew extends BetterBase
     }
 
     // Trigger
-    private function WindowStatusTrigger($i)
+    private function WindowStatusTrigger(int $i)
     {
         return new IPSEventTrigger($this->InstanceID(), __FUNCTION__ . $i);
     }
@@ -232,12 +232,12 @@ class BetterHeatingNew extends BetterBase
         $this->TargetTempComfortLink()->SetHidden($mode != 1);
     }
 
-    public function SetMode($mode)
+    public function SetMode(int $mode)
     {
         EIB_Scale(IPS_GetParent($this->ModeId()->Value()), $mode);
     }
 
-    public function RequestAction($ident, $value)
+    public function RequestAction(string $ident, $value)
     {
         switch ($ident) {
             case $this->Boost()->Ident():
@@ -258,7 +258,7 @@ class BetterHeatingNew extends BetterBase
         return $this->BoostId()->Value() != 0;
     }
 
-    private function SetBoost($value)
+    private function SetBoost(bool $value)
     {
         EIB_Switch(IPS_GetParent($this->BoostId()->Value()), $value);
     }

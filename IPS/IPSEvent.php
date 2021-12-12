@@ -3,12 +3,12 @@ require_once(__DIR__ . "/IPSObject.php");
 
 abstract class IPSEvent extends IPSObject
 {
-    public function SetScript($content)
+    public function SetScript(string $content)
     {
         IPS_SetEventScript($this->Id(), "$content;"); 
     }
 
-    public function SetActive($value)
+    public function SetActive(bool $value)
     {
         IPS_SetEventActive($this->Id(), $value);
     }
@@ -23,12 +23,12 @@ abstract class IPSEvent extends IPSObject
         $this->SetActive(false);        
     }
 
-    public function SetLimit($count)
+    public function SetLimit(int $count)
     {
         IPS_SetEventLimit($this->Id(), $count);
     }
 
-    protected function IsCorrectObjectType($id)
+    protected function IsCorrectObjectType(int $id)
     {
         if(!IPS_EventExists($id))
             throw new Exception("Ident with name ".$this->Ident()." is used for wrong object type");
@@ -40,8 +40,8 @@ abstract class IPSEvent extends IPSObject
     {
         return IPS_CreateEvent($this->GetEventTypeId());
     }
-
-    protected function DeleteObject($id)
+    
+    protected function DeleteObject(int $id)
     {
         IPS_DeleteEvent($id);
     }
@@ -57,7 +57,7 @@ class IPSEventTrigger extends IPSEvent
     const TypeSmaller = 3;
     const TypeValue = 4;
 
-    public function Register($name, $targetId, $script, $type = IPSEventTrigger::TypeChange, $position = 0)
+    public function Register(string $name, int $targetId, string $script, int $type = IPSEventTrigger::TypeChange, int $position = 0)
     {
         $this->_Register($name, $position);
         
@@ -70,12 +70,12 @@ class IPSEventTrigger extends IPSEvent
         return $this->Id();
     }
 
-    public function SetTrigger($type, $targetId)
+    public function SetTrigger(int $type, int $targetId)
     {
         IPS_SetEventTrigger($this->Id(), $type, $targetId);
     }
 
-    public function SetSubsequentExecution($value)
+    public function SetSubsequentExecution(bool $value)
     {
         IPS_SetEventTriggerSubsequentExecution($this->Id(), $value);
     }
@@ -115,7 +115,7 @@ class IPSEventCyclic extends IPSEvent
     const TimeTypeHour = 3;
 
     // Changed order or args
-    public function Register($name, $script, $position = 0)
+    public function Register(string $name, string $script, int $position = 0)
     {
         $this->_Register($name, $position);
 
@@ -125,17 +125,17 @@ class IPSEventCyclic extends IPSEvent
     }
 
     // Add some nicer functions.
-    public function SetCyclic($dateType, $dateInterval, $days, $daysInterval, $timeType, $timeInterval)
+    public function SetCyclic(int $dateType, int $dateInterval, int $days, int $daysInterval, int $timeType, int $timeInterval)
     {
         IPS_SetEventCyclic($this->Id(), $dateType, $dateInterval, $days, $daysInterval, $timeType, $timeInterval);
     }
 
-    public function SetTimeFrom($hour, $minute, $second)
+    public function SetTimeFrom(int $hour, int $minute, int $second)
     {
         IPS_SetEventCyclicTimeFrom($this->Id(), $hour, $minute, $second);
     }
 
-    public function StartTimer($seconds, $script)
+    public function StartTimer(int $seconds, string $script)
     {
         $this->StopTimer();
 
@@ -179,22 +179,22 @@ class IPSEventScheduler extends IPSEvent
     const DayWeekend = 96;
     const DayAll = 127;
 
-    public function Register($name = "", $position = 0)
+    public function Register(string $name = "", int $position = 0)
     {
         return parent::_Register($name, $position);
     }
     
-    public function SetGroup($groupId, $days)
+    public function SetGroup(int $groupId, int $days)
     {
         IPS_SetEventScheduleGroup($this->Id(), $groupId, $days);
     }
 
-    public function SetGroupPoint($groupId, $pointId, $hour, $minute, $second, $actionId)
+    public function SetGroupPoint(int $groupId, int $pointId, int $hour, int $minute, int $second, int $actionId)
     {
         IPS_SetEventScheduleGroupPoint($this->Id(), $groupId, $pointId, $hour, $minute, $second, $actionId);
     }
 
-    public function SetAction($actionId, $name, $color, $scriptContent)
+    public function SetAction(int $actionId, int $name, int $color, string $scriptContent)
     {
         IPS_SetEventScheduleAction($this->Id(), $actionId, $name, $color, $scriptContent);
     }

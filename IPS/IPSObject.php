@@ -1,11 +1,11 @@
 <?
 
 abstract class IPSObject  {
-    private $ident;
-    private $id = false;
-    protected $parentId;
+    private string $ident;
+    private int $id = -1;
+    protected int $parentId;
 
-    public function __construct($parentId, $ident) {
+    public function __construct(int $parentId, string $ident) {
         $this->parentId = $parentId;
         $this->ident = $ident;
     }
@@ -24,11 +24,11 @@ abstract class IPSObject  {
 
     public function Id()
     {
-        if($this->id === false)
+        if($this->id === -1)
         {
             $this->id = $this->GetIDForIdent($this->ident);
 
-            if($this->id === false)
+            if($this->id === -1)
             {
                 throw new Exception("Variable::Id() - Ident " . $this->ident . " not found.");
             }
@@ -37,9 +37,9 @@ abstract class IPSObject  {
         return $this->id;
     }
 
-    protected function SetId($id)
+    protected function SetId(int $id)
     {
-        if($this->id !== false)
+        if($this->id !== -1)
         {
             $currentId = $this->id;
             throw new Exception("Variable::SetId($id) - Id already set to $currentId. Changing is not allowed.");
@@ -48,17 +48,17 @@ abstract class IPSObject  {
         $this->id = $id;
     }
 
-    public function GetIDForIdent($ident)
+    public function GetIDForIdent(string $ident)
     {
         $id = @IPS_GetObjectIDByIdent($ident, $this->parentId); 
         
-        if($id === false)
+        if($id === -1)
             $id = 0;
         
         return $id;
     }  
 
-    public function SetHidden($hide)
+    public function SetHidden(bool $hide)
     {
         IPS_SetHidden($this->Id(), $hide);
     }
@@ -73,22 +73,22 @@ abstract class IPSObject  {
         $this->SetHidden(false);
     }
 
-    public function SetName($name)
+    public function SetName(string $name)
     {
         IPS_SetName($this->Id(), $name);
     }
 
-    public function SetPosition($pos)
+    public function SetPosition(int $pos)
     {
         IPS_SetPosition($this->Id(), $pos);
     }
 
-    public function SetIcon($icon)
+    public function SetIcon(string $icon)
     {
         IPS_SetIcon($this->Id(), $icon);
     }
 
-    protected function _Register($name, $position ) 
+    protected function _Register(string $name, int $position) 
     {
         // IPS_LogMessage(__CLASS__, "Registering - " . $this);
 
@@ -123,14 +123,14 @@ abstract class IPSObject  {
         return $id;            
     }
 
-    protected function IsCorrectObjectType($id)
+    protected function IsCorrectObjectType(int $id)
     {
         return false;        
     }
 
     // Used e.g. by variables to not delete them if same type. Not sure if there is some benefit in not deleting them always.
     abstract protected function CreateObject();
-    abstract protected function DeleteObject($id);
+    abstract protected function DeleteObject(int $id);
 
 }
 
