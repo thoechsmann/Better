@@ -48,7 +48,8 @@ class Backing  {
         switch($this->eibType)
         {
             case self::EIBTypeSwitch:
-                EIB_Switch($parent, $value);
+                RequestAction($parent, $value);
+                // EIB_Switch($parent, $value);
                 break;
 
             case self::EIBTypeScale:
