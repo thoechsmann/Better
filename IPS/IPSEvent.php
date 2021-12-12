@@ -152,7 +152,7 @@ class IPSEventCyclic extends IPSEvent
 
     public function StopTimer()
     {
-        $link = @IPS_GetObjectIDByIdent($ident, $this->InstanceID);
+        $link = @IPS_GetObjectIDByIdent($this->id, $this->InstanceID);
         if($link !== false)
         {
             IPS_DeleteEvent($link);
