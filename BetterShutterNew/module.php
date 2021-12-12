@@ -5,6 +5,7 @@
 //     Simplest solution might be to poll for position status and check if it
 //     moved in a defined delta time.
 
+declare(strict_types=1);
 require_once(__DIR__ . "/../BetterBase.php");
 require_once(__DIR__ . "/../IPS/IPS.php");
 require_once(__DIR__ . "/ShutterControl.php");
@@ -264,7 +265,7 @@ class BetterShutterNew extends BetterBase {
         $this->Move(true);
     }
 
-    private function Move(int $down)
+    private function Move(bool $down)
     {
         $this->Log("Move(down:$down)");        
         $upDownId = $this->ShutterControls()->At(0)->UpDownId();

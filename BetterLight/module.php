@@ -1,7 +1,7 @@
 <?
 // TODO:
 // - Toggle through scenes with one switch
-
+declare(strict_types=1);
 
 require_once(__DIR__ . "/Light.php");
 require_once(__DIR__ . "/Scene.php");

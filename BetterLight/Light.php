@@ -1,7 +1,8 @@
 <?
+declare(strict_types=1);
+
 require_once(__DIR__ . "/../BetterBase.php");
 require_once(__DIR__ . "/../Backing.php");
-
 require_once(__DIR__ . "/../IPS/IPS.php");
 
 class LightArray {
@@ -103,7 +104,7 @@ class LightArray {
         }
     }
 
-    public function LoadFromScene(int $sceneNumber, string $triggerIdent, bool $triggerBoolValue)
+    public function LoadFromScene(int $sceneNumber, string $triggerIdent, $triggerBoolValue)
     {
         for($i = 0; $i < $this->Count(); $i++)
         {
@@ -243,7 +244,7 @@ abstract class Light {
         $this->SceneVars($sceneNumber)->SetValue($value);
     }
 
-    public function LoadFromScene(int $sceneNumber, string $triggerIdent = "", int $triggerValue = 0)
+    public function LoadFromScene(int $sceneNumber, string $triggerIdent = "", $triggerValue = 0)
     {
         $value = $this->SceneVars($sceneNumber)->Value();
 

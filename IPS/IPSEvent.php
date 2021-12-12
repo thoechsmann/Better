@@ -1,4 +1,5 @@
 <?
+declare(strict_types=1);
 require_once(__DIR__ . "/IPSObject.php");
 
 abstract class IPSEvent extends IPSObject
@@ -142,8 +143,8 @@ class IPSEventCyclic extends IPSEvent
         $this->Register("", $script);
         // $this->SetCyclic(self::DateTypeNone, 0, 0, 0, self::TimeTypeSecond, $seconds);
 
-        $time = time() + $seconds;
-        $this->SetTimeFrom(date("H", $time), date("i", $time), date("s", $time));
+        $time = (time() + $seconds);
+        $this->SetTimeFrom((int)date("H", $time), (int)date("i", $time), (int)date("s", $time));
 
         $this->SetLimit(1);
         $this->Activate();
@@ -194,7 +195,7 @@ class IPSEventScheduler extends IPSEvent
         IPS_SetEventScheduleGroupPoint($this->Id(), $groupId, $pointId, $hour, $minute, $second, $actionId);
     }
 
-    public function SetAction(int $actionId, int $name, int $color, string $scriptContent)
+    public function SetAction(int $actionId, string $name, int $color, string $scriptContent)
     {
         IPS_SetEventScheduleAction($this->Id(), $actionId, $name, $color, $scriptContent);
     }

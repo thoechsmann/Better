@@ -1,7 +1,8 @@
 <?
+declare(strict_types=1);
+
 require_once(__DIR__ . "/../BetterBase.php");
 require_once(__DIR__ . "/../Backing.php");
-
 require_once(__DIR__ . "/../IPS/IPS.php");
 
 class MotionSensor 
@@ -181,7 +182,7 @@ class MotionSensor
         $this->LockVar()->SetValue($value);
     }
 
-    public function SetSceneLock(int $sceneNumber, bool $value)
+    public function SetSceneLock(int $sceneNumber, int $value)
     {
         if(!$this->IsDefined())
         {

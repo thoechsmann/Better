@@ -1,5 +1,5 @@
 <?
-
+declare(strict_types=1);
 require_once(__DIR__ . "/IPSObject.php");
 
 class IPSLink extends IPSObject

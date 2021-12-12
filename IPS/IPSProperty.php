@@ -1,4 +1,6 @@
 <?
+declare(strict_types=1);
+
 abstract class IPSProperty
 {
     protected string $name;

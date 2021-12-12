@@ -1,4 +1,5 @@
 <?
+declare(strict_types=1);
 require_once(__DIR__ . "/IPSObject.php");
 
 abstract class IPSVar extends IPSObject
@@ -43,7 +44,7 @@ abstract class IPSVar extends IPSObject
     {
         if(!$this->ValueValid($value))
         {
-            throw new Exception("IPSVar - SetValue", "value: $value is not of type " . $this->GetVarTypeName() . " - " . $this);
+            throw new Exception("IPSVar - SetValue value: $value is not of type " . $this->GetVarTypeName() . " - " . $this);
         }
     }
 
