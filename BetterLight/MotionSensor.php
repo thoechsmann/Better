@@ -150,7 +150,7 @@ class MotionSensor
         return $this->LockVar()->Value();
     }
 
-    public function SetLockState(bool $value)
+    public function SetLockState(int $value)
     {
         if(!$this->IsDefined())
         {
