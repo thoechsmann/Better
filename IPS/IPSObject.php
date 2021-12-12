@@ -102,15 +102,15 @@ abstract class IPSObject  {
         $id = $this->GetIDForIdent($this->Ident());
 
         if($id > 0) {            
-            if(!static::IsCorrectObjectType($id)) {
-                static::DeleteObject($id);
+            if(!$this->IsCorrectObjectType($id)) {
+                $this->DeleteObject($id);
                 $id = 0;
             }
         }
         
         if($id == 0)
         {
-            $id = static::CreateObject();
+            $id = $this->CreateObject();
 
             IPS_SetParent($id, $this->parentId);
             IPS_SetIdent($id, $this->Ident());            

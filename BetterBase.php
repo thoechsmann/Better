@@ -220,10 +220,10 @@ class BetterBase extends IPSModule {
         $ObjectType = $Object['ObjectType']; 
         switch ($ObjectType) { 
             case 0: // Category 
-                DeleteCategory($ObjectId); 
+                IPS_DeleteCategory($ObjectId); 
                 break; 
             case 1: // Instance 
-                EmptyCategory($ObjectId); 
+                //EmptyCategory($ObjectId); 
                 IPS_DeleteInstance($ObjectId); 
                 break; 
             case 2: // Variable 
@@ -242,7 +242,7 @@ class BetterBase extends IPSModule {
                 IPS_DeleteLink($ObjectId); 
                 break; 
             default: 
-                Error ("Found unknown ObjectType $ObjectType"); 
+                $this->LogMessage ("Found unknown ObjectType $ObjectType", KL_ERROR); 
         } 
     } 
      
@@ -292,7 +292,7 @@ class BetterBase extends IPSModule {
 
     protected function Log($text)
     {
-        IPS_LogMessage(static::GetModuleName() . "(" . $this->InstanceID() . ")", $text);
+        IPS_LogMessage($this->GetModuleName() . "(" . $this->InstanceID() . ")", $text);
     }
 
     protected function GetModuleName()

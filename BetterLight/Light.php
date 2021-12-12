@@ -53,7 +53,7 @@ class LightArray {
                 return new RGBLight($this->module, $index);
                 break;
             default: 
-                IPS_LogMessage("BL", "LightArray::At - Unsupported type: $type");
+                IPS_LogMessage("BL", "LightArray::At - Unsupported type: $this->type");
         }
     }
 
@@ -159,7 +159,7 @@ abstract class Light {
 
     public function IsDisplayVar($ident)
     {
-        return $ident == static::DisplayVar()->Ident();
+        return $ident == $this->DisplayVar()->Ident();
     }
 
     protected function SceneVarName($sceneNumber)
@@ -181,7 +181,7 @@ abstract class Light {
     private function RegisterDisplayVar($position)
     {
         $name = $this->Name();
-        $var = static::DisplayVar();
+        $var = $this->DisplayVar();
         $var->Register($name, "", $position);
         $this->module->EnableAction($var->Ident());
     }
@@ -190,7 +190,7 @@ abstract class Light {
     {
         for($i = 0; $i<$sceneCount; $i++)
         {
-            $sceneLight = static::SceneVars($i);
+            $sceneLight = $this->SceneVars($i);
             $sceneLight->Register();
             $sceneLight->SetHidden(true);
         }
@@ -202,16 +202,16 @@ abstract class Light {
         $this->RegisterDisplayVar($position);
         $this->RegisterSceneVars($sceneCount);
 
-        $var = static::DisplayVar();
-        $var->SetProfile(static::DisplayVarProfile());
+        $var = $this->DisplayVar();
+        $var->SetProfile($this->DisplayVarProfile());
 
-        $backing = static::DisplayVarBacking();
+        $backing = $this->DisplayVarBacking();
         $backing->Update();
     }
 
     public function RegisterTriggers()
     {
-        $backing = static::DisplayVarBacking();
+        $backing = $this->DisplayVarBacking();
         $backing->RegisterTrigger('BL_CancelSave($_IPS[\'TARGET\']);');
     }
 
@@ -239,13 +239,13 @@ abstract class Light {
 
     public function SaveToScene($sceneNumber)
     {
-        $value = static::DisplayVar()->Value();
-        static::SceneVars($sceneNumber)->SetValue($value);
+        $value = $this->DisplayVar()->Value();
+        $this->SceneVars($sceneNumber)->SetValue($value);
     }
 
     public function LoadFromScene($sceneNumber, $triggerIdent = "", $triggerValue = 0)
     {
-        $value = static::SceneVars($sceneNumber)->Value();
+        $value = $this->SceneVars($sceneNumber)->Value();
 
         if($this->IsDisplayVar($triggerIdent))
         {
@@ -253,7 +253,7 @@ abstract class Light {
             $value = $triggerValue;
         }
 
-        static::DisplayVarBacking()->SetValue($value);
+        $this->DisplayVarBacking()->SetValue($value);
     }
 }
 

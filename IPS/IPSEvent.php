@@ -33,12 +33,12 @@ abstract class IPSEvent extends IPSObject
         if(!IPS_EventExists($id))
             throw new Exception("Ident with name ".$this->Ident()." is used for wrong object type");
             
-        return IPS_GetEvent($id)["EventType"] == static::GetEventTypeId();
+        return IPS_GetEvent($id)["EventType"] == $this->GetEventTypeId();
     }
 
     protected function CreateObject()
     {
-        return IPS_CreateEvent(static::GetEventTypeId());
+        return IPS_CreateEvent($this->GetEventTypeId());
     }
 
     protected function DeleteObject($id)

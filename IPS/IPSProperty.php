@@ -78,7 +78,7 @@ abstract class IPSPropertyArray
         $this->caption = $caption;
 
         for ($i = 0; $i<$count; $i++) {
-            $this->properties[$i] = static::CreateProperty($name . $i, $caption . " " . ($i+1));
+            $this->properties[$i] = $this->CreateProperty($name . $i, $caption . " " . ($i+1));
         }
     }
 

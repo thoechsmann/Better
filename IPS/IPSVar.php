@@ -36,20 +36,20 @@ abstract class IPSVar extends IPSObject
 
     public function __toString()
     {
-        return parent::__toString() . " type: " . static::GetVarTypeName();
+        return parent::__toString() . " type: " . $this->GetVarTypeName();
     }
 
     public function CheckValue($value)
     {
-        if(!static::ValueValid($value))
+        if(!$this->ValueValid($value))
         {
-            throw new Exception("IPSVar - SetValue", "value: $value is not of type " . static::GetVarTypeName() . " - " . $this);
+            throw new Exception("IPSVar - SetValue", "value: $value is not of type " . $this->GetVarTypeName() . " - " . $this);
         }
     }
 
     protected function CreateObject()
     {
-        return IPS_CreateVariable(static::GetVarTypeId());
+        return IPS_CreateVariable($this->GetVarTypeId());
     }
 
     protected function DeleteObject($id)
@@ -62,7 +62,7 @@ abstract class IPSVar extends IPSObject
         if(!IPS_VariableExists($id))
             throw new Exception("Ident with name ".$this->Ident()." is used for wrong object type");
 
-        return IPS_GetVariable($id)["VariableType"] == static::GetVarTypeId();
+        return IPS_GetVariable($id)["VariableType"] == $this->GetVarTypeId();
     }
 
     abstract protected function GetVarTypeName();

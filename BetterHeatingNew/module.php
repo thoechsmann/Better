@@ -276,7 +276,7 @@ class BetterHeatingNew extends BetterBase
         if ($boostTime <= 0) {
             $this->DeactivateBoost();
         } else {
-            $boostId = $this->SetName("Boost ($boostTime Minuten)");
+            $boostId = $this->Boost()->SetName("Boost ($boostTime Minuten)");
         }
     }
 
