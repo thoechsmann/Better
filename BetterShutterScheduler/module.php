@@ -10,6 +10,8 @@ require_once(__DIR__ . "/../BetterBase.php");
 require_once(__DIR__ . "/../IPS/IPS.php");
 
 class BetterShutterScheduler extends BetterBase {
+    const ShutterModuleIdCount = 20;
+
     protected function GetModuleName()
     {
         return "BSS";
@@ -24,6 +26,11 @@ class BetterShutterScheduler extends BetterBase {
         return new IPSPropertyInteger($this, __FUNCTION__);
     }   
 
+    private function ShutterModuleIds()
+    {
+        return new IPSPropertyArrayInteger($this, __FUNCTION__, BetterHeatingNew::WindowStatusCount, "Fenster Kontakt");
+    }
+    
     // Variables
     private function TwilightCheck() {        
         return new IPSVarBoolean($this->InstanceID(), __FUNCTION__);
@@ -45,6 +52,24 @@ class BetterShutterScheduler extends BetterBase {
     // Scheduler
     private function Scheduler() {
         return new IPSEventScheduler($this->InstanceID(), __FUNCTION__);
+    }
+
+    public function GetConfigurationForm()
+    {
+        $retVal = "{\"elements\":[";
+
+        $propArray = array(
+            $this->ShutterGroupUpDownIdProp()->GetConfigurationFormEntry(),
+            $this->IsDayIdProp()->GetConfigurationFormEntry()
+        );
+        
+        //$propArray = array_merge($propArray, $this->WindowStatusIds()->GetAllConfigurationFormEntries());
+        
+        $retVal .= implode(",", $propArray);
+
+        $retVal .= "]}";
+
+        return $retVal;
     }
 
 	public function Create() 
