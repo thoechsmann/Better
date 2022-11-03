@@ -181,6 +181,7 @@ class BetterShutterNew extends BetterBase
     }
   }
 
+  
   public function UpDownEvent(bool $moveDown, bool $calledFromSetPositionEvent = false)
   {
     $this->Log("UpDownEvent(moveDown:$moveDown)");
