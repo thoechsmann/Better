@@ -112,9 +112,9 @@ class ShutterControl
 
     public function RegisterTriggers()
     {
-    if ($this->SetPositionId() != 0) $this->SetPositionTrigger()->Register("", $this->SetPositionId(), 'BSN_SetPositionEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeUpdate);
-    if ($this->UpDownId() != 0) $this->UpDownTrigger()->Register("", $this->UpDownId(), 'BSN_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeUpdate);
-    if ($this->StopId() != 0) $this->StopTrigger()->Register("", $this->StopId(), 'BSN_StopEvent($_IPS[\'TARGET\']);', IPSEventTrigger::TypeUpdate);
+    if ($this->SetPositionId() != 0) $this->SetPositionTrigger()->Register("", $this->SetPositionId(), 'BSN_SetPositionEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeChange);
+    if ($this->UpDownId() != 0) $this->UpDownTrigger()->Register("", $this->UpDownId(), 'BSN_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeChange);
+    if ($this->StopId() != 0) $this->StopTrigger()->Register("", $this->StopId(), 'BSN_StopEvent($_IPS[\'TARGET\']);', IPSEventTrigger::TypeChange);
   }
 
   public function SetPositionId()
