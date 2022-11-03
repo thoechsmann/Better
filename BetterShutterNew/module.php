@@ -276,7 +276,7 @@ class BetterShutterNew extends BetterBase {
     {
         $this->Log("MoveTo(pos:$pos)");
         $positionId = $this->PositionIdProp()->Value();
-        EIB_DimValue(IPS_GetParent($positionId), $pos);
+        EIB_Scale(IPS_GetParent($positionId), $pos);
     }
 
     private function Stop()
