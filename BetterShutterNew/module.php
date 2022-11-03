@@ -232,7 +232,8 @@ class BetterShutterNew extends BetterBase
       return;
 
     if ($open) {
-      if ($this->TargetPosition()->Value() > $this->PositionLimit()->Value())
+      $this->Log($this->TargetPosition()->Value() . " - " . $this->PositionLimitCapped());
+      if ($this->TargetPosition()->Value() > $this->PositionLimitCapped())
         $this->MoveToLimitedDown();
     } else if ($this->PositionIsLimited()->Value()) {
       $this->MoveToTarget();
@@ -258,7 +259,7 @@ class BetterShutterNew extends BetterBase
   {
     $this->Log("MoveToLimitedDown");
     $this->PositionIsLimited()->SetValue(true);
-    $this->MoveTo((int)$this->PositionLimit()->Value());
+    $this->MoveTo((int)$this->PositionLimitCapped());
   }
 
   private function MoveToTarget()
