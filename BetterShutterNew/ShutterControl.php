@@ -1,88 +1,87 @@
 <?
+
 declare(strict_types=1);
 
 require_once(__DIR__ . "/../BetterBase.php");
 require_once(__DIR__ . "/../IPS/IPS.php");
 
-class ShutterControlArray {
-    private int $size;
-    private BetterBase $module;
+class ShutterControlArray
+{
+  private int $size;
+  private BetterBase $module;
 
-    public function __construct(BetterBase $module, int $size)
-    {
-        $this->module = $module;
-        $this->size = $size;
-    }
+  public function __construct(BetterBase $module, int $size)
+  {
+    $this->module = $module;
+    $this->size = $size;
+  }
 
-    public function Count()
-    {
-        $count = 0;
-        
-        for($i=0; $i<$this->size; $i++)
-        {
-            $obj = $this->At($i);
+  public function Count()
+  {
+    $count = 0;
 
-            if(!$obj->IsDefined())
-            {
-                return $count;
-            }
+    for ($i = 0; $i < $this->size; $i++) {
+      $obj = $this->At($i);
 
-            $count++;
-        }
-
+      if (!$obj->IsDefined()) {
         return $count;
+      }
+
+      $count++;
     }
 
-    public function At(int $index)
-    {
-        return new ShutterControl($this->module, $index);
-    }
+    return $count;
+  }
 
-    public function RegisterProperties()
-    {
-        for($i=0; $i<$this->size; $i++)
-        {
-            $this->At($i)->RegisterProperties();
-        }
-    }
+  public function At(int $index)
+  {
+    return new ShutterControl($this->module, $index);
+  }
 
-    public function RegisterTriggers()
-    {
-        for($i=0; $i<$this->Count(); $i++)
-        {
-            $this->At($i)->RegisterTriggers();
-        }
+  public function RegisterProperties()
+  {
+    for ($i = 0; $i < $this->size; $i++) {
+      $this->At($i)->RegisterProperties();
     }
+  }
+
+  public function RegisterTriggers()
+  {
+    for ($i = 0; $i < $this->Count(); $i++) {
+      $this->At($i)->RegisterTriggers();
+    }
+  }
 }
 
 class ShutterControl
 {
-    const StrPrefix = "ShutterControl";
+  const StrPrefix = "ShutterControl";
 
-    private int $index;
-    private BetterBase $module;
+  private int $index;
+  private BetterBase $module;
 
-    public function __construct(BetterBase $module, int $index) {
-        $this->module = $module;
-        $this->index = $index;
-    }
+  public function __construct(BetterBase $module, int $index)
+  {
+    $this->module = $module;
+    $this->index = $index;
+  }
 
   // Properties
 
   private function SetPositionIdProp()
   {
     return new IPSPropertyInteger($this->module, self::StrPrefix . $this->index . __FUNCTION__);
-  }   
+  }
 
-    private function UpDownIdProp()
-    {
+  private function UpDownIdProp()
+  {
     return new IPSPropertyInteger($this->module, self::StrPrefix . $this->index . __FUNCTION__);
-    }   
+  }
 
-    private function StopIdProp()
-    {
+  private function StopIdProp()
+  {
     return new IPSPropertyInteger($this->module, self::StrPrefix . $this->index . __FUNCTION__);
-    }
+  }
 
   // Events
 
@@ -91,27 +90,28 @@ class ShutterControl
     return new IPSEventTrigger($this->module->InstanceId(), self::StrPrefix . $this->index . __FUNCTION__);
   }
 
-    private function UpDownTrigger()
-    {
+  private function UpDownTrigger()
+  {
     return new IPSEventTrigger($this->module->InstanceId(), self::StrPrefix . $this->index . __FUNCTION__);
-    }
+  }
 
-    private function StopTrigger()
-    {
+  private function StopTrigger()
+  {
     return new IPSEventTrigger($this->module->InstanceId(), self::StrPrefix . $this->index . __FUNCTION__);
-    }
+  }
 
-    public function RegisterProperties()
-    {
-    /*if ($this->SetPositionId() != 0) */ $this->SetPositionIdProp()->Register();
+  public function RegisterProperties()
+  {
+    /*if ($this->SetPositionId() != 0) */
+    $this->SetPositionIdProp()->Register();
     /*if ($this->UpDownId() != 0) */
     $this->UpDownIdProp()->Register();
     /*if ($this->StopId() != 0) */
     $this->StopIdProp()->Register();
-    }
+  }
 
-    public function RegisterTriggers()
-    {
+  public function RegisterTriggers()
+  {
     if ($this->SetPositionId() != 0) $this->SetPositionTrigger()->Register("", $this->SetPositionId(), 'BSN_SetPositionEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeChange);
     if ($this->UpDownId() != 0) $this->UpDownTrigger()->Register("", $this->UpDownId(), 'BSN_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeChange);
     if ($this->StopId() != 0) $this->StopTrigger()->Register("", $this->StopId(), 'BSN_StopEvent($_IPS[\'TARGET\']);', IPSEventTrigger::TypeChange);
@@ -122,20 +122,18 @@ class ShutterControl
     return $this->SetPositionIdProp()->Value();
   }
 
-    public function UpDownId()
-    {
-        return $this->UpDownIdProp()->Value();
-    }
+  public function UpDownId()
+  {
+    return $this->UpDownIdProp()->Value();
+  }
 
-    public function StopId()
-    {
-        return $this->StopIdProp()->Value();
-    }
-    
-    public function IsDefined()
-    {
-        return $this->UpDownId() != 0;
-    }
+  public function StopId()
+  {
+    return $this->StopIdProp()->Value();
+  }
+
+  public function IsDefined()
+  {
+    return $this->UpDownId() != 0;
+  }
 }
-
-?>
