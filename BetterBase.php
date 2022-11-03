@@ -16,22 +16,22 @@ class BetterBase extends IPSModule {
     const PersistentPrefix = "persistent_";
 
   // Make same stuff public. Required by property class.
-  public function RegisterPropertyInteger(string $name, int $value)
+  public function RegisterPropertyInteger($name, $value)
     {
         parent::RegisterPropertyInteger($name, $value);
     }
 
-  public function RegisterPropertyString(string $name, string $value)
+  public function RegisterPropertyString($name, $value)
     {
         parent::RegisterPropertyString($name, $value);
     }
 
-  public function ReadPropertyInteger(int $name)
+  public function ReadPropertyInteger($name)
     {
         return parent::ReadPropertyInteger($name);
     }
 
-  public function ReadPropertyString(string $name)
+  public function ReadPropertyString($name)
     {
         return parent::ReadPropertyString($name);
     }
