@@ -188,10 +188,12 @@ class BetterShutterNew extends BetterBase
     if (!$this->Enabled()->Value())
       return;
 
-    if ($moveDown)
+    if ($moveDown) {
       $this->TargetPosition()->SetValue(100);
-    else
+    } else {
       $this->TargetPosition()->SetValue(0);
+    }
+    $this->MoveTo((int)$this->TargetPosition()->Value()); // this is only done to syncronise the absolute position property that is used by HomeKit
 
     if ($moveDown && $this->IsWindowOpen()) // window open
     {
