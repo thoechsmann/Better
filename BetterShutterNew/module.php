@@ -185,8 +185,10 @@ class BetterShutterNew extends BetterBase
   {
     $this->Log("UpDownEvent(moveDown:$moveDown, $calledFromSetPositionEvent)");
 
-    if (!$this->Enabled()->Value())
+    if (!$this->Enabled()->Value()) {
+      $this->Stop();
       return;
+    }
 
     if ($moveDown) {
       $this->TargetPosition()->SetValue(100);
@@ -209,9 +211,6 @@ class BetterShutterNew extends BetterBase
   {
     $this->Log("StopEvent()");
 
-    if (!$this->Enabled()->Value())
-      return;
-
     $instanceId = $this->InstanceID();
     $script = "BSN_UpdateTargetPosition($instanceId);";
     $this->CheckPositionTimer()->StartTimer(1, $script);
@@ -232,8 +231,10 @@ class BetterShutterNew extends BetterBase
   {
     $this->Log("WindowEvent(open:$open)");
 
-    if (!$this->Enabled()->Value())
+    if (!$this->Enabled()->Value()) {
+      $this->Stop();
       return;
+    }
 
     if ($open) {
       $this->Log($this->TargetPosition()->Value() . " - " . $this->PositionLimitCapped());
@@ -273,12 +274,12 @@ class BetterShutterNew extends BetterBase
     $this->MoveTo((int)$this->TargetPosition()->Value());
   }
 
-  private function MoveUp()
+  public function MoveUp()
   {
     $this->Move(false);
   }
 
-  private function MoveDown()
+  public function MoveDown()
   {
     $this->Move(true);
   }
@@ -297,7 +298,7 @@ class BetterShutterNew extends BetterBase
     EIB_DimValue(IPS_GetParent($positionId), $pos);
   }
 
-  private function Stop()
+  public function Stop()
   {
     $this->Log("Stop()");
     $stopId = $this->ShutterControls()->At(0)->StopId();
