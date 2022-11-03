@@ -71,34 +71,34 @@ class ShutterControl
 
   private function SetPositionIdProp()
   {
-    return new IPSPropertyInteger($this->module, self::StrPrefix . $this->index . "SetPositionIdProp");
+    return new IPSPropertyInteger($this->module, self::StrPrefix . $this->index . __FUNCTION__);
   }   
 
     private function UpDownIdProp()
-    {        
-        return new IPSPropertyInteger($this->module, self::StrPrefix . $this->index . "UpDownIdProp");
+    {
+    return new IPSPropertyInteger($this->module, self::StrPrefix . $this->index . __FUNCTION__);
     }   
 
     private function StopIdProp()
-    {        
-        return new IPSPropertyInteger($this->module, self::StrPrefix . $this->index . "StopIdProp");
+    {
+    return new IPSPropertyInteger($this->module, self::StrPrefix . $this->index . __FUNCTION__);
     }
 
   // Events
 
   private function SetPositionTrigger()
   {
-    return new IPSEventTrigger($this->module->InstanceId(), self::StrPrefix . $this->index . "SetPositionTrigger");
+    return new IPSEventTrigger($this->module->InstanceId(), self::StrPrefix . $this->index . __FUNCTION__);
   }
 
     private function UpDownTrigger()
     {
-        return new IPSEventTrigger($this->module->InstanceId(), self::StrPrefix . $this->index . "UpDownTrigger");
+    return new IPSEventTrigger($this->module->InstanceId(), self::StrPrefix . $this->index . __FUNCTION__);
     }
 
     private function StopTrigger()
     {
-        return new IPSEventTrigger($this->module->InstanceId(), self::StrPrefix . $this->index . "StopTrigger");
+    return new IPSEventTrigger($this->module->InstanceId(), self::StrPrefix . $this->index . __FUNCTION__);
     }
 
     public function RegisterProperties()

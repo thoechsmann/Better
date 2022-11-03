@@ -39,11 +39,12 @@ class BetterShutterNew extends BetterBase {
 
     private function WindowStatusIdProp() {        
         return new IPSPropertyInteger($this, __FUNCTION__);
-    }   
+    }
 
-    // Variables
-    private function Enabled() {        
-        return new IPSVarBoolean($this->InstanceID(), __FUNCTION__);
+  // Variables
+  private function Enabled()
+  {
+    return new IPSVarBoolean($this->InstanceID(), parent::PersistentPrefix . __FUNCTION__);
     }   
 
     private function PositionIsLimited() {        
