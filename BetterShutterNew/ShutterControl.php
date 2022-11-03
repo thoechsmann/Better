@@ -67,7 +67,12 @@ class ShutterControl
         $this->index = $index;
     }
 
-    // Properties
+  // Properties
+
+  private function SetPositionIdProp()
+  {
+    return new IPSPropertyInteger($this->module, self::StrPrefix . $this->index . __FUNCTION__);
+  }   
 
     private function UpDownIdProp()
     {        
@@ -79,7 +84,12 @@ class ShutterControl
         return new IPSPropertyInteger($this->module, self::StrPrefix . $this->index . "StopIdProp");
     }
 
-    // Events
+  // Events
+
+  private function SetPositionTrigger()
+  {
+    return new IPSEventTrigger($this->module->InstanceId(), self::StrPrefix . $this->index . __FUNCTION__);
+  }
 
     private function UpDownTrigger()
     {
@@ -93,16 +103,22 @@ class ShutterControl
 
     public function RegisterProperties()
     {
-        $this->UpDownIdProp()->Register();
-        $this->StopIdProp()->Register();
+    $this->SetPositionIdProp()->Register();
+    $this->UpDownIdProp()->Register();
+    $this->StopIdProp()->Register();
     }
 
     public function RegisterTriggers()
     {
-        $this->UpDownTrigger()->Register("", $this->UpDownId(), 'BSN_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeUpdate);
+    $this->SetPositionTrigger()->Register("", $this->UpDownId(), 'BSN_SetPositionEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeUpdate);
+    $this->UpDownTrigger()->Register("", $this->UpDownId(), 'BSN_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeUpdate);
+    $this->StopTrigger()->Register("", $this->StopId(), 'BSN_StopEvent($_IPS[\'TARGET\']);', IPSEventTrigger::TypeUpdate);
+  }
 
-        $this->StopTrigger()->Register("", $this->StopId(), 'BSN_StopEvent($_IPS[\'TARGET\']);', IPSEventTrigger::TypeUpdate);
-    }
+  public function SetPositionId()
+  {
+    return $this->SetPositionIdProp()->Value();
+  }
 
     public function UpDownId()
     {
