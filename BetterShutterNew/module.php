@@ -181,7 +181,7 @@ class BetterShutterNew extends BetterBase
     }
   }
 
-  public function UpDownEvent(bool $moveDown)
+  public function UpDownEvent(bool $moveDown, bool $calledFromSetPositionEvent = false)
   {
     $this->Log("UpDownEvent(moveDown:$moveDown)");
 
@@ -193,7 +193,9 @@ class BetterShutterNew extends BetterBase
     } else {
       $this->TargetPosition()->SetValue(0);
     }
-    $this->MoveTo((int)$this->TargetPosition()->Value()); // this is only done to syncronise the absolute position property that is used by HomeKit
+
+    if (!$calledFromSetPositionEvent)
+      $this->MoveTo((int)$this->TargetPosition()->Value()); // this is only done to syncronise the absolute position property that is used by HomeKit
 
     if ($moveDown && $this->IsWindowOpen()) // window open
     {
