@@ -185,10 +185,10 @@ class BetterShutterNew extends BetterBase
   {
     $this->Log("UpDownEvent(moveDown:$moveDown, $calledFromSetPositionEvent)");
 
-    if (!$this->Enabled()->Value()) {
-      $this->Stop();
-      return;
-    }
+    // if (!$this->Enabled()->Value()) {
+    //   $this->Stop();
+    //   return;
+    // }
 
     if ($moveDown) {
       $this->TargetPosition()->SetValue(100);
@@ -231,10 +231,10 @@ class BetterShutterNew extends BetterBase
   {
     $this->Log("WindowEvent(open:$open)");
 
-    if (!$this->Enabled()->Value()) {
-      $this->Stop();
-      return;
-    }
+    // if (!$this->Enabled()->Value()) {
+    //   $this->Stop();
+    //   return;
+    // }
 
     if ($open) {
       $this->Log($this->TargetPosition()->Value() . " - " . $this->PositionLimitCapped());
@@ -274,12 +274,26 @@ class BetterShutterNew extends BetterBase
     $this->MoveTo((int)$this->TargetPosition()->Value());
   }
 
-  public function MoveUp()
+  public function MoveUpCalledFromScheduler()
+  {
+    if ($this->Enabled()->Value()) {
+      $this->MoveUp();
+    }
+  }
+
+  public function MoveDownCalledFromScheduler()
+  {
+    if ($this->Enabled()->Value()) {
+      $this->MoveDown();
+    }
+  }
+
+  private function MoveUp()
   {
     $this->Move(false);
   }
 
-  public function MoveDown()
+  private function MoveDown()
   {
     $this->Move(true);
   }
