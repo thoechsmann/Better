@@ -71,7 +71,7 @@ class ShutterControl
 
   private function SetPositionIdProp()
   {
-    return new IPSPropertyInteger($this->module, self::StrPrefix . $this->index . __FUNCTION__);
+    return new IPSPropertyInteger($this->module, self::StrPrefix . $this->index . "SetPositionIdProp");
   }   
 
     private function UpDownIdProp()
@@ -88,7 +88,7 @@ class ShutterControl
 
   private function SetPositionTrigger()
   {
-    return new IPSEventTrigger($this->module->InstanceId(), self::StrPrefix . $this->index . __FUNCTION__);
+    return new IPSEventTrigger($this->module->InstanceId(), self::StrPrefix . $this->index . "SetPositionTrigger");
   }
 
     private function UpDownTrigger()
