@@ -15,23 +15,23 @@ class BetterBase extends IPSModule {
     // Idents with this prefix will not be removed when updating instance.
     const PersistentPrefix = "persistent_";
 
-    // Make same stuff public. Required by property class.
-    public function RegisterPropertyInteger($name, $value)
+  // Make same stuff public. Required by property class.
+  public function RegisterPropertyInteger(string $name, int $value)
     {
         parent::RegisterPropertyInteger($name, $value);
     }
 
-    public function RegisterPropertyString($name, $value)
+  public function RegisterPropertyString(string $name, string $value)
     {
         parent::RegisterPropertyString($name, $value);
     }
 
-    public function ReadPropertyInteger($name)
+  public function ReadPropertyInteger(int $name)
     {
         return parent::ReadPropertyInteger($name);
     }
 
-    public function ReadPropertyString($name)
+  public function ReadPropertyString(string $name)
     {
         return parent::ReadPropertyString($name);
     }
