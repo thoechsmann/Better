@@ -164,6 +164,12 @@ class BetterShutterNew extends BetterBase {
   public function SetPositionEvent(int $position)
   {
     $this->Log("SetPositionEvent(position:$position)");
+
+    if ($position == 0) {
+      $this->UpDownEvent(false);
+    } else if ($position == 100) {
+      $this->UpDownEvent(true);
+    }
   }  
 
     public function UpDownEvent(bool $moveDown)
