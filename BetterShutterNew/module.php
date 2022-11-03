@@ -119,7 +119,7 @@ class BetterShutterNew extends BetterBase
     $this->TargetPosition()->Register();
     $this->PositionIsLimited()->Register();
 
-    $this->Enabled()->Register("Aktiviert", "~Switch");
+    $this->Enabled()->Register("Aktiviere Dämmerungsautomatik", "~Switch");
     $this->Enabled()->SetValue(true);
     $this->EnableAction($this->Enabled()->Ident());
 
