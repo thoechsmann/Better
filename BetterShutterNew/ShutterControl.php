@@ -110,7 +110,7 @@ class ShutterControl
 
     public function RegisterTriggers()
     {
-    $this->SetPositionTrigger()->Register("", $this->UpDownId(), 'BSN_SetPositionEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeUpdate);
+    $this->SetPositionTrigger()->Register("", $this->SetPositionId(), 'BSN_SetPositionEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeUpdate);
     $this->UpDownTrigger()->Register("", $this->UpDownId(), 'BSN_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeUpdate);
     $this->StopTrigger()->Register("", $this->StopId(), 'BSN_StopEvent($_IPS[\'TARGET\']);', IPSEventTrigger::TypeUpdate);
   }
