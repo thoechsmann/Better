@@ -141,7 +141,7 @@ class BetterShutterNew extends BetterBase
       return;
 
     // If at the limit position, assume it should be at 100.
-    if ($this->PositionStatus() == $this->PositionLimit()->Value()) {
+    if ($this->PositionStatus() == $this->PositionLimitCapped()) {
       $this->PositionIsLimited()->SetValue(true);
       $this->TargetPosition()->SetValue(100);
     } else {
@@ -318,5 +318,12 @@ class BetterShutterNew extends BetterBase
     if ($this->IsWindowOpen()) {
       $this->MoveToLimitedDown();
     }
+  }
+
+  private function PositionLimitCapped()
+  {
+    if ($this->PositionLimit()->Value() == 100) return 99;
+    if ($this->PositionLimit()->Value() == 0) return 1;
+    return $this->PositionLimit()->Value();
   }
 }
