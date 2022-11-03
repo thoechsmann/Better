@@ -19,6 +19,26 @@
 				{ "type": "SelectVariable", "name": "ShutterControl1StopIdProp", "caption": "Stopp 2" },
 				{ "type": "SelectVariable", "name": "ShutterControl2StopIdProp", "caption": "Stopp 3" }
 			]
+    },
+    {
+      "type": "RowLayout",
+      "items": [
+        {
+          "type": "SelectVariable",
+          "name": "ShutterControl0SetPositionIdProp",
+          "caption": "Set Position 1"
+        },
+        {
+          "type": "SelectVariable",
+          "name": "ShutterControl1SetPositionIdProp",
+          "caption": "Set Position 2"
+        },
+        {
+          "type": "SelectVariable",
+          "name": "ShutterControl2SetPositionIdProp",
+          "caption": "Set Position 3"
+        }
+      ]
 		}
 	],
 	"actions":
