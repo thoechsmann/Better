@@ -103,16 +103,20 @@ class ShutterControl
 
     public function RegisterProperties()
     {
-    if ($this->SetPositionId() != 0) $this->SetPositionIdProp()->Register();
-    if ($this->UpDownId() != 0) $this->UpDownIdProp()->Register();
-    if ($this->StopId() != 0) $this->StopIdProp()->Register();
+    /*if ($this->SetPositionId() != 0) */ $this->SetPositionIdProp()->Register();
+    /*if ($this->UpDownId() != 0) */
+    $this->UpDownIdProp()->Register();
+    /*if ($this->StopId() != 0) */
+    $this->StopIdProp()->Register();
     }
 
     public function RegisterTriggers()
     {
-    if ($this->SetPositionId() != 0) $this->SetPositionTrigger()->Register("", $this->SetPositionId(), 'BSN_SetPositionEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeUpdate);
-    if ($this->UpDownId() != 0) $this->UpDownTrigger()->Register("", $this->UpDownId(), 'BSN_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeUpdate);
-    if ($this->StopId() != 0) $this->StopTrigger()->Register("", $this->StopId(), 'BSN_StopEvent($_IPS[\'TARGET\']);', IPSEventTrigger::TypeUpdate);
+    /*if ($this->SetPositionId() != 0)*/ $this->SetPositionTrigger()->Register("", $this->SetPositionId(), 'BSN_SetPositionEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeUpdate);
+    /*if ($this->UpDownId() != 0)*/
+    $this->UpDownTrigger()->Register("", $this->UpDownId(), 'BSN_UpDownEvent($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeUpdate);
+    /*if ($this->StopId() != 0)*/
+    $this->StopTrigger()->Register("", $this->StopId(), 'BSN_StopEvent($_IPS[\'TARGET\']);', IPSEventTrigger::TypeUpdate);
   }
 
   public function SetPositionId()
