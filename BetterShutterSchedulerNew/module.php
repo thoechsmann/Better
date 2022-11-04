@@ -79,7 +79,7 @@ class BetterShutterSchedulerNew extends BetterBase
     $twilightCheck->Register("Dämmerungsautomatik", "~Switch");
     $this->EnableAction($twilightCheck->Ident());
 
-    $this->IsDayTrigger()->Register("", $this->IsDayIdProp()->Value(), 'BSS_DayChanged($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeChange);
+    $this->IsDayTrigger()->Register("", $this->IsDayIdProp()->Value(), 'BSSN_DayChanged($_IPS[\'TARGET\'], $_IPS[\'VALUE\']);', IPSEventTrigger::TypeChange);
 
     $scheduler = $this->Scheduler();
     $scheduler->Register("Wochenplan");
@@ -114,11 +114,11 @@ class BetterShutterSchedulerNew extends BetterBase
     $scheduler = $this->Scheduler();
 
     if ($value) {
-      $scheduler->SetAction(0, "frühstes Öffnen", 0x00FF00, "BSS_EarliestOpen(\$_IPS['TARGET']);");
-      $scheduler->SetAction(1, "spätestes Schliessen", 0x0000FF, "BSS_LatestClose(\$_IPS['TARGET']);");
+      $scheduler->SetAction(0, "frühstes Öffnen", 0x00FF00, "BSSN_EarliestOpen(\$_IPS['TARGET']);");
+      $scheduler->SetAction(1, "spätestes Schliessen", 0x0000FF, "BSSN_LatestClose(\$_IPS['TARGET']);");
     } else {
-      $scheduler->SetAction(0, "Öffnen", 0x00FF00, "BSS_MoveUp(\$_IPS['TARGET']);");
-      $scheduler->SetAction(1, "Schliessen", 0x0000FF, "BSS_MoveDown(\$_IPS['TARGET']);");
+      $scheduler->SetAction(0, "Öffnen", 0x00FF00, "BSSN_MoveUp(\$_IPS['TARGET']);");
+      $scheduler->SetAction(1, "Schliessen", 0x0000FF, "BSSN_MoveDown(\$_IPS['TARGET']);");
     }
   }
 
