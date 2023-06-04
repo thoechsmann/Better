@@ -54,6 +54,13 @@ class SceneArray {
         }
     }
 
+  public function RegisterVariables()
+  {
+    for ($i = 0; $i < $this->size; $i++) {
+      $this->At($i)->RegisterVariables();
+    }
+  }
+
 }
 
 class Scene
@@ -79,6 +86,12 @@ class Scene
         return new IPSPropertyString($this->module, self::StrScene . $this->index . "Color");
     }
 
+  // Variables
+  private function ActivateSceneVar()
+  {
+    return new IPSVarInteger($this->module->InstanceId(), self::StrScene . "ActivateScene");
+  }
+
     // Scripts
     private function AlexaScript()
     {
@@ -90,6 +103,16 @@ class Scene
         $this->NameProp()->Register();
         $this->ColorProp()->Register();
     }
+
+  public function RegisterVariables()
+  {
+    if ($this->IsDefined()) {
+      $currentScene = $this->ActivateSceneVar();
+      $currentScene->Register();
+
+      IPS_SetVariableCustomAction($currentScene->Id(), $this->AlexaScript()->Id());
+    }
+  }
 
     public function RegisterAlexaScript()
     {
@@ -125,5 +148,3 @@ class Scene
         return $this->Name() != "";
     }
 }
-
-?>

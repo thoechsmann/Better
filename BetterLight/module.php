@@ -161,6 +161,7 @@ class BetterLight extends BetterBase
         $this->CreateTurnOffButton();
 
         $this->Scenes()->RegisterAlexaScripts();
+    $this->Scenes()->RegisterVariables();
 
         $this->IdendTriggerdTurnOnVar()->Register();
         $this->IdendTriggerdTurnOnVar()->SetValue("");
@@ -300,7 +301,7 @@ class BetterLight extends BetterBase
     public function BackToCurrentScene()
     {
         $this->Log("BackToCurrentScene()");
-        $this->SetScene($this->CurrentSceneVar()->Value(), false);
+    $this->SetScene((int) $this->CurrentSceneVar()->Value(), false);
     }
 
     public function ToggleScene(int $sceneNumber)
@@ -364,7 +365,7 @@ class BetterLight extends BetterBase
         if ($IsMSLocked) {
             // if MS is locked we do not get a turn on event.
             $backing->SetValue($value);
-            $this->SetScene($this->CurrentSceneVar()->Value());
+      $this->SetScene((int) $this->CurrentSceneVar()->Value());
         } else {
             if (!$isOn) {
                 $this->IdendTriggerdTurnOnVar()->SetValue($backing->DisplayIdent());
@@ -440,7 +441,7 @@ class BetterLight extends BetterBase
         $this->Log("MSMainSwitchEvent - turnOn:$turnOn, msLockState:" . $ms->LockState());
 
         if ($turnOn) {
-            $this->LoadFromScene($this->CurrentSceneVar()->Value());
+      $this->LoadFromScene((int)$this->CurrentSceneVar()->Value());
         } else {
             $this->TurnOffAll();
         }
