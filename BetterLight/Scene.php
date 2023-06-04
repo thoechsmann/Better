@@ -89,7 +89,7 @@ class Scene
   // Variables
   private function ActivateSceneVar()
   {
-    return new IPSVarInteger($this->module->InstanceId(), self::StrScene . "ActivateScene");
+    return new IPSVarBoolean($this->module->InstanceId(), self::StrScene . $this->index .  "ActivateScene");
   }
 
     // Scripts
@@ -108,8 +108,8 @@ class Scene
   {
     if ($this->IsDefined()) {
       $currentScene = $this->ActivateSceneVar();
-      $currentScene->Register();
-
+      $currentScene->Register($currentScene->Ident());
+      $currentScene->Show();
       IPS_SetVariableCustomAction($currentScene->Id(), $this->AlexaScript()->Id());
     }
   }
