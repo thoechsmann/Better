@@ -87,9 +87,9 @@ class Scene
     }
 
   // Variables
-  private function ActivateSceneVar()
+  public function HomeSceneSwitchVar()
   {
-    return new IPSVarBoolean($this->module->InstanceId(), self::StrScene . $this->index .  "ActivateScene");
+    return new IPSVarBoolean($this->module->InstanceId(), self::StrScene . $this->index .  "HomeSceneSwitch");
   }
 
     // Scripts
@@ -107,7 +107,7 @@ class Scene
   public function RegisterVariables()
   {
     if ($this->IsDefined()) {
-      $currentScene = $this->ActivateSceneVar();
+      $currentScene = $this->HomeSceneSwitchVar();
       $currentScene->Register($currentScene->Ident());
       $currentScene->Hide();
       IPS_SetVariableCustomAction($currentScene->Id(), $this->AlexaScript()->Id());
