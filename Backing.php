@@ -53,7 +53,8 @@ class Backing  {
                 break;
 
             case self::EIBTypeScale:
-                EIB_Scale($parent, $value);
+        RequestAction($this->setterId, $value);
+                // EIB_Scale($parent, $value);
                 break;
 
             case self::EIBTypeRGB:
