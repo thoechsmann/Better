@@ -107,10 +107,10 @@ class Scene
   public function RegisterVariables()
   {
     if ($this->IsDefined()) {
-      $currentScene = $this->HomeSceneSwitchVar();
-      $currentScene->Register($currentScene->Ident());
-      $currentScene->Hide();
-      IPS_SetVariableCustomAction($currentScene->Id(), $this->AlexaScript()->Id());
+      $homeSceneSwitchVar = $this->HomeSceneSwitchVar();
+      $homeSceneSwitchVar->Register($homeSceneSwitchVar->Ident());
+      $homeSceneSwitchVar->Hide();
+      IPS_SetVariableCustomAction($homeSceneSwitchVar->Id(), $this->AlexaScript()->Id());
     }
   }
 

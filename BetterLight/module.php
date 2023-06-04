@@ -332,6 +332,8 @@ class BetterLight extends BetterBase
     // Turn off all other Scenes. We only turn of the Bool Var that is used to control Scenes from HomeKit!
     for ($s = 0; $s < $this->Scenes()->Count(); $s++) {
       if ($s != $sceneNumber)
+      $this->Log("s $s - SceneNumber $sceneNumber / HomeSceneSwitchVar = " . $this->Scenes()->At($s)->HomeSceneSwitchVar()->Id());
+
       $this->Scenes()->At($s)->HomeSceneSwitchVar()->SetValue(false);
     }
 
