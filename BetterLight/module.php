@@ -334,7 +334,8 @@ class BetterLight extends BetterBase
       if ($s != $sceneNumber)
       $this->Log("s $s - SceneNumber $sceneNumber / HomeSceneSwitchVar = " . $this->Scenes()->At($s)->HomeSceneSwitchVar()->Id());
 
-      $this->Scenes()->At($s)->HomeSceneSwitchVar()->SetValue(false);
+      SetValue($this->Scenes()->At($s)->HomeSceneSwitchVar()->Id(), false);
+      // $this->Scenes()->At($s)->HomeSceneSwitchVar()->SetValue(false);
     }
 
         $ms = $this->MotionSensor();

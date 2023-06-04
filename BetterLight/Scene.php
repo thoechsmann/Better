@@ -89,7 +89,7 @@ class Scene
   // Variables
   public function HomeSceneSwitchVar()
   {
-    return new IPSVarBoolean($this->module->InstanceId(), self::StrScene . $this->index .  "HomeSceneSwitch");
+    return new IPSVarBoolean($this->module->InstanceId(), $this->module::PersistentPrefix . self::StrScene . $this->index .  "HomeKitSceneSwitch");
   }
 
     // Scripts
