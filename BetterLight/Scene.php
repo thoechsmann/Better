@@ -109,7 +109,7 @@ class Scene
     if ($this->IsDefined()) {
       $currentScene = $this->ActivateSceneVar();
       $currentScene->Register($currentScene->Ident());
-      $currentScene->Show();
+      $currentScene->Hide();
       IPS_SetVariableCustomAction($currentScene->Id(), $this->AlexaScript()->Id());
     }
   }
@@ -118,7 +118,7 @@ class Scene
     {
         if($this->IsDefined())
         {
-            $this->AlexaScript()->Register("", "<? BL_SetScene(" . $this->module->InstanceId() . "," . $this->index . ", true); ?>");        
+      $this->AlexaScript()->Register("", "<? if(\$_IPS['VALUE']) BL_SetScene(" . $this->module->InstanceId() . "," . $this->index . ", true); ?>");
             $this->AlexaScript()->Hide();
         }
     }
